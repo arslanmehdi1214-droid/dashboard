@@ -2693,8 +2693,40 @@
   "US100": {
    "code": "US100",
    "name": "Nasdaq 100",
-   "status": "NO SYSTEM YET",
-   "note": "Day-trading tests failed so far."
+   "symbol": "US100 \u00b7 Capital.com US Tech 100",
+   "live": false,
+   "paper": true,
+   "status": "Paper",
+   "version": "2026.1",
+   "unit": "pts",
+   "dp": 1,
+   "stats": {
+    "direction": "53.3%",
+    "days": "97%",
+    "perday": "1.34",
+    "win": "\u2014",
+    "pf": "1.14",
+    "net": "+9.9 pts per weekday",
+    "source": "Python walk-forward 2020-2026 (signals re-picked each January, never seen when picked), 1.8 pt spread; MT4 replay of the earlier full version: 2,308 trades, PF 1.16"
+   },
+   "pass_bar": {
+    "direction": 52.5,
+    "pf": 1.1,
+    "months": 3
+   },
+   "day_note": "14-day range \u2014 \u00b7 stop \u00bc range \u00b7 no target \u00b7 max 2 trades a day \u00b7 close 11:00 pm broker (Fri 10:50 pm) = 12:00 am Dubai, 1:00 am in winter",
+   "what_note": "This page tracks whether live Nasdaq signals do as well as the backtest. Decision after about 3 months.",
+   "cost_note": "Results are index points per trade, from the signal price, minus Capital.com's spread (at least 1.8 points).",
+   "net_label": "Net points (all paper trades)",
+   "state": "closed",
+   "message": "Market closed for the weekend.",
+   "entries": [],
+   "journal": {
+    "since": null,
+    "trades": 0
+   },
+   "jdays": [],
+   "feed_error": false
   }
  }
 }
