@@ -99,6 +99,17 @@ button.on{background:var(--gold);color:#0b0b0d}
 .jd{cursor:pointer}.jd:hover td{background:rgba(255,255,255,.02)}.jsub td{background:var(--bg2);font-size:12.5px;color:var(--mute)}
 .note{color:var(--faint);font-size:12px;margin-top:10px;line-height:1.45}
 @media(max-width:620px){.jt .hide-m{display:none}}
+.hrow{display:grid;grid-template-columns:34px 1.4fr 1fr 1fr 1.1fr 104px;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 14px;cursor:pointer}
+.hrow em{font-style:normal;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;font:700 12px Inter}
+.hrow.BUY em{background:var(--buydim);color:var(--buy)}.hrow.SELL em{background:var(--selldim);color:var(--sell)}
+.hrow .h1 b{display:block;font-weight:700}.hrow .h1 small{color:var(--mute);font-size:11.5px}
+.hrow .cx span{display:block;letter-spacing:.4px;text-transform:uppercase;font-size:10px;color:var(--faint)}.hrow .cx b{font:600 13.5px Inter}
+.hrow>.st{justify-self:end}.hrow.done{opacity:.62}
+.lvt{color:var(--buy);font-weight:700;letter-spacing:.6px}.ppt{color:var(--amber);font-weight:700;letter-spacing:.6px}
+.mrow{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--line);cursor:pointer}.mrow:first-child{border-top:0}
+.mrow small{font-size:11px}.mrow .mmsg{display:block;color:var(--mute);font-size:12.5px;margin-top:3px;letter-spacing:0;font-weight:400}
+.mpx{text-align:right;white-space:nowrap}.mpx .pill{margin:6px 0 0;display:flex;padding:5px 10px;font-size:10.5px}
+@media(max-width:620px){.hrow{grid-template-columns:1fr 1fr 1fr;row-gap:8px}.hrow em{display:none}.hrow .h1{grid-column:1/3}.hrow>.st{grid-column:3;grid-row:1}.hrow .cx{grid-row:2}}
 </style></head>
 <body><div class="wrap">
 <header><div class="brand"><div class="mark"></div><div><h1>Signal Desk</h1><small>Day-trade signals</small></div></div>
@@ -111,8 +122,7 @@ button.on{background:var(--gold);color:#0b0b0d}
 const host=location.hostname,repo=location.pathname.split('/').filter(Boolean)[0]||'gold-alerts';
 const RAW=host.endsWith('github.io')?`https://raw.githubusercontent.com/${host.split('.')[0]}/${repo}/main/docs/`:'';
 const DATA=RAW+'data.json',JOUR=RAW+'journal.json';
-let D=null,J=null,sel='GOLD',seen=null,sound=false,ctx=null,openDay=null;
-try{sel=localStorage.getItem('mk')||'GOLD'}catch(e){}
+let D=null,J=null,sel='HOME',seen=null,sound=false,ctx=null,openDay=null;
 const $=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const f2=v=>v==null?'—':Number(v).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
 const usd=v=>v==null?'—':(v>=0?'+$':'−$')+Math.abs(v).toFixed(2);
@@ -127,8 +137,8 @@ function spark(m){const s=m.spark||[];if(s.length<2)return'';const W=900,H=120,v
  return`<div class="spark"><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none"><defs><linearGradient id="g" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="${col}" stop-opacity=".28"/><stop offset="1" stop-color="${col}" stop-opacity="0"/></linearGradient></defs>
  <path d="M${pts.join(' L')} L${W},${H} L0,${H}Z" fill="url(#g)"/><polyline points="${pts.join(' ')}" fill="none" stroke="${col}" stroke-width="2.2" vector-effect="non-scaling-stroke" stroke-linejoin="round"/></svg></div>
  <div class="sparkax"><span>${esc(s[0][0])}</span><span>Today · Dubai time</span><span>${esc(s[s.length-1][0])}</span></div>`}
-function chips(){$('chips').innerHTML=Object.values(D.markets).map(m=>`<button class="chip ${m.code===sel?'on':''}" data-c="${m.code}"><b>${esc(m.name)}</b><i class="${m.live?'lv':''}">${m.live?'Live':esc(m.status)}</i></button>`).join('');
- document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{sel=b.dataset.c;try{localStorage.setItem('mk',sel)}catch(e){}render()})}
+function chips(){$('chips').innerHTML=`<button class="chip ${sel==='HOME'?'on':''}" data-c="HOME"><b>Home</b><i class="lv">All trades</i></button>`+Object.values(D.markets).map(m=>`<button class="chip ${m.code===sel?'on':''}" data-c="${m.code}"><b>${esc(m.name)}</b><i class="${m.live?'lv':''}">${m.live?'Live':esc(m.status)}</i></button>`).join('');
+ document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{sel=b.dataset.c;render();window.scrollTo(0,0)})}
 function todo(m){const E=m.entries||[],L=[];
  if(m.state==='closed')L.push('Market closed. Nothing to do.');
  else if(m.state==='waiting')L.push('Nothing to do yet. Wait for the first signal.');
@@ -164,21 +174,22 @@ function journal(){if(!J||!J.summary)return'';const s=J.summary;
  <div class="note">Tap a day to see each trade. Result is per ounce. "Right way first" = price moved 0.3 of the day's average range in the trade's favour before 0.3 against. Results use the signal price after a $0.50 spread; your own fills may differ.</div></section>`}
 const f3=v=>v==null?'—':Number(v).toFixed(3);
 const pips=v=>v==null?'—':(v>=0?'+':'−')+Math.abs(v).toFixed(1)+' pips';
+const pts=v=>v==null?'—':(v>=0?'+':'−')+Math.abs(v).toFixed(1)+' pts';
 const YST={open:'Open',stopped:'Stopped out',eod:'Closed at day end',close_now:'Day over'};
 function yrow(e,n){const res=e.pips==null?'<div class="cx hide-m"><span>Target</span><b>None</b></div>':`<div class="cx"><span>Result</span><b class="${e.pips>=0?'pos':'neg'}">${pips(e.pips)}</b></div>`;
  return`<div class="row2 ${e.side} num"><em>#${n}</em><div class="c1"><b>${e.side} ${f3(e.price)}</b><small>${esc(e.time)} · ${esc(e.name)}</small></div>
  <div class="cx"><span>Stop</span><b>${f3(e.stop)}</b></div><div class="cx"><span>Stop size</span><b>${esc(e.stop_pips)} pips</b></div>${res}
  <span class="st st-${e.status==='close_now'?'eod':e.status}">${esc(YST[e.status]||e.status)}</span></div>`}
-function paper(m){const U=m.unit==='usd',dp=m.dp??3,fP=v=>v==null?'—':Number(v).toFixed(dp),E=m.entries||[],s=m.journal||{},pb=m.pass_bar||{},bt=m.stats||{};
- const rv=v=>U?usd(v):pips(v),ch=U?m.change:m.change_pips,chc=ch==null?'':ch>=0?'up':'dn';
- const rres=x=>U?x.res_sized:x.pips;
+function paper(m){const U=m.unit==='usd',P=m.unit==='pts',dp=m.dp??3,fP=v=>v==null?'—':Number(v).toFixed(dp),E=m.entries||[],s=m.journal||{},pb=m.pass_bar||{},bt=m.stats||{};
+ const rv=v=>U?usd(v):P?pts(v):pips(v),ch=(U||P)?m.change:m.change_pips,chc=ch==null?'':ch>=0?'up':'dn';
+ const rres=x=>U?x.res_sized:P?x.res:x.pips;
  const prow=(e,n)=>{const r=rres(e);const res=r==null?'<div class="cx hide-m"><span>Target</span><b>None</b></div>':`<div class="cx"><span>Result${U?' /bbl':''}</span><b class="${r>=0?'pos':'neg'}">${rv(r)}</b></div>`;
   return`<div class="row2 ${e.side} num"><em>#${n}</em><div class="c1"><b>${e.side} ${fP(e.price)}</b><small>${esc(e.time)} · ${esc(e.name)}${U?' · size '+esc(e.size==='full'?'full':'⅓'):''}</small></div>
-  <div class="cx"><span>Stop</span><b>${fP(e.stop)}</b></div><div class="cx"><span>Stop size</span><b>${U?'$'+Number(e.stop_usd).toFixed(2):esc(e.stop_pips)+' pips'}</b></div>${res}
+  <div class="cx"><span>Stop</span><b>${fP(e.stop)}</b></div><div class="cx"><span>Stop size</span><b>${U?'$'+Number(e.stop_usd).toFixed(2):P?Number(e.stop_pts).toFixed(1)+' pts':esc(e.stop_pips)+' pips'}</b></div>${res}
   <span class="st st-${e.status==='close_now'?'eod':e.status}">${esc(YST[e.status]||e.status)}</span></div>`};
  const ents=E.map((e,i)=>prow(e,i+1)).reverse().join('');
  const dirOK=s.direction!=null&&s.direction>=pb.direction,pfOK=s.pf!=null&&s.pf>=pb.pf;
- const net=U?s.net:s.net_pips;
+ const net=(U||P)?s.net:s.net_pips;
  const rows=(m.jdays||[]).map(d=>{const t=d.trades||[],dec=t.filter(x=>x.rwf!=null),ok=dec.filter(x=>x.rwf===1).length,hp=t.some(x=>rres(x)!=null),p=t.reduce((a,x)=>a+(rres(x)||0),0),k=m.code+d.date;
   const head=`<tr class="jd num" onclick="openDay=openDay==='${k}'?null:'${k}';render()"><td><b>${esc(d.label)}</b></td><td>${t.length?`<span class="tag ${d.side==='BUY'?'buy':'sell'}">${esc(d.side)}</span> × ${t.length}`:'<span class="tag no">No trade</span>'}</td><td>${dec.length?ok+' of '+dec.length:'—'}</td><td class="${p>=0?'pos':'neg'}">${hp?rv(p):'—'}</td></tr>`;
   const sub=openDay===k?t.map(x=>`<tr class="jsub num"><td>${esc(x.time)}</td><td>${esc(x.side)} ${fP(x.price)} · ${esc(x.name)} · stop ${fP(x.stop)}${U?' · '+(x.size==='full'?'full':'⅓'):''}</td><td>${x.rwf==null?'—':x.rwf===1?'right way':'wrong way'}</td><td class="${(rres(x)??0)>=0?'pos':'neg'}">${esc(YST[x.status]||x.status)} ${rres(x)==null?'':rv(rres(x))}</td></tr>`).join(''):'';
@@ -197,11 +208,37 @@ function paper(m){const U=m.unit==='usd',dp=m.dp??3,fP=v=>v==null?'—':Number(v
   <div class="sec"><h2>Paper journal</h2><span>${s.since?'since '+esc(s.since)+' · ':''}pass mark: right way first ≥ ${esc(pb.direction)}% and profit factor ≥ ${Number(pb.pf).toFixed(2)}</span></div>
   <div class="bt num"><div><b class="${s.direction==null?'':dirOK?'pos':'neg'}">${s.direction==null?'—':s.direction+'%'}</b><span>Right way first (${s.decided||0} decided) · pass ≥ ${esc(pb.direction)}%</span></div>
   <div><b class="${s.pf==null?'':pfOK?'pos':'neg'}">${s.pf==null?'—':s.pf}</b><span>Profit factor (${s.closed||0} closed) · pass ≥ ${Number(pb.pf).toFixed(2)}</span></div>
-  <div><b>${net==null?'—':rv(net)}</b><span>${esc(netl)}${!U&&s.net_usd!=null?' · '+usd(s.net_usd)+' at 0.10 lots':''}</span></div>
+  <div><b>${net==null?'—':rv(net)}</b><span>${esc(netl)}${!U&&!P&&s.net_usd!=null?' · '+usd(s.net_usd)+' at 0.10 lots':''}</span></div>
   <div><b>${s.perday==null?'—':esc(s.perday)}</b><span>Trades per weekday · days with trades ${s.days==null?'—':esc(s.days)+'%'}</span></div></div>
   <section class="card" style="margin-top:12px;padding:12px 16px"><table class="jt"><colgroup><col class="c1"><col class="c2"><col class="c3"><col class="c4"></colgroup><tr><th>Day</th><th>Trades</th><th>Right way</th><th>Result</th></tr>${rows||'<tr><td colspan="4" class="jempty">The paper journal starts with the first live day.</td></tr>'}</table>
   <div class="note">Backtest (${esc(bt.source)}): right way first ${esc(bt.direction)} · profit factor ${esc(bt.pf)} · ${esc(bt.perday)} trades per weekday · win ${esc(bt.win)} · ${esc(bt.net)}. ${esc(cost)} ${esc(m.history_note||'')}</div></section>`}
-function render(){if(!D)return;chips();const m=D.markets[sel]||D.markets.GOLD;
+
+// ---------- HOME: every new and running trade of every market, newest first ----------
+const dmin=t=>{const m=/^(\d+):(\d+)\s*(am|pm)$/i.exec(String(t||'').trim());if(!m)return -1;let h=+m[1]%12+(m[3].toLowerCase()==='pm'?12:0);let v=h*60+ +m[2];if(v<120)v+=1440;return v};
+function trades(){const out=[];for(const m of Object.values(D.markets)){if(!(m.live||m.paper))continue;const E=m.entries||[];
+  for(const e of E){const dir=e.side==='BUY'?1:-1,run=e.status==='open'||e.status==='close_now';let res=null,txt='—',unit='';
+   if(m.code==='GOLD'){res=run?(m.price==null?null:(m.price-e.price)*dir):e.pnl;txt=res==null?'—':usd(res)+' /oz'}
+   else if(m.unit==='usd'){res=run?(m.price==null?null:(m.price-e.price)*dir):e.res;txt=res==null?'—':usd(res)+' /bbl'}
+   else if(m.unit==='pts'){res=run?e.live:e.res;txt=pts(res)}
+   else{res=run?(m.price==null?null:(m.price-e.price)*dir*100):e.pips;txt=pips(res)}
+   const dp=m.dp??2;out.push({m,e,run,res,txt,t:dmin(e.time),px:Number(e.price).toFixed(m.code==='GOLD'?2:dp),st:Number(e.stop).toFixed(m.code==='GOLD'?2:dp)})}}
+ return out.sort((a,b)=>(b.run-a.run)||(b.t-a.t))}
+function home(){const T=trades(),run=T.filter(x=>x.run),done=T.filter(x=>!x.run);
+ const line=x=>`<div class="hrow ${x.e.side} ${x.run?'':'done'} num" onclick="sel='${x.m.code}';render();window.scrollTo(0,0)"><em>${x.e.side==='BUY'?'B':'S'}</em>
+  <div class="h1"><b>${esc(x.m.name)}</b><small>${esc(x.e.time)} Dubai · <span class="${x.m.live?'lvt':'ppt'}">${x.m.live?'LIVE':'PAPER'}</span></small></div>
+  <div class="cx"><span>${esc(x.e.side)} at</span><b>${x.px}</b></div><div class="cx"><span>Stop</span><b>${x.st}</b></div>
+  <div class="cx"><span>${x.run?'Now':'Result'}</span><b class="${x.res==null?'':x.res>=0?'pos':'neg'}">${esc(x.txt)}</b></div>
+  <span class="st st-${x.e.status==='close_now'?'close_now':x.run?'open':x.e.status}">${esc(x.e.status==='close_now'?'Close now':x.run?'Running':(STL[x.e.status]||x.e.status))}</span></div>`;
+ const mk=Object.values(D.markets).map(m=>`<div class="mrow" onclick="sel='${m.code}';render();window.scrollTo(0,0)"><div><b>${esc(m.name)}</b> <small class="${m.live?'lvt':'ppt'}">${m.live?'LIVE':m.paper?'PAPER':esc(m.status||'')}</small><small class="mmsg">${esc(m.message||m.note||'')}</small></div>
+  <div class="num mpx">${m.price==null?'':Number(m.price).toFixed(m.code==='GOLD'?2:(m.dp??2))}<span class="pill s-${esc(m.state||'none')}">${esc((STATE[m.state]||m.state||m.status||'').replace(' day',''))}</span></div></div>`).join('');
+ $('main').innerHTML=`<section class="card hero"><div class="htop"><div><div class="mname">Trades now</div><div class="msym">Every market · newest first · tap a trade for its market</div></div>
+  <div class="px num"><div class="v">${run.length}</div><div class="c">running</div></div></div>
+  <div class="ents" style="margin-top:16px">${run.map(line).join('')||'<div class="empty">No trade running right now.</div>'}</div></section>
+  <div class="sec"><h2>Closed today</h2><span>${done.length} trade${done.length===1?'':'s'}</span></div>
+  <div class="ents">${done.map(line).join('')||'<div class="empty">No closed trades yet today.</div>'}</div>
+  <div class="sec"><h2>Markets</h2><span>Gold is live (real signals) · the others are paper tests, do not trade them</span></div>
+  <section class="card" style="padding:6px 16px">${mk}</section>`}
+function render(){if(!D)return;chips();if(sel==='HOME'){home();return}const m=D.markets[sel]||D.markets.GOLD;
  if(m.paper){paper(m);return}
  if(!m.live){$('main').innerHTML=`<section class="card hero info"><div class="mname">${esc(m.name)}</div><div class="pill s-blocked">${esc(m.status)}</div><p>${esc(m.note)}</p><p>Signals will appear here once this market is finished and checked at Capital.com cost.</p></section>`;return}
  const ch=m.change,chc=ch==null?'':ch>=0?'up':'dn',E=m.entries||[];
@@ -216,7 +253,7 @@ function render(){if(!D)return;chips();const m=D.markets[sel]||D.markets.GOLD;
 async function load(){try{const r=await fetch(DATA+'?t='+Date.now(),{cache:'no-store'});D=await r.json();
  try{const q=await fetch(JOUR+'?t='+Date.now(),{cache:'no-store'});J=await q.json()}catch(e){J=null}
  $('upd').innerHTML=`Updated <b style="color:var(--ink)">${esc(D.updated)}</b> Dubai`;$('src').textContent='Prices: '+D.source+' · checks every minute · page updates every 10 minutes · signals only, you place the trades';
- const g=D.markets.GOLD,key=g?(g.state+'|'+(g.entries||[]).map(e=>e.status).join(',')):'';if(seen!==null&&key!==seen)beep();seen=key;render()}
+ const key=Object.values(D.markets).map(m=>m.code+':'+(m.entries||[]).length+(m.code==='GOLD'?'|'+m.state+'|'+(m.entries||[]).map(e=>e.status).join(','):'')).join(';');if(seen!==null&&key!==seen)beep();seen=key;render()}
  catch(e){$('upd').textContent='Waiting for data…'}}
 load();setInterval(load,60000);
 </script></body></html>
