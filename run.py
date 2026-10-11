@@ -280,6 +280,15 @@ def safe_main():
             import wti_run; wti_run.fail(e)
         except Exception:
             traceback.print_exc()
+    try:                                    # Nasdaq paper page (separate; a Nasdaq failure never touches the other cards)
+        import nq_run
+        nq_run.main()
+    except Exception as e:
+        traceback.print_exc()
+        try:
+            import nq_run; nq_run.fail(e)
+        except Exception:
+            traceback.print_exc()
 
 if __name__ == '__main__':
     safe_main()

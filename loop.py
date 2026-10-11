@@ -1,5 +1,5 @@
 """Keeps one GitHub job checking the signals EVERY MINUTE (GitHub only starts scheduled jobs every ~20 minutes, often later).
-Each minute: run.safe_main() (gold v2.06 + USDJPY paper + WTI paper, unchanged rules). Telegram alerts go out the same minute; the page data
+Each minute: run.safe_main() (gold v2.06 + USDJPY paper + WTI paper + Nasdaq paper, unchanged rules). Telegram alerts go out the same minute; the page data
 is pushed every 10 minutes, and at once after any alert. The job hands over to the next scheduled job as soon as that one is
 waiting, stops after LOOP_MINUTES, and does one pass only when the market is closed for the weekend.
 Prices: one Capital.com session is shared and re-made after any feed error; the 460-day hourly history is fetched in full every
@@ -41,7 +41,7 @@ REPO, RUN_ID, TOKEN = os.environ.get('GITHUB_REPOSITORY'), os.environ.get('GITHU
 
 def git(*a): return subprocess.run(['git', *a], capture_output=True, text=True)
 def push():
-    git('add', 'sent.json', 'docs/*.json')
+    git('add', 'sent.json', 'docs/*.json', 'docs/nq_min/*.npz')
     if git('diff', '--cached', '--quiet').returncode == 0: return 'nothing new'
     git('commit', '-m', 'alerts state')
     if git('push').returncode == 0: return 'pushed'
@@ -72,10 +72,13 @@ def main():
     except Exception: yen_run = None                                       # give it a fresh budget every minute
     try: import wti_run                                                    # same for the WTI paper page
     except Exception: wti_run = None
+    try: import nq_run                                                     # same for the Nasdaq paper page
+    except Exception: nq_run = None
     while True:
         before = open(R.STATE).read() if os.path.exists(R.STATE) else ''
         if yen_run is not None and hasattr(yen_run, 'DEADLINE'): yen_run.DEADLINE = time.time() + 90
         if wti_run is not None and hasattr(wti_run, 'DEADLINE'): wti_run.DEADLINE = time.time() + 90
+        if nq_run is not None and hasattr(nq_run, 'DEADLINE'): nq_run.DEADLINE = time.time() + 90
         R.safe_main(); n += 1
         if feed_error(): _SHARED[0] = None; _H1.clear()                   # fresh session + full history next minute
         alerted = (open(R.STATE).read() if os.path.exists(R.STATE) else '') != before
