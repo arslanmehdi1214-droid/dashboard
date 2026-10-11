@@ -1,5 +1,5 @@
 {
- "updated": "Mon 12 Oct \u00b7 1:55 am",
+ "updated": "Mon 12 Oct \u00b7 2:06 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -11,14 +11,23 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 8 pm Dubai).",
-   "price": null,
+   "price": 4189.85,
    "close_at": "12:00 am",
-   "change": null,
+   "change": -5.44,
    "size": 0.1,
    "datr": 80.01,
    "open_now": 0,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "2:00 am",
+     4188.77
+    ],
+    [
+     "2:05 am",
+     4189.85
+    ]
+   ],
    "history": [
     {
      "date": "2026-10-12",
@@ -98,8 +107,8 @@
     "dollar_5d": "rose",
     "vix_5d": "fell",
     "tnx_5d": "fell",
-    "dollar_driven": null,
-    "corr": null,
+    "dollar_driven": false,
+    "corr": -0.277,
     "low_attention": true,
     "notes": []
    },
@@ -154,11 +163,16 @@
    },
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 158.303,
-   "change_pips": null,
+   "price": 158.3,
+   "change_pips": -1.2,
    "atr_pips": 102.4,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "2:05 am",
+     158.3
+    ]
+   ],
    "journal": {
     "since": "05 Oct 2026",
     "weekdays": 6,
@@ -420,10 +434,19 @@
    "net_label": "Net $ per barrel (v1.02 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": null,
-   "change": null,
+   "price": 91.49,
+   "change": 0.31,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "2:00 am",
+     91.53
+    ],
+    [
+     "2:05 am",
+     91.49
+    ]
+   ],
    "journal": {
     "since": "12 Oct 2026",
     "weekdays": 1,
@@ -488,10 +511,19 @@
    "net_label": "Net points (all paper trades)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": null,
-   "change": null,
+   "price": 30951.1,
+   "change": 52.2,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "2:00 am",
+     30946.4
+    ],
+    [
+     "2:05 am",
+     30951.1
+    ]
+   ],
    "journal": {
     "since": "12 Oct 2026",
     "weekdays": 1,
