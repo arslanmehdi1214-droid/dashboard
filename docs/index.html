@@ -125,6 +125,7 @@ button.on{background:var(--gold);color:#0b0b0d}
 <main id="main"></main>
 <div class="foot"><span id="src"></span><button id="snd">Sound alerts: off</button></div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js" onerror="var s=document.createElement('script');s.src='https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js';s.onload=function(){try{render()}catch(e){}};document.head.appendChild(s)"></script>
 <script>
 const host=location.hostname,repo=location.pathname.split('/').filter(Boolean)[0]||'gold-alerts';
 const RAW=host.endsWith('github.io')?`https://raw.githubusercontent.com/${host.split('.')[0]}/${repo}/main/docs/`:'';
@@ -138,7 +139,11 @@ const STL={open:'Open',stopped:'Stopped out',eod:'Closed at day end',close_now:'
 const mv=w=>w==='rose'?'Rose ↑':w==='fell'?'Fell ↓':w==='flat'?'Flat':'—';
 $('snd').onclick=()=>{try{ctx=ctx||new (window.AudioContext||window.webkitAudioContext)();sound=!sound;$('snd').textContent='Sound alerts: '+(sound?'on':'off');$('snd').classList.toggle('on',sound);if(sound)beep()}catch(e){}};
 function beep(){if(!sound||!ctx)return;[0,.28,.56].forEach((t,i)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.value=[784,988,1319][i];o.connect(g);g.connect(ctx.destination);g.gain.setValueAtTime(.0001,ctx.currentTime+t);g.gain.exponentialRampToValueAtTime(.25,ctx.currentTime+t+.02);g.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+t+.25);o.start(ctx.currentTime+t);o.stop(ctx.currentTime+t+.26)});if(navigator.vibrate)navigator.vibrate([250,120,250])}
-function spark(m){const s=m.spark||[];if(s.length<2)return'';
+let CH=null,CHK=null,CHR=null,PEND=null;
+function spark(m){if(window.LightweightCharts&&(m.spark||[]).length>=2){PEND=m;const tfb=[5,15,60].map(v=>`<button class="${tf===v?'on':''}" onclick="tf=${v};render()">${v===60?'1h':v+'m'}</button>`).join('');
+ return`<div class="tfs">${tfb}<button onclick="if(CH){CH.timeScale().fitContent();CH.priceScale('right').applyOptions({autoScale:true})}">Reset</button></div><div id="lwc" style="height:${Math.round(Math.min(420,Math.max(280,($('main').clientWidth||360)*.75)))}px;margin-top:10px"></div><div class="cnote">Drag left/right to scroll · pinch or scroll-wheel to zoom · drag the price scale up/down to stretch · Dubai time · ${m.spark[0].length>=5?'':'rough candles until the server update · '}lines: entry, amber = stop</div>`}
+ return svgSpark(m)}
+function svgSpark(m){const s=m.spark||[];if(s.length<2)return'';
  const dp=m.code==='GOLD'?2:(m.dp??(m.unit==='pts'?1:m.unit==='usd'?2:3)),fx=v=>Number(v).toFixed(dp);
  const ohlc=s[0].length>=5;
  let raw=s.map((x,i)=>({t:x[0],mm:dmin(x[0]),c:+x[1],o:ohlc?+x[2]:(i?+s[i-1][1]:+x[1]),h:ohlc?+x[3]:null,l:ohlc?+x[4]:null}));
@@ -265,7 +270,31 @@ function home(){const T=trades(),run=T.filter(x=>x.run),done=T.filter(x=>!x.run)
   <div class="ents">${done.map(line).join('')||'<div class="empty">No closed trades yet today.</div>'}</div>
   <div class="sec"><h2>Markets</h2><span>Gold is live (real signals) · the others are paper tests, do not trade them</span></div>
   <section class="card" style="padding:6px 16px">${mk}</section>`}
-function render(){if(!D)return;chips();if(sel==='HOME'){home();return}const m=D.markets[sel]||D.markets.GOLD;
+function mountChart(){const el=document.getElementById('lwc'),m=PEND;PEND=null;
+ if(CH){try{const k=CHK;CHR=CH.timeScale().getVisibleLogicalRange();CHK=k;CH.remove()}catch(e){}CH=null}
+ if(!el||!m)return;const key=m.code+'|'+tf;
+ const dp=m.code==='GOLD'?2:(m.dp??(m.unit==='pts'?1:m.unit==='usd'?2:3)),s=m.spark,ohlc=s[0].length>=5;
+ const day=Date.UTC(2026,0,1)/1000;let prev=-1,off=0;const raw=[];
+ s.forEach((x,i)=>{let mm=dmin(x[0]);if(mm<0)return;if(mm>=1440)mm-=1440;if(prev>=0&&mm+off<prev)off+=1440;const t=mm+off;prev=t;
+  const c=+x[1],o=ohlc?+x[2]:(i?+s[i-1][1]:c),h=ohlc?+x[3]:Math.max(o,c),l=ohlc?+x[4]:Math.min(o,c);raw.push({t,o,h,l,c})});
+ const B=[];for(const b of raw){const k=Math.floor(b.t/tf),L=B[B.length-1];
+  if(L&&L.k===k){L.high=Math.max(L.high,b.h);L.low=Math.min(L.low,b.l);L.close=b.c}else B.push({k,time:day+k*tf*60,open:b.o,high:b.h,low:b.l,close:b.c})}
+ const css=getComputedStyle(document.documentElement),v=n=>css.getPropertyValue(n).trim();
+ CH=LightweightCharts.createChart(el,{autoSize:true,layout:{background:{type:'solid',color:'transparent'},textColor:v('--mute'),fontFamily:'Inter,system-ui,sans-serif'},
+  grid:{vertLines:{color:'rgba(255,255,255,.04)'},horzLines:{color:'rgba(255,255,255,.05)'}},
+  rightPriceScale:{borderColor:v('--line')},timeScale:{borderColor:v('--line'),timeVisible:true,secondsVisible:false,rightOffset:4},
+  crosshair:{mode:0},handleScroll:{mouseWheel:true,pressedMouseMove:true,horzTouchDrag:true,vertTouchDrag:true},
+  handleScale:{mouseWheel:true,pinch:true,axisPressedMouseMove:{time:true,price:true},axisDoubleClickReset:true},
+  localization:{priceFormatter:p=>Number(p).toFixed(dp),timeFormatter:t=>{const mm=((t-day)/60)%1440,h=Math.floor(mm/60),mi=mm%60;return`${(h%12)||12}:${String(mi).padStart(2,'0')} ${h<12?'am':'pm'}`}}});
+ CH.timeScale().applyOptions({tickMarkFormatter:t=>{const mm=((t-day)/60)%1440,h=Math.floor(mm/60),mi=mm%60;return`${(h%12)||12}:${String(mi).padStart(2,'0')}${h<12?'a':'p'}`}});
+ const se=CH.addCandlestickSeries({upColor:v('--buy'),downColor:v('--sell'),borderVisible:false,wickUpColor:v('--buy'),wickDownColor:v('--sell'),priceFormat:{type:'price',precision:dp,minMove:Math.pow(10,-dp)},autoscaleInfoProvider:o=>{const r=o();const L=(m.entries||[]).filter(e=>e.status==='open'||e.status==='close_now').flatMap(e=>[+e.price,+e.stop]);if(!r||!L.length)return r;r.priceRange.minValue=Math.min(r.priceRange.minValue,...L);r.priceRange.maxValue=Math.max(r.priceRange.maxValue,...L);return r}});
+ se.setData(B.map(({k,...r})=>r));
+ for(const e of (m.entries||[]).filter(e=>e.status==='open'||e.status==='close_now')){const c=e.side==='BUY'?v('--buy'):v('--sell');
+  se.createPriceLine({price:+e.price,color:c,lineWidth:2,lineStyle:0,axisLabelVisible:true,title:e.side+' entry'});
+  se.createPriceLine({price:+e.stop,color:v('--amber'),lineWidth:2,lineStyle:2,axisLabelVisible:true,title:'stop'})}
+ if(CHK===key&&CHR)CH.timeScale().setVisibleLogicalRange(CHR);else CH.timeScale().fitContent();CHK=key}
+function render(){render0();try{mountChart()}catch(e){console.error(e)}}
+function render0(){if(!D)return;chips();if(sel==='HOME'){home();return}const m=D.markets[sel]||D.markets.GOLD;
  if(m.paper){paper(m);return}
  if(!m.live){$('main').innerHTML=`<section class="card hero info"><div class="mname">${esc(m.name)}</div><div class="pill s-blocked">${esc(m.status)}</div><p>${esc(m.note)}</p><p>Signals will appear here once this market is finished and checked at Capital.com cost.</p></section>`;return}
  const ch=m.change,chc=ch==null?'':ch>=0?'up':'dn',E=m.entries||[];
