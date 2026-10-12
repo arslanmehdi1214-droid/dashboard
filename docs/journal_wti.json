@@ -49,11 +49,11 @@
      "stop_usd": 1.01,
      "size": "full",
      "first": false,
-     "status": "open",
-     "exit": null,
-     "exit_time": null,
-     "res": null,
-     "res_sized": null,
+     "status": "stopped",
+     "exit": 90.02,
+     "exit_time": "9:30 am",
+     "res": -1.052,
+     "res_sized": -1.052,
      "rwf": null,
      "spread": 0.045
     }
@@ -71,9 +71,9 @@
   "direction": null,
   "days": 100.0,
   "perday": 3.0,
-  "closed": 0,
-  "win": null,
-  "pf": null,
-  "net": null
+  "closed": 1,
+  "win": 0.0,
+  "pf": 0.0,
+  "net": -1.05
  }
 }
