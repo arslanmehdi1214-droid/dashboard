@@ -1,5 +1,5 @@
 {
- "updated": "Mon 12 Oct \u00b7 10:08 am",
+ "updated": "Mon 12 Oct \u00b7 10:17 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -11,9 +11,9 @@
    "feed_error": false,
    "state": "sell",
    "message": "SELL day \u2014 any later signals today are SELL only. Hold every trade until its stop or the day-end close at 12:00 am Dubai. No target.",
-   "price": 4185.61,
+   "price": 4183.24,
    "close_at": "12:00 am",
-   "change": -9.68,
+   "change": -12.05,
    "size": 0.1,
    "datr": 80.01,
    "open_now": 2,
@@ -438,7 +438,15 @@
     ],
     [
      "10:05 am",
-     4185.61
+     4183.62
+    ],
+    [
+     "10:10 am",
+     4185.56
+    ],
+    [
+     "10:15 am",
+     4183.24
     ]
    ],
    "history": [
@@ -576,8 +584,8 @@
    },
    "state": "buy",
    "message": "PAPER BUY day \u2014 later signals today are BUY only. Each trade holds until its stop or the 7:00 pm Dubai close. No target.",
-   "price": 158.339,
-   "change_pips": 2.7,
+   "price": 158.315,
+   "change_pips": 0.3,
    "atr_pips": 102.4,
    "entries": [
     {
@@ -985,7 +993,15 @@
     ],
     [
      "10:05 am",
-     158.339
+     158.353
+    ],
+    [
+     "10:10 am",
+     158.32
+    ],
+    [
+     "10:15 am",
+     158.315
     ]
    ],
    "journal": {
@@ -1267,8 +1283,8 @@
    "net_label": "Net $ per barrel (v1.02 sizes)",
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Each trade holds until its stop or the 12:00 am Dubai close. No target.",
-   "price": 90.09,
-   "change": -1.09,
+   "price": 90.475,
+   "change": -0.71,
    "entries": [
     {
      "time": "3:51 am",
@@ -1318,7 +1334,7 @@
      "exit_time": "9:30 am",
      "res": -1.052,
      "res_sized": -1.052,
-     "rwf": null,
+     "rwf": 0,
      "spread": 0.045
     }
    ],
@@ -1713,15 +1729,23 @@
     ],
     [
      "10:05 am",
-     90.09
+     90.14
+    ],
+    [
+     "10:10 am",
+     90.23
+    ],
+    [
+     "10:15 am",
+     90.47
     ]
    ],
    "journal": {
     "since": "12 Oct 2026",
     "weekdays": 1,
     "trades": 3,
-    "decided": 0,
-    "direction": null,
+    "decided": 1,
+    "direction": 0.0,
     "days": 100.0,
     "perday": 3.0,
     "closed": 1,
@@ -1783,7 +1807,7 @@
        "exit_time": "9:30 am",
        "res": -1.052,
        "res_sized": -1.052,
-       "rwf": null,
+       "rwf": 0,
        "spread": 0.045
       }
      ],
@@ -1832,8 +1856,8 @@
    "net_label": "Net points (all paper trades)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 30943.9,
-   "change": 45.0,
+   "price": 30939.9,
+   "change": 41.0,
    "entries": [],
    "spark": [
     [
@@ -2226,7 +2250,15 @@
     ],
     [
      "10:05 am",
-     30943.9
+     30941.2
+    ],
+    [
+     "10:10 am",
+     30944.2
+    ],
+    [
+     "10:15 am",
+     30939.9
     ]
    ],
    "journal": {
