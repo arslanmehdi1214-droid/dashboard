@@ -1,5 +1,5 @@
 {
- "updated": "Mon 12 Oct \u00b7 9:44 am",
+ "updated": "Mon 12 Oct \u00b7 9:46 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -11,9 +11,9 @@
    "feed_error": false,
    "state": "sell",
    "message": "SELL day \u2014 any later signals today are SELL only. Hold every trade until its stop or the day-end close at 12:00 am Dubai. No target.",
-   "price": 4186.94,
+   "price": 4187.53,
    "close_at": "12:00 am",
-   "change": -8.35,
+   "change": -7.76,
    "size": 0.1,
    "datr": 80.01,
    "open_now": 2,
@@ -418,7 +418,11 @@
     ],
     [
      "9:40 am",
-     4186.94
+     4187.23
+    ],
+    [
+     "9:45 am",
+     4187.53
     ]
    ],
    "history": [
@@ -556,8 +560,8 @@
    },
    "state": "buy",
    "message": "PAPER BUY day \u2014 later signals today are BUY only. Each trade holds until its stop or the 7:00 pm Dubai close. No target.",
-   "price": 158.364,
-   "change_pips": 5.2,
+   "price": 158.373,
+   "change_pips": 6.1,
    "atr_pips": 102.4,
    "entries": [
     {
@@ -945,7 +949,11 @@
     ],
     [
      "9:40 am",
-     158.364
+     158.368
+    ],
+    [
+     "9:45 am",
+     158.373
     ]
    ],
    "journal": {
@@ -1227,8 +1235,8 @@
    "net_label": "Net $ per barrel (v1.02 sizes)",
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Each trade holds until its stop or the 12:00 am Dubai close. No target.",
-   "price": 89.965,
-   "change": -1.22,
+   "price": 90.0,
+   "change": -1.18,
    "entries": [
     {
      "time": "3:51 am",
@@ -1653,7 +1661,11 @@
     ],
     [
      "9:40 am",
-     89.97
+     90.0
+    ],
+    [
+     "9:45 am",
+     90.0
     ]
    ],
    "journal": {
@@ -1772,8 +1784,8 @@
    "net_label": "Net points (all paper trades)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 30979.7,
-   "change": 80.8,
+   "price": 30972.4,
+   "change": 73.5,
    "entries": [],
    "spark": [
     [
@@ -2146,7 +2158,11 @@
     ],
     [
      "9:40 am",
-     30979.7
+     30971.3
+    ],
+    [
+     "9:45 am",
+     30972.4
     ]
    ],
    "journal": {
