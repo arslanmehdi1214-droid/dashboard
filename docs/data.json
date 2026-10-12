@@ -1,5 +1,5 @@
 {
- "updated": "Mon 12 Oct \u00b7 7:35 am",
+ "updated": "Mon 12 Oct \u00b7 7:46 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -11,9 +11,9 @@
    "feed_error": false,
    "state": "sell",
    "message": "SELL day \u2014 any later signals today are SELL only. Hold every trade until its stop or the day-end close at 12:00 am Dubai. No target.",
-   "price": 4204.52,
+   "price": 4207.01,
    "close_at": "12:00 am",
-   "change": 9.23,
+   "change": 11.72,
    "size": 0.1,
    "datr": 80.01,
    "open_now": 1,
@@ -301,6 +301,18 @@
     [
      "7:30 am",
      4204.52
+    ],
+    [
+     "7:35 am",
+     4205.24
+    ],
+    [
+     "7:40 am",
+     4206.05
+    ],
+    [
+     "7:45 am",
+     4207.01
     ]
    ],
    "history": [
@@ -438,8 +450,8 @@
    },
    "state": "buy",
    "message": "PAPER BUY day \u2014 later signals today are BUY only. Each trade holds until its stop or the 7:00 pm Dubai close. No target.",
-   "price": 158.21,
-   "change_pips": -10.2,
+   "price": 158.22,
+   "change_pips": -9.2,
    "atr_pips": 102.4,
    "entries": [
     {
@@ -724,6 +736,18 @@
     [
      "7:30 am",
      158.21
+    ],
+    [
+     "7:35 am",
+     158.222
+    ],
+    [
+     "7:40 am",
+     158.22
+    ],
+    [
+     "7:45 am",
+     158.22
     ]
    ],
    "journal": {
@@ -1005,8 +1029,8 @@
    "net_label": "Net $ per barrel (v1.02 sizes)",
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Each trade holds until its stop or the 12:00 am Dubai close. No target.",
-   "price": 89.495,
-   "change": -1.69,
+   "price": 89.55,
+   "change": -1.63,
    "entries": [
     {
      "time": "3:51 am",
@@ -1328,6 +1352,18 @@
     [
      "7:30 am",
      89.5
+    ],
+    [
+     "7:35 am",
+     89.61
+    ],
+    [
+     "7:40 am",
+     89.56
+    ],
+    [
+     "7:45 am",
+     89.55
     ]
    ],
    "journal": {
@@ -1446,8 +1482,8 @@
    "net_label": "Net points (all paper trades)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 31008.6,
-   "change": 109.7,
+   "price": 31001.9,
+   "change": 103.0,
    "entries": [],
    "spark": [
     [
@@ -1717,6 +1753,18 @@
     [
      "7:30 am",
      31008.6
+    ],
+    [
+     "7:35 am",
+     31008.7
+    ],
+    [
+     "7:40 am",
+     31000.2
+    ],
+    [
+     "7:45 am",
+     31001.9
     ]
    ],
    "journal": {
