@@ -1,5 +1,5 @@
 {
- "updated": "Mon 12 Oct \u00b7 11:56 pm",
+ "updated": "Tue 13 Oct \u00b7 12:00 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -11,9 +11,9 @@
    "feed_error": false,
    "state": "sell",
    "message": "SELL day \u2014 any later signals today are SELL only. Hold every trade until its stop or the day-end close at 12:00 am Dubai. No target.",
-   "price": 4168.39,
+   "price": 4169.14,
    "close_at": "12:00 am",
-   "change": -26.9,
+   "change": -26.15,
    "size": 0.1,
    "datr": 80.01,
    "open_now": 2,
@@ -26,10 +26,10 @@
      "stop": 4264.9,
      "w": 0.5,
      "size": 0.1,
-     "status": "open",
+     "status": "close_now",
      "first": true,
-     "exit": null,
-     "pnl": null,
+     "exit": 4169.64,
+     "pnl": 34.75,
      "rwf": 1
     },
     {
@@ -40,10 +40,10 @@
      "stop": 4225.08,
      "w": 0.75,
      "size": 0.1,
-     "status": "open",
+     "status": "close_now",
      "first": false,
-     "exit": null,
-     "pnl": null,
+     "exit": 4169.64,
+     "pnl": 14.94,
      "rwf": 1
     }
    ],
@@ -1891,9 +1891,9 @@
     ],
     [
      "11:55 pm",
-     4168.39,
+     4169.14,
      4168.83,
-     4168.98,
+     4169.47,
      4168.28
     ]
    ],
@@ -1904,11 +1904,11 @@
      "state": "sell",
      "entries": 2,
      "stopped": 0,
-     "eod": 0,
-     "running": 2,
+     "eod": 2,
+     "running": 0,
      "rw": 2,
      "rd": 2,
-     "pnl": null
+     "pnl": 49.69
     },
     {
      "date": "2026-10-09",
@@ -1996,9 +1996,9 @@
     "decided": 13,
     "days": 83.3,
     "perday": 2.33,
-    "avg_pnl": -8.22,
-    "closed": 12,
-    "total_pnl_01": -9.87
+    "avg_pnl": -3.5,
+    "closed": 14,
+    "total_pnl_01": -4.9
    }
   },
   "SILVER": {
@@ -2032,8 +2032,8 @@
    },
    "state": "buy",
    "message": "PAPER BUY day \u2014 later signals today are BUY only. Each trade holds until its stop or the 7:00 pm Dubai close. No target.",
-   "price": 158.635,
-   "change_pips": 32.3,
+   "price": 158.659,
+   "change_pips": 34.7,
    "atr_pips": 102.4,
    "entries": [
     {
@@ -3908,9 +3908,9 @@
     ],
     [
      "11:55 pm",
-     158.635,
+     158.659,
      158.623,
-     158.637,
+     158.661,
      158.622
     ]
    ],
@@ -4210,8 +4210,8 @@
    "net_label": "Net $ per barrel (v1.02 sizes)",
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Each trade holds until its stop or the 12:00 am Dubai close. No target.",
-   "price": 92.555,
-   "change": 1.37,
+   "price": 92.63,
+   "change": 1.45,
    "entries": [
     {
      "time": "3:51 am",
@@ -6109,9 +6109,9 @@
     ],
     [
      "11:55 pm",
-     92.56,
+     92.63,
      92.59,
-     92.61,
+     92.67,
      92.55
     ]
    ],
@@ -6188,7 +6188,7 @@
      ],
      "range_usd": 4.03,
      "traded": true,
-     "final": false
+     "final": true
     }
    ],
    "feed_error": false,
@@ -6231,8 +6231,8 @@
    "net_label": "Net points (all paper trades)",
    "state": "buy",
    "message": "1 paper trade today (0 running). Each holds until its stop or the 12:00 am Dubai close. No target. At most 2 trades a day.",
-   "price": 30662.5,
-   "change": -236.4,
+   "price": 30668.3,
+   "change": -230.6,
    "entries": [
     {
      "time": "4:33 pm",
@@ -8095,9 +8095,9 @@
     ],
     [
      "11:55 pm",
-     30662.5,
+     30668.3,
      30656.0,
-     30666.0,
+     30673.1,
      30656.0
     ]
    ],
@@ -8137,7 +8137,7 @@
        "spread": 1.8
       }
      ],
-     "final": false
+     "final": true
     }
    ],
    "feed_error": false,
@@ -8175,8 +8175,8 @@
    "net_label": "Net points (all paper trades)",
    "state": "buy",
    "message": "1 paper trade today (0 running). Each holds until its stop or the 12:00 am Dubai close. No target. At most 2 trades a day.",
-   "price": 30662.5,
-   "change": -236.4,
+   "price": 30668.3,
+   "change": -230.6,
    "entries": [
     {
      "time": "4:33 pm",
@@ -10039,9 +10039,9 @@
     ],
     [
      "11:55 pm",
-     30662.5,
+     30668.3,
      30656.0,
-     30666.0,
+     30673.1,
      30656.0
     ]
    ],
@@ -10081,7 +10081,7 @@
        "spread": 1.8
       }
      ],
-     "final": false
+     "final": true
     }
    ],
    "feed_error": false,

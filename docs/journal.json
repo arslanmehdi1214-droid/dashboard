@@ -227,10 +227,10 @@
      "stop": 4264.9,
      "w": 0.5,
      "size": 0.1,
-     "status": "open",
+     "status": "eod",
      "first": true,
-     "exit": null,
-     "pnl": null,
+     "exit": 4169.64,
+     "pnl": 34.75,
      "rwf": 1
     },
     {
@@ -241,15 +241,15 @@
      "stop": 4225.08,
      "w": 0.75,
      "size": 0.1,
-     "status": "open",
+     "status": "eod",
      "first": false,
-     "exit": null,
-     "pnl": null,
+     "exit": 4169.64,
+     "pnl": 14.94,
      "rwf": 1
     }
    ],
    "skipped": 0,
-   "final": false
+   "final": true
   }
  ],
  "summary": {
@@ -259,8 +259,8 @@
   "decided": 13,
   "days": 83.3,
   "perday": 2.33,
-  "avg_pnl": -8.22,
-  "closed": 12,
-  "total_pnl_01": -9.87
+  "avg_pnl": -3.5,
+  "closed": 14,
+  "total_pnl_01": -4.9
  }
 }
