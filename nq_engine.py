@@ -11,12 +11,34 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 PKG = {'a': os.path.join(HERE, 'nq_a'), 'b': os.path.join(HERE, 'nq_b')}
 MODS = ['core', 'comp', 'spxC'] + [f'fam{s}' for s in ('', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11')]
 SET = json.load(open(os.path.join(HERE, 'nq_set.json')))
+SETF = json.load(open(os.path.join(HERE, 'nq_set_full.json')))          # the full version (needs the gold engine replayed on Nasdaq)
 STOP_X = SET['stop']; TICK = 0.25; KEEP_DAYS = 300
+ENG_SET = dict(U2_Step=100.0, N2_Step=200.0, G3_Step=40.0, Spread=0.6)   # same settings as the research replay (replay_n.py raw 100 200 40)
+NEUTRAL = dict(d5=0, d1=0, vix=0, tnx=0, regime=lambda t: 0, attn=0)
+
+def engine_first(m, day):
+    """Gold v2.06 signal engine replayed on today's Nasdaq minutes (outside inputs neutral, as in the research):
+    returns (direction, entry time) of its first trade today so far, or (0, None)."""
+    import nq_eng as E
+    E.S.update(ENG_SET)
+    tt = m.index; dd = tt.normalize()
+    g = m.groupby(dd); DB = pd.DataFrame({'o': g.o.first(), 'h': g.h.max(), 'l': g.l.min(), 'c': g.c.last()})
+    DB = DB[DB.index < day].iloc[-320:]
+    D = E.Daily(DB.index.values.astype('datetime64[D]'), DB.o.values, DB.h.values, DB.l.values, DB.c.values)
+    T = tt.values.astype('datetime64[m]'); hr = T.astype('datetime64[h]'); chg = np.r_[True, hr[1:] != hr[:-1]]; hs = np.where(chg)[0]; he = np.r_[hs[1:], len(T)]
+    H = m.h.values.astype(float); L = m.l.values.astype(float); C = m.c.values.astype(float); O = m.o.values.astype(float)
+    Hh = E.Hourly(hr[hs].astype('datetime64[m]'), np.maximum.reduceat(H, hs), np.minimum.reduceat(L, hs), C[he - 1])
+    k = dd == day
+    m1 = dict(t=T[k], o=O[k], h=H[k], l=L[k], c=C[k])
+    tr = E.run_day(np.datetime64(day.date(), 'D'), D, Hh, m1, NEUTRAL)
+    if not tr: return 0, None
+    f = min(tr, key=lambda x: x['t'])
+    return int(f['dir']), pd.Timestamp(f['t'])
 
 def eod_minutes(day):
     return 22 * 60 + 50 if pd.Timestamp(day).dayofweek == 4 else 23 * 60
 
-def build_base(m, out):
+def build_base(m, out, eng=None):
     """m: minute bars (index = broker time, columns o h l c), weekdays, sorted. Same layout as the research base (build_base_n.py)."""
     t = m.index.values.astype('datetime64[ns]'); O, H, L, C = (m[c].values.astype(float) for c in 'ohlc')
     tt = pd.DatetimeIndex(t); day = tt.normalize(); hr = tt.hour.values; mi = tt.minute.values
@@ -32,6 +54,8 @@ def build_base(m, out):
              yr=tt.year.values, dow=dow)
     pickle.dump(dict(t=t), open(os.path.join(out, 'base_t.pkl'), 'wb'))
     lad = pd.DataFrame({'edir': np.zeros(len(duniq), int), 'et': pd.Series([pd.NaT] * len(duniq), dtype='datetime64[s]').values}, index=duniq)
+    if eng and eng[0]:                                   # today's engine trade (the full version only)
+        lad.iloc[-1, 0] = eng[0]; lad.iloc[-1, 1] = eng[1]
     lad.to_pickle(os.path.join(out, 'lad.pkl'))
     return dict(O=O, H=H, L=L, C=C, A=A, EOD=EOD, t=tt, dcode=dcode, hm=hr * 60 + mi)
 
@@ -95,9 +119,9 @@ def first_trade(ev):
     """Research ladder with cap 1 = the earliest event (ties: set order)."""
     return min(ev, key=lambda e: (e[0], e[1])) if ev else None
 
-def manage(B, j, d, px, now_idx):
+def manage(B, j, d, px, now_idx, stop_x=None):
     """Stop / day-end exit of a trade entered in minute j, using minutes after j up to now_idx (inclusive)."""
-    O, H, L, A, EOD = B['O'], B['H'], B['L'], B['A'], B['EOD']; stop = px - d * STOP_X * A[j]; e = EOD[j]
+    O, H, L, A, EOD = B['O'], B['H'], B['L'], B['A'], B['EOD']; stop = px - d * (stop_x or STOP_X) * A[j]; e = EOD[j]
     full_day = B['t'][e].hour * 60 + B['t'][e].minute >= eod_minutes(B['t'][j])
     for m in range(j + 1, min(e, now_idx) + 1):
         if m == e and full_day: return stop, 'eod', O[m], B['t'][m]
@@ -109,26 +133,28 @@ def manage(B, j, d, px, now_idx):
             if H[m] >= stop: return stop, 'stop', stop, B['t'][m]
     return stop, 'open', None, None
 
-def run_day(m, day, now=None):
+def run_day(m, day, now=None, S=None):
     """m: minute bars (broker time) of the last ~300 days INCLUDING today's closed minutes; returns today's paper trades."""
     day = pd.Timestamp(day).normalize(); m = m[(m.index < day + pd.Timedelta(days=1))]
     if now is not None: m = m[m.index + pd.Timedelta(minutes=1) <= now]
     if not len(m) or m.index[-1].normalize() != day: return []
+    S = S or SET
+    eng = engine_first(m, day) if S.get('engine') else None
     with tempfile.TemporaryDirectory() as td:
-        B = build_base(m, td)
+        B = build_base(m, td, eng)
         k_today = int(B['dcode'][-1])
         if not np.isfinite(B['A'][-1]): return []
-        names = SET['core'] + SET['fill']
+        names = S['core'] + S['fill']
         need_b = any(n.replace('REV ', '', 1).startswith('US+10 ') for n in names)
         fa = ideas('a', td); fb = ideas('b', td) if need_b else {}
         _purge()
         ev = day_events(B, names, fa, fb, k_today)
-    nc = len(SET['core'])
+    nc = len(S['core'])
     c = first_trade([e for e in ev if e[1] < nc]); f = first_trade([e for e in ev if e[1] >= nc])
     picks = ([c] if c else []) + ([f] if f and (c is None or f[0] < c[0]) else [])
     trades = []
     for (j, oi, nm, d, px) in sorted(picks):
-        stop, st, ex, ext = manage(B, j, d, px, len(B['O']) - 1)
+        stop, st, ex, ext = manage(B, j, d, px, len(B['O']) - 1, S['stop'])
         trades.append(dict(t=B['t'][j], j=j, name=nm, role='core' if oi < nc else 'filler', dir=d, px=px, stop=float(stop),
                            A=float(B['A'][j]), status=st, exit=None if ex is None else float(ex), exit_t=ext))
     return trades

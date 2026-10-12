@@ -1,4 +1,6 @@
-"""NASDAQ 100 PAPER signals for the page (no phone alerts, no real money). Called by run.py after gold, USDJPY and WTI, every minute.
+"""NASDAQ 100 PAPER signals for the page - TWO versions side by side: US100 = simple (Nasdaq prices only, nq_set.json) and US100F = full
+(nq_set_full.json: adds 4 signals that use the gold engine replayed on Nasdaq; journal docs/journal_nqf.json).
+Original note: (no phone alerts, no real money). Called by run.py after gold, USDJPY and WTI, every minute.
 Replays today's Capital.com US Tech 100 minutes through the Nasdaq walk-forward set (nq_engine.py + nq_set.json = the 2026 set,
 re-picked each January on all earlier years; parity with the research trades: 194 of 194 days of 2026, same minute, side and price)
 and keeps a paper journal, judged after ~3 months (pass = right way first >= 52.5% and profit factor >= 1.10 after the spread).
@@ -16,7 +18,15 @@ MIN_SPREAD = 1.8                      # the paper result never uses less than 1.
 PASS = dict(direction=52.5, pf=1.10, months=3)
 BACKTEST = dict(direction='53.3%', days='97%', perday='1.34', win='—', pf='1.14', net='+9.9 pts per weekday',
                 source='Python walk-forward 2020-2026 (signals re-picked each January, never seen when picked), 1.8 pt spread; '
-                       'MT4 replay of the earlier full version: 2,308 trades, PF 1.16')
+                       'ideas that need other markets or the gold engine left out')
+BACKTEST_F = dict(direction='53.2%', days='97%', perday='1.33', win='—', pf='1.17', net='+10.1 pts per weekday',
+                  source='Python walk-forward 2020-2026 (signals re-picked each January, never seen when picked), 1.8 pt spread; '
+                         'MT4 replay of the same trades (his run): 2,308 trades, PF 1.16, net +17,109 pts')
+VARIANTS = [dict(code='US100', name='Nasdaq 100 simple', S=N.SET, jour=JOUR, stats=BACKTEST,
+                 what='Simple version: uses Nasdaq prices only. Tracks whether live signals do as well as the backtest. Decision after about 3 months.'),
+            dict(code='US100F', name='Nasdaq 100 full', S=N.SETF, jour=os.path.join(HERE, 'docs', 'journal_nqf.json'), stats=BACKTEST_F,
+                 what='Full version: the one that passed the backtest bar and your MT4 check (adds the gold engine run on Nasdaq). '
+                      'Runs side by side with the simple version. Decision after about 3 months.')]
 
 def loadj(p, d):
     try: return json.load(open(p))
@@ -130,23 +140,24 @@ def summary(J, day=None):
 
 def jdays(J): return J.get('days', [])[-30:][::-1]
 
-def base_card(A=None):
+def base_card(A=None, V=None):
+    V = V or VARIANTS[0]
     note = ('14-day range ' + ('—' if A is None else f'{A:,.0f} pts') + ' · stop ¼ range · no target · max 2 trades a day · close 11:00 pm broker '
             '(Fri 10:50 pm) = 12:00 am Dubai, 1:00 am in winter')
-    return dict(code='US100', name='Nasdaq 100', symbol='US100 · Capital.com US Tech 100', live=False, paper=True, status='Paper', version=N.SET.get('version', ''),
-                unit='pts', dp=1, stats=BACKTEST, pass_bar=PASS, day_note=note,
-                what_note='This page tracks whether live Nasdaq signals do as well as the backtest. Decision after about 3 months.',
+    return dict(code=V['code'], name=V['name'], symbol='US100 · Capital.com US Tech 100', live=False, paper=True, status='Paper', version=V['S'].get('version', ''),
+                unit='pts', dp=1, stats=V['stats'], pass_bar=PASS, day_note=note,
+                what_note=V['what'],
                 cost_note="Results are index points per trade, from the signal price, minus Capital.com's spread (at least 1.8 points).",
                 net_label='Net points (all paper trades)')
 
 def main(feed=None, get=None, now=None):
     now = now or F.broker_now(); day = now.normalize()
     old = loadj(PORTAL, {}); mk = old.setdefault('markets', {})
-    J = loadj(JOUR, dict(start=None, days=[]))
     if now.dayofweek >= 5:
-        prev = mk.get('US100') or {}
-        mk['US100'] = dict({k: v for k, v in prev.items() if k not in ('status', 'note')}, **base_card(), state='closed', message='Market closed for the weekend.',
-                        entries=[], journal=summary(J), jdays=jdays(J), feed_error=False)
+        for V in VARIANTS:
+            J = loadj(V['jour'], dict(start=None, days=[])); prev = mk.get(V['code']) or {}
+            mk[V['code']] = dict({k: v for k, v in prev.items() if k not in ('status', 'note')}, **base_card(None, V), state='closed', message='Market closed for the weekend.',
+                                 entries=[], journal=summary(J), jdays=jdays(J), feed_error=False)
         dumpj(old, PORTAL, indent=1); print('Nasdaq: weekend'); return
     get = get or minutes
     if feed is None:
@@ -158,8 +169,24 @@ def main(feed=None, get=None, now=None):
     b = get(feed, day, now); b = b[(b.index >= day) & (b.index + pd.Timedelta(minutes=1) <= now)]      # today's closed minute bars only
     eod = day + pd.Timedelta(minutes=N.eod_minutes(day))
     allm = pd.concat([hist[hist.index < day].iloc[-N.KEEP_DAYS * 1500:], b[['o', 'h', 'l', 'c']]])
-    trades = N.run_day(allm, day, now) if len(b) else []
     spread = float(np.nanmedian(b.sp.values)) if len(b) and np.isfinite(b.sp.values).any() else None
+    last = float(b.c.iloc[-1]) if len(b) else None; first = float(b.o.iloc[0]) if len(b) else None
+    spark = []
+    if len(b):
+        c5 = b.c.resample('5min').last().dropna(); spark = [[F.broker_to_dubai(t).strftime('%-I:%M %p').lower(), round(float(v), 1)] for t, v in c5.items()]
+    errs = []
+    for V in VARIANTS:                                   # each version on its own: one failing never stops the other
+        try:
+            mk[V['code']] = variant(V, allm, b, day, now, eod, spread, last, first, spark, hist, added)
+        except Exception as e:
+            errs.append((V, e))
+    for V, e in errs: mark_failed(mk, V, e)
+    dumpj(old, PORTAL, indent=1)
+    print(f'Nasdaq paper: {now} broker | bars {len(b)} | history to {hist.index[-1].date()} | added {added} | failed {[V["code"] for V, _ in errs]}')
+
+def variant(V, allm, b, day, now, eod, spread, last, first, spark, hist, added):
+    J = loadj(V['jour'], dict(start=None, days=[]))
+    trades = N.run_day(allm, day, now, S=V['S']) if len(b) else []
     rows = [row(t, b, now, eod, spread) for t in trades]
     if J.get('start') is None: J['start'] = str(day.date())
     A = trades[0]['A'] if trades else None
@@ -167,26 +194,25 @@ def main(feed=None, get=None, now=None):
                        [dict(date=str(day.date()), label=day.strftime('%a %d %b'), side=(rows[0]['side'] if rows else None), trades=rows,
                              final=bool(now >= eod))], key=lambda d: d['date'])
     J['summary'] = summary(J, day)
-    dumpj(J, JOUR, indent=1)
-    last = float(b.c.iloc[-1]) if len(b) else None; first = float(b.o.iloc[0]) if len(b) else None
+    dumpj(J, V['jour'], indent=1)
     if rows:
         op = [r for r in rows if r['status'] == 'open']; state = rows[-1]['side'].lower()
         msg = (f"{len(rows)} paper trade{'s' if len(rows) > 1 else ''} today ({len(op)} running). Each holds until its stop or the {dubai(eod)} Dubai close. "
                "No target. At most 2 trades a day.")
     elif now >= eod: state, msg = 'none', 'No paper trade today.'
     else: state, msg = 'waiting', 'Waiting for the first signal.'
-    spark = []
-    if len(b):
-        c5 = b.c.resample('5min').last().dropna(); spark = [[F.broker_to_dubai(t).strftime('%-I:%M %p').lower(), round(float(v), 1)] for t, v in c5.items()]
-    mk['US100'] = dict(base_card(A), state=state, message=msg, price=last, change=(None if last is None or first is None else round(last - first, 1)),
-                    entries=rows, spark=spark, journal=J['summary'], jdays=jdays(J), feed_error=False, epic=EPIC_NOW[0], close_at=dubai(eod),
-                    history_note=f"history to {hist.index[-1].date()} ({hist.index.normalize().nunique()} days)" + (f" · added {', '.join(added)}" if added else ''))
-    dumpj(old, PORTAL, indent=1)
-    print(f'Nasdaq paper: {now} broker | trades today {len(rows)} | bars {len(b)} | history to {hist.index[-1].date()} | added {added}')
+    return dict(base_card(A, V), state=state, message=msg, price=last, change=(None if last is None or first is None else round(last - first, 1)),
+                entries=rows, spark=spark, journal=J['summary'], jdays=jdays(J), feed_error=False, epic=EPIC_NOW[0], close_at=dubai(eod),
+                history_note=f"history to {hist.index[-1].date()} ({hist.index.normalize().nunique()} days)" + (f" · added {', '.join(added)}" if added else ''))
+
+def mark_failed(mk, V, e):
+    c = mk.get(V['code']) or {}
+    c.update(base_card(None, V)); c.setdefault('entries', []); c.setdefault('state', 'waiting'); c['feed_error'] = True
+    c['message'] = f"Nasdaq paper update failed at {F.broker_to_dubai(F.broker_now()).strftime('%-I:%M %p').lower()} Dubai ({type(e).__name__}: {str(e)[:120]}) — shows the last good update; retries every minute."
+    mk[V['code']] = c
 
 def fail(e):
-    """Keep the last good Nasdaq card and say what failed."""
-    old = loadj(PORTAL, {}); mk = old.setdefault('markets', {}); c = mk.get('US100') or {}
-    c.update(base_card()); c.setdefault('entries', []); c.setdefault('state', 'waiting'); c['feed_error'] = True
-    c['message'] = f"Nasdaq paper update failed at {F.broker_to_dubai(F.broker_now()).strftime('%-I:%M %p').lower()} Dubai ({type(e).__name__}: {str(e)[:120]}) — shows the last good update; retries every minute."
-    mk['US100'] = c; dumpj(old, PORTAL, indent=1)
+    """Keep the last good Nasdaq cards and say what failed."""
+    old = loadj(PORTAL, {}); mk = old.setdefault('markets', {})
+    for V in VARIANTS: mark_failed(mk, V, e)
+    dumpj(old, PORTAL, indent=1)
