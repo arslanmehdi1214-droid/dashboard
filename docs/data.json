@@ -1,5 +1,5 @@
 {
- "updated": "Mon 12 Oct \u00b7 6:57 am",
+ "updated": "Mon 12 Oct \u00b7 7:01 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -9,15 +9,30 @@
    "live": true,
    "version": "v2.06",
    "feed_error": false,
-   "state": "waiting",
-   "message": "Waiting for the first signal (signals can come until 8 pm Dubai).",
-   "price": 4206.03,
+   "state": "sell",
+   "message": "SELL day \u2014 any later signals today are SELL only. Hold every trade until its stop or the day-end close at 12:00 am Dubai. No target.",
+   "price": 4205.0,
    "close_at": "12:00 am",
-   "change": 10.74,
+   "change": 9.71,
    "size": 0.1,
    "datr": 80.01,
-   "open_now": 0,
-   "entries": [],
+   "open_now": 1,
+   "entries": [
+    {
+     "time": "7:00 am",
+     "side": "SELL",
+     "tag": "N2 near100",
+     "price": 4204.39,
+     "stop": 4264.9,
+     "w": 0.5,
+     "size": 0.1,
+     "status": "open",
+     "first": true,
+     "exit": null,
+     "pnl": null,
+     "rwf": null
+    }
+   ],
    "spark": [
     [
      "2:00 am",
@@ -257,18 +272,22 @@
     ],
     [
      "6:55 am",
-     4206.03
+     4204.46
+    ],
+    [
+     "7:00 am",
+     4205.0
     ]
    ],
    "history": [
     {
      "date": "2026-10-12",
      "label": "Mon 12 Oct",
-     "state": "none",
-     "entries": 0,
+     "state": "sell",
+     "entries": 1,
      "stopped": 0,
      "eod": 0,
-     "running": 0,
+     "running": 1,
      "rw": 0,
      "rd": 0,
      "pnl": null
@@ -354,11 +373,11 @@
    },
    "journal": {
     "since": "03 Oct 2026",
-    "trades": 12,
+    "trades": 13,
     "direction": 36.4,
     "decided": 11,
-    "days": 66.7,
-    "perday": 2.0,
+    "days": 83.3,
+    "perday": 2.17,
     "avg_pnl": -8.22,
     "closed": 12,
     "total_pnl_01": -9.87
@@ -393,12 +412,30 @@
     "pf": 1.1,
     "months": 3
    },
-   "state": "waiting",
-   "message": "Waiting for the first signal.",
-   "price": 158.234,
-   "change_pips": -7.8,
+   "state": "buy",
+   "message": "PAPER BUY day \u2014 later signals today are BUY only. Each trade holds until its stop or the 7:00 pm Dubai close. No target.",
+   "price": 158.235,
+   "change_pips": -7.7,
    "atr_pips": 102.4,
-   "entries": [],
+   "entries": [
+    {
+     "time": "7:00 am",
+     "side": "BUY",
+     "sig": "J13",
+     "name": "Heikin-Ashi 7am",
+     "price": 158.258,
+     "stop": 158.002,
+     "stop_pips": 25.6,
+     "first": true,
+     "status": "open",
+     "exit": null,
+     "exit_time": null,
+     "pips": null,
+     "usd": null,
+     "rwf": null,
+     "spread": 1.2
+    }
+   ],
    "spark": [
     [
      "2:05 am",
@@ -634,17 +671,21 @@
     ],
     [
      "6:55 am",
-     158.234
+     158.259
+    ],
+    [
+     "7:00 am",
+     158.235
     ]
    ],
    "journal": {
     "since": "05 Oct 2026",
     "weekdays": 6,
-    "trades": 9,
+    "trades": 10,
     "decided": 6,
     "direction": 16.7,
-    "days": 83.3,
-    "perday": 1.5,
+    "days": 100.0,
+    "perday": 1.67,
     "closed": 9,
     "win": 33.3,
     "pf": 0.25,
@@ -655,8 +696,26 @@
     {
      "date": "2026-10-12",
      "label": "Mon 12 Oct",
-     "side": null,
-     "trades": [],
+     "side": "BUY",
+     "trades": [
+      {
+       "time": "7:00 am",
+       "side": "BUY",
+       "sig": "J13",
+       "name": "Heikin-Ashi 7am",
+       "price": 158.258,
+       "stop": 158.002,
+       "stop_pips": 25.6,
+       "first": true,
+       "status": "open",
+       "exit": null,
+       "exit_time": null,
+       "pips": null,
+       "usd": null,
+       "rwf": null,
+       "spread": 1.2
+      }
+     ],
      "atr_pips": 102.4,
      "final": false
     },
@@ -898,8 +957,8 @@
    "net_label": "Net $ per barrel (v1.02 sizes)",
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Each trade holds until its stop or the 12:00 am Dubai close. No target.",
-   "price": 89.385,
-   "change": -1.8,
+   "price": 89.41,
+   "change": -1.77,
    "entries": [
     {
      "time": "3:51 am",
@@ -1192,7 +1251,11 @@
     ],
     [
      "6:55 am",
-     89.39
+     89.36
+    ],
+    [
+     "7:00 am",
+     89.41
     ]
    ],
    "journal": {
@@ -1311,8 +1374,8 @@
    "net_label": "Net points (all paper trades)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 31002.4,
-   "change": 103.5,
+   "price": 30995.9,
+   "change": 97.0,
    "entries": [],
    "spark": [
     [
@@ -1553,7 +1616,11 @@
     ],
     [
      "6:55 am",
-     31002.4
+     31004.4
+    ],
+    [
+     "7:00 am",
+     30995.9
     ]
    ],
    "journal": {
