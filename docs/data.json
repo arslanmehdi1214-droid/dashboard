@@ -1,5 +1,5 @@
 {
- "updated": "Mon 12 Oct \u00b7 8:59 am",
+ "updated": "Mon 12 Oct \u00b7 9:10 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -11,9 +11,9 @@
    "feed_error": false,
    "state": "sell",
    "message": "SELL day \u2014 any later signals today are SELL only. Hold every trade until its stop or the day-end close at 12:00 am Dubai. No target.",
-   "price": 4195.47,
+   "price": 4193.82,
    "close_at": "12:00 am",
-   "change": 0.18,
+   "change": -1.47,
    "size": 0.1,
    "datr": 80.01,
    "open_now": 1,
@@ -368,7 +368,15 @@
     ],
     [
      "8:55 am",
-     4195.47
+     4194.52
+    ],
+    [
+     "9:00 am",
+     4192.05
+    ],
+    [
+     "9:05 am",
+     4193.82
     ]
    ],
    "history": [
@@ -506,8 +514,8 @@
    },
    "state": "buy",
    "message": "PAPER BUY day \u2014 later signals today are BUY only. Each trade holds until its stop or the 7:00 pm Dubai close. No target.",
-   "price": 158.332,
-   "change_pips": 2.0,
+   "price": 158.343,
+   "change_pips": 3.1,
    "atr_pips": 102.4,
    "entries": [
     {
@@ -859,7 +867,15 @@
     ],
     [
      "8:55 am",
-     158.332
+     158.33
+    ],
+    [
+     "9:00 am",
+     158.351
+    ],
+    [
+     "9:05 am",
+     158.343
     ]
    ],
    "journal": {
@@ -1141,8 +1157,8 @@
    "net_label": "Net $ per barrel (v1.02 sizes)",
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Each trade holds until its stop or the 12:00 am Dubai close. No target.",
-   "price": 89.66,
-   "change": -1.52,
+   "price": 89.69,
+   "change": -1.49,
    "entries": [
     {
      "time": "3:51 am",
@@ -1532,6 +1548,14 @@
     [
      "8:55 am",
      89.66
+    ],
+    [
+     "9:00 am",
+     89.7
+    ],
+    [
+     "9:05 am",
+     89.69
     ]
    ],
    "journal": {
@@ -1650,8 +1674,8 @@
    "net_label": "Net points (all paper trades)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 31026.2,
-   "change": 127.3,
+   "price": 31030.4,
+   "change": 131.5,
    "entries": [],
    "spark": [
     [
@@ -1988,7 +2012,15 @@
     ],
     [
      "8:55 am",
-     31026.2
+     31024.3
+    ],
+    [
+     "9:00 am",
+     31014.8
+    ],
+    [
+     "9:05 am",
+     31030.4
     ]
    ],
    "journal": {
