@@ -1,5 +1,5 @@
 {
- "updated": "Mon 12 Oct \u00b7 9:13 am",
+ "updated": "Mon 12 Oct \u00b7 9:22 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -11,12 +11,12 @@
    "feed_error": false,
    "state": "sell",
    "message": "SELL day \u2014 any later signals today are SELL only. Hold every trade until its stop or the day-end close at 12:00 am Dubai. No target.",
-   "price": 4190.19,
+   "price": 4185.6,
    "close_at": "12:00 am",
-   "change": -5.1,
+   "change": -9.69,
    "size": 0.1,
    "datr": 80.01,
-   "open_now": 1,
+   "open_now": 2,
    "entries": [
     {
      "time": "7:00 am",
@@ -28,6 +28,20 @@
      "size": 0.1,
      "status": "open",
      "first": true,
+     "exit": null,
+     "pnl": null,
+     "rwf": null
+    },
+    {
+     "time": "9:21 am",
+     "side": "SELL",
+     "tag": "N15 hsq",
+     "price": 4184.58,
+     "stop": 4225.08,
+     "w": 0.75,
+     "size": 0.1,
+     "status": "open",
+     "first": false,
      "exit": null,
      "pnl": null,
      "rwf": null
@@ -380,7 +394,15 @@
     ],
     [
      "9:10 am",
-     4190.19
+     4187.47
+    ],
+    [
+     "9:15 am",
+     4187.52
+    ],
+    [
+     "9:20 am",
+     4185.6
     ]
    ],
    "history": [
@@ -388,10 +410,10 @@
      "date": "2026-10-12",
      "label": "Mon 12 Oct",
      "state": "sell",
-     "entries": 1,
+     "entries": 2,
      "stopped": 0,
      "eod": 0,
-     "running": 1,
+     "running": 2,
      "rw": 0,
      "rd": 0,
      "pnl": null
@@ -477,11 +499,11 @@
    },
    "journal": {
     "since": "03 Oct 2026",
-    "trades": 13,
+    "trades": 14,
     "direction": 36.4,
     "decided": 11,
     "days": 83.3,
-    "perday": 2.17,
+    "perday": 2.33,
     "avg_pnl": -8.22,
     "closed": 12,
     "total_pnl_01": -9.87
@@ -518,8 +540,8 @@
    },
    "state": "buy",
    "message": "PAPER BUY day \u2014 later signals today are BUY only. Each trade holds until its stop or the 7:00 pm Dubai close. No target.",
-   "price": 158.345,
-   "change_pips": 3.3,
+   "price": 158.356,
+   "change_pips": 4.4,
    "atr_pips": 102.4,
    "entries": [
     {
@@ -883,7 +905,15 @@
     ],
     [
      "9:10 am",
+     158.344
+    ],
+    [
+     "9:15 am",
      158.345
+    ],
+    [
+     "9:20 am",
+     158.356
     ]
    ],
    "journal": {
@@ -1165,8 +1195,8 @@
    "net_label": "Net $ per barrel (v1.02 sizes)",
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Each trade holds until its stop or the 12:00 am Dubai close. No target.",
-   "price": 89.755,
-   "change": -1.43,
+   "price": 89.8,
+   "change": -1.38,
    "entries": [
     {
      "time": "3:51 am",
@@ -1567,7 +1597,15 @@
     ],
     [
      "9:10 am",
-     89.75
+     89.8
+    ],
+    [
+     "9:15 am",
+     89.77
+    ],
+    [
+     "9:20 am",
+     89.8
     ]
    ],
    "journal": {
@@ -1686,8 +1724,8 @@
    "net_label": "Net points (all paper trades)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 31020.3,
-   "change": 121.4,
+   "price": 31012.7,
+   "change": 113.8,
    "entries": [],
    "spark": [
     [
@@ -2036,7 +2074,15 @@
     ],
     [
      "9:10 am",
-     31020.3
+     31018.7
+    ],
+    [
+     "9:15 am",
+     31018.9
+    ],
+    [
+     "9:20 am",
+     31012.7
     ]
    ],
    "journal": {
