@@ -117,6 +117,8 @@ button.on{background:var(--gold);color:#0b0b0d}
 #ptr{height:0;overflow:hidden;display:grid;place-items:center;color:var(--mute);font-size:12px;transition:height .15s}
 #rf{padding:6px 10px;font-size:12px;margin-left:6px;flex:none}@media(max-width:620px){.brand small{display:none}.live{font-size:11px}}
 .cx small{display:block;color:var(--mute);font-size:11px;font-weight:500}
+body.fs{overflow:hidden}body.fs #lwcbox{position:fixed;inset:0;z-index:50;background:var(--bg);padding:10px 12px}body.fs #lwc{height:calc(100vh - 70px)!important}
+.colp{display:inline-flex;align-items:center;gap:6px;font:600 12px Inter;color:var(--gold2);border:1px solid rgba(212,179,106,.45);border-radius:999px;padding:3px 6px 3px 11px;background:var(--golddim)}.colp input{width:26px;height:22px;border:0;padding:0;background:none;cursor:pointer}.tfs{flex-wrap:wrap}
 </style></head>
 <body><div id="ptr"></div><div class="wrap">
 <header><div class="brand"><div class="mark"></div><div><h1>Signal Desk</h1><small>Day-trade signals</small></div></div>
@@ -139,9 +141,17 @@ const STL={open:'Open',stopped:'Stopped out',eod:'Closed at day end',close_now:'
 const mv=w=>w==='rose'?'Rose ↑':w==='fell'?'Fell ↓':w==='flat'?'Flat':'—';
 $('snd').onclick=()=>{try{ctx=ctx||new (window.AudioContext||window.webkitAudioContext)();sound=!sound;$('snd').textContent='Sound alerts: '+(sound?'on':'off');$('snd').classList.toggle('on',sound);if(sound)beep()}catch(e){}};
 function beep(){if(!sound||!ctx)return;[0,.28,.56].forEach((t,i)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.value=[784,988,1319][i];o.connect(g);g.connect(ctx.destination);g.gain.setValueAtTime(.0001,ctx.currentTime+t);g.gain.exponentialRampToValueAtTime(.25,ctx.currentTime+t+.02);g.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+t+.25);o.start(ctx.currentTime+t);o.stop(ctx.currentTime+t+.26)});if(navigator.vibrate)navigator.vibrate([250,120,250])}
-let CH=null,CHK=null,CHR=null,PEND=null;
-function spark(m){if(window.LightweightCharts&&(m.spark||[]).length>=2){PEND=m;const tfb=[5,15,60].map(v=>`<button class="${tf===v?'on':''}" onclick="tf=${v};render()">${v===60?'1h':v+'m'}</button>`).join('');
- return`<div class="tfs">${tfb}<button onclick="if(CH){CH.timeScale().fitContent();CH.priceScale('right').applyOptions({autoScale:true})}">Reset</button></div><div id="lwc" style="height:${Math.round(Math.min(420,Math.max(280,($('main').clientWidth||360)*.75)))}px;margin-top:10px"></div><div class="cnote">Drag left/right to scroll · pinch or scroll-wheel to zoom · drag the price scale up/down to stretch · Dubai time · ${m.spark[0].length>=5?'':'rough candles until the server update · '}lines: entry, amber = stop</div>`}
+let CH=null,CHK=null,CHR=null,PEND=null,cmode='desk',showTr=true,TVK=null;
+let cUp='#35c47f',cDn='#ff6464';try{cUp=localStorage.getItem('cUp')||cUp;cDn=localStorage.getItem('cDn')||cDn}catch(e){}
+function setCol(u,d){cUp=u||cUp;cDn=d||cDn;try{localStorage.setItem('cUp',cUp);localStorage.setItem('cDn',cDn)}catch(e){}if(CH&&CH._se)CH._se.applyOptions({upColor:cUp,downColor:cDn,wickUpColor:cUp,wickDownColor:cDn})}
+const TVSYM={GOLD:'CAPITALCOM:XAUUSD',USDJPY:'CAPITALCOM:USDJPY',OIL:'CAPITALCOM:USOIL',US100:'CAPITALCOM:NAS100',US100F:'CAPITALCOM:NAS100',SILVER:'CAPITALCOM:XAGUSD',US500:'CAPITALCOM:SPX500'};
+function spark(m){if(window.LightweightCharts&&(m.spark||[]).length>=2||TVSYM[m.code]){PEND=m;
+ const fsb=`<button onclick="document.body.classList.toggle('fs');this.textContent=document.body.classList.contains('fs')?'✕ Exit full screen':'⛶ Full screen';setTimeout(()=>{if(CH)CH.timeScale().fitContent()},120)">${document.body.classList.contains('fs')?'✕ Exit full screen':'⛶ Full screen'}</button>`;
+ const mb=`<button class="${cmode==='desk'?'on':''}" onclick="cmode='desk';render()">Desk chart</button>${TVSYM[m.code]?`<button class="${cmode==='full'?'on':''}" onclick="cmode='full';render()">Capital.com chart</button>`:''}`;
+ const H=Math.round(Math.min(680,Math.max(300,innerHeight*(innerWidth>760?.68:.55))));
+ if(cmode==='full'&&TVSYM[m.code])return`<div id="lwcbox"><div class="tfs">${mb}${fsb}</div><div id="tvc" style="height:${H}px;margin-top:10px"></div><div class="cnote">Capital.com live prices via TradingView · every interval (1m to 1M) and drawing tools are in the chart's own menu · desk entry/stop lines are on the Desk chart</div></div>`;
+ const tfb=[5,15,30,60].map(v=>`<button class="${tf===v?'on':''}" onclick="tf=${v};render()">${v===60?'1h':v+'m'}</button>`).join('');
+ return`<div id="lwcbox"><div class="tfs">${mb}</div><div class="tfs" style="margin-top:6px">${tfb}<button class="${showTr?'on':''}" onclick="showTr=!showTr;render()">${showTr?'Hide':'Show'} orders &amp; positions</button><button onclick="if(CH){CH.timeScale().fitContent();CH.priceScale('right').applyOptions({autoScale:true})}">Reset</button>${fsb}<label class="colp">Up <input type="color" value="${cUp}" oninput="setCol(this.value,null)"></label><label class="colp">Down <input type="color" value="${cDn}" oninput="setCol(null,this.value)"></label><button onclick="setCol('#35c47f','#ff6464');render()">Default colours</button></div><div id="lwc" style="height:${H}px;margin-top:10px"></div><div class="cnote">Drag to scroll · pinch or wheel to zoom · drag the price scale to stretch · Dubai time · today's ${m.spark[0].length>=5?'':'rough '}candles · entry line + amber stop</div></div>`}
  return svgSpark(m)}
 function svgSpark(m){const s=m.spark||[];if(s.length<2)return'';
  const dp=m.code==='GOLD'?2:(m.dp??(m.unit==='pts'?1:m.unit==='usd'?2:3)),fx=v=>Number(v).toFixed(dp);
@@ -232,9 +242,9 @@ function paper(m){const U=m.unit==='usd',P=m.unit==='pts',dp=m.dp??3,fP=v=>v==nu
  const netl=m.net_label||'Net';
  $('main').innerHTML=`<section class="card hero"><div class="htop"><div><div class="mname">${esc(m.name)}</div><div class="msym">${esc(m.symbol)} · ${esc(m.version||'')} · PAPER — no real money</div></div>
   <div class="px num"><div class="v">${fP(m.price)}</div><div class="c ${chc}">${ch==null?'':rv(ch)+' today'}</div></div></div>
+  ${spark(Object.assign({},m,{change:ch}))}
   <div class="pill s-${m.state}">${esc((STATE[m.state]||m.state).replace(' day',' day (paper)'))}</div><div class="msg">${esc(m.message)}</div>
-  <div class="todo"><h3>What to do</h3><ul><li><b>Nothing — paper only.</b> Do not place these trades.</li><li>${esc(what)}</li></ul></div>
-  ${spark(Object.assign({},m,{change:ch}))}</section>
+  <div class="todo"><h3>What to do</h3><ul><li><b>Nothing — paper only.</b> Do not place these trades.</li><li>${esc(what)}</li></ul></div></section>
   <div class="sec"><h2>Today's paper trades</h2><span>${E.length} trade${E.length===1?'':'s'} · ${esc(dayn)}</span></div>
   <div class="ents">${ents||'<div class="empty">No paper trades yet today.</div>'}</div>
   <div class="sec"><h2>Paper journal</h2><span>${s.since?'since '+esc(s.since)+' · ':''}pass mark: right way first ≥ ${esc(pb.direction)}% and profit factor ≥ ${Number(pb.pf).toFixed(2)}</span></div>
@@ -270,7 +280,13 @@ function home(){const T=trades(),run=T.filter(x=>x.run),done=T.filter(x=>!x.run)
   <div class="ents">${done.map(line).join('')||'<div class="empty">No closed trades yet today.</div>'}</div>
   <div class="sec"><h2>Markets</h2><span>Gold is live (real signals) · the others are paper tests, do not trade them</span></div>
   <section class="card" style="padding:6px 16px">${mk}</section>`}
-function mountChart(){const el=document.getElementById('lwc'),m=PEND;PEND=null;
+function mountTV(m){const el=document.getElementById('tvc');if(!el)return;const sym=TVSYM[m.code];
+ if(TVK&&TVK.sym===sym&&TVK.node){el.appendChild(TVK.node);return}
+ const node=document.createElement('div');node.id='tv_'+Date.now();node.style.height='100%';el.appendChild(node);TVK={sym,node};
+ const go=()=>new TradingView.widget({container_id:node.id,symbol:sym,interval:'15',timezone:'Asia/Dubai',theme:'dark',style:'1',locale:'en',autosize:true,allow_symbol_change:false,withdateranges:true,hide_side_toolbar:false,save_image:false});
+ if(window.TradingView)go();else{const sc=document.createElement('script');sc.src='https://s3.tradingview.com/tv.js';sc.onload=go;document.head.appendChild(sc)}}
+function mountChart(){if(document.getElementById('tvc')&&PEND){const m=PEND;PEND=null;if(CH){try{CH.remove()}catch(e){}CH=null}mountTV(m);return}
+ const el=document.getElementById('lwc'),m=PEND;PEND=null;
  if(CH){try{const k=CHK;CHR=CH.timeScale().getVisibleLogicalRange();CHK=k;CH.remove()}catch(e){}CH=null}
  if(!el||!m)return;const key=m.code+'|'+tf;
  const dp=m.code==='GOLD'?2:(m.dp??(m.unit==='pts'?1:m.unit==='usd'?2:3)),s=m.spark,ohlc=s[0].length>=5;
@@ -287,9 +303,9 @@ function mountChart(){const el=document.getElementById('lwc'),m=PEND;PEND=null;
   handleScale:{mouseWheel:true,pinch:true,axisPressedMouseMove:{time:true,price:true},axisDoubleClickReset:true},
   localization:{priceFormatter:p=>Number(p).toFixed(dp),timeFormatter:t=>{const mm=((t-day)/60)%1440,h=Math.floor(mm/60),mi=mm%60;return`${(h%12)||12}:${String(mi).padStart(2,'0')} ${h<12?'am':'pm'}`}}});
  CH.timeScale().applyOptions({tickMarkFormatter:t=>{const mm=((t-day)/60)%1440,h=Math.floor(mm/60),mi=mm%60;return`${(h%12)||12}:${String(mi).padStart(2,'0')}${h<12?'a':'p'}`}});
- const se=CH.addCandlestickSeries({upColor:v('--buy'),downColor:v('--sell'),borderVisible:false,wickUpColor:v('--buy'),wickDownColor:v('--sell'),priceFormat:{type:'price',precision:dp,minMove:Math.pow(10,-dp)},autoscaleInfoProvider:o=>{const r=o();const L=(m.entries||[]).filter(e=>e.status==='open'||e.status==='close_now').flatMap(e=>[+e.price,+e.stop]);if(!r||!L.length)return r;r.priceRange.minValue=Math.min(r.priceRange.minValue,...L);r.priceRange.maxValue=Math.max(r.priceRange.maxValue,...L);return r}});
- se.setData(B.map(({k,...r})=>r));
- for(const e of (m.entries||[]).filter(e=>e.status==='open'||e.status==='close_now')){const c=e.side==='BUY'?v('--buy'):v('--sell');
+ const se=CH.addCandlestickSeries({upColor:cUp,downColor:cDn,borderVisible:false,wickUpColor:cUp,wickDownColor:cDn,priceFormat:{type:'price',precision:dp,minMove:Math.pow(10,-dp)},autoscaleInfoProvider:o=>{const r=o();const L=(showTr?(m.entries||[]):[]).filter(e=>e.status==='open'||e.status==='close_now').flatMap(e=>[+e.price,+e.stop]);if(!r||!L.length)return r;r.priceRange.minValue=Math.min(r.priceRange.minValue,...L);r.priceRange.maxValue=Math.max(r.priceRange.maxValue,...L);return r}});
+ se.setData(B.map(({k,...r})=>r));CH._se=se;
+ for(const e of (showTr?(m.entries||[]):[]).filter(e=>e.status==='open'||e.status==='close_now')){const c=e.side==='BUY'?v('--buy'):v('--sell');
   se.createPriceLine({price:+e.price,color:c,lineWidth:2,lineStyle:0,axisLabelVisible:true,title:e.side+' entry'});
   se.createPriceLine({price:+e.stop,color:v('--amber'),lineWidth:2,lineStyle:2,axisLabelVisible:true,title:'stop'})}
  if(CHK===key&&CHR)CH.timeScale().setVisibleLogicalRange(CHR);else CH.timeScale().fitContent();CHK=key}
@@ -301,7 +317,7 @@ function render0(){if(!D)return;chips();if(sel==='HOME'){home();return}const m=D
  const ents=E.map((e,i)=>row(e,i+1,m)).reverse().join('');
  $('main').innerHTML=`<section class="card hero"><div class="htop"><div><div class="mname">${esc(m.name)}</div><div class="msym">${esc(m.symbol)} · ${esc(m.version||'')} · base size ${m.size} oz</div></div>
   <div class="px num"><div class="v">${f2(m.price)}</div><div class="c ${chc}">${ch==null?'':(ch>=0?'+':'')+f2(ch)+' today'}</div></div></div>
-  <div class="pill s-${m.state}">${esc(STATE[m.state]||m.state)}</div><div class="msg">${esc(m.message)}</div>${todo(m)}${why(m)}${spark(m)}</section>
+  ${spark(m)}<div class="pill s-${m.state}">${esc(STATE[m.state]||m.state)}</div><div class="msg">${esc(m.message)}</div>${todo(m)}${why(m)}</section>
   <div class="sec"><h2>Today's trades</h2><span>${E.length} trade${E.length===1?'':'s'} · daily range ${f2(m.datr)} · stop ½ range (¾ for level breaks)</span></div>
   <div class="ents">${ents||'<div class="empty">No trades yet today.</div>'}</div>
   ${journal()}`;
@@ -309,9 +325,10 @@ function render0(){if(!D)return;chips();if(sel==='HOME'){home();return}const m=D
 async function load(){if(!history.state)history.replaceState({sel},'',sel==='HOME'?location.pathname:'#'+sel);try{const r=await fetch(DATA+'?t='+Date.now(),{cache:'no-store'});D=await r.json();
  try{const q=await fetch(JOUR+'?t='+Date.now(),{cache:'no-store'});J=await q.json()}catch(e){J=null}
  $('upd').innerHTML=`Updated <b style="color:var(--ink)">${esc(D.updated)}</b> Dubai`;$('src').textContent='Prices: '+D.source+' · checks every minute · page updates every 10 minutes · signals only, you place the trades';
- const key=Object.values(D.markets).map(m=>m.code+':'+(m.entries||[]).length+(m.code==='GOLD'?'|'+m.state+'|'+(m.entries||[]).map(e=>e.status).join(','):'')).join(';');if(seen!==null&&key!==seen)beep();seen=key;render()}
+ const key=Object.values(D.markets).map(m=>m.code+':'+(m.entries||[]).length+(m.code==='GOLD'?'|'+m.state+'|'+(m.entries||[]).map(e=>e.status).join(','):'')).join(';');const chg=seen!==null&&key!==seen;if(chg)beep();seen=key;if(cmode==='full'&&sel!=='HOME'&&document.getElementById('tvc')&&!chg)return;render()}
  catch(e){$('upd').textContent='Waiting for data…'}}
 load();setInterval(load,60000);
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.body.classList.remove('fs')});
 $('rf').onclick=()=>{$('rf').textContent='↻ …';load().finally(()=>$('rf').textContent='↻ Refresh')};
 (()=>{let y0=null,dy=0;const P=$('ptr');
  window.addEventListener('touchstart',e=>{y0=window.scrollY<=0?e.touches[0].clientY:null;dy=0},{passive:true});
