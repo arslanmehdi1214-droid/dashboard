@@ -29,7 +29,8 @@ header{display:flex;align-items:center;justify-content:space-between;gap:12px;pa
 .live{display:flex;align-items:center;gap:8px;color:var(--mute);font-size:12px;text-align:right}
 .dot{width:8px;height:8px;border-radius:50%;background:var(--buy);box-shadow:0 0 0 0 rgba(53,196,127,.6);animation:p 2s infinite;flex:none}
 @keyframes p{0%{box-shadow:0 0 0 0 rgba(53,196,127,.55)}70%{box-shadow:0 0 0 9px rgba(53,196,127,0)}100%{box-shadow:0 0 0 0 rgba(53,196,127,0)}}
-.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;margin-bottom:16px;scrollbar-width:none}.chips::-webkit-scrollbar{display:none}
+.chips{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-bottom:16px}@media(min-width:760px){.chips{grid-template-columns:repeat(5,minmax(0,1fr))}}
+.chips .chip{flex-direction:column;align-items:flex-start;gap:3px;padding:8px 10px;border-radius:12px;min-width:0}.chips .chip b{font-size:13px;line-height:1.2;text-align:left}.chips .chip i{font-size:9px;padding:1px 6px;white-space:nowrap}.chips::-webkit-scrollbar{display:none}
 .chip{flex:none;display:flex;align-items:center;gap:8px;padding:9px 14px;border-radius:999px;border:1px solid var(--line);background:var(--bg2);color:var(--mute);font:500 13px Inter;cursor:pointer;transition:.2s}
 .chip b{color:var(--ink);font-weight:600}.chip i{font-style:normal;font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;border-radius:99px;background:var(--greydim);color:var(--grey)}
 .chip.on{border-color:rgba(212,179,106,.55);background:linear-gradient(180deg,rgba(212,179,106,.14),rgba(212,179,106,.04))}
@@ -110,10 +111,16 @@ button.on{background:var(--gold);color:#0b0b0d}
 .mrow small{font-size:11px}.mrow .mmsg{display:block;color:var(--mute);font-size:12.5px;margin-top:3px;letter-spacing:0;font-weight:400}
 .mpx{text-align:right;white-space:nowrap}.mpx .pill{margin:6px 0 0;display:flex;padding:5px 10px;font-size:10.5px}
 @media(max-width:620px){.hrow{grid-template-columns:1fr 1fr 1fr;row-gap:8px}.hrow em{display:none}.hrow .h1{grid-column:1/3}.hrow>.st{grid-column:3;grid-row:1}.hrow .cx{grid-row:2}}
+.cwrap{margin:18px 0 4px}.cwrap svg{display:block;width:100%;height:auto;touch-action:pan-y}
+.tfs{display:flex;gap:6px;justify-content:flex-end;margin-top:14px}.tfs button{padding:5px 11px;font-size:12px}
+.ctag{font:600 11px Inter}.cnote{color:var(--faint);font-size:11px;margin-top:4px}
+#ptr{height:0;overflow:hidden;display:grid;place-items:center;color:var(--mute);font-size:12px;transition:height .15s}
+#rf{padding:6px 10px;font-size:12px;margin-left:6px;flex:none}@media(max-width:620px){.brand small{display:none}.live{font-size:11px}}
+.cx small{display:block;color:var(--mute);font-size:11px;font-weight:500}
 </style></head>
-<body><div class="wrap">
+<body><div id="ptr"></div><div class="wrap">
 <header><div class="brand"><div class="mark"></div><div><h1>Signal Desk</h1><small>Day-trade signals</small></div></div>
-<div class="live"><div class="dot"></div><div id="upd">Connecting…</div></div></header>
+<div class="live"><div class="dot"></div><div id="upd">Connecting…</div><button id="rf" aria-label="Refresh">↻ Refresh</button></div></header>
 <nav class="chips" id="chips"></nav>
 <main id="main"></main>
 <div class="foot"><span id="src"></span><button id="snd">Sound alerts: off</button></div>
@@ -122,7 +129,7 @@ button.on{background:var(--gold);color:#0b0b0d}
 const host=location.hostname,repo=location.pathname.split('/').filter(Boolean)[0]||'gold-alerts';
 const RAW=host.endsWith('github.io')?`https://raw.githubusercontent.com/${host.split('.')[0]}/${repo}/main/docs/`:'';
 const DATA=RAW+'data.json',JOUR=RAW+'journal.json';
-let D=null,J=null,sel='HOME',seen=null,sound=false,ctx=null,openDay=null;
+let D=null,J=null,sel=(location.hash||'').slice(1)||'HOME',seen=null,sound=false,ctx=null,openDay=null,tf=15;
 const $=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const f2=v=>v==null?'—':Number(v).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
 const usd=v=>v==null?'—':(v>=0?'+$':'−$')+Math.abs(v).toFixed(2);
@@ -131,14 +138,34 @@ const STL={open:'Open',stopped:'Stopped out',eod:'Closed at day end',close_now:'
 const mv=w=>w==='rose'?'Rose ↑':w==='fell'?'Fell ↓':w==='flat'?'Flat':'—';
 $('snd').onclick=()=>{try{ctx=ctx||new (window.AudioContext||window.webkitAudioContext)();sound=!sound;$('snd').textContent='Sound alerts: '+(sound?'on':'off');$('snd').classList.toggle('on',sound);if(sound)beep()}catch(e){}};
 function beep(){if(!sound||!ctx)return;[0,.28,.56].forEach((t,i)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.value=[784,988,1319][i];o.connect(g);g.connect(ctx.destination);g.gain.setValueAtTime(.0001,ctx.currentTime+t);g.gain.exponentialRampToValueAtTime(.25,ctx.currentTime+t+.02);g.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+t+.25);o.start(ctx.currentTime+t);o.stop(ctx.currentTime+t+.26)});if(navigator.vibrate)navigator.vibrate([250,120,250])}
-function spark(m){const s=m.spark||[];if(s.length<2)return'';const W=900,H=120,v=s.map(x=>x[1]),lo=Math.min(...v),hi=Math.max(...v),r=(hi-lo)||1;
- const X=i=>i/(s.length-1)*W,Y=p=>H-8-(p-lo)/r*(H-16);const pts=s.map((x,i)=>`${X(i).toFixed(1)},${Y(x[1]).toFixed(1)}`);
- const col=(m.change??0)>=0?'var(--buy)':'var(--sell)';
- return`<div class="spark"><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none"><defs><linearGradient id="g" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="${col}" stop-opacity=".28"/><stop offset="1" stop-color="${col}" stop-opacity="0"/></linearGradient></defs>
- <path d="M${pts.join(' L')} L${W},${H} L0,${H}Z" fill="url(#g)"/><polyline points="${pts.join(' ')}" fill="none" stroke="${col}" stroke-width="2.2" vector-effect="non-scaling-stroke" stroke-linejoin="round"/></svg></div>
- <div class="sparkax"><span>${esc(s[0][0])}</span><span>Today · Dubai time</span><span>${esc(s[s.length-1][0])}</span></div>`}
+function spark(m){const s=m.spark||[];if(s.length<2)return'';
+ const dp=m.code==='GOLD'?2:(m.dp??(m.unit==='pts'?1:m.unit==='usd'?2:3)),fx=v=>Number(v).toFixed(dp);
+ const ohlc=s[0].length>=5;
+ let raw=s.map((x,i)=>({t:x[0],mm:dmin(x[0]),c:+x[1],o:ohlc?+x[2]:(i?+s[i-1][1]:+x[1]),h:ohlc?+x[3]:null,l:ohlc?+x[4]:null}));
+ raw.forEach(b=>{if(b.h==null){b.h=Math.max(b.o,b.c);b.l=Math.min(b.o,b.c)}});
+ const B=[];for(const b of raw){const k=b.mm<0?B.length:Math.floor(b.mm/tf);const L=B[B.length-1];
+  if(L&&L.k===k){L.h=Math.max(L.h,b.h);L.l=Math.min(L.l,b.l);L.c=b.c}else B.push({k,t:b.t,o:b.o,h:b.h,l:b.l,c:b.c})}
+ const open=(m.entries||[]).filter(e=>e.status==='open'||e.status==='close_now');
+ const now=m.price!=null?+m.price:B[B.length-1].c;
+ let lo=Math.min(...B.map(b=>b.l)),hi=Math.max(...B.map(b=>b.h));
+ for(const e of open){lo=Math.min(lo,+e.price,+e.stop);hi=Math.max(hi,+e.price,+e.stop)}
+ const pad=(hi-lo)*.06||1;lo-=pad;hi+=pad;
+ const W=Math.max(300,Math.min(940,($('main').clientWidth||360)-40)),H=Math.round(Math.min(320,Math.max(220,W*.55))),R=62,T=8,Bt=20,PW=W-R,PH=H-T-Bt;
+ const Y=p=>T+(hi-p)/(hi-lo)*PH,step=PW/B.length,bw=Math.max(1.5,Math.min(9,step*.62));
+ const tagY=[now,...open.flatMap(e=>[+e.price,+e.stop])].map(Y);let g='';for(let i=0;i<=4;i++){const p=lo+(hi-lo)*i/4,y=Y(p).toFixed(1);if(tagY.some(t=>Math.abs(t-y)<15)){g+=`<line x1="0" x2="${PW}" y1="${y}" y2="${y}" stroke="var(--line)" stroke-width="1"/>`;continue}g+=`<line x1="0" x2="${PW}" y1="${y}" y2="${y}" stroke="var(--line)" stroke-width="1"/><text x="${W-4}" y="${(+y+4).toFixed(1)}" text-anchor="end" fill="var(--faint)" font-size="11">${fx(p)}</text>`}
+ let c='';B.forEach((b,i)=>{const x=(i+.5)*step,up=b.c>=b.o,col=up?'var(--buy)':'var(--sell)',y1=Y(Math.max(b.o,b.c)),y2=Y(Math.min(b.o,b.c));
+  c+=`<line x1="${x.toFixed(1)}" x2="${x.toFixed(1)}" y1="${Y(b.h).toFixed(1)}" y2="${Y(b.l).toFixed(1)}" stroke="${col}" stroke-width="1"/><rect x="${(x-bw/2).toFixed(1)}" y="${y1.toFixed(1)}" width="${bw.toFixed(1)}" height="${Math.max(1,y2-y1).toFixed(1)}" fill="${col}"/>`});
+ const hl=(p,col,dash,txt)=>{const y=Y(p).toFixed(1);return`<line x1="0" x2="${PW}" y1="${y}" y2="${y}" stroke="${col}" stroke-width="1.3" ${dash?'stroke-dasharray="5 4"':''}/><rect x="${PW+1}" y="${(y-9).toFixed(1)}" width="${R-2}" height="18" rx="4" fill="${col}"/><text x="${W-4}" y="${(+y+4).toFixed(1)}" text-anchor="end" fill="#0b0b0d" font-size="11" font-weight="700">${fx(p)}</text>${txt?`<text x="4" y="${(y-4).toFixed(1)}" fill="${col}" class="ctag">${txt}</text>`:''}`};
+ let lines='';open.forEach((e,i)=>{const col=e.side==='BUY'?'var(--buy)':'var(--sell)';lines+=hl(+e.stop,'var(--amber)',true,i===0?'STOP':'')+hl(+e.price,col,false,(i===0?e.side+' ENTRY':''))});
+ lines+=hl(now,'var(--gold2)',true,'NOW');
+ const lab=[0,Math.floor(B.length/2),B.length-1].map(i=>`<text x="${Math.min(PW-30,Math.max(0,(i+.5)*step-20)).toFixed(1)}" y="${H-5}" fill="var(--faint)" font-size="11">${esc(B[i].t)}</text>`).join('');
+ const tfb=[5,15,60].map(v=>`<button class="${tf===v?'on':''}" onclick="tf=${v};render()">${v===60?'1h':v+'m'}</button>`).join('');
+ return`<div class="tfs">${tfb}</div><div class="cwrap"><svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">${g}${c}${lines}${lab}</svg></div>
+ <div class="cnote">Today · Dubai time · ${tf===60?'1-hour':tf+'-minute'} candles${ohlc?'':' (built from 5-minute prices until the server update)'} · gold line = price now${open.length?', amber dashed = stop':''}</div>`}
 function chips(){$('chips').innerHTML=`<button class="chip ${sel==='HOME'?'on':''}" data-c="HOME"><b>Home</b><i class="lv">All trades</i></button>`+Object.values(D.markets).map(m=>`<button class="chip ${m.code===sel?'on':''}" data-c="${m.code}"><b>${esc(m.name)}</b><i class="${m.live?'lv':''}">${m.live?'Live':esc(m.status)}</i></button>`).join('');
- document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{sel=b.dataset.c;render();window.scrollTo(0,0)})}
+ document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>go(b.dataset.c))}
+function go(c){if(c===sel)return;sel=c;openDay=null;history.pushState({sel:c},'','#'+c);render();window.scrollTo(0,0)}
+window.addEventListener('popstate',e=>{sel=(e.state&&e.state.sel)||(location.hash||'').slice(1)||'HOME';render();window.scrollTo(0,0)});
 function todo(m){const E=m.entries||[],L=[];
  if(m.state==='closed')L.push('Market closed. Nothing to do.');
  else if(m.state==='waiting')L.push('Nothing to do yet. Wait for the first signal.');
@@ -155,7 +182,7 @@ function todo(m){const E=m.entries||[],L=[];
  return`<div class="todo"><h3>What to do now</h3><ul>${L.map(x=>`<li>${x}</li>`).join('')}</ul></div>`}
 function why(m){const i=m.inputs||{};const dd=i.dollar_driven==null?'— (known from 1:00 am broker)':i.dollar_driven?'Yes':'No';
  return`<div class="why"><span>Dollar 1 day: <b>${mv(i.dollar_1d)}</b></span><span>Dollar 5 days: <b>${mv(i.dollar_5d)}</b></span><span>VIX 5 days: <b>${mv(i.vix_5d)}</b></span><span>US 10-year 5 days: <b>${mv(i.tnx_5d)}</b></span><span>Gold moving with the dollar: <b>${dd}</b></span><span>Quiet news day: <b>${i.low_attention?'Yes':'No'}</b></span>${(i.notes||[]).length?`<span class="wn">${esc(i.notes.join(' · '))}</span>`:''}</div>`}
-function row(e,n){const res=e.pnl==null?'':`<div class="cx"><span>Result /oz</span><b class="${e.pnl>=0?'pos':'neg'}">${usd(e.pnl)}</b></div>`;
+function row(e,n,m){const run=e.status==='open'||e.status==='close_now',lv=run&&m&&m.price!=null?(m.price-e.price)*(e.side==='BUY'?1:-1):null;const res=run&&m&&m.price!=null?`<div class="cx"><span>Now</span><b>${f2(m.price)}</b><small class="${lv>=0?'pos':'neg'}">${usd(lv)} /oz</small></div>`:e.pnl==null?'':`<div class="cx"><span>Result /oz</span><b class="${e.pnl>=0?'pos':'neg'}">${usd(e.pnl)}</b></div>`;
  return`<div class="row2 ${e.side} num"><em>#${n}</em><div class="c1"><b>${e.side} ${f2(e.price)}</b><small>${esc(e.time)} · ${esc(e.tag)}</small></div>
  <div class="cx"><span>Stop</span><b>${f2(e.stop)}</b></div><div class="cx"><span>Size</span><b>${f2(e.size)} oz</b></div>${res||'<div class="cx hide-m"><span>Target</span><b>None</b></div>'}
  <span class="st st-${e.status}">${esc(STL[e.status]||e.status)}</span></div>`}
@@ -183,7 +210,7 @@ function yrow(e,n){const res=e.pips==null?'<div class="cx hide-m"><span>Target</
 function paper(m){const U=m.unit==='usd',P=m.unit==='pts',dp=m.dp??3,fP=v=>v==null?'—':Number(v).toFixed(dp),E=m.entries||[],s=m.journal||{},pb=m.pass_bar||{},bt=m.stats||{};
  const rv=v=>U?usd(v):P?pts(v):pips(v),ch=(U||P)?m.change:m.change_pips,chc=ch==null?'':ch>=0?'up':'dn';
  const rres=x=>U?x.res_sized:P?x.res:x.pips;
- const prow=(e,n)=>{const r=rres(e);const res=r==null?'<div class="cx hide-m"><span>Target</span><b>None</b></div>':`<div class="cx"><span>Result${U?' /bbl':''}</span><b class="${r>=0?'pos':'neg'}">${rv(r)}</b></div>`;
+ const prow=(e,n)=>{const r=rres(e),run=e.status==='open'||e.status==='close_now',dir=e.side==='BUY'?1:-1;const lv=!run||m.price==null?null:P?(e.live??(m.price-e.price)*dir):U?(m.price-e.price)*dir:(m.price-e.price)*dir*100;const res=run&&m.price!=null?`<div class="cx"><span>Now</span><b>${fP(m.price)}</b><small class="${lv>=0?'pos':'neg'}">${rv(lv)}</small></div>`:r==null?'<div class="cx hide-m"><span>Target</span><b>None</b></div>':`<div class="cx"><span>Result${U?' /bbl':''}</span><b class="${r>=0?'pos':'neg'}">${rv(r)}</b></div>`;
   return`<div class="row2 ${e.side} num"><em>#${n}</em><div class="c1"><b>${e.side} ${fP(e.price)}</b><small>${esc(e.time)} · ${esc(e.name)}${U?' · size '+esc(e.size==='full'?'full':'⅓'):''}</small></div>
   <div class="cx"><span>Stop</span><b>${fP(e.stop)}</b></div><div class="cx"><span>Stop size</span><b>${U?'$'+Number(e.stop_usd).toFixed(2):P?Number(e.stop_pts).toFixed(1)+' pts':esc(e.stop_pips)+' pips'}</b></div>${res}
   <span class="st st-${e.status==='close_now'?'eod':e.status}">${esc(YST[e.status]||e.status)}</span></div>`};
@@ -224,12 +251,12 @@ function trades(){const out=[];for(const m of Object.values(D.markets)){if(!(m.l
    const dp=m.dp??2;out.push({m,e,run,res,txt,t:dmin(e.time),px:Number(e.price).toFixed(m.code==='GOLD'?2:dp),st:Number(e.stop).toFixed(m.code==='GOLD'?2:dp)})}}
  return out.sort((a,b)=>(b.run-a.run)||(b.t-a.t))}
 function home(){const T=trades(),run=T.filter(x=>x.run),done=T.filter(x=>!x.run);
- const line=x=>`<div class="hrow ${x.e.side} ${x.run?'':'done'} num" onclick="sel='${x.m.code}';render();window.scrollTo(0,0)"><em>${x.e.side==='BUY'?'B':'S'}</em>
+ const line=x=>`<div class="hrow ${x.e.side} ${x.run?'':'done'} num" onclick="go('${x.m.code}')"><em>${x.e.side==='BUY'?'B':'S'}</em>
   <div class="h1"><b>${esc(x.m.name)}</b><small>${esc(x.e.time)} Dubai · <span class="${x.m.live?'lvt':'ppt'}">${x.m.live?'LIVE':'PAPER'}</span></small></div>
   <div class="cx"><span>${esc(x.e.side)} at</span><b>${x.px}</b></div><div class="cx"><span>Stop</span><b>${x.st}</b></div>
-  <div class="cx"><span>${x.run?'Now':'Result'}</span><b class="${x.res==null?'':x.res>=0?'pos':'neg'}">${esc(x.txt)}</b></div>
+  <div class="cx"><span>${x.run?'Now '+(x.m.price==null?'':Number(x.m.price).toFixed(x.m.code==='GOLD'?2:(x.m.dp??2))):'Result'}</span><b class="${x.res==null?'':x.res>=0?'pos':'neg'}">${esc(x.txt)}</b></div>
   <span class="st st-${x.e.status==='close_now'?'close_now':x.run?'open':x.e.status}">${esc(x.e.status==='close_now'?'Close now':x.run?'Running':(STL[x.e.status]||x.e.status))}</span></div>`;
- const mk=Object.values(D.markets).map(m=>`<div class="mrow" onclick="sel='${m.code}';render();window.scrollTo(0,0)"><div><b>${esc(m.name)}</b> <small class="${m.live?'lvt':'ppt'}">${m.live?'LIVE':m.paper?'PAPER':esc(m.status||'')}</small><small class="mmsg">${esc(m.message||m.note||'')}</small></div>
+ const mk=Object.values(D.markets).map(m=>`<div class="mrow" onclick="go('${m.code}')"><div><b>${esc(m.name)}</b> <small class="${m.live?'lvt':'ppt'}">${m.live?'LIVE':m.paper?'PAPER':esc(m.status||'')}</small><small class="mmsg">${esc(m.message||m.note||'')}</small></div>
   <div class="num mpx">${m.price==null?'':Number(m.price).toFixed(m.code==='GOLD'?2:(m.dp??2))}<span class="pill s-${esc(m.state||'none')}">${esc((STATE[m.state]||m.state||m.status||'').replace(' day',''))}</span></div></div>`).join('');
  $('main').innerHTML=`<section class="card hero"><div class="htop"><div><div class="mname">Trades now</div><div class="msym">Every market · newest first · tap a trade for its market</div></div>
   <div class="px num"><div class="v">${run.length}</div><div class="c">running</div></div></div>
@@ -242,7 +269,7 @@ function render(){if(!D)return;chips();if(sel==='HOME'){home();return}const m=D.
  if(m.paper){paper(m);return}
  if(!m.live){$('main').innerHTML=`<section class="card hero info"><div class="mname">${esc(m.name)}</div><div class="pill s-blocked">${esc(m.status)}</div><p>${esc(m.note)}</p><p>Signals will appear here once this market is finished and checked at Capital.com cost.</p></section>`;return}
  const ch=m.change,chc=ch==null?'':ch>=0?'up':'dn',E=m.entries||[];
- const ents=E.map((e,i)=>row(e,i+1)).reverse().join('');
+ const ents=E.map((e,i)=>row(e,i+1,m)).reverse().join('');
  $('main').innerHTML=`<section class="card hero"><div class="htop"><div><div class="mname">${esc(m.name)}</div><div class="msym">${esc(m.symbol)} · ${esc(m.version||'')} · base size ${m.size} oz</div></div>
   <div class="px num"><div class="v">${f2(m.price)}</div><div class="c ${chc}">${ch==null?'':(ch>=0?'+':'')+f2(ch)+' today'}</div></div></div>
   <div class="pill s-${m.state}">${esc(STATE[m.state]||m.state)}</div><div class="msg">${esc(m.message)}</div>${todo(m)}${why(m)}${spark(m)}</section>
@@ -250,10 +277,15 @@ function render(){if(!D)return;chips();if(sel==='HOME'){home();return}const m=D.
   <div class="ents">${ents||'<div class="empty">No trades yet today.</div>'}</div>
   ${journal()}`;
 }
-async function load(){try{const r=await fetch(DATA+'?t='+Date.now(),{cache:'no-store'});D=await r.json();
+async function load(){if(!history.state)history.replaceState({sel},'',sel==='HOME'?location.pathname:'#'+sel);try{const r=await fetch(DATA+'?t='+Date.now(),{cache:'no-store'});D=await r.json();
  try{const q=await fetch(JOUR+'?t='+Date.now(),{cache:'no-store'});J=await q.json()}catch(e){J=null}
  $('upd').innerHTML=`Updated <b style="color:var(--ink)">${esc(D.updated)}</b> Dubai`;$('src').textContent='Prices: '+D.source+' · checks every minute · page updates every 10 minutes · signals only, you place the trades';
  const key=Object.values(D.markets).map(m=>m.code+':'+(m.entries||[]).length+(m.code==='GOLD'?'|'+m.state+'|'+(m.entries||[]).map(e=>e.status).join(','):'')).join(';');if(seen!==null&&key!==seen)beep();seen=key;render()}
  catch(e){$('upd').textContent='Waiting for data…'}}
 load();setInterval(load,60000);
+$('rf').onclick=()=>{$('rf').textContent='↻ …';load().finally(()=>$('rf').textContent='↻ Refresh')};
+(()=>{let y0=null,dy=0;const P=$('ptr');
+ window.addEventListener('touchstart',e=>{y0=window.scrollY<=0?e.touches[0].clientY:null;dy=0},{passive:true});
+ window.addEventListener('touchmove',e=>{if(y0==null)return;dy=e.touches[0].clientY-y0;if(dy>0){P.style.height=Math.min(dy/2,64)+'px';P.textContent=dy>130?'Release to refresh':'Pull to refresh'}},{passive:true});
+ window.addEventListener('touchend',()=>{if(y0==null)return;if(dy>130){P.style.height='44px';P.textContent='Refreshing…';load().finally(()=>{P.style.height='0'})}else P.style.height='0';y0=null},{passive:true});})();
 </script></body></html>
