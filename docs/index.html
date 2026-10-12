@@ -119,6 +119,7 @@ button.on{background:var(--gold);color:#0b0b0d}
 .cx small{display:block;color:var(--mute);font-size:11px;font-weight:500}
 body.fs{overflow:hidden}body.fs #lwcbox{position:fixed;inset:0;z-index:50;background:var(--bg);padding:10px 12px}body.fs #lwc{height:calc(100vh - 70px)!important}
 .colp{display:inline-flex;align-items:center;gap:6px;font:600 12px Inter;color:var(--gold2);border:1px solid rgba(212,179,106,.45);border-radius:999px;padding:3px 6px 3px 11px;background:var(--golddim)}.colp input{width:26px;height:22px;border:0;padding:0;background:none;cursor:pointer}.tfs{flex-wrap:wrap}
+.tvov{position:absolute;top:44px;left:56px;z-index:5;display:flex;flex-direction:column;gap:4px;pointer-events:none}.ovr{background:rgba(11,11,13,.82);border:1px solid var(--line2);border-radius:8px;padding:4px 9px;font:600 12px Inter;color:var(--ink)}.ovr.BUY b{color:var(--buy)}.ovr.SELL b{color:var(--sell)}.ovr span{color:var(--mute)}
 </style></head>
 <body><div id="ptr"></div><div class="wrap">
 <header><div class="brand"><div class="mark"></div><div><h1>Signal Desk</h1><small>Day-trade signals</small></div></div>
@@ -141,7 +142,7 @@ const STL={open:'Open',stopped:'Stopped out',eod:'Closed at day end',close_now:'
 const mv=w=>w==='rose'?'Rose ↑':w==='fell'?'Fell ↓':w==='flat'?'Flat':'—';
 $('snd').onclick=()=>{try{ctx=ctx||new (window.AudioContext||window.webkitAudioContext)();sound=!sound;$('snd').textContent='Sound alerts: '+(sound?'on':'off');$('snd').classList.toggle('on',sound);if(sound)beep()}catch(e){}};
 function beep(){if(!sound||!ctx)return;[0,.28,.56].forEach((t,i)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.value=[784,988,1319][i];o.connect(g);g.connect(ctx.destination);g.gain.setValueAtTime(.0001,ctx.currentTime+t);g.gain.exponentialRampToValueAtTime(.25,ctx.currentTime+t+.02);g.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+t+.25);o.start(ctx.currentTime+t);o.stop(ctx.currentTime+t+.26)});if(navigator.vibrate)navigator.vibrate([250,120,250])}
-let CH=null,CHK=null,CHR=null,PEND=null,cmode='desk',showTr=true,TVK=null;
+let CH=null,CHK=null,CHR=null,PEND=null,cmode='full',showTr=true,TVK=null;
 let cUp='#35c47f',cDn='#ff6464';try{cUp=localStorage.getItem('cUp')||cUp;cDn=localStorage.getItem('cDn')||cDn}catch(e){}
 function setCol(u,d){cUp=u||cUp;cDn=d||cDn;try{localStorage.setItem('cUp',cUp);localStorage.setItem('cDn',cDn)}catch(e){}if(CH&&CH._se)CH._se.applyOptions({upColor:cUp,downColor:cDn,wickUpColor:cUp,wickDownColor:cDn})}
 const TVSYM={GOLD:'CAPITALCOM:XAUUSD',USDJPY:'CAPITALCOM:USDJPY',OIL:'CAPITALCOM:USOIL',US100:'CAPITALCOM:NAS100',US100F:'CAPITALCOM:NAS100',SILVER:'CAPITALCOM:XAGUSD',US500:'CAPITALCOM:SPX500'};
@@ -149,7 +150,7 @@ function spark(m){if(window.LightweightCharts&&(m.spark||[]).length>=2||TVSYM[m.
  const fsb=`<button onclick="document.body.classList.toggle('fs');this.textContent=document.body.classList.contains('fs')?'✕ Exit full screen':'⛶ Full screen';setTimeout(()=>{if(CH)CH.timeScale().fitContent()},120)">${document.body.classList.contains('fs')?'✕ Exit full screen':'⛶ Full screen'}</button>`;
  const mb=`<button class="${cmode==='desk'?'on':''}" onclick="cmode='desk';render()">Desk chart</button>${TVSYM[m.code]?`<button class="${cmode==='full'?'on':''}" onclick="cmode='full';render()">Capital.com chart</button>`:''}`;
  const H=Math.round(Math.min(680,Math.max(300,innerHeight*(innerWidth>760?.68:.55))));
- if(cmode==='full'&&TVSYM[m.code])return`<div id="lwcbox"><div class="tfs">${mb}${fsb}</div><div id="tvc" style="height:${H}px;margin-top:10px"></div><div class="cnote">Capital.com live prices via TradingView · every interval (1m to 1M) and drawing tools are in the chart's own menu · desk entry/stop lines are on the Desk chart</div></div>`;
+ if(TVSYM[m.code])return`<div id="lwcbox"><div class="tfs"><button class="${showTr?'on':''}" onclick="showTr=!showTr;ovUpd()">${showTr?'Hide':'Show'} our trades</button><label class="colp">Up <input type="color" value="${cUp}" onchange="setCol(this.value,null);TVK=null;render()"></label><label class="colp">Down <input type="color" value="${cDn}" onchange="setCol(null,this.value);TVK=null;render()"></label><button onclick="setCol('#35c47f','#ff6464');TVK=null;render()">Default colours</button>${fsb}</div><div id="tvwrap" style="position:relative;margin-top:10px"><div id="tvc" style="height:${H}px"></div><div id="tvov" class="tvov"></div></div><div class="cnote">Capital.com live prices · every interval and drawing tool is in the chart's own menu · our open trades are listed on the chart (TradingView's free chart cannot draw our own lines)</div></div>`;
  const tfb=[5,15,30,60].map(v=>`<button class="${tf===v?'on':''}" onclick="tf=${v};render()">${v===60?'1h':v+'m'}</button>`).join('');
  return`<div id="lwcbox"><div class="tfs">${mb}</div><div class="tfs" style="margin-top:6px">${tfb}<button class="${showTr?'on':''}" onclick="showTr=!showTr;render()">${showTr?'Hide':'Show'} orders &amp; positions</button><button onclick="if(CH){CH.timeScale().fitContent();CH.priceScale('right').applyOptions({autoScale:true})}">Reset</button>${fsb}<label class="colp">Up <input type="color" value="${cUp}" oninput="setCol(this.value,null)"></label><label class="colp">Down <input type="color" value="${cDn}" oninput="setCol(null,this.value)"></label><button onclick="setCol('#35c47f','#ff6464');render()">Default colours</button></div><div id="lwc" style="height:${H}px;margin-top:10px"></div><div class="cnote">Drag to scroll · pinch or wheel to zoom · drag the price scale to stretch · Dubai time · today's ${m.spark[0].length>=5?'':'rough '}candles · entry line + amber stop</div></div>`}
  return svgSpark(m)}
@@ -280,10 +281,14 @@ function home(){const T=trades(),run=T.filter(x=>x.run),done=T.filter(x=>!x.run)
   <div class="ents">${done.map(line).join('')||'<div class="empty">No closed trades yet today.</div>'}</div>
   <div class="sec"><h2>Markets</h2><span>Gold is live (real signals) · the others are paper tests, do not trade them</span></div>
   <section class="card" style="padding:6px 16px">${mk}</section>`}
-function mountTV(m){const el=document.getElementById('tvc');if(!el)return;const sym=TVSYM[m.code];
- if(TVK&&TVK.sym===sym&&TVK.node){el.appendChild(TVK.node);return}
- const node=document.createElement('div');node.id='tv_'+Date.now();node.style.height='100%';el.appendChild(node);TVK={sym,node};
- const go=()=>new TradingView.widget({container_id:node.id,symbol:sym,interval:'15',timezone:'Asia/Dubai',theme:'dark',style:'1',locale:'en',autosize:true,allow_symbol_change:false,withdateranges:true,hide_side_toolbar:false,save_image:false});
+function ovHTML(m){if(!m||!showTr)return'';const dp=m.code==='GOLD'?2:(m.dp??2),E=(m.entries||[]).filter(e=>e.status==='open'||e.status==='close_now');
+ if(!E.length)return'<div class="ovr"><span>No open trade</span></div>';
+ return E.map(e=>{const d=e.side==='BUY'?1:-1,now=m.price,pl=now==null?null:(now-e.price)*d;return`<div class="ovr ${e.side}"><b>${e.side}</b> ${Number(e.price).toFixed(dp)} · stop ${Number(e.stop).toFixed(dp)}${pl==null?'':` · <span class="${pl>=0?'pos':'neg'}">${pl>=0?'+':'−'}${Math.abs(pl).toFixed(dp)}</span>`}</div>`}).join('')}
+function ovUpd(){const el=document.getElementById('tvov');if(!el||!D)return;const m=D.markets[sel];el.innerHTML=ovHTML(m);document.querySelectorAll('#lwcbox .tfs button').forEach(b=>{if(/our trades/.test(b.textContent)){b.textContent=(showTr?'Hide':'Show')+' our trades';b.classList.toggle('on',showTr)}})}
+function mountTV(m){setTimeout(ovUpd,0);const el=document.getElementById('tvc');if(!el)return;const sym=TVSYM[m.code];
+ if(TVK&&TVK.sym===sym&&TVK.node&&TVK.cu===cUp+cDn){el.appendChild(TVK.node);return}
+ const node=document.createElement('div');node.id='tv_'+Date.now();node.style.height='100%';el.appendChild(node);TVK={sym,node,cu:cUp+cDn};
+ const go=()=>new TradingView.widget({container_id:node.id,symbol:sym,interval:'15',timezone:'Asia/Dubai',theme:'dark',style:'1',locale:'en',autosize:true,allow_symbol_change:false,withdateranges:true,hide_side_toolbar:false,save_image:false,overrides:{'mainSeriesProperties.candleStyle.upColor':cUp,'mainSeriesProperties.candleStyle.downColor':cDn,'mainSeriesProperties.candleStyle.wickUpColor':cUp,'mainSeriesProperties.candleStyle.wickDownColor':cDn,'mainSeriesProperties.candleStyle.borderUpColor':cUp,'mainSeriesProperties.candleStyle.borderDownColor':cDn}});
  if(window.TradingView)go();else{const sc=document.createElement('script');sc.src='https://s3.tradingview.com/tv.js';sc.onload=go;document.head.appendChild(sc)}}
 function mountChart(){if(document.getElementById('tvc')&&PEND){const m=PEND;PEND=null;if(CH){try{CH.remove()}catch(e){}CH=null}mountTV(m);return}
  const el=document.getElementById('lwc'),m=PEND;PEND=null;
@@ -325,7 +330,7 @@ function render0(){if(!D)return;chips();if(sel==='HOME'){home();return}const m=D
 async function load(){if(!history.state)history.replaceState({sel},'',sel==='HOME'?location.pathname:'#'+sel);try{const r=await fetch(DATA+'?t='+Date.now(),{cache:'no-store'});D=await r.json();
  try{const q=await fetch(JOUR+'?t='+Date.now(),{cache:'no-store'});J=await q.json()}catch(e){J=null}
  $('upd').innerHTML=`Updated <b style="color:var(--ink)">${esc(D.updated)}</b> Dubai`;$('src').textContent='Prices: '+D.source+' · checks every minute · page updates every 10 minutes · signals only, you place the trades';
- const key=Object.values(D.markets).map(m=>m.code+':'+(m.entries||[]).length+(m.code==='GOLD'?'|'+m.state+'|'+(m.entries||[]).map(e=>e.status).join(','):'')).join(';');const chg=seen!==null&&key!==seen;if(chg)beep();seen=key;if(cmode==='full'&&sel!=='HOME'&&document.getElementById('tvc')&&!chg)return;render()}
+ const key=Object.values(D.markets).map(m=>m.code+':'+(m.entries||[]).length+(m.code==='GOLD'?'|'+m.state+'|'+(m.entries||[]).map(e=>e.status).join(','):'')).join(';');const chg=seen!==null&&key!==seen;if(chg)beep();seen=key;if(sel!=='HOME'&&document.getElementById('tvc')&&!chg){ovUpd();return}render()}
  catch(e){$('upd').textContent='Waiting for data…'}}
 load();setInterval(load,60000);
 document.addEventListener('keydown',e=>{if(e.key==='Escape')document.body.classList.remove('fs')});
