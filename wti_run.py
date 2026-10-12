@@ -133,7 +133,8 @@ def main(feed=None, get=None, now=None):
     else: state, msg = 'waiting', 'Waiting for the first signal.'
     spark = []
     if len(b):
-        c5 = b.c.resample('5min').last().dropna(); spark = [[F.broker_to_dubai(t).strftime('%-I:%M %p').lower(), round(float(v), 2)] for t, v in c5.items()]
+        g5 = b[['o', 'h', 'l', 'c']].resample('5min').agg({'o': 'first', 'h': 'max', 'l': 'min', 'c': 'last'}).dropna()   # 5-min candles for the page: [time, close, open, high, low]
+        spark = [[F.broker_to_dubai(t).strftime('%-I:%M %p').lower(), round(float(r.c), 2), round(float(r.o), 2), round(float(r.h), 2), round(float(r.l), 2)] for t, r in g5.iterrows()]
     mk['OIL'] = dict(base_card(None if P is None else P['A']), state=state, message=msg, price=last, change=(None if last is None or first is None else round(last - first, 2)),
                      entries=rows, spark=spark, journal=J['summary'], jdays=jdays(J), feed_error=False, epic=EPIC,
                      history_note=f"history to {H['through']} ({len(H['days'])} days)" + (f" · added {', '.join(added)}" if added else ''))

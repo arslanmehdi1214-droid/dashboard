@@ -173,7 +173,8 @@ def main(feed=None, get=None, now=None):
     last = float(b.c.iloc[-1]) if len(b) else None; first = float(b.o.iloc[0]) if len(b) else None
     spark = []
     if len(b):
-        c5 = b.c.resample('5min').last().dropna(); spark = [[F.broker_to_dubai(t).strftime('%-I:%M %p').lower(), round(float(v), 1)] for t, v in c5.items()]
+        g5 = b[['o', 'h', 'l', 'c']].resample('5min').agg({'o': 'first', 'h': 'max', 'l': 'min', 'c': 'last'}).dropna()   # 5-min candles for the page: [time, close, open, high, low]
+        spark = [[F.broker_to_dubai(t).strftime('%-I:%M %p').lower(), round(float(r.c), 1), round(float(r.o), 1), round(float(r.h), 1), round(float(r.l), 1)] for t, r in g5.iterrows()]
     errs = []
     for V in VARIANTS:                                   # each version on its own: one failing never stops the other
         try:

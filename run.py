@@ -224,7 +224,8 @@ def write_pages(now, day, m1, taken, skipped, inp, reg, src, eod, datr):
     else: state, msg = 'waiting', 'Waiting for the first signal (signals can come until 8 pm Dubai).'
     spark = []
     if len(m1):
-        c5 = m1.c.resample('5min').last().dropna(); spark = [[dubai(t), round(float(v), 2)] for t, v in c5.items()]
+        g5 = m1[['o', 'h', 'l', 'c']].resample('5min').agg({'o': 'first', 'h': 'max', 'l': 'min', 'c': 'last'}).dropna()   # 5-min candles for the page: [time, close, open, high, low]
+        spark = [[dubai(t), round(float(r.c), 2), round(float(r.o), 2), round(float(r.h), 2), round(float(r.l), 2)] for t, r in g5.iterrows()]
     last = float(m1.c.iloc[-1]) if len(m1) else None; first = float(m1.o.iloc[0]) if len(m1) else None
     hist = []
     for d in J['days'][-15:][::-1]:
