@@ -1,5 +1,5 @@
 {
- "updated": "Tue 13 Oct \u00b7 3:09 pm",
+ "updated": "Tue 13 Oct \u00b7 3:13 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -11,9 +11,9 @@
    "feed_error": false,
    "state": "buy",
    "message": "BUY day \u2014 any later signals today are BUY only. Hold every trade until its stop or the day-end close at 12:00 am Dubai. No target.",
-   "price": 4184.17,
+   "price": 4185.78,
    "close_at": "12:00 am",
-   "change": 14.16,
+   "change": 15.77,
    "size": 0.1,
    "datr": 78.44,
    "open_now": 1,
@@ -1135,10 +1135,17 @@
     ],
     [
      "3:05 pm",
-     4184.17,
+     4184.74,
      4182.64,
-     4184.49,
+     4184.97,
      4182.45
+    ],
+    [
+     "3:10 pm",
+     4185.78,
+     4184.73,
+     4186.84,
+     4184.68
     ]
    ],
    "history": [
@@ -1288,8 +1295,8 @@
    },
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Each trade holds until its stop or the 7:00 pm Dubai close. No target.",
-   "price": 158.048,
-   "change_pips": -54.8,
+   "price": 158.028,
+   "change_pips": -56.8,
    "atr_pips": 100.4,
    "entries": [
     {
@@ -2422,10 +2429,17 @@
     ],
     [
      "3:05 pm",
-     158.048,
+     158.063,
      158.023,
-     158.051,
+     158.064,
      158.003
+    ],
+    [
+     "3:10 pm",
+     158.028,
+     158.062,
+     158.063,
+     158.025
     ]
    ],
    "journal": {
@@ -2767,8 +2781,8 @@
    "net_label": "Net $ per barrel (v1.02 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 91.026,
-   "change": -1.41,
+   "price": 91.061,
+   "change": -1.37,
    "entries": [],
    "spark": [
     [
@@ -3872,10 +3886,17 @@
     ],
     [
      "3:05 pm",
-     91.03,
+     91.11,
      91.0,
-     91.03,
+     91.12,
      90.95
+    ],
+    [
+     "3:10 pm",
+     91.06,
+     91.12,
+     91.12,
+     91.03
     ]
    ],
    "journal": {
@@ -4003,8 +4024,8 @@
    "net_label": "Net points (all paper trades)",
    "state": "sell",
    "message": "1 paper trade today (1 running). Each holds until its stop or the 12:00 am Dubai close. No target. At most 2 trades a day.",
-   "price": 30469.3,
-   "change": -186.7,
+   "price": 30460.5,
+   "change": -195.5,
    "entries": [
     {
      "time": "10:00 am",
@@ -4018,9 +4039,9 @@
      "exit": null,
      "exit_time": null,
      "res": null,
-     "live": -7.1,
+     "live": 1.4,
      "rwf": null,
-     "spread": 1.8
+     "spread": 2.1
     }
    ],
    "spark": [
@@ -5202,10 +5223,17 @@
     ],
     [
      "3:05 pm",
-     30469.3,
+     30466.0,
      30467.1,
      30480.3,
-     30466.8
+     30462.1
+    ],
+    [
+     "3:10 pm",
+     30460.5,
+     30466.3,
+     30470.7,
+     30457.0
     ]
    ],
    "journal": {
@@ -5239,9 +5267,9 @@
        "exit": null,
        "exit_time": null,
        "res": null,
-       "live": -7.1,
+       "live": 1.4,
        "rwf": null,
-       "spread": 1.8
+       "spread": 2.1
       }
      ],
      "final": false
@@ -5306,8 +5334,8 @@
    "net_label": "Net points (all paper trades)",
    "state": "sell",
    "message": "1 paper trade today (1 running). Each holds until its stop or the 12:00 am Dubai close. No target. At most 2 trades a day.",
-   "price": 30469.3,
-   "change": -186.7,
+   "price": 30460.5,
+   "change": -195.5,
    "entries": [
     {
      "time": "10:00 am",
@@ -5321,9 +5349,9 @@
      "exit": null,
      "exit_time": null,
      "res": null,
-     "live": -7.1,
+     "live": 1.4,
      "rwf": null,
-     "spread": 1.8
+     "spread": 2.1
     }
    ],
    "spark": [
@@ -6505,10 +6533,17 @@
     ],
     [
      "3:05 pm",
-     30469.3,
+     30466.0,
      30467.1,
      30480.3,
-     30466.8
+     30462.1
+    ],
+    [
+     "3:10 pm",
+     30460.5,
+     30466.3,
+     30470.7,
+     30457.0
     ]
    ],
    "journal": {
@@ -6542,9 +6577,9 @@
        "exit": null,
        "exit_time": null,
        "res": null,
-       "live": -7.1,
+       "live": 1.4,
        "rwf": null,
-       "spread": 1.8
+       "spread": 2.1
       }
      ],
      "final": false
