@@ -1,5 +1,5 @@
 {
- "updated": "Tue 13 Oct \u00b7 7:23 am",
+ "updated": "Tue 13 Oct \u00b7 7:24 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -9,15 +9,30 @@
    "live": true,
    "version": "v2.06",
    "feed_error": false,
-   "state": "waiting",
-   "message": "Waiting for the first signal (signals can come until 8 pm Dubai).",
-   "price": 4179.31,
+   "state": "buy",
+   "message": "BUY day \u2014 any later signals today are BUY only. Hold every trade until its stop or the day-end close at 12:00 am Dubai. No target.",
+   "price": 4179.4,
    "close_at": "12:00 am",
-   "change": 9.3,
+   "change": 9.39,
    "size": 0.1,
    "datr": 78.44,
-   "open_now": 0,
-   "entries": [],
+   "open_now": 1,
+   "entries": [
+    {
+     "time": "7:23 am",
+     "side": "BUY",
+     "tag": "N15 hsq",
+     "price": 4180.74,
+     "stop": 4141.52,
+     "w": 0.5,
+     "size": 0.1,
+     "status": "open",
+     "first": true,
+     "exit": null,
+     "pnl": null,
+     "rwf": null
+    }
+   ],
    "spark": [
     [
      "2:00 am",
@@ -469,9 +484,9 @@
     ],
     [
      "7:20 am",
-     4179.31,
+     4179.4,
      4176.34,
-     4180.46,
+     4180.91,
      4175.69
     ]
    ],
@@ -479,11 +494,11 @@
     {
      "date": "2026-10-13",
      "label": "Tue 13 Oct",
-     "state": "none",
-     "entries": 0,
+     "state": "buy",
+     "entries": 1,
      "stopped": 0,
      "eod": 0,
-     "running": 0,
+     "running": 1,
      "rw": 0,
      "rd": 0,
      "pnl": null
@@ -581,11 +596,11 @@
    },
    "journal": {
     "since": "03 Oct 2026",
-    "trades": 14,
+    "trades": 15,
     "direction": 46.2,
     "decided": 13,
-    "days": 71.4,
-    "perday": 2.0,
+    "days": 85.7,
+    "perday": 2.14,
     "avg_pnl": -3.5,
     "closed": 14,
     "total_pnl_01": -4.9
@@ -622,8 +637,8 @@
    },
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Each trade holds until its stop or the 7:00 pm Dubai close. No target.",
-   "price": 158.269,
-   "change_pips": -32.7,
+   "price": 158.265,
+   "change_pips": -33.1,
    "atr_pips": 100.4,
    "entries": [
     {
@@ -1088,7 +1103,7 @@
     ],
     [
      "7:20 am",
-     158.269,
+     158.265,
      158.252,
      158.275,
      158.25
@@ -1416,8 +1431,8 @@
    "net_label": "Net $ per barrel (v1.02 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 91.751,
-   "change": -0.68,
+   "price": 91.726,
+   "change": -0.7,
    "entries": [],
    "spark": [
     [
@@ -1870,7 +1885,7 @@
     ],
     [
      "7:20 am",
-     91.75,
+     91.73,
      91.7,
      91.77,
      91.64
@@ -2001,8 +2016,8 @@
    "net_label": "Net points (all paper trades)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 30423.1,
-   "change": -232.9,
+   "price": 30424.8,
+   "change": -231.2,
    "entries": [],
    "spark": [
     [
@@ -2532,9 +2547,9 @@
     ],
     [
      "7:20 am",
-     30423.1,
+     30424.8,
      30401.1,
-     30423.8,
+     30425.3,
      30396.0
     ]
    ],
@@ -2619,8 +2634,8 @@
    "net_label": "Net points (all paper trades)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 30423.1,
-   "change": -232.9,
+   "price": 30424.8,
+   "change": -231.2,
    "entries": [],
    "spark": [
     [
@@ -3150,9 +3165,9 @@
     ],
     [
      "7:20 am",
-     30423.1,
+     30424.8,
      30401.1,
-     30423.8,
+     30425.3,
      30396.0
     ]
    ],

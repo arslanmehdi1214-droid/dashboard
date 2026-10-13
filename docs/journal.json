@@ -254,19 +254,34 @@
   {
    "date": "2026-10-13",
    "label": "Tue 13 Oct",
-   "side": null,
-   "trades": [],
+   "side": "BUY",
+   "trades": [
+    {
+     "time": "7:23 am",
+     "side": "BUY",
+     "tag": "N15 hsq",
+     "price": 4180.74,
+     "stop": 4141.52,
+     "w": 0.5,
+     "size": 0.1,
+     "status": "open",
+     "first": true,
+     "exit": null,
+     "pnl": null,
+     "rwf": null
+    }
+   ],
    "skipped": 0,
    "final": false
   }
  ],
  "summary": {
   "since": "03 Oct 2026",
-  "trades": 14,
+  "trades": 15,
   "direction": 46.2,
   "decided": 13,
-  "days": 71.4,
-  "perday": 2.0,
+  "days": 85.7,
+  "perday": 2.14,
   "avg_pnl": -3.5,
   "closed": 14,
   "total_pnl_01": -4.9
