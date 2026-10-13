@@ -1,5 +1,5 @@
 {
- "updated": "Tue 13 Oct \u00b7 5:43 pm",
+ "updated": "Tue 13 Oct \u00b7 5:52 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -11,9 +11,9 @@
    "feed_error": false,
    "state": "buy",
    "message": "BUY day \u2014 any later signals today are BUY only. Hold every trade until its stop or the day-end close at 12:00 am Dubai. No target.",
-   "price": 4181.91,
+   "price": 4174.01,
    "close_at": "12:00 am",
-   "change": 11.9,
+   "change": 4.0,
    "size": 0.1,
    "datr": 78.44,
    "open_now": 1,
@@ -1352,10 +1352,24 @@
     ],
     [
      "5:40 pm",
-     4181.91,
+     4176.81,
      4184.24,
      4185.63,
-     4180.26
+     4175.78
+    ],
+    [
+     "5:45 pm",
+     4175.75,
+     4176.91,
+     4179.33,
+     4173.2
+    ],
+    [
+     "5:50 pm",
+     4174.01,
+     4175.66,
+     4175.79,
+     4173.58
     ]
    ],
    "history": [
@@ -1505,8 +1519,8 @@
    },
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Each trade holds until its stop or the 7:00 pm Dubai close. No target.",
-   "price": 158.325,
-   "change_pips": -27.1,
+   "price": 158.375,
+   "change_pips": -22.1,
    "atr_pips": 100.4,
    "entries": [
     {
@@ -2856,10 +2870,24 @@
     ],
     [
      "5:40 pm",
-     158.325,
+     158.349,
      158.297,
-     158.332,
+     158.356,
      158.286
+    ],
+    [
+     "5:45 pm",
+     158.373,
+     158.348,
+     158.373,
+     158.332
+    ],
+    [
+     "5:50 pm",
+     158.375,
+     158.374,
+     158.388,
+     158.371
     ]
    ],
    "journal": {
@@ -3201,8 +3229,8 @@
    "net_label": "Net $ per barrel (v1.02 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 92.201,
-   "change": -0.23,
+   "price": 92.346,
+   "change": -0.08,
    "entries": [],
    "spark": [
     [
@@ -4523,10 +4551,24 @@
     ],
     [
      "5:40 pm",
-     92.2,
+     92.19,
      92.05,
-     92.21,
+     92.26,
      91.96
+    ],
+    [
+     "5:45 pm",
+     92.36,
+     92.19,
+     92.47,
+     92.13
+    ],
+    [
+     "5:50 pm",
+     92.35,
+     92.37,
+     92.45,
+     92.33
     ]
    ],
    "journal": {
@@ -4653,9 +4695,9 @@
    "cost_note": "Results are index points per trade, from the signal price, minus Capital.com's spread (at least 1.8 points).",
    "net_label": "Net points (all paper trades)",
    "state": "sell",
-   "message": "2 paper trades today (1 running). Each holds until its stop or the 12:00 am Dubai close. No target. At most 2 trades a day.",
-   "price": 30556.2,
-   "change": -99.8,
+   "message": "2 paper trades today (0 running). Each holds until its stop or the 12:00 am Dubai close. No target. At most 2 trades a day.",
+   "price": 30541.1,
+   "change": -114.9,
    "entries": [
     {
      "time": "10:00 am",
@@ -4665,11 +4707,11 @@
      "price": 30464.0,
      "stop": 30570.6,
      "stop_pts": 106.7,
-     "status": "open",
-     "exit": null,
-     "exit_time": null,
-     "res": null,
-     "live": -94.0,
+     "status": "stopped",
+     "exit": 30570.6,
+     "exit_time": "5:49 pm",
+     "res": -108.5,
+     "live": null,
      "rwf": null,
      "spread": 1.8
     },
@@ -6086,10 +6128,24 @@
     ],
     [
      "5:40 pm",
-     30556.2,
+     30550.2,
      30533.7,
      30565.2,
      30520.8
+    ],
+    [
+     "5:45 pm",
+     30566.3,
+     30549.3,
+     30575.3,
+     30538.6
+    ],
+    [
+     "5:50 pm",
+     30541.1,
+     30566.8,
+     30567.5,
+     30539.3
     ]
    ],
    "journal": {
@@ -6100,10 +6156,10 @@
     "direction": 0.0,
     "days": 100.0,
     "perday": 1.5,
-    "closed": 2,
+    "closed": 3,
     "win": 0.0,
     "pf": 0.0,
-    "net": -216.2
+    "net": -324.7
    },
    "jdays": [
     {
@@ -6119,11 +6175,11 @@
        "price": 30464.0,
        "stop": 30570.6,
        "stop_pts": 106.7,
-       "status": "open",
-       "exit": null,
-       "exit_time": null,
-       "res": null,
-       "live": -94.0,
+       "status": "stopped",
+       "exit": 30570.6,
+       "exit_time": "5:49 pm",
+       "res": -108.5,
+       "live": null,
        "rwf": null,
        "spread": 1.8
       },
@@ -6205,9 +6261,9 @@
    "cost_note": "Results are index points per trade, from the signal price, minus Capital.com's spread (at least 1.8 points).",
    "net_label": "Net points (all paper trades)",
    "state": "sell",
-   "message": "2 paper trades today (1 running). Each holds until its stop or the 12:00 am Dubai close. No target. At most 2 trades a day.",
-   "price": 30556.2,
-   "change": -99.8,
+   "message": "2 paper trades today (0 running). Each holds until its stop or the 12:00 am Dubai close. No target. At most 2 trades a day.",
+   "price": 30541.1,
+   "change": -114.9,
    "entries": [
     {
      "time": "10:00 am",
@@ -6217,11 +6273,11 @@
      "price": 30464.0,
      "stop": 30570.6,
      "stop_pts": 106.7,
-     "status": "open",
-     "exit": null,
-     "exit_time": null,
-     "res": null,
-     "live": -94.0,
+     "status": "stopped",
+     "exit": 30570.6,
+     "exit_time": "5:49 pm",
+     "res": -108.5,
+     "live": null,
      "rwf": null,
      "spread": 1.8
     },
@@ -7638,10 +7694,24 @@
     ],
     [
      "5:40 pm",
-     30556.2,
+     30550.2,
      30533.7,
      30565.2,
      30520.8
+    ],
+    [
+     "5:45 pm",
+     30566.3,
+     30549.3,
+     30575.3,
+     30538.6
+    ],
+    [
+     "5:50 pm",
+     30541.1,
+     30566.8,
+     30567.5,
+     30539.3
     ]
    ],
    "journal": {
@@ -7652,10 +7722,10 @@
     "direction": 0.0,
     "days": 100.0,
     "perday": 1.5,
-    "closed": 2,
+    "closed": 3,
     "win": 0.0,
     "pf": 0.0,
-    "net": -216.2
+    "net": -324.7
    },
    "jdays": [
     {
@@ -7671,11 +7741,11 @@
        "price": 30464.0,
        "stop": 30570.6,
        "stop_pts": 106.7,
-       "status": "open",
-       "exit": null,
-       "exit_time": null,
-       "res": null,
-       "live": -94.0,
+       "status": "stopped",
+       "exit": 30570.6,
+       "exit_time": "5:49 pm",
+       "res": -108.5,
+       "live": null,
        "rwf": null,
        "spread": 1.8
       },
