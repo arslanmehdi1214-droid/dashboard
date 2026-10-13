@@ -1,5 +1,5 @@
 {
- "updated": "Tue 13 Oct \u00b7 11:58 pm",
+ "updated": "Wed 14 Oct \u00b7 12:00 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -11,9 +11,9 @@
    "feed_error": false,
    "state": "buy",
    "message": "BUY day \u2014 any later signals today are BUY only. Hold every trade until its stop or the day-end close at 12:00 am Dubai. No target.",
-   "price": 4164.38,
+   "price": 4163.22,
    "close_at": "12:00 am",
-   "change": -5.63,
+   "change": -6.79,
    "size": 0.1,
    "datr": 78.44,
    "open_now": 1,
@@ -26,10 +26,10 @@
      "stop": 4141.52,
      "w": 0.5,
      "size": 0.1,
-     "status": "open",
+     "status": "close_now",
      "first": true,
-     "exit": null,
-     "pnl": null,
+     "exit": 4163.22,
+     "pnl": -18.02,
      "rwf": 0
     }
    ],
@@ -1877,10 +1877,10 @@
     ],
     [
      "11:55 pm",
-     4164.38,
+     4163.22,
      4164.48,
      4165.0,
-     4164.12
+     4162.99
     ]
    ],
    "history": [
@@ -1890,11 +1890,11 @@
      "state": "buy",
      "entries": 1,
      "stopped": 0,
-     "eod": 0,
-     "running": 1,
+     "eod": 1,
+     "running": 0,
      "rw": 0,
      "rd": 1,
-     "pnl": null
+     "pnl": -18.02
     },
     {
      "date": "2026-10-12",
@@ -1994,9 +1994,9 @@
     "decided": 14,
     "days": 85.7,
     "perday": 2.14,
-    "avg_pnl": -3.5,
-    "closed": 14,
-    "total_pnl_01": -4.9
+    "avg_pnl": -4.47,
+    "closed": 15,
+    "total_pnl_01": -6.7
    }
   },
   "SILVER": {
@@ -2030,8 +2030,8 @@
    },
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Each trade holds until its stop or the 7:00 pm Dubai close. No target.",
-   "price": 158.35,
-   "change_pips": -24.6,
+   "price": 158.352,
+   "change_pips": -24.4,
    "atr_pips": 100.4,
    "entries": [
     {
@@ -3906,9 +3906,9 @@
     ],
     [
      "11:55 pm",
-     158.35,
+     158.352,
      158.326,
-     158.351,
+     158.362,
      158.326
     ]
    ],
@@ -4251,8 +4251,8 @@
    "net_label": "Net $ per barrel (v1.02 sizes)",
    "state": "buy",
    "message": "PAPER BUY day \u2014 later signals today are BUY only. Each trade holds until its stop or the 12:00 am Dubai close. No target.",
-   "price": 93.886,
-   "change": 1.45,
+   "price": 93.921,
+   "change": 1.49,
    "entries": [
     {
      "time": "6:49 pm",
@@ -4263,13 +4263,13 @@
      "stop_usd": 1.0,
      "size": "1/3",
      "first": true,
-     "status": "open",
+     "status": "close_now",
      "exit": null,
      "exit_time": null,
      "res": null,
      "res_sized": null,
      "rwf": null,
-     "spread": 0.04
+     "spread": 0.02
     },
     {
      "time": "8:41 pm",
@@ -4280,13 +4280,13 @@
      "stop_usd": 1.0,
      "size": "1/3",
      "first": false,
-     "status": "open",
+     "status": "close_now",
      "exit": null,
      "exit_time": null,
      "res": null,
      "res_sized": null,
      "rwf": null,
-     "spread": 0.04
+     "spread": 0.02
     }
    ],
    "spark": [
@@ -6133,9 +6133,9 @@
     ],
     [
      "11:55 pm",
-     93.89,
+     93.92,
      93.9,
-     93.91,
+     93.92,
      93.81
     ]
    ],
@@ -6167,13 +6167,13 @@
        "stop_usd": 1.0,
        "size": "1/3",
        "first": true,
-       "status": "open",
+       "status": "close_now",
        "exit": null,
        "exit_time": null,
        "res": null,
        "res_sized": null,
        "rwf": null,
-       "spread": 0.04
+       "spread": 0.02
       },
       {
        "time": "8:41 pm",
@@ -6184,18 +6184,18 @@
        "stop_usd": 1.0,
        "size": "1/3",
        "first": false,
-       "status": "open",
+       "status": "close_now",
        "exit": null,
        "exit_time": null,
        "res": null,
        "res_sized": null,
        "rwf": null,
-       "spread": 0.04
+       "spread": 0.02
       }
      ],
      "range_usd": 4.0,
      "traded": true,
-     "final": false
+     "final": true
     },
     {
      "date": "2026-10-12",
@@ -6299,8 +6299,8 @@
    "net_label": "Net points (all paper trades)",
    "state": "sell",
    "message": "2 paper trades today (0 running). Each holds until its stop or the 12:00 am Dubai close. No target. At most 2 trades a day.",
-   "price": 30558.6,
-   "change": -97.4,
+   "price": 30569.2,
+   "change": -86.8,
    "entries": [
     {
      "time": "10:00 am",
@@ -8256,9 +8256,9 @@
     ],
     [
      "11:55 pm",
-     30558.6,
+     30569.2,
      30555.0,
-     30564.5,
+     30583.0,
      30547.4
     ]
    ],
@@ -8314,7 +8314,7 @@
        "spread": 1.8
       }
      ],
-     "final": false
+     "final": true
     },
     {
      "date": "2026-10-12",
@@ -8376,8 +8376,8 @@
    "net_label": "Net points (all paper trades)",
    "state": "sell",
    "message": "2 paper trades today (0 running). Each holds until its stop or the 12:00 am Dubai close. No target. At most 2 trades a day.",
-   "price": 30558.6,
-   "change": -97.4,
+   "price": 30569.2,
+   "change": -86.8,
    "entries": [
     {
      "time": "10:00 am",
@@ -10333,9 +10333,9 @@
     ],
     [
      "11:55 pm",
-     30558.6,
+     30569.2,
      30555.0,
-     30564.5,
+     30583.0,
      30547.4
     ]
    ],
@@ -10391,7 +10391,7 @@
        "spread": 1.8
       }
      ],
-     "final": false
+     "final": true
     },
     {
      "date": "2026-10-12",
