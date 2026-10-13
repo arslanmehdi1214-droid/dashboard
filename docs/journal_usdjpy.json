@@ -261,7 +261,24 @@
      "exit_time": null,
      "pips": null,
      "usd": null,
-     "rwf": null,
+     "rwf": 1,
+     "spread": 1.2
+    },
+    {
+     "time": "12:43 pm",
+     "side": "SELL",
+     "sig": "L1",
+     "name": "EMA10 break",
+     "price": 157.994,
+     "stop": 158.245,
+     "stop_pips": 25.1,
+     "first": false,
+     "status": "stopped",
+     "exit": 158.245,
+     "exit_time": "12:45 pm",
+     "pips": -26.3,
+     "usd": -16.65,
+     "rwf": 0,
      "spread": 1.2
     }
    ],
@@ -272,15 +289,15 @@
  "summary": {
   "since": "05 Oct 2026",
   "weekdays": 7,
-  "trades": 12,
-  "decided": 7,
-  "direction": 28.6,
+  "trades": 13,
+  "decided": 9,
+  "direction": 33.3,
   "days": 100.0,
-  "perday": 1.71,
-  "closed": 11,
-  "win": 45.5,
-  "pf": 0.52,
-  "net_pips": -79.7,
-  "net_usd": -50.33
+  "perday": 1.86,
+  "closed": 12,
+  "win": 41.7,
+  "pf": 0.45,
+  "net_pips": -106.0,
+  "net_usd": -66.98
  }
 }
