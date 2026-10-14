@@ -94,16 +94,16 @@
      "price": 30467.6,
      "stop": 30571.9,
      "stop_pts": 104.2,
-     "status": "open",
-     "exit": null,
-     "exit_time": null,
-     "res": null,
-     "live": 529.0,
+     "status": "eod",
+     "exit": 29963.8,
+     "exit_time": "11:59 pm",
+     "res": 502.0,
+     "live": null,
      "rwf": 1,
      "spread": 1.8
     }
    ],
-   "final": false
+   "final": true
   }
  ],
  "summary": {
@@ -114,9 +114,9 @@
   "direction": 20.0,
   "days": 100.0,
   "perday": 1.67,
-  "closed": 4,
-  "win": 0.0,
-  "pf": 0.0,
-  "net": -430.7
+  "closed": 5,
+  "win": 20.0,
+  "pf": 1.17,
+  "net": 71.3
  }
 }
