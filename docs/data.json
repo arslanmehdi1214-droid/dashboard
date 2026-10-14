@@ -1,5 +1,5 @@
 {
- "updated": "Wed 14 Oct \u00b7 4:14 pm",
+ "updated": "Wed 14 Oct \u00b7 4:25 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -11,9 +11,9 @@
    "feed_error": false,
    "state": "buy",
    "message": "BUY day \u2014 any later signals today are BUY only. Hold every trade until its stop or the day-end close at 12:00 am Dubai. No target.",
-   "price": 4147.78,
+   "price": 4150.51,
    "close_at": "12:00 am",
-   "change": -13.33,
+   "change": -10.6,
    "size": 0.1,
    "datr": 75.51,
    "open_now": 1,
@@ -1226,10 +1226,24 @@
     ],
     [
      "4:10 pm",
-     4147.78,
+     4149.36,
      4146.06,
-     4149.27,
+     4149.41,
      4143.2
+    ],
+    [
+     "4:15 pm",
+     4145.95,
+     4149.45,
+     4152.79,
+     4144.29
+    ],
+    [
+     "4:20 pm",
+     4150.51,
+     4146.04,
+     4154.25,
+     4144.88
     ]
    ],
    "history": [
@@ -1391,8 +1405,8 @@
    },
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Each trade holds until its stop or the 7:00 pm Dubai close. No target.",
-   "price": 158.441,
-   "change_pips": 10.9,
+   "price": 158.477,
+   "change_pips": 14.5,
    "atr_pips": 98.8,
    "entries": [
     {
@@ -2599,10 +2613,24 @@
     ],
     [
      "4:10 pm",
-     158.441,
+     158.442,
      158.445,
      158.461,
      158.429
+    ],
+    [
+     "4:15 pm",
+     158.476,
+     158.441,
+     158.476,
+     158.438
+    ],
+    [
+     "4:20 pm",
+     158.477,
+     158.475,
+     158.487,
+     158.45
     ]
    ],
    "journal": {
@@ -2970,8 +2998,8 @@
    "net_label": "Net $ per barrel (v1.02 sizes)",
    "state": "buy",
    "message": "PAPER BUY day \u2014 later signals today are BUY only. Each trade holds until its stop or the 12:00 am Dubai close. No target.",
-   "price": 94.729,
-   "change": 0.85,
+   "price": 94.574,
+   "change": 0.7,
    "entries": [
     {
      "time": "2:03 pm",
@@ -4184,10 +4212,24 @@
     ],
     [
      "4:10 pm",
-     94.73,
+     94.58,
      94.64,
      94.9,
      94.54
+    ],
+    [
+     "4:15 pm",
+     94.7,
+     94.59,
+     94.75,
+     94.5
+    ],
+    [
+     "4:20 pm",
+     94.57,
+     94.7,
+     94.81,
+     94.5
     ]
    ],
    "journal": {
@@ -4371,15 +4413,32 @@
     "pf": 1.1,
     "months": 3
    },
-   "day_note": "14-day range \u2014 \u00b7 stop \u00bc range \u00b7 no target \u00b7 max 2 trades a day \u00b7 close 11:00 pm broker (Fri 10:50 pm) = 12:00 am Dubai, 1:00 am in winter",
+   "day_note": "14-day range 417 pts \u00b7 stop \u00bc range \u00b7 no target \u00b7 max 2 trades a day \u00b7 close 11:00 pm broker (Fri 10:50 pm) = 12:00 am Dubai, 1:00 am in winter",
    "what_note": "Simple version: uses Nasdaq prices only. Tracks whether live signals do as well as the backtest. Decision after about 3 months.",
    "cost_note": "Results are index points per trade, from the signal price, minus Capital.com's spread (at least 1.8 points).",
    "net_label": "Net points (all paper trades)",
-   "state": "waiting",
-   "message": "Waiting for the first signal.",
-   "price": 30585.3,
-   "change": 25.0,
-   "entries": [],
+   "state": "buy",
+   "message": "1 paper trade today (1 running). Each holds until its stop or the 12:00 am Dubai close. No target. At most 2 trades a day.",
+   "price": 30586.6,
+   "change": 26.3,
+   "entries": [
+    {
+     "time": "4:21 pm",
+     "side": "BUY",
+     "name": "REV H2 round $200 touch then close back -> reverse, from 4pm",
+     "role": "filler",
+     "price": 30577.3,
+     "stop": 30473.1,
+     "stop_pts": 104.2,
+     "status": "open",
+     "exit": null,
+     "exit_time": null,
+     "res": null,
+     "live": 7.5,
+     "rwf": null,
+     "spread": 1.8
+    }
+   ],
    "spark": [
     [
      "1:05 am",
@@ -5650,20 +5709,34 @@
     ],
     [
      "4:10 pm",
-     30585.3,
+     30589.4,
      30589.2,
      30595.3,
      30574.7
+    ],
+    [
+     "4:15 pm",
+     30589.1,
+     30589.7,
+     30600.9,
+     30585.7
+    ],
+    [
+     "4:20 pm",
+     30586.6,
+     30588.6,
+     30595.2,
+     30571.6
     ]
    ],
    "journal": {
     "since": "12 Oct 2026",
     "weekdays": 3,
-    "trades": 3,
+    "trades": 4,
     "decided": 3,
     "direction": 0.0,
-    "days": 66.7,
-    "perday": 1.0,
+    "days": 100.0,
+    "perday": 1.33,
     "closed": 3,
     "win": 0.0,
     "pf": 0.0,
@@ -5673,8 +5746,25 @@
     {
      "date": "2026-10-14",
      "label": "Wed 14 Oct",
-     "side": null,
-     "trades": [],
+     "side": "BUY",
+     "trades": [
+      {
+       "time": "4:21 pm",
+       "side": "BUY",
+       "name": "REV H2 round $200 touch then close back -> reverse, from 4pm",
+       "role": "filler",
+       "price": 30577.3,
+       "stop": 30473.1,
+       "stop_pts": 104.2,
+       "status": "open",
+       "exit": null,
+       "exit_time": null,
+       "res": null,
+       "live": 7.5,
+       "rwf": null,
+       "spread": 1.8
+      }
+     ],
      "final": false
     },
     {
@@ -5771,15 +5861,32 @@
     "pf": 1.1,
     "months": 3
    },
-   "day_note": "14-day range \u2014 \u00b7 stop \u00bc range \u00b7 no target \u00b7 max 2 trades a day \u00b7 close 11:00 pm broker (Fri 10:50 pm) = 12:00 am Dubai, 1:00 am in winter",
+   "day_note": "14-day range 417 pts \u00b7 stop \u00bc range \u00b7 no target \u00b7 max 2 trades a day \u00b7 close 11:00 pm broker (Fri 10:50 pm) = 12:00 am Dubai, 1:00 am in winter",
    "what_note": "Full version: the one that passed the backtest bar and your MT4 check (adds the gold engine run on Nasdaq). Runs side by side with the simple version. Decision after about 3 months.",
    "cost_note": "Results are index points per trade, from the signal price, minus Capital.com's spread (at least 1.8 points).",
    "net_label": "Net points (all paper trades)",
-   "state": "waiting",
-   "message": "Waiting for the first signal.",
-   "price": 30585.3,
-   "change": 25.0,
-   "entries": [],
+   "state": "buy",
+   "message": "1 paper trade today (1 running). Each holds until its stop or the 12:00 am Dubai close. No target. At most 2 trades a day.",
+   "price": 30586.6,
+   "change": 26.3,
+   "entries": [
+    {
+     "time": "4:21 pm",
+     "side": "BUY",
+     "name": "REV H2 round $200 touch then close back -> reverse, from 4pm",
+     "role": "filler",
+     "price": 30577.3,
+     "stop": 30473.1,
+     "stop_pts": 104.2,
+     "status": "open",
+     "exit": null,
+     "exit_time": null,
+     "res": null,
+     "live": 7.5,
+     "rwf": null,
+     "spread": 1.8
+    }
+   ],
    "spark": [
     [
      "1:05 am",
@@ -7050,20 +7157,34 @@
     ],
     [
      "4:10 pm",
-     30585.3,
+     30589.4,
      30589.2,
      30595.3,
      30574.7
+    ],
+    [
+     "4:15 pm",
+     30589.1,
+     30589.7,
+     30600.9,
+     30585.7
+    ],
+    [
+     "4:20 pm",
+     30586.6,
+     30588.6,
+     30595.2,
+     30571.6
     ]
    ],
    "journal": {
     "since": "12 Oct 2026",
     "weekdays": 3,
-    "trades": 3,
+    "trades": 4,
     "decided": 3,
     "direction": 0.0,
-    "days": 66.7,
-    "perday": 1.0,
+    "days": 100.0,
+    "perday": 1.33,
     "closed": 3,
     "win": 0.0,
     "pf": 0.0,
@@ -7073,8 +7194,25 @@
     {
      "date": "2026-10-14",
      "label": "Wed 14 Oct",
-     "side": null,
-     "trades": [],
+     "side": "BUY",
+     "trades": [
+      {
+       "time": "4:21 pm",
+       "side": "BUY",
+       "name": "REV H2 round $200 touch then close back -> reverse, from 4pm",
+       "role": "filler",
+       "price": 30577.3,
+       "stop": 30473.1,
+       "stop_pts": 104.2,
+       "status": "open",
+       "exit": null,
+       "exit_time": null,
+       "res": null,
+       "live": 7.5,
+       "rwf": null,
+       "spread": 1.8
+      }
+     ],
      "final": false
     },
     {
