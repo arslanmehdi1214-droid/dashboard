@@ -1,5 +1,5 @@
 {
- "updated": "Wed 14 Oct \u00b7 4:27 pm",
+ "updated": "Wed 14 Oct \u00b7 4:38 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -11,9 +11,9 @@
    "feed_error": false,
    "state": "buy",
    "message": "BUY day \u2014 any later signals today are BUY only. Hold every trade until its stop or the day-end close at 12:00 am Dubai. No target.",
-   "price": 4149.6,
+   "price": 4110.66,
    "close_at": "12:00 am",
-   "change": -11.51,
+   "change": -50.45,
    "size": 0.1,
    "datr": 75.51,
    "open_now": 1,
@@ -30,7 +30,7 @@
      "first": true,
      "exit": null,
      "pnl": null,
-     "rwf": null
+     "rwf": 0
     }
    ],
    "spark": [
@@ -1247,10 +1247,24 @@
     ],
     [
      "4:25 pm",
-     4149.6,
+     4152.99,
      4150.4,
-     4152.54,
+     4155.47,
      4149.17
+    ],
+    [
+     "4:30 pm",
+     4114.23,
+     4151.7,
+     4151.79,
+     4113.14
+    ],
+    [
+     "4:35 pm",
+     4110.66,
+     4114.33,
+     4118.06,
+     4107.92
     ]
    ],
    "history": [
@@ -1263,7 +1277,7 @@
      "eod": 0,
      "running": 1,
      "rw": 0,
-     "rd": 0,
+     "rd": 1,
      "pnl": null
     },
     {
@@ -1372,8 +1386,8 @@
    "journal": {
     "since": "03 Oct 2026",
     "trades": 16,
-    "direction": 42.9,
-    "decided": 14,
+    "direction": 40.0,
+    "decided": 15,
     "days": 87.5,
     "perday": 2.0,
     "avg_pnl": -4.47,
@@ -1412,8 +1426,8 @@
    },
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Each trade holds until its stop or the 7:00 pm Dubai close. No target.",
-   "price": 158.473,
-   "change_pips": 14.1,
+   "price": 158.819,
+   "change_pips": 48.7,
    "atr_pips": 98.8,
    "entries": [
     {
@@ -1425,12 +1439,12 @@
      "stop": 158.541,
      "stop_pips": 24.7,
      "first": true,
-     "status": "open",
-     "exit": null,
-     "exit_time": null,
-     "pips": null,
-     "usd": null,
-     "rwf": null,
+     "status": "stopped",
+     "exit": 158.541,
+     "exit_time": "4:30 pm",
+     "pips": -25.9,
+     "usd": -16.36,
+     "rwf": 0,
      "spread": 1.2
     }
    ],
@@ -2641,25 +2655,39 @@
     ],
     [
      "4:25 pm",
-     158.473,
+     158.388,
      158.476,
      158.491,
-     158.471
+     158.388
+    ],
+    [
+     "4:30 pm",
+     158.786,
+     158.373,
+     158.787,
+     158.368
+    ],
+    [
+     "4:35 pm",
+     158.819,
+     158.785,
+     158.846,
+     158.773
     ]
    ],
    "journal": {
     "since": "05 Oct 2026",
     "weekdays": 8,
     "trades": 14,
-    "decided": 9,
-    "direction": 33.3,
+    "decided": 10,
+    "direction": 30.0,
     "days": 100.0,
     "perday": 1.75,
-    "closed": 13,
-    "win": 38.5,
-    "pf": 0.41,
-    "net_pips": -122.7,
-    "net_usd": -77.53
+    "closed": 14,
+    "win": 35.7,
+    "pf": 0.36,
+    "net_pips": -148.6,
+    "net_usd": -93.89
    },
    "jdays": [
     {
@@ -2676,12 +2704,12 @@
        "stop": 158.541,
        "stop_pips": 24.7,
        "first": true,
-       "status": "open",
-       "exit": null,
-       "exit_time": null,
-       "pips": null,
-       "usd": null,
-       "rwf": null,
+       "status": "stopped",
+       "exit": 158.541,
+       "exit_time": "4:30 pm",
+       "pips": -25.9,
+       "usd": -16.36,
+       "rwf": 0,
        "spread": 1.2
       }
      ],
@@ -3012,8 +3040,8 @@
    "net_label": "Net $ per barrel (v1.02 sizes)",
    "state": "buy",
    "message": "PAPER BUY day \u2014 later signals today are BUY only. Each trade holds until its stop or the 12:00 am Dubai close. No target.",
-   "price": 94.534,
-   "change": 0.66,
+   "price": 94.739,
+   "change": 0.86,
    "entries": [
     {
      "time": "2:03 pm",
@@ -4247,10 +4275,24 @@
     ],
     [
      "4:25 pm",
-     94.53,
+     94.31,
      94.58,
      94.65,
-     94.48
+     94.24
+    ],
+    [
+     "4:30 pm",
+     94.61,
+     94.32,
+     94.63,
+     94.29
+    ],
+    [
+     "4:35 pm",
+     94.74,
+     94.6,
+     94.77,
+     94.55
     ]
    ],
    "journal": {
@@ -4438,10 +4480,10 @@
    "what_note": "Simple version: uses Nasdaq prices only. Tracks whether live signals do as well as the backtest. Decision after about 3 months.",
    "cost_note": "Results are index points per trade, from the signal price, minus Capital.com's spread (at least 1.8 points).",
    "net_label": "Net points (all paper trades)",
-   "state": "buy",
-   "message": "1 paper trade today (1 running). Each holds until its stop or the 12:00 am Dubai close. No target. At most 2 trades a day.",
-   "price": 30595.3,
-   "change": 35.0,
+   "state": "sell",
+   "message": "2 paper trades today (1 running). Each holds until its stop or the 12:00 am Dubai close. No target. At most 2 trades a day.",
+   "price": 30371.4,
+   "change": -188.9,
    "entries": [
     {
      "time": "4:21 pm",
@@ -4451,11 +4493,27 @@
      "price": 30577.3,
      "stop": 30473.1,
      "stop_pts": 104.2,
+     "status": "stopped",
+     "exit": 30473.1,
+     "exit_time": "4:30 pm",
+     "res": -106.0,
+     "live": null,
+     "rwf": 0,
+     "spread": 1.8
+    },
+    {
+     "time": "4:30 pm",
+     "side": "SELL",
+     "name": "US+10 L1 daily trend EMA20>50: first touch of EMA20 from 1am -> break",
+     "role": "core",
+     "price": 30467.6,
+     "stop": 30571.9,
+     "stop_pts": 104.2,
      "status": "open",
      "exit": null,
      "exit_time": null,
      "res": null,
-     "live": 16.2,
+     "live": 94.4,
      "rwf": null,
      "spread": 1.8
     }
@@ -5751,24 +5809,38 @@
     ],
     [
      "4:25 pm",
-     30595.3,
+     30625.4,
      30586.3,
-     30600.4,
+     30629.2,
      30585.3
+    ],
+    [
+     "4:30 pm",
+     30396.8,
+     30628.3,
+     30629.7,
+     30395.3
+    ],
+    [
+     "4:35 pm",
+     30371.4,
+     30397.6,
+     30406.2,
+     30366.4
     ]
    ],
    "journal": {
     "since": "12 Oct 2026",
     "weekdays": 3,
-    "trades": 4,
-    "decided": 3,
+    "trades": 5,
+    "decided": 4,
     "direction": 0.0,
     "days": 100.0,
-    "perday": 1.33,
-    "closed": 3,
+    "perday": 1.67,
+    "closed": 4,
     "win": 0.0,
     "pf": 0.0,
-    "net": -324.7
+    "net": -430.7
    },
    "jdays": [
     {
@@ -5784,11 +5856,27 @@
        "price": 30577.3,
        "stop": 30473.1,
        "stop_pts": 104.2,
+       "status": "stopped",
+       "exit": 30473.1,
+       "exit_time": "4:30 pm",
+       "res": -106.0,
+       "live": null,
+       "rwf": 0,
+       "spread": 1.8
+      },
+      {
+       "time": "4:30 pm",
+       "side": "SELL",
+       "name": "US+10 L1 daily trend EMA20>50: first touch of EMA20 from 1am -> break",
+       "role": "core",
+       "price": 30467.6,
+       "stop": 30571.9,
+       "stop_pts": 104.2,
        "status": "open",
        "exit": null,
        "exit_time": null,
        "res": null,
-       "live": 16.2,
+       "live": 94.4,
        "rwf": null,
        "spread": 1.8
       }
@@ -5893,10 +5981,10 @@
    "what_note": "Full version: the one that passed the backtest bar and your MT4 check (adds the gold engine run on Nasdaq). Runs side by side with the simple version. Decision after about 3 months.",
    "cost_note": "Results are index points per trade, from the signal price, minus Capital.com's spread (at least 1.8 points).",
    "net_label": "Net points (all paper trades)",
-   "state": "buy",
-   "message": "1 paper trade today (1 running). Each holds until its stop or the 12:00 am Dubai close. No target. At most 2 trades a day.",
-   "price": 30595.3,
-   "change": 35.0,
+   "state": "sell",
+   "message": "2 paper trades today (1 running). Each holds until its stop or the 12:00 am Dubai close. No target. At most 2 trades a day.",
+   "price": 30371.4,
+   "change": -188.9,
    "entries": [
     {
      "time": "4:21 pm",
@@ -5906,11 +5994,27 @@
      "price": 30577.3,
      "stop": 30473.1,
      "stop_pts": 104.2,
+     "status": "stopped",
+     "exit": 30473.1,
+     "exit_time": "4:30 pm",
+     "res": -106.0,
+     "live": null,
+     "rwf": 0,
+     "spread": 1.8
+    },
+    {
+     "time": "4:30 pm",
+     "side": "SELL",
+     "name": "US+10 L1 daily trend EMA20>50: first touch of EMA20 from 1am -> break",
+     "role": "core",
+     "price": 30467.6,
+     "stop": 30571.9,
+     "stop_pts": 104.2,
      "status": "open",
      "exit": null,
      "exit_time": null,
      "res": null,
-     "live": 16.2,
+     "live": 94.4,
      "rwf": null,
      "spread": 1.8
     }
@@ -7206,24 +7310,38 @@
     ],
     [
      "4:25 pm",
-     30595.3,
+     30625.4,
      30586.3,
-     30600.4,
+     30629.2,
      30585.3
+    ],
+    [
+     "4:30 pm",
+     30396.8,
+     30628.3,
+     30629.7,
+     30395.3
+    ],
+    [
+     "4:35 pm",
+     30371.4,
+     30397.6,
+     30406.2,
+     30366.4
     ]
    ],
    "journal": {
     "since": "12 Oct 2026",
     "weekdays": 3,
-    "trades": 4,
-    "decided": 3,
+    "trades": 5,
+    "decided": 4,
     "direction": 0.0,
     "days": 100.0,
-    "perday": 1.33,
-    "closed": 3,
+    "perday": 1.67,
+    "closed": 4,
     "win": 0.0,
     "pf": 0.0,
-    "net": -324.7
+    "net": -430.7
    },
    "jdays": [
     {
@@ -7239,11 +7357,27 @@
        "price": 30577.3,
        "stop": 30473.1,
        "stop_pts": 104.2,
+       "status": "stopped",
+       "exit": 30473.1,
+       "exit_time": "4:30 pm",
+       "res": -106.0,
+       "live": null,
+       "rwf": 0,
+       "spread": 1.8
+      },
+      {
+       "time": "4:30 pm",
+       "side": "SELL",
+       "name": "US+10 L1 daily trend EMA20>50: first touch of EMA20 from 1am -> break",
+       "role": "core",
+       "price": 30467.6,
+       "stop": 30571.9,
+       "stop_pts": 104.2,
        "status": "open",
        "exit": null,
        "exit_time": null,
        "res": null,
-       "live": 16.2,
+       "live": 94.4,
        "rwf": null,
        "spread": 1.8
       }
