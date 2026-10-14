@@ -1,0 +1,25 @@
+name: deploy-prices-worker
+# Run by hand (Actions tab > deploy-prices-worker > Run workflow).
+# Deploys the free Cloudflare live-price Worker and copies the Capital.com keys
+# that are ALREADY in this repo's secrets into it - nobody has to type them again.
+on:
+  workflow_dispatch:
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: worker
+          secrets: |
+            CAPITAL_API_KEY
+            CAPITAL_IDENTIFIER
+            CAPITAL_API_PASSWORD
+        env:
+          CAPITAL_API_KEY: ${{ secrets.CAPITAL_API_KEY }}
+          CAPITAL_IDENTIFIER: ${{ secrets.CAPITAL_IDENTIFIER }}
+          CAPITAL_API_PASSWORD: ${{ secrets.CAPITAL_API_PASSWORD }}
