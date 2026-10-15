@@ -1,5 +1,5 @@
 {
- "updated": "Thu 15 Oct \u00b7 8:37 am",
+ "updated": "Thu 15 Oct \u00b7 8:48 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -11,9 +11,9 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 8 pm Dubai).",
-   "price": 4146.96,
+   "price": 4145.25,
    "close_at": "12:00 am",
-   "change": 37.34,
+   "change": 35.63,
    "size": 0.1,
    "datr": 78.21,
    "open_now": 0,
@@ -574,10 +574,24 @@
     ],
     [
      "8:35 am",
-     4146.96,
+     4145.78,
      4146.37,
-     4147.68,
-     4145.91
+     4147.71,
+     4145.34
+    ],
+    [
+     "8:40 am",
+     4145.05,
+     4145.79,
+     4146.47,
+     4144.81
+    ],
+    [
+     "8:45 am",
+     4145.25,
+     4145.04,
+     4146.05,
+     4144.19
     ]
    ],
    "history": [
@@ -751,8 +765,8 @@
    },
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Each trade holds until its stop or the 7:00 pm Dubai close. No target.",
-   "price": 157.857,
-   "change_pips": -41.7,
+   "price": 157.923,
+   "change_pips": -35.1,
    "atr_pips": 96.4,
    "entries": [
     {
@@ -781,11 +795,11 @@
      "stop": 157.901,
      "stop_pips": 24.1,
      "first": false,
-     "status": "open",
-     "exit": null,
-     "exit_time": null,
-     "pips": null,
-     "usd": null,
+     "status": "stopped",
+     "exit": 157.901,
+     "exit_time": "8:40 am",
+     "pips": -25.3,
+     "usd": -16.05,
      "rwf": null,
      "spread": 1.2
     }
@@ -1339,10 +1353,24 @@
     ],
     [
      "8:35 am",
-     157.857,
+     157.891,
      157.824,
-     157.858,
+     157.9,
      157.823
+    ],
+    [
+     "8:40 am",
+     157.924,
+     157.89,
+     157.928,
+     157.885
+    ],
+    [
+     "8:45 am",
+     157.923,
+     157.923,
+     157.93,
+     157.917
     ]
    ],
    "journal": {
@@ -1353,11 +1381,11 @@
     "direction": 30.0,
     "days": 100.0,
     "perday": 1.78,
-    "closed": 14,
-    "win": 35.7,
-    "pf": 0.36,
-    "net_pips": -148.6,
-    "net_usd": -93.89
+    "closed": 15,
+    "win": 33.3,
+    "pf": 0.33,
+    "net_pips": -173.9,
+    "net_usd": -109.94
    },
    "jdays": [
     {
@@ -1391,11 +1419,11 @@
        "stop": 157.901,
        "stop_pips": 24.1,
        "first": false,
-       "status": "open",
-       "exit": null,
-       "exit_time": null,
-       "pips": null,
-       "usd": null,
+       "status": "stopped",
+       "exit": 157.901,
+       "exit_time": "8:40 am",
+       "pips": -25.3,
+       "usd": -16.05,
        "rwf": null,
        "spread": 1.2
       }
@@ -1753,8 +1781,8 @@
    "net_label": "Net $ per barrel (v1.02 sizes)",
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Each trade holds until its stop or the 12:00 am Dubai close. No target.",
-   "price": 92.79,
-   "change": -1.23,
+   "price": 92.825,
+   "change": -1.19,
    "entries": [
     {
      "time": "5:15 am",
@@ -2364,10 +2392,24 @@
     ],
     [
      "8:35 am",
-     92.79,
+     92.78,
      92.78,
      92.84,
-     92.78
+     92.69
+    ],
+    [
+     "8:40 am",
+     92.75,
+     92.77,
+     92.77,
+     92.69
+    ],
+    [
+     "8:45 am",
+     92.83,
+     92.75,
+     92.92,
+     92.75
     ]
    ],
    "journal": {
@@ -2618,8 +2660,8 @@
    "net_label": "Net points (all paper trades)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 29712.9,
-   "change": -200.7,
+   "price": 29727.5,
+   "change": -186.1,
    "entries": [],
    "spark": [
     [
@@ -3254,10 +3296,24 @@
     ],
     [
      "8:35 am",
-     29712.9,
+     29704.4,
      29705.7,
-     29717.6,
-     29702.5
+     29724.4,
+     29701.7
+    ],
+    [
+     "8:40 am",
+     29719.7,
+     29703.7,
+     29721.7,
+     29700.2
+    ],
+    [
+     "8:45 am",
+     29727.5,
+     29720.1,
+     29727.9,
+     29714.4
     ]
    ],
    "journal": {
@@ -3421,8 +3477,8 @@
    "net_label": "Net points (all paper trades)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 29712.9,
-   "change": -200.7,
+   "price": 29727.5,
+   "change": -186.1,
    "entries": [],
    "spark": [
     [
@@ -4057,10 +4113,24 @@
     ],
     [
      "8:35 am",
-     29712.9,
+     29704.4,
      29705.7,
-     29717.6,
-     29702.5
+     29724.4,
+     29701.7
+    ],
+    [
+     "8:40 am",
+     29719.7,
+     29703.7,
+     29721.7,
+     29700.2
+    ],
+    [
+     "8:45 am",
+     29727.5,
+     29720.1,
+     29727.9,
+     29714.4
     ]
    ],
    "journal": {
