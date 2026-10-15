@@ -1,5 +1,5 @@
 {
- "updated": "Fri 16 Oct \u00b7 1:00 am",
+ "updated": "Fri 16 Oct \u00b7 1:11 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -202,7 +202,7 @@
    },
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": null,
+   "price": 157.939,
    "change_pips": null,
    "atr_pips": 88.1,
    "entries": [],
@@ -585,7 +585,7 @@
     }
    ],
    "feed_error": false,
-   "history_note": "history to 2026-10-15 (300 days) \u00b7 added 2026-10-15"
+   "history_note": "history to 2026-10-15 (300 days)"
   },
   "DE40": {
    "code": "DE40",
@@ -846,7 +846,7 @@
    ],
    "feed_error": false,
    "epic": "OIL_CRUDE",
-   "history_note": "history to 2026-10-15 (60 days) \u00b7 added 2026-10-15"
+   "history_note": "history to 2026-10-15 (60 days)"
   },
   "US500": {
    "code": "US500",
@@ -884,10 +884,25 @@
    "net_label": "Net points (all paper trades)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": null,
-   "change": null,
+   "price": 29848.6,
+   "change": 32.8,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "1:05 am",
+     29844.4,
+     29815.8,
+     29857.4,
+     29815.8
+    ],
+    [
+     "1:10 am",
+     29848.6,
+     29844.5,
+     29848.6,
+     29844.5
+    ]
+   ],
    "journal": {
     "since": "12 Oct 2026",
     "weekdays": 5,
@@ -1057,7 +1072,7 @@
    "feed_error": false,
    "epic": "US100",
    "close_at": "11:50 pm",
-   "history_note": "history to 2026-10-15 (356 days) \u00b7 added 2026-10-15"
+   "history_note": "history to 2026-10-15 (356 days)"
   },
   "US100F": {
    "code": "US100F",
@@ -1089,10 +1104,25 @@
    "net_label": "Net points (all paper trades)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": null,
-   "change": null,
+   "price": 29848.6,
+   "change": 32.8,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "1:05 am",
+     29844.4,
+     29815.8,
+     29857.4,
+     29815.8
+    ],
+    [
+     "1:10 am",
+     29848.6,
+     29844.5,
+     29848.6,
+     29844.5
+    ]
+   ],
    "journal": {
     "since": "12 Oct 2026",
     "weekdays": 5,
@@ -1262,7 +1292,7 @@
    "feed_error": false,
    "epic": "US100",
    "close_at": "11:50 pm",
-   "history_note": "history to 2026-10-15 (356 days) \u00b7 added 2026-10-15"
+   "history_note": "history to 2026-10-15 (356 days)"
   }
  }
 }
