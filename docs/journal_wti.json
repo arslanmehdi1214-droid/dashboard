@@ -153,7 +153,7 @@
      "res": null,
      "res_sized": null,
      "rwf": null,
-     "spread": 0.17
+     "spread": 0.02
     },
     {
      "time": "5:54 am",
@@ -167,10 +167,10 @@
      "status": "stopped",
      "exit": 93.59,
      "exit_time": "12:35 pm",
-     "res": -1.072,
-     "res_sized": -1.072,
+     "res": -0.957,
+     "res_sized": -0.957,
      "rwf": null,
-     "spread": 0.15
+     "spread": 0.035
     },
     {
      "time": "5:56 am",
@@ -184,10 +184,10 @@
      "status": "stopped",
      "exit": 93.47,
      "exit_time": "12:33 pm",
-     "res": -0.997,
-     "res_sized": -0.997,
-     "rwf": null,
-     "spread": 0.075
+     "res": -0.942,
+     "res_sized": -0.942,
+     "rwf": 0,
+     "spread": 0.02
     }
    ],
    "range_usd": 3.69,
@@ -199,13 +199,13 @@
   "since": "12 Oct 2026",
   "weekdays": 4,
   "trades": 9,
-  "decided": 3,
+  "decided": 4,
   "direction": 0.0,
   "days": 100.0,
   "perday": 2.25,
   "closed": 8,
   "win": 25.0,
-  "pf": 0.07,
-  "net": -4.22
+  "pf": 0.08,
+  "net": -4.05
  }
 }
