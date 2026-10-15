@@ -1,5 +1,5 @@
 {
- "updated": "Thu 15 Oct \u00b7 3:41 pm",
+ "updated": "Thu 15 Oct \u00b7 3:52 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -11,9 +11,9 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 8 pm Dubai).",
-   "price": 4152.2,
+   "price": 4150.23,
    "close_at": "12:00 am",
-   "change": 42.58,
+   "change": 40.61,
    "size": 0.1,
    "datr": 78.21,
    "open_now": 0,
@@ -1169,10 +1169,24 @@
     ],
     [
      "3:40 pm",
-     4152.2,
+     4150.51,
      4152.13,
-     4152.48,
-     4151.88
+     4152.86,
+     4150.0
+    ],
+    [
+     "3:45 pm",
+     4150.76,
+     4150.56,
+     4152.39,
+     4149.63
+    ],
+    [
+     "3:50 pm",
+     4150.23,
+     4150.72,
+     4151.07,
+     4149.72
     ]
    ],
    "history": [
@@ -1346,8 +1360,8 @@
    },
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Each trade holds until its stop or the 7:00 pm Dubai close. No target.",
-   "price": 157.929,
-   "change_pips": -34.5,
+   "price": 157.892,
+   "change_pips": -38.2,
    "atr_pips": 96.4,
    "entries": [
     {
@@ -2529,10 +2543,24 @@
     ],
     [
      "3:40 pm",
-     157.929,
+     157.916,
      157.892,
      157.931,
      157.892
+    ],
+    [
+     "3:45 pm",
+     157.902,
+     157.918,
+     157.936,
+     157.901
+    ],
+    [
+     "3:50 pm",
+     157.892,
+     157.904,
+     157.911,
+     157.89
     ]
    ],
    "journal": {
@@ -2943,8 +2971,8 @@
    "net_label": "Net $ per barrel (v1.02 sizes)",
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Each trade holds until its stop or the 12:00 am Dubai close. No target.",
-   "price": 94.185,
-   "change": 0.17,
+   "price": 94.28,
+   "change": 0.26,
    "entries": [
     {
      "time": "5:15 am",
@@ -2958,10 +2986,10 @@
      "status": "stopped",
      "exit": 93.88,
      "exit_time": "12:51 pm",
-     "res": -0.962,
-     "res_sized": -0.321,
+     "res": -0.942,
+     "res_sized": -0.314,
      "rwf": 0,
-     "spread": 0.04
+     "spread": 0.02
     },
     {
      "time": "5:54 am",
@@ -2975,10 +3003,10 @@
      "status": "stopped",
      "exit": 93.59,
      "exit_time": "12:35 pm",
-     "res": -0.962,
-     "res_sized": -0.962,
+     "res": -0.957,
+     "res_sized": -0.957,
      "rwf": 0,
-     "spread": 0.04
+     "spread": 0.035
     },
     {
      "time": "5:56 am",
@@ -2992,10 +3020,10 @@
      "status": "stopped",
      "exit": 93.47,
      "exit_time": "12:33 pm",
-     "res": -0.962,
-     "res_sized": -0.962,
+     "res": -0.942,
+     "res_sized": -0.942,
      "rwf": 0,
-     "spread": 0.04
+     "spread": 0.02
     }
    ],
    "spark": [
@@ -4149,9 +4177,23 @@
     ],
     [
      "3:40 pm",
-     94.19,
+     94.17,
      94.25,
      94.27,
+     94.15
+    ],
+    [
+     "3:45 pm",
+     94.16,
+     94.17,
+     94.23,
+     94.06
+    ],
+    [
+     "3:50 pm",
+     94.28,
+     94.17,
+     94.31,
      94.17
     ]
    ],
@@ -4166,7 +4208,7 @@
     "closed": 9,
     "win": 22.2,
     "pf": 0.07,
-    "net": -4.39
+    "net": -4.36
    },
    "jdays": [
     {
@@ -4186,10 +4228,10 @@
        "status": "stopped",
        "exit": 93.88,
        "exit_time": "12:51 pm",
-       "res": -0.962,
-       "res_sized": -0.321,
+       "res": -0.942,
+       "res_sized": -0.314,
        "rwf": 0,
-       "spread": 0.04
+       "spread": 0.02
       },
       {
        "time": "5:54 am",
@@ -4203,10 +4245,10 @@
        "status": "stopped",
        "exit": 93.59,
        "exit_time": "12:35 pm",
-       "res": -0.962,
-       "res_sized": -0.962,
+       "res": -0.957,
+       "res_sized": -0.957,
        "rwf": 0,
-       "spread": 0.04
+       "spread": 0.035
       },
       {
        "time": "5:56 am",
@@ -4220,10 +4262,10 @@
        "status": "stopped",
        "exit": 93.47,
        "exit_time": "12:33 pm",
-       "res": -0.962,
-       "res_sized": -0.962,
+       "res": -0.942,
+       "res_sized": -0.942,
        "rwf": 0,
-       "spread": 0.04
+       "spread": 0.02
       }
      ],
      "range_usd": 3.69,
@@ -4403,8 +4445,8 @@
    "net_label": "Net points (all paper trades)",
    "state": "sell",
    "message": "1 paper trade today (1 running). Each holds until its stop or the 12:00 am Dubai close. No target. At most 2 trades a day.",
-   "price": 29663.6,
-   "change": -250.0,
+   "price": 29635.6,
+   "change": -278.0,
    "entries": [
     {
      "time": "10:00 am",
@@ -4418,7 +4460,7 @@
      "exit": null,
      "exit_time": null,
      "res": null,
-     "live": -6.3,
+     "live": 21.7,
      "rwf": null,
      "spread": 1.8
     }
@@ -5651,10 +5693,24 @@
     ],
     [
      "3:40 pm",
-     29663.6,
+     29647.2,
      29657.9,
-     29663.6,
-     29654.1
+     29664.1,
+     29635.0
+    ],
+    [
+     "3:45 pm",
+     29645.0,
+     29647.0,
+     29656.7,
+     29635.5
+    ],
+    [
+     "3:50 pm",
+     29635.6,
+     29644.9,
+     29648.2,
+     29627.2
     ]
    ],
    "journal": {
@@ -5688,7 +5744,7 @@
        "exit": null,
        "exit_time": null,
        "res": null,
-       "live": -6.3,
+       "live": 21.7,
        "rwf": null,
        "spread": 1.8
       }
@@ -5835,8 +5891,8 @@
    "net_label": "Net points (all paper trades)",
    "state": "sell",
    "message": "1 paper trade today (1 running). Each holds until its stop or the 12:00 am Dubai close. No target. At most 2 trades a day.",
-   "price": 29663.6,
-   "change": -250.0,
+   "price": 29635.6,
+   "change": -278.0,
    "entries": [
     {
      "time": "10:00 am",
@@ -5850,7 +5906,7 @@
      "exit": null,
      "exit_time": null,
      "res": null,
-     "live": -6.3,
+     "live": 21.7,
      "rwf": null,
      "spread": 1.8
     }
@@ -7083,10 +7139,24 @@
     ],
     [
      "3:40 pm",
-     29663.6,
+     29647.2,
      29657.9,
-     29663.6,
-     29654.1
+     29664.1,
+     29635.0
+    ],
+    [
+     "3:45 pm",
+     29645.0,
+     29647.0,
+     29656.7,
+     29635.5
+    ],
+    [
+     "3:50 pm",
+     29635.6,
+     29644.9,
+     29648.2,
+     29627.2
     ]
    ],
    "journal": {
@@ -7120,7 +7190,7 @@
        "exit": null,
        "exit_time": null,
        "res": null,
-       "live": -6.3,
+       "live": 21.7,
        "rwf": null,
        "spread": 1.8
       }
