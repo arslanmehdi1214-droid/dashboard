@@ -1,5 +1,5 @@
 {
- "updated": "Thu 15 Oct \u00b7 6:59 am",
+ "updated": "Thu 15 Oct \u00b7 7:10 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -11,9 +11,9 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 8 pm Dubai).",
-   "price": 4159.58,
+   "price": 4155.01,
    "close_at": "12:00 am",
-   "change": 49.96,
+   "change": 45.39,
    "size": 0.1,
    "datr": 78.21,
    "open_now": 0,
@@ -434,10 +434,24 @@
     ],
     [
      "6:55 am",
-     4159.58,
+     4159.4,
      4155.04,
-     4160.21,
+     4160.78,
      4154.95
+    ],
+    [
+     "7:00 am",
+     4155.81,
+     4159.47,
+     4161.61,
+     4155.11
+    ],
+    [
+     "7:05 am",
+     4155.01,
+     4155.8,
+     4156.58,
+     4152.77
     ]
    ],
    "history": [
@@ -611,8 +625,8 @@
    },
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Each trade holds until its stop or the 7:00 pm Dubai close. No target.",
-   "price": 157.627,
-   "change_pips": -64.7,
+   "price": 157.688,
+   "change_pips": -58.6,
    "atr_pips": 96.4,
    "entries": [
     {
@@ -624,6 +638,23 @@
      "stop": 158.07,
      "stop_pips": 24.1,
      "first": true,
+     "status": "open",
+     "exit": null,
+     "exit_time": null,
+     "pips": null,
+     "usd": null,
+     "rwf": null,
+     "spread": 1.2
+    },
+    {
+     "time": "7:00 am",
+     "side": "SELL",
+     "sig": "J13",
+     "name": "Heikin-Ashi 7am",
+     "price": 157.66,
+     "stop": 157.901,
+     "stop_pips": 24.1,
+     "first": false,
      "status": "open",
      "exit": null,
      "exit_time": null,
@@ -1042,20 +1073,34 @@
     ],
     [
      "6:55 am",
-     157.627,
+     157.659,
      157.715,
      157.715,
      157.621
+    ],
+    [
+     "7:00 am",
+     157.753,
+     157.66,
+     157.774,
+     157.643
+    ],
+    [
+     "7:05 am",
+     157.688,
+     157.752,
+     157.772,
+     157.68
     ]
    ],
    "journal": {
     "since": "05 Oct 2026",
     "weekdays": 9,
-    "trades": 15,
+    "trades": 16,
     "decided": 10,
     "direction": 30.0,
     "days": 100.0,
-    "perday": 1.67,
+    "perday": 1.78,
     "closed": 14,
     "win": 35.7,
     "pf": 0.36,
@@ -1077,6 +1122,23 @@
        "stop": 158.07,
        "stop_pips": 24.1,
        "first": true,
+       "status": "open",
+       "exit": null,
+       "exit_time": null,
+       "pips": null,
+       "usd": null,
+       "rwf": null,
+       "spread": 1.2
+      },
+      {
+       "time": "7:00 am",
+       "side": "SELL",
+       "sig": "J13",
+       "name": "Heikin-Ashi 7am",
+       "price": 157.66,
+       "stop": 157.901,
+       "stop_pips": 24.1,
+       "first": false,
        "status": "open",
        "exit": null,
        "exit_time": null,
@@ -1439,8 +1501,8 @@
    "net_label": "Net $ per barrel (v1.02 sizes)",
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Each trade holds until its stop or the 12:00 am Dubai close. No target.",
-   "price": 92.7,
-   "change": -1.32,
+   "price": 92.63,
+   "change": -1.39,
    "entries": [
     {
      "time": "5:15 am",
@@ -1910,10 +1972,24 @@
     ],
     [
      "6:55 am",
-     92.7,
+     92.72,
      92.7,
      92.75,
-     92.7
+     92.69
+    ],
+    [
+     "7:00 am",
+     92.64,
+     92.7,
+     92.73,
+     92.62
+    ],
+    [
+     "7:05 am",
+     92.63,
+     92.64,
+     92.69,
+     92.59
     ]
    ],
    "journal": {
@@ -2164,8 +2240,8 @@
    "net_label": "Net points (all paper trades)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 29642.7,
-   "change": -270.9,
+   "price": 29625.9,
+   "change": -287.7,
    "entries": [],
    "spark": [
     [
@@ -2660,10 +2736,24 @@
     ],
     [
      "6:55 am",
-     29642.7,
+     29647.1,
      29652.5,
      29663.0,
-     29642.3
+     29641.3
+    ],
+    [
+     "7:00 am",
+     29610.6,
+     29647.5,
+     29648.6,
+     29607.0
+    ],
+    [
+     "7:05 am",
+     29625.9,
+     29610.3,
+     29637.0,
+     29608.6
     ]
    ],
    "journal": {
@@ -2827,8 +2917,8 @@
    "net_label": "Net points (all paper trades)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 29642.7,
-   "change": -270.9,
+   "price": 29625.9,
+   "change": -287.7,
    "entries": [],
    "spark": [
     [
@@ -3323,10 +3413,24 @@
     ],
     [
      "6:55 am",
-     29642.7,
+     29647.1,
      29652.5,
      29663.0,
-     29642.3
+     29641.3
+    ],
+    [
+     "7:00 am",
+     29610.6,
+     29647.5,
+     29648.6,
+     29607.0
+    ],
+    [
+     "7:05 am",
+     29625.9,
+     29610.3,
+     29637.0,
+     29608.6
     ]
    ],
    "journal": {
