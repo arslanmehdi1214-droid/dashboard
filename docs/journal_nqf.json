@@ -108,19 +108,36 @@
   {
    "date": "2026-10-15",
    "label": "Thu 15 Oct",
-   "side": null,
-   "trades": [],
+   "side": "SELL",
+   "trades": [
+    {
+     "time": "10:00 am",
+     "side": "SELL",
+     "name": "R11 ADX<18: break of 3-day range by +0.2ATR from 10am follow",
+     "role": "filler",
+     "price": 29659.1,
+     "stop": 29769.7,
+     "stop_pts": 110.6,
+     "status": "open",
+     "exit": null,
+     "exit_time": null,
+     "res": null,
+     "live": -52.3,
+     "rwf": null,
+     "spread": 1.8
+    }
+   ],
    "final": false
   }
  ],
  "summary": {
   "since": "12 Oct 2026",
   "weekdays": 4,
-  "trades": 5,
+  "trades": 6,
   "decided": 5,
   "direction": 20.0,
-  "days": 75.0,
-  "perday": 1.25,
+  "days": 100.0,
+  "perday": 1.5,
   "closed": 5,
   "win": 20.0,
   "pf": 1.16,

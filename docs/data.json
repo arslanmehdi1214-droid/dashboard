@@ -1,5 +1,5 @@
 {
- "updated": "Thu 15 Oct \u00b7 9:59 am",
+ "updated": "Thu 15 Oct \u00b7 10:10 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -11,9 +11,9 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 8 pm Dubai).",
-   "price": 4138.13,
+   "price": 4131.87,
    "close_at": "12:00 am",
-   "change": 28.51,
+   "change": 22.25,
    "size": 0.1,
    "datr": 78.21,
    "open_now": 0,
@@ -686,10 +686,24 @@
     ],
     [
      "9:55 am",
-     4138.13,
+     4138.26,
      4138.6,
      4139.83,
      4136.02
+    ],
+    [
+     "10:00 am",
+     4136.86,
+     4138.13,
+     4138.23,
+     4134.16
+    ],
+    [
+     "10:05 am",
+     4131.87,
+     4136.85,
+     4137.18,
+     4131.87
     ]
    ],
    "history": [
@@ -863,8 +877,8 @@
    },
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Each trade holds until its stop or the 7:00 pm Dubai close. No target.",
-   "price": 157.885,
-   "change_pips": -38.9,
+   "price": 157.992,
+   "change_pips": -28.2,
    "atr_pips": 96.4,
    "entries": [
     {
@@ -1563,10 +1577,24 @@
     ],
     [
      "9:55 am",
-     157.885,
+     157.888,
      157.876,
      157.897,
      157.857
+    ],
+    [
+     "10:00 am",
+     157.885,
+     157.887,
+     157.917,
+     157.881
+    ],
+    [
+     "10:05 am",
+     157.992,
+     157.886,
+     157.995,
+     157.876
     ]
    ],
    "journal": {
@@ -1977,8 +2005,8 @@
    "net_label": "Net $ per barrel (v1.02 sizes)",
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Each trade holds until its stop or the 12:00 am Dubai close. No target.",
-   "price": 92.915,
-   "change": -1.1,
+   "price": 92.81,
+   "change": -1.21,
    "entries": [
     {
      "time": "5:15 am",
@@ -2700,10 +2728,24 @@
     ],
     [
      "9:55 am",
-     92.92,
+     92.94,
      93.01,
      93.06,
-     92.91
+     92.89
+    ],
+    [
+     "10:00 am",
+     92.97,
+     92.94,
+     93.08,
+     92.94
+    ],
+    [
+     "10:05 am",
+     92.81,
+     92.97,
+     92.98,
+     92.71
     ]
    ],
    "journal": {
@@ -2948,15 +2990,32 @@
     "pf": 1.1,
     "months": 3
    },
-   "day_note": "14-day range \u2014 \u00b7 stop \u00bc range \u00b7 no target \u00b7 max 2 trades a day \u00b7 close 11:00 pm broker (Fri 10:50 pm) = 12:00 am Dubai, 1:00 am in winter",
+   "day_note": "14-day range 442 pts \u00b7 stop \u00bc range \u00b7 no target \u00b7 max 2 trades a day \u00b7 close 11:00 pm broker (Fri 10:50 pm) = 12:00 am Dubai, 1:00 am in winter",
    "what_note": "Simple version: uses Nasdaq prices only. Tracks whether live signals do as well as the backtest. Decision after about 3 months.",
    "cost_note": "Results are index points per trade, from the signal price, minus Capital.com's spread (at least 1.8 points).",
    "net_label": "Net points (all paper trades)",
-   "state": "waiting",
-   "message": "Waiting for the first signal.",
-   "price": 29654.6,
-   "change": -259.0,
-   "entries": [],
+   "state": "sell",
+   "message": "1 paper trade today (1 running). Each holds until its stop or the 12:00 am Dubai close. No target. At most 2 trades a day.",
+   "price": 29709.6,
+   "change": -204.0,
+   "entries": [
+    {
+     "time": "10:00 am",
+     "side": "SELL",
+     "name": "R11 ADX<18: break of 3-day range by +0.2ATR from 10am follow",
+     "role": "filler",
+     "price": 29659.1,
+     "stop": 29769.7,
+     "stop_pts": 110.6,
+     "status": "open",
+     "exit": null,
+     "exit_time": null,
+     "res": null,
+     "live": -52.3,
+     "rwf": null,
+     "spread": 1.8
+    }
+   ],
    "spark": [
     [
      "1:05 am",
@@ -3702,20 +3761,34 @@
     ],
     [
      "9:55 am",
-     29654.6,
+     29660.2,
      29649.6,
-     29655.2,
+     29663.4,
      29629.1
+    ],
+    [
+     "10:00 am",
+     29658.6,
+     29659.1,
+     29677.7,
+     29634.1
+    ],
+    [
+     "10:05 am",
+     29709.6,
+     29657.7,
+     29721.0,
+     29641.4
     ]
    ],
    "journal": {
     "since": "12 Oct 2026",
     "weekdays": 4,
-    "trades": 5,
+    "trades": 6,
     "decided": 5,
     "direction": 20.0,
-    "days": 75.0,
-    "perday": 1.25,
+    "days": 100.0,
+    "perday": 1.5,
     "closed": 5,
     "win": 20.0,
     "pf": 1.16,
@@ -3725,8 +3798,25 @@
     {
      "date": "2026-10-15",
      "label": "Thu 15 Oct",
-     "side": null,
-     "trades": [],
+     "side": "SELL",
+     "trades": [
+      {
+       "time": "10:00 am",
+       "side": "SELL",
+       "name": "R11 ADX<18: break of 3-day range by +0.2ATR from 10am follow",
+       "role": "filler",
+       "price": 29659.1,
+       "stop": 29769.7,
+       "stop_pts": 110.6,
+       "status": "open",
+       "exit": null,
+       "exit_time": null,
+       "res": null,
+       "live": -52.3,
+       "rwf": null,
+       "spread": 1.8
+      }
+     ],
      "final": false
     },
     {
@@ -3863,15 +3953,32 @@
     "pf": 1.1,
     "months": 3
    },
-   "day_note": "14-day range \u2014 \u00b7 stop \u00bc range \u00b7 no target \u00b7 max 2 trades a day \u00b7 close 11:00 pm broker (Fri 10:50 pm) = 12:00 am Dubai, 1:00 am in winter",
+   "day_note": "14-day range 442 pts \u00b7 stop \u00bc range \u00b7 no target \u00b7 max 2 trades a day \u00b7 close 11:00 pm broker (Fri 10:50 pm) = 12:00 am Dubai, 1:00 am in winter",
    "what_note": "Full version: the one that passed the backtest bar and your MT4 check (adds the gold engine run on Nasdaq). Runs side by side with the simple version. Decision after about 3 months.",
    "cost_note": "Results are index points per trade, from the signal price, minus Capital.com's spread (at least 1.8 points).",
    "net_label": "Net points (all paper trades)",
-   "state": "waiting",
-   "message": "Waiting for the first signal.",
-   "price": 29654.6,
-   "change": -259.0,
-   "entries": [],
+   "state": "sell",
+   "message": "1 paper trade today (1 running). Each holds until its stop or the 12:00 am Dubai close. No target. At most 2 trades a day.",
+   "price": 29709.6,
+   "change": -204.0,
+   "entries": [
+    {
+     "time": "10:00 am",
+     "side": "SELL",
+     "name": "R11 ADX<18: break of 3-day range by +0.2ATR from 10am follow",
+     "role": "filler",
+     "price": 29659.1,
+     "stop": 29769.7,
+     "stop_pts": 110.6,
+     "status": "open",
+     "exit": null,
+     "exit_time": null,
+     "res": null,
+     "live": -52.3,
+     "rwf": null,
+     "spread": 1.8
+    }
+   ],
    "spark": [
     [
      "1:05 am",
@@ -4617,20 +4724,34 @@
     ],
     [
      "9:55 am",
-     29654.6,
+     29660.2,
      29649.6,
-     29655.2,
+     29663.4,
      29629.1
+    ],
+    [
+     "10:00 am",
+     29658.6,
+     29659.1,
+     29677.7,
+     29634.1
+    ],
+    [
+     "10:05 am",
+     29709.6,
+     29657.7,
+     29721.0,
+     29641.4
     ]
    ],
    "journal": {
     "since": "12 Oct 2026",
     "weekdays": 4,
-    "trades": 5,
+    "trades": 6,
     "decided": 5,
     "direction": 20.0,
-    "days": 75.0,
-    "perday": 1.25,
+    "days": 100.0,
+    "perday": 1.5,
     "closed": 5,
     "win": 20.0,
     "pf": 1.16,
@@ -4640,8 +4761,25 @@
     {
      "date": "2026-10-15",
      "label": "Thu 15 Oct",
-     "side": null,
-     "trades": [],
+     "side": "SELL",
+     "trades": [
+      {
+       "time": "10:00 am",
+       "side": "SELL",
+       "name": "R11 ADX<18: break of 3-day range by +0.2ATR from 10am follow",
+       "role": "filler",
+       "price": 29659.1,
+       "stop": 29769.7,
+       "stop_pts": 110.6,
+       "status": "open",
+       "exit": null,
+       "exit_time": null,
+       "res": null,
+       "live": -52.3,
+       "rwf": null,
+       "spread": 1.8
+      }
+     ],
      "final": false
     },
     {
