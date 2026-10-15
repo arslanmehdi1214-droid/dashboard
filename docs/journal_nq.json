@@ -122,7 +122,7 @@
      "exit": null,
      "exit_time": null,
      "res": null,
-     "live": 77.6,
+     "live": 188.6,
      "rwf": 1,
      "spread": 1.8
     },
@@ -134,12 +134,12 @@
      "price": 29575.2,
      "stop": 29464.6,
      "stop_pts": 110.6,
-     "status": "open",
-     "exit": null,
-     "exit_time": null,
-     "res": null,
-     "live": 2.7,
-     "rwf": null,
+     "status": "stopped",
+     "exit": 29464.6,
+     "exit_time": "5:53 pm",
+     "res": -112.4,
+     "live": null,
+     "rwf": 0,
      "spread": 1.8
     }
    ],
@@ -150,13 +150,13 @@
   "since": "12 Oct 2026",
   "weekdays": 4,
   "trades": 7,
-  "decided": 6,
-  "direction": 33.3,
+  "decided": 7,
+  "direction": 28.6,
   "days": 100.0,
   "perday": 1.75,
-  "closed": 5,
-  "win": 20.0,
-  "pf": 1.16,
-  "net": 68.1
+  "closed": 6,
+  "win": 16.7,
+  "pf": 0.92,
+  "net": -44.3
  }
 }
