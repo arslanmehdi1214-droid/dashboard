@@ -153,7 +153,7 @@
      "res": null,
      "res_sized": null,
      "rwf": null,
-     "spread": 0.04
+     "spread": 0.17
     },
     {
      "time": "5:54 am",
@@ -164,13 +164,13 @@
      "stop_usd": 0.92,
      "size": "full",
      "first": false,
-     "status": "open",
-     "exit": null,
-     "exit_time": null,
-     "res": null,
-     "res_sized": null,
+     "status": "stopped",
+     "exit": 93.59,
+     "exit_time": "12:35 pm",
+     "res": -1.072,
+     "res_sized": -1.072,
      "rwf": null,
-     "spread": 0.04
+     "spread": 0.15
     },
     {
      "time": "5:56 am",
@@ -181,13 +181,13 @@
      "stop_usd": 0.92,
      "size": "full",
      "first": false,
-     "status": "open",
-     "exit": null,
-     "exit_time": null,
-     "res": null,
-     "res_sized": null,
+     "status": "stopped",
+     "exit": 93.47,
+     "exit_time": "12:33 pm",
+     "res": -0.997,
+     "res_sized": -0.997,
      "rwf": null,
-     "spread": 0.04
+     "spread": 0.075
     }
    ],
    "range_usd": 3.69,
@@ -203,9 +203,9 @@
   "direction": 0.0,
   "days": 100.0,
   "perday": 2.25,
-  "closed": 6,
-  "win": 33.3,
-  "pf": 0.14,
-  "net": -2.15
+  "closed": 8,
+  "win": 25.0,
+  "pf": 0.07,
+  "net": -4.22
  }
 }
