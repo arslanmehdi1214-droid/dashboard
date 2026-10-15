@@ -1,5 +1,5 @@
 {
- "updated": "Thu 15 Oct \u00b7 5:10 pm",
+ "updated": "Thu 15 Oct \u00b7 5:14 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -11,9 +11,9 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 8 pm Dubai).",
-   "price": 4146.72,
+   "price": 4156.44,
    "close_at": "12:00 am",
-   "change": 37.1,
+   "change": 46.82,
    "size": 0.1,
    "datr": 78.21,
    "open_now": 0,
@@ -1292,6 +1292,13 @@
      4144.33,
      4149.39,
      4144.24
+    ],
+    [
+     "5:10 pm",
+     4156.44,
+     4146.77,
+     4157.49,
+     4146.03
     ]
    ],
    "history": [
@@ -1465,8 +1472,8 @@
    },
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Each trade holds until its stop or the 7:00 pm Dubai close. No target.",
-   "price": 157.903,
-   "change_pips": -37.1,
+   "price": 157.87,
+   "change_pips": -40.4,
    "atr_pips": 96.4,
    "entries": [
     {
@@ -2771,6 +2778,13 @@
      157.941,
      157.953,
      157.895
+    ],
+    [
+     "5:10 pm",
+     157.87,
+     157.902,
+     157.922,
+     157.851
     ]
    ],
    "journal": {
@@ -3181,8 +3195,8 @@
    "net_label": "Net $ per barrel (v1.02 sizes)",
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Each trade holds until its stop or the 12:00 am Dubai close. No target.",
-   "price": 94.535,
-   "change": 0.52,
+   "price": 94.66,
+   "change": 0.64,
    "entries": [
     {
      "time": "5:15 am",
@@ -4510,6 +4524,13 @@
      94.41,
      94.58,
      94.25
+    ],
+    [
+     "5:10 pm",
+     94.66,
+     94.54,
+     94.88,
+     94.52
     ]
    ],
    "journal": {
@@ -4758,10 +4779,10 @@
    "what_note": "Simple version: uses Nasdaq prices only. Tracks whether live signals do as well as the backtest. Decision after about 3 months.",
    "cost_note": "Results are index points per trade, from the signal price, minus Capital.com's spread (at least 1.8 points).",
    "net_label": "Net points (all paper trades)",
-   "state": "sell",
-   "message": "1 paper trade today (1 running). Each holds until its stop or the 12:00 am Dubai close. No target. At most 2 trades a day.",
-   "price": 29575.2,
-   "change": -338.4,
+   "state": "buy",
+   "message": "2 paper trades today (2 running). Each holds until its stop or the 12:00 am Dubai close. No target. At most 2 trades a day.",
+   "price": 29579.0,
+   "change": -334.6,
    "entries": [
     {
      "time": "10:00 am",
@@ -4775,8 +4796,24 @@
      "exit": null,
      "exit_time": null,
      "res": null,
-     "live": 82.1,
+     "live": 78.3,
      "rwf": 1,
+     "spread": 1.8
+    },
+    {
+     "time": "5:09 pm",
+     "side": "BUY",
+     "name": "REV US+10 H2 round $400 touch then close back -> reverse, from 7am",
+     "role": "core",
+     "price": 29575.2,
+     "stop": 29464.6,
+     "stop_pts": 110.6,
+     "status": "open",
+     "exit": null,
+     "exit_time": null,
+     "res": null,
+     "live": 2.0,
+     "rwf": null,
      "spread": 1.8
     }
    ],
@@ -6131,16 +6168,23 @@
      29578.2,
      29601.2,
      29570.4
+    ],
+    [
+     "5:10 pm",
+     29579.0,
+     29575.5,
+     29584.2,
+     29555.7
     ]
    ],
    "journal": {
     "since": "12 Oct 2026",
     "weekdays": 4,
-    "trades": 6,
+    "trades": 7,
     "decided": 6,
     "direction": 33.3,
     "days": 100.0,
-    "perday": 1.5,
+    "perday": 1.75,
     "closed": 5,
     "win": 20.0,
     "pf": 1.16,
@@ -6164,8 +6208,24 @@
        "exit": null,
        "exit_time": null,
        "res": null,
-       "live": 82.1,
+       "live": 78.3,
        "rwf": 1,
+       "spread": 1.8
+      },
+      {
+       "time": "5:09 pm",
+       "side": "BUY",
+       "name": "REV US+10 H2 round $400 touch then close back -> reverse, from 7am",
+       "role": "core",
+       "price": 29575.2,
+       "stop": 29464.6,
+       "stop_pts": 110.6,
+       "status": "open",
+       "exit": null,
+       "exit_time": null,
+       "res": null,
+       "live": 2.0,
+       "rwf": null,
        "spread": 1.8
       }
      ],
@@ -6309,10 +6369,10 @@
    "what_note": "Full version: the one that passed the backtest bar and your MT4 check (adds the gold engine run on Nasdaq). Runs side by side with the simple version. Decision after about 3 months.",
    "cost_note": "Results are index points per trade, from the signal price, minus Capital.com's spread (at least 1.8 points).",
    "net_label": "Net points (all paper trades)",
-   "state": "sell",
-   "message": "1 paper trade today (1 running). Each holds until its stop or the 12:00 am Dubai close. No target. At most 2 trades a day.",
-   "price": 29575.2,
-   "change": -338.4,
+   "state": "buy",
+   "message": "2 paper trades today (2 running). Each holds until its stop or the 12:00 am Dubai close. No target. At most 2 trades a day.",
+   "price": 29579.0,
+   "change": -334.6,
    "entries": [
     {
      "time": "10:00 am",
@@ -6326,8 +6386,24 @@
      "exit": null,
      "exit_time": null,
      "res": null,
-     "live": 82.1,
+     "live": 78.3,
      "rwf": 1,
+     "spread": 1.8
+    },
+    {
+     "time": "5:09 pm",
+     "side": "BUY",
+     "name": "REV US+10 H2 round $400 touch then close back -> reverse, from 7am",
+     "role": "core",
+     "price": 29575.2,
+     "stop": 29464.6,
+     "stop_pts": 110.6,
+     "status": "open",
+     "exit": null,
+     "exit_time": null,
+     "res": null,
+     "live": 2.0,
+     "rwf": null,
      "spread": 1.8
     }
    ],
@@ -7682,16 +7758,23 @@
      29578.2,
      29601.2,
      29570.4
+    ],
+    [
+     "5:10 pm",
+     29579.0,
+     29575.5,
+     29584.2,
+     29555.7
     ]
    ],
    "journal": {
     "since": "12 Oct 2026",
     "weekdays": 4,
-    "trades": 6,
+    "trades": 7,
     "decided": 6,
     "direction": 33.3,
     "days": 100.0,
-    "perday": 1.5,
+    "perday": 1.75,
     "closed": 5,
     "win": 20.0,
     "pf": 1.16,
@@ -7715,8 +7798,24 @@
        "exit": null,
        "exit_time": null,
        "res": null,
-       "live": 82.1,
+       "live": 78.3,
        "rwf": 1,
+       "spread": 1.8
+      },
+      {
+       "time": "5:09 pm",
+       "side": "BUY",
+       "name": "REV US+10 H2 round $400 touch then close back -> reverse, from 7am",
+       "role": "core",
+       "price": 29575.2,
+       "stop": 29464.6,
+       "stop_pts": 110.6,
+       "status": "open",
+       "exit": null,
+       "exit_time": null,
+       "res": null,
+       "live": 2.0,
+       "rwf": null,
        "spread": 1.8
       }
      ],
