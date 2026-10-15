@@ -300,19 +300,34 @@
   {
    "date": "2026-10-15",
    "label": "Thu 15 Oct",
-   "side": null,
-   "trades": [],
+   "side": "BUY",
+   "trades": [
+    {
+     "time": "5:15 pm",
+     "side": "BUY",
+     "tag": "N6 bigrange",
+     "price": 4161.61,
+     "stop": 4102.95,
+     "w": 0.5,
+     "size": 0.1,
+     "status": "open",
+     "first": true,
+     "exit": null,
+     "pnl": null,
+     "rwf": null
+    }
+   ],
    "skipped": 0,
    "final": false
   }
  ],
  "summary": {
   "since": "03 Oct 2026",
-  "trades": 16,
+  "trades": 17,
   "direction": 40.0,
   "decided": 15,
-  "days": 77.8,
-  "perday": 1.78,
+  "days": 88.9,
+  "perday": 1.89,
   "avg_pnl": -7.76,
   "closed": 16,
   "total_pnl_01": -12.42
