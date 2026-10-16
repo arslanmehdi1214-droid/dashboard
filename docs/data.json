@@ -1,5 +1,5 @@
 {
- "updated": "Fri 16 Oct \u00b7 5:33 pm",
+ "updated": "Fri 16 Oct \u00b7 5:44 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -11,9 +11,9 @@
    "feed_error": false,
    "state": "buy",
    "message": "BUY day \u2014 any later signals today are BUY only. Hold every trade until its stop or the day-end close at 11:50 pm Dubai. No target.",
-   "price": 4158.21,
+   "price": 4177.47,
    "close_at": "11:50 pm",
-   "change": -13.28,
+   "change": 5.98,
    "size": 0.1,
    "datr": 79.94,
    "open_now": 1,
@@ -1338,10 +1338,24 @@
     ],
     [
      "5:30 pm",
-     4158.21,
+     4162.89,
      4159.83,
-     4161.98,
-     4157.45
+     4163.01,
+     4157.29
+    ],
+    [
+     "5:35 pm",
+     4172.81,
+     4162.86,
+     4173.42,
+     4162.65
+    ],
+    [
+     "5:40 pm",
+     4177.47,
+     4172.79,
+     4178.68,
+     4172.65
     ]
    ],
    "history": [
@@ -1527,8 +1541,8 @@
    },
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Each trade holds until its stop or the 7:00 pm Dubai close. No target.",
-   "price": 158.0,
-   "change_pips": 0.6,
+   "price": 157.906,
+   "change_pips": -8.8,
    "atr_pips": 88.1,
    "entries": [
     {
@@ -2847,10 +2861,24 @@
     ],
     [
      "5:30 pm",
-     158.0,
+     158.003,
      158.047,
      158.05,
      157.99
+    ],
+    [
+     "5:35 pm",
+     157.935,
+     158.004,
+     158.013,
+     157.918
+    ],
+    [
+     "5:40 pm",
+     157.906,
+     157.934,
+     157.943,
+     157.89
     ]
    ],
    "journal": {
@@ -3285,11 +3313,29 @@
    "what_note": "This page tracks whether live WTI signals do as well as the backtest. Decision after about 3 months.",
    "cost_note": "Results are $ per barrel (v1.02 sizes: full or \u2153), from the signal price with the backtest's slip, minus Capital.com's spread (at least 2 cents).",
    "net_label": "Net $ per barrel (v1.02 sizes)",
-   "state": "waiting",
-   "message": "Waiting for the first signal.",
-   "price": 96.538,
-   "change": 0.47,
-   "entries": [],
+   "state": "buy",
+   "message": "PAPER BUY day \u2014 later signals today are BUY only. Each trade holds until its stop or the 11:50 pm Dubai close. No target.",
+   "price": 96.643,
+   "change": 0.58,
+   "entries": [
+    {
+     "time": "5:35 pm",
+     "side": "BUY",
+     "name": "Yesterday's settlement",
+     "price": 96.81,
+     "stop": 95.82,
+     "stop_usd": 0.99,
+     "size": "1/3",
+     "first": true,
+     "status": "open",
+     "exit": null,
+     "exit_time": null,
+     "res": null,
+     "res_sized": null,
+     "rwf": null,
+     "spread": 0.04
+    }
+   ],
    "spark": [
     [
      "2:00 am",
@@ -4595,20 +4641,34 @@
     ],
     [
      "5:30 pm",
-     96.54,
+     96.73,
      96.4,
-     96.56,
+     96.79,
      96.38
+    ],
+    [
+     "5:35 pm",
+     96.75,
+     96.71,
+     96.81,
+     96.67
+    ],
+    [
+     "5:40 pm",
+     96.64,
+     96.75,
+     96.81,
+     96.61
     ]
    ],
    "journal": {
     "since": "12 Oct 2026",
     "weekdays": 5,
-    "trades": 9,
+    "trades": 10,
     "decided": 6,
     "direction": 0.0,
-    "days": 80.0,
-    "perday": 1.8,
+    "days": 100.0,
+    "perday": 2.0,
     "closed": 9,
     "win": 22.2,
     "pf": 0.07,
@@ -4618,8 +4678,26 @@
     {
      "date": "2026-10-16",
      "label": "Fri 16 Oct",
-     "side": null,
-     "trades": [],
+     "side": "BUY",
+     "trades": [
+      {
+       "time": "5:35 pm",
+       "side": "BUY",
+       "name": "Yesterday's settlement",
+       "price": 96.81,
+       "stop": 95.82,
+       "stop_usd": 0.99,
+       "size": "1/3",
+       "first": true,
+       "status": "open",
+       "exit": null,
+       "exit_time": null,
+       "res": null,
+       "res_sized": null,
+       "rwf": null,
+       "spread": 0.04
+      }
+     ],
      "range_usd": 3.97,
      "traded": true,
      "final": false
@@ -4852,15 +4930,32 @@
     "pf": 1.1,
     "months": 3
    },
-   "day_note": "14-day range \u2014 \u00b7 stop \u00bc range \u00b7 no target \u00b7 max 2 trades a day \u00b7 close 11:00 pm broker (Fri 10:50 pm) = 12:00 am Dubai, 1:00 am in winter",
+   "day_note": "14-day range 479 pts \u00b7 stop \u00bc range \u00b7 no target \u00b7 max 2 trades a day \u00b7 close 11:00 pm broker (Fri 10:50 pm) = 12:00 am Dubai, 1:00 am in winter",
    "what_note": "Simple version: uses Nasdaq prices only. Tracks whether live signals do as well as the backtest. Decision after about 3 months.",
    "cost_note": "Results are index points per trade, from the signal price, minus Capital.com's spread (at least 1.8 points).",
    "net_label": "Net points (all paper trades)",
-   "state": "waiting",
-   "message": "Waiting for the first signal.",
-   "price": 29810.0,
-   "change": -5.8,
-   "entries": [],
+   "state": "buy",
+   "message": "1 paper trade today (0 running). Each holds until its stop or the 11:50 pm Dubai close. No target. At most 2 trades a day.",
+   "price": 29693.2,
+   "change": -122.6,
+   "entries": [
+    {
+     "time": "5:32 pm",
+     "side": "BUY",
+     "name": "REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 7am",
+     "role": "filler",
+     "price": 29800.0,
+     "stop": 29680.3,
+     "stop_pts": 119.7,
+     "status": "stopped",
+     "exit": 29680.3,
+     "exit_time": "5:38 pm",
+     "res": -121.5,
+     "live": null,
+     "rwf": 0,
+     "spread": 1.8
+    }
+   ],
    "spark": [
     [
      "1:05 am",
@@ -6243,31 +6338,62 @@
     ],
     [
      "5:30 pm",
-     29810.0,
+     29768.2,
      29825.0,
      29837.2,
      29760.8
+    ],
+    [
+     "5:35 pm",
+     29694.2,
+     29768.3,
+     29780.5,
+     29670.4
+    ],
+    [
+     "5:40 pm",
+     29693.2,
+     29694.8,
+     29706.5,
+     29652.3
     ]
    ],
    "journal": {
     "since": "12 Oct 2026",
     "weekdays": 5,
-    "trades": 7,
-    "decided": 7,
-    "direction": 28.6,
-    "days": 80.0,
-    "perday": 1.4,
-    "closed": 7,
-    "win": 14.3,
-    "pf": 0.76,
-    "net": -156.7
+    "trades": 8,
+    "decided": 8,
+    "direction": 25.0,
+    "days": 100.0,
+    "perday": 1.6,
+    "closed": 8,
+    "win": 12.5,
+    "pf": 0.64,
+    "net": -278.2
    },
    "jdays": [
     {
      "date": "2026-10-16",
      "label": "Fri 16 Oct",
-     "side": null,
-     "trades": [],
+     "side": "BUY",
+     "trades": [
+      {
+       "time": "5:32 pm",
+       "side": "BUY",
+       "name": "REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 7am",
+       "role": "filler",
+       "price": 29800.0,
+       "stop": 29680.3,
+       "stop_pts": 119.7,
+       "status": "stopped",
+       "exit": 29680.3,
+       "exit_time": "5:38 pm",
+       "res": -121.5,
+       "live": null,
+       "rwf": 0,
+       "spread": 1.8
+      }
+     ],
      "final": false
     },
     {
@@ -6444,15 +6570,32 @@
     "pf": 1.1,
     "months": 3
    },
-   "day_note": "14-day range \u2014 \u00b7 stop \u00bc range \u00b7 no target \u00b7 max 2 trades a day \u00b7 close 11:00 pm broker (Fri 10:50 pm) = 12:00 am Dubai, 1:00 am in winter",
+   "day_note": "14-day range 479 pts \u00b7 stop \u00bc range \u00b7 no target \u00b7 max 2 trades a day \u00b7 close 11:00 pm broker (Fri 10:50 pm) = 12:00 am Dubai, 1:00 am in winter",
    "what_note": "Full version: the one that passed the backtest bar and your MT4 check (adds the gold engine run on Nasdaq). Runs side by side with the simple version. Decision after about 3 months.",
    "cost_note": "Results are index points per trade, from the signal price, minus Capital.com's spread (at least 1.8 points).",
    "net_label": "Net points (all paper trades)",
-   "state": "waiting",
-   "message": "Waiting for the first signal.",
-   "price": 29810.0,
-   "change": -5.8,
-   "entries": [],
+   "state": "buy",
+   "message": "1 paper trade today (0 running). Each holds until its stop or the 11:50 pm Dubai close. No target. At most 2 trades a day.",
+   "price": 29693.2,
+   "change": -122.6,
+   "entries": [
+    {
+     "time": "5:32 pm",
+     "side": "BUY",
+     "name": "REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 7am",
+     "role": "filler",
+     "price": 29800.0,
+     "stop": 29680.3,
+     "stop_pts": 119.7,
+     "status": "stopped",
+     "exit": 29680.3,
+     "exit_time": "5:38 pm",
+     "res": -121.5,
+     "live": null,
+     "rwf": 0,
+     "spread": 1.8
+    }
+   ],
    "spark": [
     [
      "1:05 am",
@@ -7835,31 +7978,62 @@
     ],
     [
      "5:30 pm",
-     29810.0,
+     29768.2,
      29825.0,
      29837.2,
      29760.8
+    ],
+    [
+     "5:35 pm",
+     29694.2,
+     29768.3,
+     29780.5,
+     29670.4
+    ],
+    [
+     "5:40 pm",
+     29693.2,
+     29694.8,
+     29706.5,
+     29652.3
     ]
    ],
    "journal": {
     "since": "12 Oct 2026",
     "weekdays": 5,
-    "trades": 7,
-    "decided": 7,
-    "direction": 28.6,
-    "days": 80.0,
-    "perday": 1.4,
-    "closed": 7,
-    "win": 14.3,
-    "pf": 0.76,
-    "net": -156.7
+    "trades": 8,
+    "decided": 8,
+    "direction": 25.0,
+    "days": 100.0,
+    "perday": 1.6,
+    "closed": 8,
+    "win": 12.5,
+    "pf": 0.64,
+    "net": -278.2
    },
    "jdays": [
     {
      "date": "2026-10-16",
      "label": "Fri 16 Oct",
-     "side": null,
-     "trades": [],
+     "side": "BUY",
+     "trades": [
+      {
+       "time": "5:32 pm",
+       "side": "BUY",
+       "name": "REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 7am",
+       "role": "filler",
+       "price": 29800.0,
+       "stop": 29680.3,
+       "stop_pts": 119.7,
+       "status": "stopped",
+       "exit": 29680.3,
+       "exit_time": "5:38 pm",
+       "res": -121.5,
+       "live": null,
+       "rwf": 0,
+       "spread": 1.8
+      }
+     ],
      "final": false
     },
     {
