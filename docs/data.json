@@ -1,5 +1,5 @@
 {
- "updated": "Fri 16 Oct \u00b7 7:11 pm",
+ "updated": "Fri 16 Oct \u00b7 7:22 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -11,9 +11,9 @@
    "feed_error": false,
    "state": "buy",
    "message": "BUY day \u2014 any later signals today are BUY only. Hold every trade until its stop or the day-end close at 11:50 pm Dubai. No target.",
-   "price": 4185.97,
+   "price": 4177.32,
    "close_at": "11:50 pm",
-   "change": 14.48,
+   "change": 5.83,
    "size": 0.1,
    "datr": 79.94,
    "open_now": 1,
@@ -1478,10 +1478,24 @@
     ],
     [
      "7:10 pm",
-     4185.97,
+     4179.85,
      4185.58,
      4187.29,
-     4185.51
+     4179.56
+    ],
+    [
+     "7:15 pm",
+     4179.88,
+     4179.86,
+     4181.28,
+     4178.54
+    ],
+    [
+     "7:20 pm",
+     4177.32,
+     4179.9,
+     4180.16,
+     4176.86
     ]
    ],
    "history": [
@@ -1667,8 +1681,8 @@
    },
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Each trade holds until its stop or the 7:00 pm Dubai close. No target.",
-   "price": 157.816,
-   "change_pips": -17.8,
+   "price": 157.86,
+   "change_pips": -13.4,
    "atr_pips": 88.1,
    "entries": [
     {
@@ -3127,10 +3141,24 @@
     ],
     [
      "7:10 pm",
-     157.816,
+     157.863,
      157.821,
-     157.822,
+     157.864,
      157.798
+    ],
+    [
+     "7:15 pm",
+     157.848,
+     157.862,
+     157.879,
+     157.84
+    ],
+    [
+     "7:20 pm",
+     157.86,
+     157.849,
+     157.866,
+     157.848
     ]
    ],
    "journal": {
@@ -3567,8 +3595,8 @@
    "net_label": "Net $ per barrel (v1.02 sizes)",
    "state": "buy",
    "message": "PAPER BUY day \u2014 later signals today are BUY only. Each trade holds until its stop or the 11:50 pm Dubai close. No target.",
-   "price": 96.043,
-   "change": -0.02,
+   "price": 96.313,
+   "change": 0.25,
    "entries": [
     {
      "time": "5:35 pm",
@@ -5033,10 +5061,24 @@
     ],
     [
      "7:10 pm",
-     96.04,
+     96.22,
      96.0,
-     96.05,
-     95.97
+     96.23,
+     95.93
+    ],
+    [
+     "7:15 pm",
+     96.37,
+     96.22,
+     96.44,
+     96.19
+    ],
+    [
+     "7:20 pm",
+     96.31,
+     96.38,
+     96.43,
+     96.31
     ]
    ],
    "journal": {
@@ -5314,8 +5356,8 @@
    "net_label": "Net points (all paper trades)",
    "state": "sell",
    "message": "2 paper trades today (1 running). Each holds until its stop or the 11:50 pm Dubai close. No target. At most 2 trades a day.",
-   "price": 29504.9,
-   "change": -310.9,
+   "price": 29482.0,
+   "change": -333.8,
    "entries": [
     {
      "time": "5:32 pm",
@@ -5345,8 +5387,8 @@
      "exit": null,
      "exit_time": null,
      "res": null,
-     "live": 118.3,
-     "rwf": null,
+     "live": 141.2,
+     "rwf": 1,
      "spread": 1.8
     }
    ],
@@ -6872,18 +6914,32 @@
     ],
     [
      "7:10 pm",
-     29504.9,
+     29516.6,
      29502.1,
-     29510.0,
+     29527.5,
      29483.9
+    ],
+    [
+     "7:15 pm",
+     29514.7,
+     29517.1,
+     29531.9,
+     29497.9
+    ],
+    [
+     "7:20 pm",
+     29482.0,
+     29515.2,
+     29536.1,
+     29478.7
     ]
    ],
    "journal": {
     "since": "12 Oct 2026",
     "weekdays": 5,
     "trades": 9,
-    "decided": 8,
-    "direction": 25.0,
+    "decided": 9,
+    "direction": 33.3,
     "days": 100.0,
     "perday": 1.8,
     "closed": 8,
@@ -6925,8 +6981,8 @@
        "exit": null,
        "exit_time": null,
        "res": null,
-       "live": 118.3,
-       "rwf": null,
+       "live": 141.2,
+       "rwf": 1,
        "spread": 1.8
       }
      ],
@@ -7112,8 +7168,8 @@
    "net_label": "Net points (all paper trades)",
    "state": "sell",
    "message": "2 paper trades today (1 running). Each holds until its stop or the 11:50 pm Dubai close. No target. At most 2 trades a day.",
-   "price": 29504.9,
-   "change": -310.9,
+   "price": 29482.0,
+   "change": -333.8,
    "entries": [
     {
      "time": "5:32 pm",
@@ -7143,8 +7199,8 @@
      "exit": null,
      "exit_time": null,
      "res": null,
-     "live": 118.3,
-     "rwf": null,
+     "live": 141.2,
+     "rwf": 1,
      "spread": 1.8
     }
    ],
@@ -8670,18 +8726,32 @@
     ],
     [
      "7:10 pm",
-     29504.9,
+     29516.6,
      29502.1,
-     29510.0,
+     29527.5,
      29483.9
+    ],
+    [
+     "7:15 pm",
+     29514.7,
+     29517.1,
+     29531.9,
+     29497.9
+    ],
+    [
+     "7:20 pm",
+     29482.0,
+     29515.2,
+     29536.1,
+     29478.7
     ]
    ],
    "journal": {
     "since": "12 Oct 2026",
     "weekdays": 5,
     "trades": 9,
-    "decided": 8,
-    "direction": 25.0,
+    "decided": 9,
+    "direction": 33.3,
     "days": 100.0,
     "perday": 1.8,
     "closed": 8,
@@ -8723,8 +8793,8 @@
        "exit": null,
        "exit_time": null,
        "res": null,
-       "live": 118.3,
-       "rwf": null,
+       "live": 141.2,
+       "rwf": 1,
        "spread": 1.8
       }
      ],
