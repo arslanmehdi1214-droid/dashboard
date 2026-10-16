@@ -1,5 +1,5 @@
 {
- "updated": "Fri 16 Oct \u00b7 6:17 pm",
+ "updated": "Fri 16 Oct \u00b7 6:25 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -11,9 +11,9 @@
    "feed_error": false,
    "state": "buy",
    "message": "BUY day \u2014 any later signals today are BUY only. Hold every trade until its stop or the day-end close at 11:50 pm Dubai. No target.",
-   "price": 4191.02,
+   "price": 4194.82,
    "close_at": "11:50 pm",
-   "change": 19.53,
+   "change": 23.33,
    "size": 0.1,
    "datr": 79.94,
    "open_now": 1,
@@ -1401,10 +1401,17 @@
     ],
     [
      "6:15 pm",
-     4191.02,
+     4190.69,
      4189.13,
      4194.15,
      4187.85
+    ],
+    [
+     "6:20 pm",
+     4194.82,
+     4190.71,
+     4196.16,
+     4188.02
     ]
    ],
    "history": [
@@ -1590,8 +1597,8 @@
    },
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Each trade holds until its stop or the 7:00 pm Dubai close. No target.",
-   "price": 157.809,
-   "change_pips": -18.5,
+   "price": 157.802,
+   "change_pips": -19.2,
    "atr_pips": 88.1,
    "entries": [
     {
@@ -2973,10 +2980,17 @@
     ],
     [
      "6:15 pm",
-     157.809,
+     157.839,
      157.803,
-     157.818,
+     157.866,
      157.786
+    ],
+    [
+     "6:20 pm",
+     157.802,
+     157.838,
+     157.839,
+     157.774
     ]
    ],
    "journal": {
@@ -3413,8 +3427,8 @@
    "net_label": "Net $ per barrel (v1.02 sizes)",
    "state": "buy",
    "message": "PAPER BUY day \u2014 later signals today are BUY only. Each trade holds until its stop or the 11:50 pm Dubai close. No target.",
-   "price": 96.163,
-   "change": 0.09,
+   "price": 95.868,
+   "change": -0.2,
    "entries": [
     {
      "time": "5:35 pm",
@@ -3425,11 +3439,11 @@
      "stop_usd": 0.99,
      "size": "1/3",
      "first": true,
-     "status": "open",
-     "exit": null,
-     "exit_time": null,
-     "res": null,
-     "res_sized": null,
+     "status": "stopped",
+     "exit": 95.82,
+     "exit_time": "6:20 pm",
+     "res": -1.031,
+     "res_sized": -0.344,
      "rwf": null,
      "spread": 0.04
     }
@@ -4802,10 +4816,17 @@
     ],
     [
      "6:15 pm",
-     96.16,
+     95.93,
      96.27,
      96.41,
-     96.08
+     95.93
+    ],
+    [
+     "6:20 pm",
+     95.87,
+     95.92,
+     95.93,
+     95.77
     ]
    ],
    "journal": {
@@ -4816,10 +4837,10 @@
     "direction": 0.0,
     "days": 100.0,
     "perday": 2.0,
-    "closed": 9,
-    "win": 22.2,
+    "closed": 10,
+    "win": 20.0,
     "pf": 0.07,
-    "net": -4.39
+    "net": -4.74
    },
    "jdays": [
     {
@@ -4836,11 +4857,11 @@
        "stop_usd": 0.99,
        "size": "1/3",
        "first": true,
-       "status": "open",
-       "exit": null,
-       "exit_time": null,
-       "res": null,
-       "res_sized": null,
+       "status": "stopped",
+       "exit": 95.82,
+       "exit_time": "6:20 pm",
+       "res": -1.031,
+       "res_sized": -0.344,
        "rwf": null,
        "spread": 0.04
       }
@@ -5083,8 +5104,8 @@
    "net_label": "Net points (all paper trades)",
    "state": "sell",
    "message": "2 paper trades today (1 running). Each holds until its stop or the 11:50 pm Dubai close. No target. At most 2 trades a day.",
-   "price": 29671.9,
-   "change": -143.9,
+   "price": 29641.2,
+   "change": -174.6,
    "entries": [
     {
      "time": "5:32 pm",
@@ -5114,7 +5135,7 @@
      "exit": null,
      "exit_time": null,
      "res": null,
-     "live": -48.7,
+     "live": -18.0,
      "rwf": null,
      "spread": 1.8
     }
@@ -6564,10 +6585,17 @@
     ],
     [
      "6:15 pm",
-     29671.9,
+     29657.1,
      29666.3,
-     29683.3,
+     29688.8,
      29642.4
+    ],
+    [
+     "6:20 pm",
+     29641.2,
+     29655.5,
+     29680.2,
+     29626.6
     ]
    ],
    "journal": {
@@ -6617,7 +6645,7 @@
        "exit": null,
        "exit_time": null,
        "res": null,
-       "live": -48.7,
+       "live": -18.0,
        "rwf": null,
        "spread": 1.8
       }
@@ -6804,8 +6832,8 @@
    "net_label": "Net points (all paper trades)",
    "state": "sell",
    "message": "2 paper trades today (1 running). Each holds until its stop or the 11:50 pm Dubai close. No target. At most 2 trades a day.",
-   "price": 29671.9,
-   "change": -143.9,
+   "price": 29641.2,
+   "change": -174.6,
    "entries": [
     {
      "time": "5:32 pm",
@@ -6835,7 +6863,7 @@
      "exit": null,
      "exit_time": null,
      "res": null,
-     "live": -48.7,
+     "live": -18.0,
      "rwf": null,
      "spread": 1.8
     }
@@ -8285,10 +8313,17 @@
     ],
     [
      "6:15 pm",
-     29671.9,
+     29657.1,
      29666.3,
-     29683.3,
+     29688.8,
      29642.4
+    ],
+    [
+     "6:20 pm",
+     29641.2,
+     29655.5,
+     29680.2,
+     29626.6
     ]
    ],
    "journal": {
@@ -8338,7 +8373,7 @@
        "exit": null,
        "exit_time": null,
        "res": null,
-       "live": -48.7,
+       "live": -18.0,
        "rwf": null,
        "spread": 1.8
       }
