@@ -333,15 +333,15 @@
      "stop": 4139.73,
      "w": 0.5,
      "size": 0.1,
-     "status": "open",
+     "status": "eod",
      "first": true,
-     "exit": null,
-     "pnl": null,
+     "exit": 4169.45,
+     "pnl": -10.75,
      "rwf": 0
     }
    ],
    "skipped": 0,
-   "final": false
+   "final": true
   }
  ],
  "summary": {
@@ -351,8 +351,8 @@
   "decided": 16,
   "days": 90.0,
   "perday": 1.8,
-  "avg_pnl": -6.51,
-  "closed": 17,
-  "total_pnl_01": -11.07
+  "avg_pnl": -6.75,
+  "closed": 18,
+  "total_pnl_01": -12.15
  }
 }
