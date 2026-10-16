@@ -1,5 +1,5 @@
 {
- "updated": "Fri 16 Oct \u00b7 11:57 am",
+ "updated": "Fri 16 Oct \u00b7 12:03 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -11,9 +11,9 @@
    "feed_error": false,
    "state": "buy",
    "message": "BUY day \u2014 any later signals today are BUY only. Hold every trade until its stop or the day-end close at 11:50 pm Dubai. No target.",
-   "price": 4186.93,
+   "price": 4182.78,
    "close_at": "11:50 pm",
-   "change": 15.44,
+   "change": 11.29,
    "size": 0.1,
    "datr": 79.94,
    "open_now": 1,
@@ -869,10 +869,17 @@
     ],
     [
      "11:55 am",
-     4186.93,
+     4186.7,
      4185.58,
-     4187.32,
+     4188.39,
      4184.97
+    ],
+    [
+     "12:00 pm",
+     4182.78,
+     4186.81,
+     4186.81,
+     4181.73
     ]
    ],
    "history": [
@@ -1058,8 +1065,8 @@
    },
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Each trade holds until its stop or the 7:00 pm Dubai close. No target.",
-   "price": 158.001,
-   "change_pips": 0.7,
+   "price": 158.03,
+   "change_pips": 3.6,
    "atr_pips": 88.1,
    "entries": [
     {
@@ -1912,7 +1919,14 @@
      158.001,
      157.986,
      158.004,
-     157.982
+     157.973
+    ],
+    [
+     "12:00 pm",
+     158.03,
+     158.004,
+     158.042,
+     157.999
     ]
    ],
    "journal": {
@@ -2349,8 +2363,8 @@
    "net_label": "Net $ per barrel (v1.02 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 95.878,
-   "change": -0.19,
+   "price": 95.853,
+   "change": -0.22,
    "entries": [],
    "spark": [
     [
@@ -3188,10 +3202,17 @@
     ],
     [
      "11:55 am",
-     95.88,
+     95.8,
      95.94,
      95.96,
-     95.86
+     95.78
+    ],
+    [
+     "12:00 pm",
+     95.85,
+     95.82,
+     95.88,
+     95.8
     ]
    ],
    "journal": {
@@ -3451,8 +3472,8 @@
    "net_label": "Net points (all paper trades)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 29948.2,
-   "change": 132.4,
+   "price": 29965.7,
+   "change": 149.9,
    "entries": [],
    "spark": [
     [
@@ -4367,10 +4388,17 @@
     ],
     [
      "11:55 am",
-     29948.2,
+     29955.3,
      29934.9,
-     29952.5,
+     29959.4,
      29930.4
+    ],
+    [
+     "12:00 pm",
+     29965.7,
+     29954.5,
+     29980.7,
+     29951.0
     ]
    ],
    "journal": {
@@ -4574,8 +4602,8 @@
    "net_label": "Net points (all paper trades)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 29948.2,
-   "change": 132.4,
+   "price": 29965.7,
+   "change": 149.9,
    "entries": [],
    "spark": [
     [
@@ -5490,10 +5518,17 @@
     ],
     [
      "11:55 am",
-     29948.2,
+     29955.3,
      29934.9,
-     29952.5,
+     29959.4,
      29930.4
+    ],
+    [
+     "12:00 pm",
+     29965.7,
+     29954.5,
+     29980.7,
+     29951.0
     ]
    ],
    "journal": {
