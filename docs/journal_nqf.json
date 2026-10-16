@@ -165,6 +165,22 @@
      "live": null,
      "rwf": 0,
      "spread": 1.8
+    },
+    {
+     "time": "6:11 pm",
+     "side": "SELL",
+     "name": "REV US+10 H2 round $400 touch then close back -> reverse, from 7am",
+     "role": "core",
+     "price": 29625.0,
+     "stop": 29744.7,
+     "stop_pts": 119.7,
+     "status": "open",
+     "exit": null,
+     "exit_time": null,
+     "res": null,
+     "live": -48.7,
+     "rwf": null,
+     "spread": 1.8
     }
    ],
    "final": false
@@ -173,11 +189,11 @@
  "summary": {
   "since": "12 Oct 2026",
   "weekdays": 5,
-  "trades": 8,
+  "trades": 9,
   "decided": 8,
   "direction": 25.0,
   "days": 100.0,
-  "perday": 1.6,
+  "perday": 1.8,
   "closed": 8,
   "win": 12.5,
   "pf": 0.64,
