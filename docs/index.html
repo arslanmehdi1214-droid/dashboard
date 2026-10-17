@@ -335,7 +335,7 @@ function actsRender(){const x=M.GOLD||{},A=(x.actions||[]).slice().reverse(),day
  const keys=A.map(a=>day+a.time+a.kind+a.text);
  if(seenA===null){seenA=new Set(keys)}else{const fresh=A.filter((a,i)=>!seenA.has(keys[i]));
   if(fresh.length){fresh.forEach((a,i)=>flashA[day+a.time+a.kind+a.text]=Date.now());const top=fresh[0];beep(top.kind==='HOLD'?1:3);notify('Gold: '+top.text);keys.forEach(k=>seenA.add(k))}}
- acts.innerHTML=`<div class="ah"><h3>Gold actions today · v2.09</h3><button id="snd2" class="${sound?'on':''}">${sound?'Sound on':'Turn on sound'}</button></div>`+
+ acts.innerHTML=`<div class="ah"><h3>Gold actions today · ${x.version||'v2.10'}</h3><button id="snd2" class="${sound?'on':''}">${sound?'Sound on':'Turn on sound'}</button></div>`+
   (A.length?A.slice(0,10).map(a=>{const k=day+a.time+a.kind+a.text,nw=flashA[k]&&Date.now()-flashA[k]<10*6e4;return `<div class="ac ${nw?'new':''}"><span class="tm">${a.time}</span><span class="k ${a.kind}">${a.kind.replace('_',' ')}</span><span class="tx">${a.text}</span></div>`}).join('')
   :`<div class="dim" style="font:500 13px Inter">No gold action yet today — ${x.message||'waiting for the first signal'}</div>`);
  const b=document.getElementById('snd2');if(b)b.onclick=()=>{sound=!sound;if(sound){beep(1);try{Notification.requestPermission&&Notification.requestPermission()}catch(e){}}actsRender()}}
@@ -426,7 +426,7 @@ sty.querySelectorAll('button').forEach(b=>b.onclick=()=>{STY=b.dataset.s;sty.que
 /* ---- trade history + P&L calendar, ONE PER MARKET (each market's own journal file, never mixed). Every trade valued at 0.01 lot
    after the spread, from the journal's own result: Gold pnl $/oz x 1 oz · USD/JPY pips on $1,000 · Oil res $/bbl x 10 bbl · Nasdaq res pts x $0.10 */
 const HMK=[
- {c:'GOLD',n:'Gold',file:'journal.json',split:'2026-10-19',oldv:'v2.06',newv:'v2.09',usd:t=>t.pnl,
+ {c:'GOLD',n:'Gold',file:'journal.json',split:'2026-10-19',oldv:'v2.06',newv:'v2.10',usd:t=>t.pnl,
   tag:t=>t.tag,info:t=>`in ${f(t.price,2)} · stop ${f(t.stop0??t.stop,2)}${t.half_px!=null?` · ½ ${f(t.half_px,2)}${t.half?' ✓':''}`:''}${t.exit!=null?` · out ${f(t.exit,2)}`:''}`},
  {c:'USDJPY',n:'USD/JPY',file:'journal_usdjpy.json',usd:t=>t.pips==null||t.exit==null?null:t.pips*10/t.exit,
   tag:t=>t.name||t.sig,info:t=>`in ${f(t.price,3)} · stop ${f(t.stop,3)}${t.exit!=null?` · out ${f(t.exit,3)}`:''}${t.pips!=null?` · ${sg(t.pips,1)} pips`:''}`},
