@@ -77,6 +77,21 @@ svg.eq{display:block;width:100%;height:56px;margin:12px 0}
 .idle{margin-top:18px;font:500 13px Inter;color:var(--dim)}
 .idle b{color:var(--mute);font-weight:600}
 .closed{margin-top:28px}
+.hist{margin-top:28px;background:var(--panel);border-radius:14px;padding:16px}
+.hist .hh{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}.hist .hh h3{margin:0}
+.hist .tot{display:flex;gap:18px;flex-wrap:wrap;font:500 12px Inter;color:var(--dim);margin-bottom:12px}.hist .tot b{display:block;font:700 16px var(--mono);color:var(--ink)}
+.hist .tabs2{margin-left:auto;display:flex;gap:6px}.hist .tabs2 button{font:600 11.5px Inter;background:none;border:1px solid var(--line);color:var(--dim);border-radius:7px;padding:4px 9px;cursor:pointer}.hist .tabs2 button.on{border-color:var(--gold);color:var(--gold)}
+.cal5{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}.cal5 .dh{font:600 10.5px Inter;color:var(--dim);text-align:center;letter-spacing:.5px}
+.cal5 .cd{min-height:58px;border:1px solid var(--line);border-radius:9px;padding:6px 7px;font:500 11px Inter;color:var(--dim);display:flex;flex-direction:column;gap:2px;cursor:default}
+.cal5 .cd.x{opacity:.35}.cal5 .cd.t{cursor:pointer}.cal5 .cd.g{background:rgba(155,231,196,.10);border-color:rgba(155,231,196,.35)}.cal5 .cd.r{background:var(--sellb);border-color:rgba(255,107,107,.35)}.cal5 .cd.today{outline:1px solid var(--gold)}
+.cal5 .cd b{font:700 13px var(--mono)}.cal5 .cd small{font:500 10px Inter;color:var(--dim)}
+.mnav{display:flex;align-items:center;gap:10px;margin-bottom:8px;font:600 13px Inter}.mnav button{background:none;border:1px solid var(--line);color:var(--mute);border-radius:7px;padding:2px 9px;cursor:pointer}
+.hday{border-top:1px solid var(--line)}.hday>summary{list-style:none;display:grid;grid-template-columns:150px 54px 1fr auto auto;gap:10px;align-items:baseline;padding:9px 0;cursor:pointer;font:500 13px Inter}.hday>summary::-webkit-details-marker{display:none}
+.hday .rv{font:600 10px Inter;color:var(--dim);border:1px solid var(--line);border-radius:5px;padding:1px 5px;margin-left:6px}
+.htr{display:grid;grid-template-columns:70px 52px 1fr auto auto;gap:8px;padding:6px 0 6px 12px;font:500 12px Inter;border-top:1px dashed var(--line);align-items:baseline}.htr .d{color:var(--dim);font:500 11.5px var(--mono)}
+.hnote{font:500 11px Inter;color:var(--dim);margin-top:10px}
+@media(max-width:860px){.hday>summary{grid-template-columns:118px 42px 1fr auto}.mnav .dim{flex-basis:100%;margin-left:0!important}.mnav{flex-wrap:wrap}.hday>summary .usd{display:none}.htr{grid-template-columns:60px 46px 1fr auto}.htr .usd{display:none}.cal5 .cd{min-height:50px;padding:5px}.cal5 .cd b{font-size:11px}}
+
 .acts{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin-bottom:14px}
 .acts .ah{display:flex;align-items:center;gap:10px;margin-bottom:6px}.acts .ah h3{margin:0}.acts .ah button{margin-left:auto;font:600 11.5px Inter;background:none;border:1px solid var(--line);color:var(--dim);border-radius:7px;padding:4px 9px;cursor:pointer}.acts .ah button.on{color:var(--gold);border-color:var(--gold)}
 .ac{display:grid;grid-template-columns:62px 110px 1fr;gap:10px;padding:6px 0;border-top:1px solid var(--line);font:500 13px Inter;align-items:baseline}.ac:first-of-type{border-top:0}
@@ -103,8 +118,7 @@ td{padding:9px 4px;border-bottom:1px solid var(--line)}td.r{text-align:right}
 .src{font:500 11.5px Inter;color:var(--dim);margin-top:12px}
 .mock{max-width:1440px;margin:0 auto;padding:0 24px 24px;font:500 11.5px Inter;color:var(--dim)}
 /* session tiles */
-.srow{max-width:1440px;margin:0 auto;padding:0 24px 12px;display:flex;gap:10px;align-items:stretch;flex-wrap:wrap}.srow .st{flex:1 1 260px}
-.stc{flex:1 1 220px;display:flex;flex-direction:column;justify-content:center;gap:3px;border:1px dashed var(--line);border-radius:12px;padding:8px 14px;font:500 12px Inter;color:var(--dim);opacity:.8}.stc b{color:var(--mute);font-weight:600;margin-right:4px}.stc .soon{font-style:normal;font-family:var(--mono);color:var(--amber)}
+.srow{max-width:1440px;margin:0 auto;padding:0 24px 12px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
 .st{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:14px}
 .st .nm{font:700 14px Inter}.st .nm small{display:block;font:500 12px Inter;color:var(--dim)}
 .st .tm{margin-left:auto;text-align:right;font:500 11.5px Inter;color:var(--dim);white-space:nowrap}
@@ -189,7 +203,7 @@ td{padding:9px 4px;border-bottom:1px solid var(--line)}td.r{text-align:right}
 @media(max-width:1200px){.term{grid-template-columns:250px minmax(0,1fr)}.rr{grid-column:1/-1;position:static}.hd{flex-wrap:wrap}.news{text-align:left;order:4}}
 @media(max-width:860px){
  .hd{flex-wrap:wrap;gap:10px 16px;padding:10px 16px}.clk{margin-left:auto}.mtab{order:3;flex-basis:100%}.clk b{font-size:17px}.clk small{display:none}
- .news{flex-basis:100%;display:flex;gap:8px;align-items:baseline}.news b{display:inline}.srow{padding:0 16px 10px;gap:6px}.srow .st{flex:1 1 140px}.stc{flex:1 1 100%;flex-direction:row;flex-wrap:wrap;gap:4px 14px}.st{flex-direction:column;align-items:flex-start;gap:4px;padding:8px 10px}.st .tm{margin-left:0;text-align:left}.st .tm b{font-size:15px}.st .s{display:none}.alert{padding:0 16px}
+ .news{flex-basis:100%;display:flex;gap:8px;align-items:baseline}.news b{display:inline}.srow{padding:0 16px 10px;gap:6px;grid-template-columns:1fr 1fr}.st{flex-direction:column;align-items:flex-start;gap:4px;padding:8px 10px}.st .tm{margin-left:0;text-align:left}.st .tm b{font-size:15px}.st .s{display:none}.alert{padding:0 16px}
  header{position:static}.term{display:block;padding:16px 16px 90px}.rail{position:static}
  .cards{grid-template-columns:1fr}
  .pane{display:none}body[data-tab="mk"] .p-mk,body[data-tab="tr"] .p-tr,body[data-tab="nw"] .p-nw{display:block}
@@ -219,6 +233,7 @@ td{padding:9px 4px;border-bottom:1px solid var(--line)}td.r{text-align:right}
   <div class="cards" id="cards"></div>
   <div class="idle" id="idle"></div>
   <div class="closed" id="closedbox"></div>
+  <div class="hist" id="histbox"></div>
  </section>
  <aside class="rail rr pane p-nw">
   <h3>Events · our 4 markets</h3><div id="cal"></div>
@@ -293,9 +308,7 @@ function tick(){const now=new Date();
  clk.textContent=now.toLocaleTimeString('en-US',{...TZ,hour:'numeric',minute:'2-digit',second:'2-digit'}).toLowerCase();cld.textContent='Dubai · '+dday(now);
  const L=SES.map(S=>{const W=wins(S,now),cur=W.find(w=>w.o<=now&&now<w.c),nx=W.find(w=>w.o>now);return {S,cur,w:cur||nx,next:cur?cur.c:nx.o}})
   .sort((a,b)=>(!!b.cur-!!a.cur)||(a.next-b.next));
- const opn=L.filter(x=>x.cur),cls=L.filter(x=>!x.cur);
- ses.innerHTML=opn.map(x=>`<div class="st open"><div class="nm">${x.S.n}<small>${t12(x.w.o)} – ${t12(x.w.c)}</small></div><span class="s">LIVE</span><div class="tm">closes in<b>${hms(x.next-now)}</b></div></div>`).join('')
-  +(cls.length?`<div class="stc">${cls.map(x=>`<span><b>${x.S.n}</b> ${x.next-now<=15*6e4?'opens in <em class="soon">'+hms(x.next-now)+'</em>':'opens '+t12(x.next)+(dkey(x.next)!==dkey(now)?' '+dday(x.next).split(',')[0]:'')}</span>`).join('')}</div>`:'');
+ ses.innerHTML=L.map(x=>`<div class="st ${x.cur?'open':''}"><div class="nm">${x.S.n}<small>${t12(x.w.o)} – ${t12(x.w.c)}</small></div><span class="s">${x.cur?'OPEN':'CLOSED'}</span><div class="tm">${x.cur?'closes in<b>'+hms(x.next-now)+'</b>':(x.next-now<=15*6e4?'opens in<b class="soon">'+hms(x.next-now)+'</b>':'opens at<b class="at">'+t12(x.next)+(dkey(x.next)!==dkey(now)?' '+dday(x.next).split(',')[0]:'')+'</b>')}</div></div>`).join('');
  const n=G.find(g=>g.impact==='High'&&g.t>now);
  document.querySelectorAll('[data-cd]').forEach(el=>{const ms=+el.dataset.cd-now;el.textContent=ms>0?'in '+hms(ms):'released';el.classList.toggle('hot',ms>0&&ms<15*6e4)});
  alertTick(now);
@@ -408,9 +421,38 @@ loadNews();setInterval(loadNews,30000);
 function setT(){mtabs.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.t===document.body.dataset.tab))}
 mtabs.querySelectorAll('button').forEach(b=>b.onclick=()=>{document.body.dataset.tab=b.dataset.t;setT();scrollTo(0,0)});setT();
 sty.querySelectorAll('button').forEach(b=>b.onclick=()=>{STY=b.dataset.s;sty.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));render();applySel()});
+/* ---- gold trade history + P&L calendar (docs/journal.json, written by the desk script; 1 oz per trade = 0.01 lot) */
+let JN=null,HV='list',HM=null;
+const V209='2026-10-19';   // first broker day on v2.09 rules
+const HST={stopped:'stop hit',be:'½ banked, rest out at entry',eod:'closed at day end',close_now:'close now (day end)',reversed:'reversed',open:'open'};
+function dPnl(d){const p=d.trades.filter(t=>t.pnl!=null);return p.length?p.reduce((a,t)=>a+t.pnl,0):null}
+async function loadHist(){try{JN=await (await fetch('journal.json?t='+Date.now(),{cache:'no-store'})).json();renderHist()}catch(e){histbox.innerHTML='<h3>Gold trade history</h3><div class="dim">History file unreachable, retrying</div>'}}
+function renderHist(){if(!JN||!JN.days)return;const days=JN.days.filter(d=>d.trades&&d.trades.length).slice().reverse();
+ const grp=(ds)=>{const pd=ds.map(dPnl).filter(v=>v!=null),tr=ds.flatMap(d=>d.trades).filter(t=>t.pnl!=null);return{n:tr.length,win:tr.filter(t=>t.pnl>0).length,days:pd.length,green:pd.filter(v=>v>0).length,tot:pd.reduce((a,v)=>a+v,0)}};
+ const nw=grp(days.filter(d=>d.date>=V209)),od=grp(days.filter(d=>d.date<V209));
+ const box=(t,g)=>g.days?`<div>${t}<b class="${g.tot>=0?'pos':'neg'}">${sg(g.tot*AED)} AED</b>${sg(g.tot)} $ · ${g.green}/${g.days} green days · ${g.win}/${g.n} trades won</div>`:`<div>${t}<b class="dim">no trades yet</b>first day ${dday(new Date(V209+'T12:00:00+04:00')).split(',')[0]} 19 Oct</div>`;
+ let h=`<div class="hh"><h3>Gold trade history</h3><div class="tabs2"><button data-h="list" class="${HV==='list'?'on':''}">Trades</button><button data-h="cal" class="${HV==='cal'?'on':''}">P&amp;L calendar</button></div></div>
+ <div class="tot">${box('v2.09 rules (now)',nw)}${od.days?box('v2.06 rules (before 19 Oct)',od):''}</div>`;
+ if(HV==='cal'){const all=JN.days.filter(d=>d.trades&&d.trades.length),mk=d=>d.slice(0,7),ms=[...new Set(JN.days.map(d=>mk(d.date)))].sort();
+  const todayK=new Date().toLocaleDateString('en-CA',TZ).slice(0,7);if(!ms.includes(todayK))ms.push(todayK);if(!HM||!ms.includes(HM))HM=ms[ms.length-1];const mi=ms.indexOf(HM);
+  const [Y,Mo]=HM.split('-').map(Number),first=new Date(Date.UTC(Y,Mo-1,1)),nd=new Date(Date.UTC(Y,Mo,0)).getUTCDate(),byD={};all.forEach(d=>byD[d.date]=d);
+  const tdy=new Date().toLocaleDateString('en-CA',TZ);let cells=[];let lead=(first.getUTCDay()+6)%7;if(lead<5)for(let i=0;i<lead;i++)cells.push('<div></div>');
+  let mt=0,mg=0,mdays=0;
+  for(let k=1;k<=nd;k++){const dt=new Date(Date.UTC(Y,Mo-1,k)),wd=dt.getUTCDay();if(wd===0||wd===6)continue;const key=dt.toISOString().slice(0,10),d=byD[key],v=d?dPnl(d):null;
+   if(v!=null){mt+=v;mdays++;if(v>0)mg++}
+   cells.push(`<div class="cd ${v==null?(d?'':'x'):(v>0?'g':'r')} ${d?'t':''} ${key===tdy?'today':''}" ${d?`data-go="${key}"`:''}><span>${k}${key<V209&&d?' <small>v2.06</small>':''}</span>${v!=null?`<b class="${v>=0?'pos':'neg'}">${sg(v*AED)}</b><small>${d.trades.length} trade${d.trades.length>1?'s':''}</small>`:(d?'<small>open</small>':'')}</div>`)}
+  h+=`<div class="mnav"><button data-m="-1" ${mi<=0?'disabled':''}>‹</button><span>${first.toLocaleDateString('en-GB',{month:'long',year:'numeric',timeZone:'UTC'})}</span><button data-m="1" ${mi>=ms.length-1?'disabled':''}>›</button><span class="dim" style="font-weight:500;margin-left:auto">${mdays?`month ${sg(mt*AED)} AED · ${mg}/${mdays} green`:''}</span></div>
+  <div class="cal5">${['MON','TUE','WED','THU','FRI'].map(x=>`<div class="dh">${x}</div>`).join('')}${cells.join('')}</div>`}
+ else h+=days.length?days.map(d=>{const v=dPnl(d),old=d.date<V209;return `<details class="hday" id="hd-${d.date}"><summary><span>${d.label}${old?'<span class="rv">v2.06</span>':''}</span><span class="${d.side==='BUY'?'pos':'neg'}">${d.side||''}</span><span class="dim">${d.trades.length} trade${d.trades.length>1?'s':''}${d.final?'':' · day running'}</span><b class="num ${v==null?'dim':v>=0?'pos':'neg'}">${v==null?'—':sg(v*AED)+' AED'}</b><span class="num dim usd">${v==null?'':sg(v)+' $'}</span></summary>
+   ${d.trades.map(t=>`<div class="htr"><span class="d">${t.time}</span><span class="${t.side==='BUY'?'pos':'neg'}">${t.side}</span><span><span class="dim">${t.tag||''}</span> · in ${f(t.price,2)} · stop ${f(t.stop0??t.stop,2)}${t.half_px!=null?` · ½ ${f(t.half_px,2)}${t.half?' ✓':''}`:''}${t.exit!=null?` · out ${f(t.exit,2)}`:''} · <span class="dim">${HST[t.status]||t.status}</span></span><b class="num ${t.pnl==null?'dim':t.pnl>=0?'pos':'neg'}">${t.pnl==null?'open':sg(t.pnl*AED)+' AED'}</b><span class="num dim usd">${t.pnl==null?'':sg(t.pnl)+' $'}</span></div>`).join('')}</details>`}).join(''):'<div class="dim">No trades recorded yet</div>';
+ h+=`<div class="hnote">Source: desk journal (journal.json), live since ${JN.summary?JN.summary.since:JN.start}. Model account 0.01 lot = 1 oz per trade, after the spread. Days before 19 Oct ran the old v2.06 rules.</div>`;
+ histbox.innerHTML=h;
+ histbox.querySelectorAll('[data-h]').forEach(b=>b.onclick=()=>{HV=b.dataset.h;renderHist()});
+ histbox.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{const ms=[...new Set(JN.days.map(d=>d.date.slice(0,7)))].sort();const t=new Date().toLocaleDateString('en-CA',TZ).slice(0,7);if(!ms.includes(t))ms.push(t);HM=ms[Math.max(0,Math.min(ms.length-1,ms.indexOf(HM)+(+b.dataset.m)))];renderHist()});
+ histbox.querySelectorAll('[data-go]').forEach(c=>c.onclick=()=>{HV='list';renderHist();const el=document.getElementById('hd-'+c.dataset.go);if(el){el.open=true;el.scrollIntoView({behavior:'smooth',block:'center'})}})}
 async function loadDesk(){try{const j=await (await fetch(DATA_URL+'?t='+Date.now(),{cache:'no-store'})).json();D=j;M=j.markets||{};buildT();render();actsRender();applySel();deskstat.textContent='Desk data '+((j.updated||'').split('·')[1]||j.updated||'').trim()}catch(e){deskstat.textContent='Desk data unreachable, retrying'}}
 async function loadCal(){for(const u of ['calendar.json?t='+Date.now(),WORKER_URL+'calendar']){try{const j=await (await fetch(u,{cache:'no-store'})).json();if(Array.isArray(j)&&j.length){CAL=j;buildG();render();applySel();return}}catch(e){}}}
-buildT();render();applySel();tick();loadDesk();loadCal();setInterval(loadDesk,60000);setInterval(loadCal,30*60000);setInterval(tick,1000);
+buildT();render();applySel();tick();loadDesk();loadCal();setInterval(loadDesk,60000);loadHist();setInterval(loadHist,5*60000);setInterval(loadCal,30*60000);setInterval(tick,1000);
 pullLive();setInterval(pullLive,WORKER_URL?3000:5000);
 const fixH=()=>document.documentElement.style.setProperty('--hh',document.querySelector('header').offsetHeight+'px');fixH();addEventListener('resize',fixH);
 </script></body></html>
