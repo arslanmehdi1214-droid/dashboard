@@ -131,7 +131,7 @@ td{padding:9px 4px;border-bottom:1px solid var(--line)}td.r{text-align:right}
 .alert div{display:flex;align-items:center;gap:14px;flex-wrap:wrap;border-radius:12px;padding:10px 16px;font:500 13.5px Inter}
 .alert .w30{background:rgba(255,197,107,.10);border:1px solid rgba(255,197,107,.45);color:var(--amber)}
 .alert .w15{background:rgba(255,107,107,.12);border:1px solid rgba(255,107,107,.6);color:var(--sell);animation:pulse 1.6s infinite}
-.alert b{color:var(--ink);font-weight:700}.alert .cdn{font:700 20px var(--mono)}
+.alert b{color:var(--ink);font-weight:700}.alert .keep{color:var(--live);font-weight:700}.alert .cdn{font:700 20px var(--mono)}
 .alert button{margin-left:auto;background:none;border:1px solid currentColor;color:inherit;border-radius:8px;padding:5px 10px;font:600 12px Inter;cursor:pointer}
 @keyframes pulse{50%{box-shadow:0 0 0 4px rgba(255,107,107,.15)}}
 .g4{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:10px;overflow:hidden}
@@ -301,9 +301,10 @@ function alertTick(now){const n=G.find(g=>g.impact==='High'&&g.t>now&&g.t-now<=3
  if(!n){nalert.className='alert';return}
  const ms=n.t-now,lvl=ms<=15*6e4?15:30,k=n.date+lvl,open=T.filter(o=>!done(o.e)&&n.mk.includes(o.m.tag)).map(o=>o.m.n);
  const txt=`${n.country} ${n.items[0].title}${n.items.length>1?' +'+(n.items.length-1):''}`;
- if(!fired[k]){fired[k]=1;beep(lvl===15?3:1);notify(`${txt} in ${lvl} min${open.length?' · open: '+open.join(', '):''}`)}
+ const gk=n.country==='USD'&&T.some(o=>!done(o.e)&&o.m.c==='GOLD'),keep=gk?'Gold: KEEP your trade — 2008-26 history: closing before USD news cut green days':'';
+ if(!fired[k]){fired[k]=1;beep(lvl===15?3:1);notify(`${txt} in ${lvl} min${open.length?' · open: '+open.join(', '):''}${keep?' · '+keep:''}`)}
  nalert.className='alert on';
- nalert.innerHTML=`<div class="w${lvl}"><span>⚠ HIGH IMPACT</span><b>${txt}</b><span>at ${t12(n.t)}</span><span class="cdn">${hms(ms)}</span><span>${n.mk.join(' · ')}${open.length?' · <b>your open: '+open.join(', ')+'</b>':''} · no new trades 2 min either side</span>${sound?'':'<button id="snd">Turn on sound</button>'}</div>`;
+ nalert.innerHTML=`<div class="w${lvl}"><span>⚠ HIGH IMPACT</span><b>${txt}</b><span>at ${t12(n.t)}</span><span class="cdn">${hms(ms)}</span><span>${n.mk.join(' · ')}${open.length?' · <b>your open: '+open.join(', ')+'</b>':''} · no new trades 2 min either side</span>${keep?`<span class="keep">✓ ${keep}</span>`:''}${sound?'':'<button id="snd">Turn on sound</button>'}</div>`;
  const b=document.getElementById('snd');if(b)b.onclick=()=>{sound=true;beep(1);try{Notification.requestPermission&&Notification.requestPermission()}catch(e){}}}
 function tick(){const now=new Date();
  clk.textContent=now.toLocaleTimeString('en-US',{...TZ,hour:'numeric',minute:'2-digit',second:'2-digit'}).toLowerCase();cld.textContent='Dubai · '+dday(now);
