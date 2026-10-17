@@ -77,7 +77,7 @@ svg.eq{display:block;width:100%;height:56px;margin:12px 0}
 .idle{margin-top:18px;font:500 13px Inter;color:var(--dim)}
 .idle b{color:var(--mute);font-weight:600}
 .closed{margin-top:28px}
-.hist{margin-top:28px;background:var(--panel);border-radius:14px;padding:16px}
+.hist{margin:0 0 18px;background:var(--panel);border-radius:14px;padding:16px}.hist:empty{display:none}
 .hist .hh{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}.hist .hh h3{margin:0}
 .hist .tot{display:flex;gap:18px;flex-wrap:wrap;font:500 12px Inter;color:var(--dim);margin-bottom:12px}.hist .tot b{display:block;font:700 16px var(--mono);color:var(--ink)}
 .hist .tabs2{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}.hist .tabs2 button{font:600 11.5px Inter;background:none;border:1px solid var(--line);color:var(--dim);border-radius:7px;padding:4px 9px;cursor:pointer}.hist .tabs2 button.on{border-color:var(--gold);color:var(--gold)}
@@ -89,6 +89,7 @@ svg.eq{display:block;width:100%;height:56px;margin:12px 0}
 .hday{border-top:1px solid var(--line)}.hday>summary{list-style:none;display:grid;grid-template-columns:150px 54px 1fr auto auto;gap:10px;align-items:baseline;padding:9px 0;cursor:pointer;font:500 13px Inter}.hday>summary::-webkit-details-marker{display:none}
 .hday .rv{font:600 10px Inter;color:var(--dim);border:1px solid var(--line);border-radius:5px;padding:1px 5px;margin-left:6px}
 .htr{display:grid;grid-template-columns:70px 52px 1fr auto auto;gap:8px;padding:6px 0 6px 12px;font:500 12px Inter;border-top:1px dashed var(--line);align-items:baseline}.htr .d{color:var(--dim);font:500 11.5px var(--mono)}
+.hmore{margin-top:8px;font:600 12px Inter;background:none;border:1px solid var(--line);color:var(--gold);border-radius:8px;padding:5px 10px;cursor:pointer}
 .hnote{font:500 11px Inter;color:var(--dim);margin-top:10px}
 @media(max-width:860px){.hday>summary{grid-template-columns:118px 42px 1fr auto}.mnav .dim{flex-basis:100%;margin-left:0!important}.mnav{flex-wrap:wrap}.hday>summary .usd{display:none}.htr{grid-template-columns:60px 46px 1fr auto}.htr .usd{display:none}.cal5 .cd{min-height:50px;padding:5px}.cal5 .cd b{font-size:11px}}
 
@@ -227,13 +228,13 @@ td{padding:9px 4px;border-bottom:1px solid var(--line)}td.r{text-align:right}
   <div class="acc" id="acc" style="margin-top:0"></div>
  </aside>
  <section class="pane p-tr">
-  <div class="actlive" id="actlive"></div>
-  <div class="acts" id="acts"></div>
+  <div class="actlive" id="actlive" data-c="GOLD"></div>
+  <div class="acts" id="acts" data-c="GOLD"></div>
+  <div class="hist" id="histbox"></div>
   <div class="oh"><h3 id="oth">Open trades</h3><div class="sty" id="sty"><span>Layout option</span><button data-s="1">1 · Rows</button><button data-s="2" class="on">2 · Price ladder</button><button data-s="3">3 · Broker table</button></div></div>
   <div class="cards" id="cards"></div>
   <div class="idle" id="idle"></div>
   <div class="closed" id="closedbox"></div>
-  <div class="hist" id="histbox"></div>
  </section>
  <aside class="rail rr pane p-nw">
   <h3>Events · our 4 markets</h3><div id="cal"></div>
@@ -369,6 +370,7 @@ let SEL='ALL';
 function applySel(){const tag=SEL==='ALL'?null:MK.find(m=>m.c===SEL).tag;
  document.querySelectorAll('[data-c]').forEach(el=>{if(el.closest('#mtab'))return;el.classList.toggle('hide',SEL!=='ALL'&&el.dataset.c!==SEL)});
  document.querySelectorAll('.ev[data-mk]').forEach(el=>el.classList.toggle('hide',!!tag&&!el.dataset.mk.split('|').includes(tag)));
+try{renderHist()}catch(e){}
  oth.textContent=`Open trades · ${document.querySelectorAll('.row:not(.hide),.tk:not(.hide),.pt tr[data-c]:not(.hide)').length}`}
 function render(){
  try{actsLive()}catch(e){}
@@ -432,15 +434,14 @@ const HMK=[
   tag:t=>t.name+(t.size?' · size '+t.size:''),info:t=>`in ${f(t.price,2)} · stop ${f(t.stop,2)}${t.exit!=null?` · out ${f(t.exit,2)}`:''}`},
  {c:'US100',n:'Nasdaq',file:'journal_nq.json',usd:t=>t.res==null?null:t.res*0.1,
   tag:t=>(t.name||'').split(':')[0],info:t=>`in ${f(t.price,1)} · stop ${f(t.stop,1)}${t.exit!=null?` · out ${f(t.exit,1)}`:''}${t.res!=null?` · ${sg(t.res,1)} pts`:''}`}];
-let HJ={},HC='GOLD',HV='list',HM=null;
+let HJ={},HC=null,HV='list',HM=null,HALL=false;
 const HST={stopped:'stop hit',be:'½ banked, rest out at entry',eod:'closed at day end',close_now:'close now (day end)',reversed:'reversed',open:'open'};
-const hmk=()=>HMK.find(m=>m.c===HC);
+const hmk=()=>HMK.find(m=>m.c===SEL);
 const tU=(m,t)=>{const v=m.usd(t);return v==null||isNaN(v)?null:v};
 function dPnl(m,d){const p=d.trades.map(t=>tU(m,t)).filter(v=>v!=null);return p.length?p.reduce((a,v)=>a+v,0):null}
 async function loadHist(){await Promise.all(HMK.map(async m=>{try{HJ[m.c]=await (await fetch(m.file+'?t='+Date.now(),{cache:'no-store'})).json()}catch(e){}}));renderHist()}
-function renderHist(){const m=hmk(),JN=HJ[m.c];
- let h=`<div class="hh"><h3>Trade history</h3><div class="tabs2">${HMK.map(x=>`<button data-k="${x.c}" class="${x.c===HC?'on':''}">${x.n}</button>`).join('')}</div></div>
- <div class="hh" style="margin-top:-4px"><div class="tabs2" style="margin-left:0"><button data-h="list" class="${HV==='list'?'on':''}">Trades</button><button data-h="cal" class="${HV==='cal'?'on':''}">P&amp;L calendar</button></div></div>`;
+function renderHist(){const m=hmk();if(!m){histbox.innerHTML='';HC=null;return}if(HC!==m.c){HC=m.c;HM=null;HALL=false}const JN=HJ[m.c];
+ let h=`<div class="hh"><h3>${m.n} · trade history</h3><div class="tabs2"><button data-h="list" class="${HV==='list'?'on':''}">Trades</button><button data-h="cal" class="${HV==='cal'?'on':''}">P&amp;L calendar</button></div></div>`;
  if(!JN||!JN.days){histbox.innerHTML=h+`<div class="dim">${m.n} history file unreachable, retrying</div>`;bindHist();return}
  const days=JN.days.filter(d=>d.trades&&d.trades.length).slice().reverse();
  const grp=ds=>{const pd=ds.map(d=>dPnl(m,d)).filter(v=>v!=null),tr=ds.flatMap(d=>d.trades).map(t=>tU(m,t)).filter(v=>v!=null);return{n:tr.length,win:tr.filter(v=>v>0).length,days:pd.length,green:pd.filter(v=>v>0).length,tot:pd.reduce((a,v)=>a+v,0)}};
@@ -456,16 +457,16 @@ function renderHist(){const m=hmk(),JN=HJ[m.c];
    cells.push(`<div class="cd ${v==null?(d?'':'x'):(v>0?'g':'r')} ${d?'t':''} ${key===tdy?'today':''}" ${d?`data-go="${key}"`:''}><span>${k}${d&&old(key)?' <small>'+m.oldv+'</small>':''}</span>${v!=null?`<b class="${v>=0?'pos':'neg'}">${sg(v*AED)}</b><small>${d.trades.length} trade${d.trades.length>1?'s':''}</small>`:(d?'<small>open</small>':'')}</div>`)}
   h+=`<div class="mnav"><button data-m="-1" ${mi<=0?'disabled':''}>‹</button><span>${first.toLocaleDateString('en-GB',{month:'long',year:'numeric',timeZone:'UTC'})}</span><button data-m="1" ${mi>=ms.length-1?'disabled':''}>›</button><span class="dim" style="font-weight:500;margin-left:auto">${mdays?`month ${sg(mt*AED)} AED · ${mg}/${mdays} green`:''}</span></div>
   <div class="cal5">${['MON','TUE','WED','THU','FRI'].map(x=>`<div class="dh">${x}</div>`).join('')}${cells.join('')}</div>`}
- else h+=days.length?days.map(d=>{const v=dPnl(m,d);return `<details class="hday" id="hd-${d.date}"><summary><span>${d.label}${old(d.date)?'<span class="rv">'+m.oldv+'</span>':''}</span><span class="${d.side==='BUY'?'pos':'neg'}">${d.side||''}</span><span class="dim">${d.trades.length} trade${d.trades.length>1?'s':''}${d.final?'':' · day running'}</span><b class="num ${v==null?'dim':v>=0?'pos':'neg'}">${v==null?'—':sg(v*AED)+' AED'}</b><span class="num dim usd">${v==null?'':sg(v)+' $'}</span></summary>
-   ${d.trades.map(t=>{const u=tU(m,t);return `<div class="htr"><span class="d">${t.time}</span><span class="${t.side==='BUY'?'pos':'neg'}">${t.side}</span><span><span class="dim">${m.tag(t)||''}</span> · ${m.info(t)} · <span class="dim">${HST[t.status]||t.status}</span></span><b class="num ${u==null?'dim':u>=0?'pos':'neg'}">${u==null?'open':sg(u*AED)+' AED'}</b><span class="num dim usd">${u==null?'':sg(u)+' $'}</span></div>`}).join('')}</details>`}).join(''):'<div class="dim">No trades recorded yet</div>';
+ else h+=days.length?days.slice(0,HALL?days.length:5).map(d=>{const v=dPnl(m,d);return `<details class="hday" id="hd-${d.date}"><summary><span>${d.label}${old(d.date)?'<span class="rv">'+m.oldv+'</span>':''}</span><span class="${d.side==='BUY'?'pos':'neg'}">${d.side||''}</span><span class="dim">${d.trades.length} trade${d.trades.length>1?'s':''}${d.final?'':' · day running'}</span><b class="num ${v==null?'dim':v>=0?'pos':'neg'}">${v==null?'—':sg(v*AED)+' AED'}</b><span class="num dim usd">${v==null?'':sg(v)+' $'}</span></summary>
+   ${d.trades.map(t=>{const u=tU(m,t);return `<div class="htr"><span class="d">${t.time}</span><span class="${t.side==='BUY'?'pos':'neg'}">${t.side}</span><span><span class="dim">${m.tag(t)||''}</span> · ${m.info(t)} · <span class="dim">${HST[t.status]||t.status}</span></span><b class="num ${u==null?'dim':u>=0?'pos':'neg'}">${u==null?'open':sg(u*AED)+' AED'}</b><span class="num dim usd">${u==null?'':sg(u)+' $'}</span></div>`}).join('')}</details>`}).join('')+(days.length>5?`<button class="hmore" data-more>${HALL?'Show last 5 days':'Show all '+days.length+' days'}</button>`:''):'<div class="dim">No trades recorded yet</div>';
  const lot={GOLD:'1 oz',USDJPY:'$1,000',OIL:'10 bbl for a full-size trade (1/3-size trades count one third)',US100:'$0.10 per point'}[m.c];
  h+=`<div class="hnote">${m.n} only · source: ${m.n} desk journal (${m.file}), live since ${JN.summary&&JN.summary.since||JN.start}. Each trade at 0.01 lot = ${lot}, after the spread.${m.split?' Days before 19 Oct ran the old '+m.oldv+' rules.':''}</div>`;
  histbox.innerHTML=h;bindHist()}
 function bindHist(){
- histbox.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{HC=b.dataset.k;HM=null;renderHist()});
+ histbox.querySelectorAll('[data-more]').forEach(b=>b.onclick=()=>{HALL=!HALL;renderHist()});
  histbox.querySelectorAll('[data-h]').forEach(b=>b.onclick=()=>{HV=b.dataset.h;renderHist()});
  histbox.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{const J=HJ[HC];const ms=[...new Set(J.days.map(d=>d.date.slice(0,7)))].sort();const t=new Date().toLocaleDateString('en-CA',TZ).slice(0,7);if(!ms.includes(t))ms.push(t);HM=ms[Math.max(0,Math.min(ms.length-1,ms.indexOf(HM)+(+b.dataset.m)))];renderHist()});
- histbox.querySelectorAll('[data-go]').forEach(c=>c.onclick=()=>{HV='list';renderHist();const el=document.getElementById('hd-'+c.dataset.go);if(el){el.open=true;el.scrollIntoView({behavior:'smooth',block:'center'})}})}
+ histbox.querySelectorAll('[data-go]').forEach(c=>c.onclick=()=>{HV='list';HALL=true;renderHist();const el=document.getElementById('hd-'+c.dataset.go);if(el){el.open=true;el.scrollIntoView({behavior:'smooth',block:'center'})}})}
 async function loadDesk(){try{const j=await (await fetch(DATA_URL+'?t='+Date.now(),{cache:'no-store'})).json();D=j;M=j.markets||{};buildT();render();actsRender();applySel();deskstat.textContent='Desk data '+((j.updated||'').split('·')[1]||j.updated||'').trim()}catch(e){deskstat.textContent='Desk data unreachable, retrying'}}
 async function loadCal(){for(const u of ['calendar.json?t='+Date.now(),WORKER_URL+'calendar']){try{const j=await (await fetch(u,{cache:'no-store'})).json();if(Array.isArray(j)&&j.length){CAL=j;buildG();render();applySel();return}}catch(e){}}}
 buildT();render();applySel();tick();loadDesk();loadCal();setInterval(loadDesk,60000);loadHist();setInterval(loadHist,5*60000);setInterval(loadCal,30*60000);setInterval(tick,1000);
