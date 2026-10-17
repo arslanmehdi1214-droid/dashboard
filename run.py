@@ -1,15 +1,17 @@
-"""Runs every minute (GitHub Actions, via loop.py). GOLD_DAYTRADE v2.06 signals: replays today's gold minute bars through the
-EA's rules (engine206.py), sends NEW events (entry / stop hit / close at day end) and updates the page + the live journal.
+"""Runs every minute (GitHub Actions, via loop.py). GOLD v2.09 (18 Oct 2026): today's gold minute bars -> the EA's signals
+(engine206.py, v2.06 signal set) -> the v2.09 trade rules (desk209.py: one direction, max 2 trades, half close at 0.20 x stop,
+stop to entry, rest to the day-end close, range-fade fill). Writes the page + the live journal, including the ACTIONS list
+(OPEN / ADD / HOLD / CLOSE HALF / STOP / REVERSE / CLOSE ALL). Desk only - no Telegram (his rule, 18 Oct).
 It never trades. You place the trades yourself."""
 import os, sys, json, requests, numpy as np, pandas as pd
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import engine206 as E, inputs206 as I, feeds as F
+import engine206 as E, inputs206 as I, feeds as F, desk209 as DK
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SIZE = float(os.environ.get('ALERT_SIZE_OZ', '0.1'))
 STATE = os.path.join(HERE, 'sent.json'); PORTAL = os.path.join(HERE, 'docs', 'data.json')
 JOURNAL = os.path.join(HERE, 'docs', 'journal.json'); INPUTS = os.path.join(HERE, 'docs', 'inputs.json')
-BACKTEST = dict(direction='60.3%', days='71.6%', perday='2.22', win='55.0%', pnl='$7.47', source='MT4 backtest 2020–2026 (v2.05 signals = v2.06)')
+BACKTEST = dict(direction='—', days='73% green', perday='1.7', win='79–81%', pnl='—', source='MT4 backtest v2.09, his run 2020–2026')
 
 def dubai(t): return F.broker_to_dubai(pd.Timestamp(t)).strftime('%-I:%M %p').lower()
 def eod_of(day):
@@ -17,6 +19,8 @@ def eod_of(day):
     d = pd.Timestamp(day); f = getattr(E, 'close_minutes', None)
     return d + pd.Timedelta(minutes=f(d) if f else (22 * 60 + 50 if d.dayofweek == 4 else 23 * 60))
 def send(text):
+    """DESK ONLY (his rule, 18 Oct 2026): nothing goes to Telegram any more; the message is shown on the page instead."""
+    print('[desk only] ' + text.replace('\n', ' | ')); return True
     tok, chat = os.environ.get('TELEGRAM_BOT_TOKEN'), os.environ.get('TELEGRAM_CHAT_ID')
     if not tok or not chat: print('[no Telegram keys] ' + text.replace('\n', ' | ')); return True
     try:
@@ -66,12 +70,20 @@ def fmt(e):
         return f"GOLD: first {side} signal skipped by the dollar filter ({e['tag']}) - waiting for the next one | {dubai(e['t'])} Dubai"
     return str(e)
 
-def row(tr):
-    st = tr.get('status') or 'open'
-    st = {'stop hit': 'stopped', 'closed at day end': 'eod'}.get(st, st)
-    return dict(time=dubai(tr['t']), side='BUY' if tr['dir'] == 1 else 'SELL', tag=tr['tag'], price=round(float(tr['px']), 2),
-                stop=round(float(tr['stop']), 2), w=tr['w'], size=SIZE, status=st, first=bool(tr['first']),
-                exit=None if tr.get('exit') is None else round(float(tr['exit']), 2), pnl=tr.get('pnl_oz'), rwf=tr.get('rwf'))
+STATUS = {'open': 'open', 'half': 'open', 'stop hit': 'stopped', 'stop at entry': 'be', 'day end': 'eod', 'reversed': 'reversed'}
+def row(g, k=0):
+    """One v2.09 trade (desk209 leg) -> page/journal row. price = his fill (Ask for buys, Bid for sells)."""
+    st = STATUS.get(g['status'], g['status']); half = g.get('half_t') is not None
+    nxt = None
+    if st == 'open':
+        nxt = (f"Half banked at {g['half_px']:.2f} · stop is at entry {g['entry']:.2f} · hold the rest to the stop or the day-end close"
+               if half else f"Close HALF at {g['half_px']:.2f}, then move the stop to entry {g['entry']:.2f} · stop now {g['stop']:.2f}")
+    return dict(time=dubai(g['t']), side='BUY' if g['dir'] == 1 else 'SELL', tag=g['tag'], price=g['entry'], stop=g['stop'],
+                stop0=g['stop0'], half_px=g['half_px'], half=half, half_time=(dubai(g['half_t']) if half else None), size=SIZE,
+                status=st, first=(k == 0), exit=g['exit'], exit_time=(dubai(g['exit_t']) if g['exit_t'] is not None else None),
+                pnl=g['pnl_oz'], rwf=None, next=nxt)
+def act_rows(acts):
+    return [dict(time=dubai(a['t']), kind=a['kind'], side=a['side'], text=a['text']) for a in acts]
 
 def compute(h1, m1, day, now, inp):
     """The EA's trades for broker day `day` as of `now` (same steps for today and for a missed day)."""
@@ -85,8 +97,10 @@ def compute(h1, m1, day, now, inp):
     einp = dict(d5=inp['d5'], d1=inp['d1'], vix=inp['vix'], tnx=inp['tnx'], attn=inp.get('attn', 0),
                 regime=lambda t: (reg if (reg is not None and t >= one_am) else 0))
     mm = dict(t=m1.index.values.astype('datetime64[m]'), o=m1.o.values, h=m1.h.values, l=m1.l.values, c=m1.c.values)
-    trades = E.manage(E.run_day(dayst, D, Hh, mm, einp), dayst, mm, now=np.datetime64(now, 'm')) if len(m1) else []
-    return [t for t in trades if not t.get('skipped')], [t for t in trades if t.get('skipped')], D
+    sig = E.run_day(dayst, D, Hh, mm, einp) if len(m1) else []
+    taken = [t for t in sig if not t.get('skipped')]; skipped = [t for t in sig if t.get('skipped')]
+    legs, acts = DK.run(taken, dayst, mm, np.datetime64(now, 'm'), D.atr(0), np.datetime64(eod_of(day), 'm'), label=dubai) if len(m1) else ([], [])
+    return legs, acts, skipped, D
 
 def missed_days(J, now, cache):
     """Past broker days (last 9 days, inputs still cached) that never got their day-end run."""
@@ -110,8 +124,8 @@ def finish_missed_days(feed, h1, now):
                 reg, corr = regime_today(feed, h1, day, day + pd.Timedelta(hours=23))
                 if reg is not None: inp.update(regime=reg, corr=corr)
             was_open = any(t.get('status') in ('open', 'close_now') for t in d.get('trades', []))
-            taken, skipped, _ = compute(h1, m1, day, day + pd.Timedelta(hours=23, minutes=59), inp)
-            rows = [row(t) for t in taken]
+            legs, acts, skipped, _ = compute(h1, m1, day, day + pd.Timedelta(hours=23, minutes=59), inp)
+            rows = [row(g, k) for k, g in enumerate(legs)]
         except Exception as e:
             print('missed day', d['date'], 'not caught up:', type(e).__name__, e); continue
         d.update(side=(rows[0]['side'] if rows else None), trades=rows, skipped=len(skipped), final=True, caught_up=str(now))
@@ -170,17 +184,13 @@ def main():
     cache = {k: v for k, v in cache.items() if k >= str((day - pd.Timedelta(days=10)).date())}; cache[key] = inp
     dumpj(cache, INPUTS, indent=1)
     reg = inp.get('regime')
-    taken, skipped, D = compute(h1, m1, day, now, inp)
+    taken, acts, skipped, D = compute(h1, m1, day, now, inp)      # taken = v2.09 trades (desk209 legs)
     eod = eod_of(day)                                   # day-end close (22:50 broker on Fridays and in US winter time)
-    # ---- events -> Telegram (each sent once)
-    ev = [dict(kind='ENTRY', t=pd.Timestamp(t['t']), **{k: t[k] for k in ('dir', 'tag', 'px', 'stop', 'w', 'first')}) for t in taken]
-    ev += [dict(kind='SKIP', t=pd.Timestamp(t['t']), dir=t['dir'], tag=t['tag']) for t in skipped[:1] if not taken or pd.Timestamp(t['t']) < pd.Timestamp(taken[0]['t'])]
-    ev += [dict(kind='STOP', t=pd.Timestamp(t['exit_t']), t0=pd.Timestamp(t['t']), dir=t['dir'], tag=t['tag'], px=t['exit']) for t in taken if t.get('status') == 'stop hit']
-    # FIX 2026-10-10: manage() already books every trade still open at the close as 'closed at day end', so the old check
-    # (trades still 'open' after the close) never fired and the close alert was never sent. He closes by hand: alert on those.
-    day_end = [t for t in taken if t.get('status') == 'closed at day end']
-    if now >= eod and day_end: ev.append(dict(kind='EOD', t=eod, dir=0, n=len(day_end)))
+    # ---- actions: shown on the page only; a NEW action is recorded in sent.json so loop.py pushes the page at once
     state = loadj(STATE, {}); sent = set(state.get(key, []))
+    for a in acts:
+        k = f"A|{a['kind']}|{pd.Timestamp(a['t']).isoformat()}|{a['text'][:48]}"
+        if k not in sent: print('ACTION', dubai(a['t']), a['text']); sent.add(k)
     if test:
         last = float(m1.c.iloc[-1]) if len(m1) else float('nan')
         send(f"GOLD v2.06 signal system TEST OK [{src}]\nLast price {last:.2f} | broker day {day.date()} | daily range {D.atr(0):.1f}\n"
@@ -188,18 +198,13 @@ def main():
              f"Trades today so far: {len(taken)} | {dubai(now)} Dubai\n"
              f"CHECK: daily bars {D.n} ({str(D.t[0]) if D.n else '-'} .. {str(D.t[-1]) if D.n else '-'}) | hourly bars {len(h1)} | ADX {D.adx():.1f} | "
              f"dollar-driven corr {inp.get('corr')} | input notes {inp.get('notes')}")
-    for e in sorted(ev, key=lambda z: z['t']):
-        k = f"{e['kind']}|{e.get('tag', '')}|{e['t'].isoformat()}"
-        if k in sent: continue
-        if (now - e['t']) > pd.Timedelta(minutes=45) and e['kind'] != 'EOD': sent.add(k); continue   # too old to act on
-        if send(fmt(e)): sent.add(k)
     state = {k2: v for k2, v in state.items() if k2 >= str((day - pd.Timedelta(days=5)).date())}; state[key] = sorted(sent)
     dumpj(state, STATE, indent=0)
-    write_pages(now, day, m1, taken, skipped, inp, reg, src, eod, D.atr(0))
+    write_pages(now, day, m1, taken, skipped, inp, reg, src, eod, D.atr(0), acts)
     print(f'{now} broker | {src} | trades today {len(taken)} | skipped {len(skipped)} | inputs {inp}')
 
-def write_pages(now, day, m1, taken, skipped, inp, reg, src, eod, datr):
-    rows = [row(t) for t in taken]
+def write_pages(now, day, m1, taken, skipped, inp, reg, src, eod, datr, acts=()):
+    rows = [row(g, k) for k, g in enumerate(taken)]
     if now >= eod: rows = [dict(r, status='close_now') if r['status'] == 'open' else r for r in rows]
     # page only: after the close, trades the desk booked at the day-end price are still open in his account until he closes them
     page_rows = [dict(r, status='close_now') if (now >= eod and r['status'] == 'eod') else r for r in rows]
@@ -218,7 +223,7 @@ def write_pages(now, day, m1, taken, skipped, inp, reg, src, eod, datr):
     if now.dayofweek >= 5: state, msg = 'closed', 'Market closed for the weekend'
     elif rows:
         side = rows[0]['side']; state = side.lower()
-        msg = (f"{side} day — any later signals today are {side} only. Hold every trade until its stop or the day-end close at {dubai(eod)} Dubai. No target.")
+        msg = (f"{side} day — up to 2 {side} trades. Close HALF at the ½ level, then move the stop to entry; the rest runs to its stop or the day-end close at {dubai(eod)} Dubai.")
     elif skipped and not last_sig: state, msg = 'blocked', 'The first signal was skipped by the dollar filter — watching for the next one.'
     elif last_sig: state, msg = 'none', 'No trade today — no signal (new signals stop at 8 pm Dubai).'
     else: state, msg = 'waiting', 'Waiting for the first signal (signals can come until 8 pm Dubai).'
@@ -235,7 +240,7 @@ def write_pages(now, day, m1, taken, skipped, inp, reg, src, eod, datr):
                          running=sum(t['status'] == 'open' for t in tr), rw=sum(1 for t in tr if t.get('rwf') == 1),
                          rd=sum(1 for t in tr if t.get('rwf') is not None),
                          pnl=(round(sum(t['pnl'] for t in tr if t.get('pnl') is not None), 2) if any(t.get('pnl') is not None for t in tr) else None)))
-    gold = dict(code='GOLD', name='Gold', symbol='XAU/USD', live=True, version='v2.06', feed_error=False, state=state, message=msg, price=last, close_at=dubai(eod),
+    gold = dict(code='GOLD', name='Gold', symbol='XAU/USD', live=True, version='v2.09', actions=act_rows(acts), actions_day=str(day.date()), feed_error=False, state=state, message=msg, price=last, close_at=dubai(eod),
                 change=(None if last is None or first is None else round(last - first, 2)), size=SIZE, datr=round(datr, 2),
                 open_now=sum(r['status'] in ('open', 'close_now') for r in page_rows), entries=page_rows, spark=spark, history=hist,
                 inputs=dict(dollar_1d=inp.get('dollar_1d'), dollar_5d=inp.get('dollar_5d'), vix_5d=inp.get('vix_5d'), tnx_5d=inp.get('tnx_5d'),
