@@ -1,5 +1,5 @@
-"""Runs every minute (GitHub Actions, via loop.py). GOLD v2.09 (18 Oct 2026): today's gold minute bars -> the EA's signals
-(engine206.py, v2.06 signal set) -> the v2.09 trade rules (desk209.py: one direction, max 2 trades, half close at 0.20 x stop,
+"""Runs every minute (GitHub Actions, via loop.py). GOLD v2.10 (18 Oct 2026; = v2.09 + no 2nd trade in the same minute): today's gold minute bars -> the EA's signals
+(engine206.py, v2.06 signal set) -> the v2.10 trade rules (desk209.py: one direction, max 2 trades, half close at 0.20 x stop,
 stop to entry, rest to the day-end close, range-fade fill). Writes the page + the live journal, including the ACTIONS list
 (OPEN / ADD / HOLD / CLOSE HALF / STOP / REVERSE / CLOSE ALL). Desk only - no Telegram (his rule, 18 Oct).
 It never trades. You place the trades yourself."""
@@ -11,7 +11,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 SIZE = float(os.environ.get('ALERT_SIZE_OZ', '0.1'))
 STATE = os.path.join(HERE, 'sent.json'); PORTAL = os.path.join(HERE, 'docs', 'data.json')
 JOURNAL = os.path.join(HERE, 'docs', 'journal.json'); INPUTS = os.path.join(HERE, 'docs', 'inputs.json')
-BACKTEST = dict(direction='—', days='73% green', perday='1.7', win='79–81%', pnl='—', source='MT4 backtest v2.09, his run 2020–2026')
+BACKTEST = dict(direction='—', days='72–73% green', perday='1.7', win='79–81%', pnl='—', source='MT4 backtest v2.10, his run 2020–2026 (worst day −2.1R)')
 
 def dubai(t): return F.broker_to_dubai(pd.Timestamp(t)).strftime('%-I:%M %p').lower()
 def eod_of(day):
@@ -72,7 +72,7 @@ def fmt(e):
 
 STATUS = {'open': 'open', 'half': 'open', 'stop hit': 'stopped', 'stop at entry': 'be', 'day end': 'eod', 'reversed': 'reversed'}
 def row(g, k=0):
-    """One v2.09 trade (desk209 leg) -> page/journal row. price = his fill (Ask for buys, Bid for sells)."""
+    """One v2.10 trade (desk209 leg) -> page/journal row. price = his fill (Ask for buys, Bid for sells)."""
     st = STATUS.get(g['status'], g['status']); half = g.get('half_t') is not None
     nxt = None
     if st == 'open':
@@ -184,7 +184,7 @@ def main():
     cache = {k: v for k, v in cache.items() if k >= str((day - pd.Timedelta(days=10)).date())}; cache[key] = inp
     dumpj(cache, INPUTS, indent=1)
     reg = inp.get('regime')
-    taken, acts, skipped, D = compute(h1, m1, day, now, inp)      # taken = v2.09 trades (desk209 legs)
+    taken, acts, skipped, D = compute(h1, m1, day, now, inp)      # taken = v2.10 trades (desk209 legs)
     eod = eod_of(day)                                   # day-end close (22:50 broker on Fridays and in US winter time)
     # ---- actions: shown on the page only; a NEW action is recorded in sent.json so loop.py pushes the page at once
     state = loadj(STATE, {}); sent = set(state.get(key, []))
@@ -240,7 +240,7 @@ def write_pages(now, day, m1, taken, skipped, inp, reg, src, eod, datr, acts=())
                          running=sum(t['status'] == 'open' for t in tr), rw=sum(1 for t in tr if t.get('rwf') == 1),
                          rd=sum(1 for t in tr if t.get('rwf') is not None),
                          pnl=(round(sum(t['pnl'] for t in tr if t.get('pnl') is not None), 2) if any(t.get('pnl') is not None for t in tr) else None)))
-    gold = dict(code='GOLD', name='Gold', symbol='XAU/USD', live=True, version='v2.09', actions=act_rows(acts), actions_day=str(day.date()), feed_error=False, state=state, message=msg, price=last, close_at=dubai(eod),
+    gold = dict(code='GOLD', name='Gold', symbol='XAU/USD', live=True, version='v2.10', actions=act_rows(acts), actions_day=str(day.date()), feed_error=False, state=state, message=msg, price=last, close_at=dubai(eod),
                 change=(None if last is None or first is None else round(last - first, 2)), size=SIZE, datr=round(datr, 2),
                 open_now=sum(r['status'] in ('open', 'close_now') for r in page_rows), entries=page_rows, spark=spark, history=hist,
                 inputs=dict(dollar_1d=inp.get('dollar_1d'), dollar_5d=inp.get('dollar_5d'), vix_5d=inp.get('vix_5d'), tnx_5d=inp.get('tnx_5d'),
