@@ -4491,27 +4491,27 @@
    "symbol": "WTI \u00b7 Capital.com US Crude",
    "live": false,
    "paper": true,
-   "version": "v1.02",
+   "version": "v1.03",
    "unit": "usd",
    "dp": 2,
    "stats": {
-    "direction": "53.0%",
-    "days": "95.5%",
-    "perday": "2.55",
-    "win": "37.2% / 36.0%",
-    "pf": "1.20 / 1.08",
-    "net": "+$49,700 / +$22,076 at 0.30 + 0.10 lots",
-    "source": "MT4 v1.02, 2020-01 to 2026-06, 4,300 trades; spread 2 (Prime-like) / spread 6 (Pro-like)"
+    "direction": "\u2014",
+    "days": "68.8% green / 93.9% traded",
+    "perday": "1.91",
+    "win": "85.3% / 83.6%",
+    "pf": "1.36 / 1.20",
+    "net": "+$35,232 / +$22,009 at 0.30 + 0.10 lots",
+    "source": "MT4 v1.03, his runs 18 Oct 2026, 2020-01 to 2026-09, 3,355 trades; spread 2 / spread 4 (worst day -$1,770)"
    },
    "pass_bar": {
-    "direction": 53.0,
+    "green": 60.0,
     "pf": 1.1,
     "months": 3
    },
-   "day_note": "14-day range \u2014 \u00b7 stop \u00bc range \u00b7 no target \u00b7 close 11:00 pm broker (Fri 10:50 pm) = 12:00 am Dubai, 1:00 am in winter \u00b7 size: sells from the day's 2nd trade full, the rest \u2153",
+   "day_note": "14-day range \u2014 \u00b7 stop: buys 1 range, sells \u00be range \u00b7 close half at +0.05 (buys) / +0.15 (sells) x risk, then stop to entry \u00b7 day lock +2R/+1R \u00b7 no new trades after 4:30 pm broker (one late first trade to 7:00 pm) \u00b7 close 8:00 pm broker = 9:00 pm Dubai, 10:00 pm in winter \u00b7 size: first trade and buys \u2153, later sells full while the day is in profit",
    "what_note": "This page tracks whether live WTI signals do as well as the backtest. Decision after about 3 months.",
-   "cost_note": "Results are $ per barrel (v1.02 sizes: full or \u2153), from the signal price with the backtest's slip, minus Capital.com's spread (at least 2 cents).",
-   "net_label": "Net $ per barrel (v1.02 sizes)",
+   "cost_note": "Results are $ per barrel (v1.03 sizes: full or \u2153), from the signal price with the backtest's slip, after Capital.com's spread (at least 2 cents).",
+   "net_label": "Net $ per barrel (v1.03 sizes)",
    "state": "closed",
    "message": "Market closed for the weekend.",
    "price": 100.373,
@@ -6452,17 +6452,9 @@
     ]
    ],
    "journal": {
-    "since": "12 Oct 2026",
-    "weekdays": 5,
-    "trades": 13,
-    "decided": 9,
-    "direction": 33.3,
-    "days": 100.0,
-    "perday": 2.6,
-    "closed": 13,
-    "win": 38.5,
-    "pf": 0.39,
-    "net": -3.1
+    "since": null,
+    "trades": 0,
+    "rules": "v1.03"
    },
    "jdays": [
     {
