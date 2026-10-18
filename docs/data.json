@@ -1,5 +1,5 @@
 {
- "updated": "Mon 19 Oct \u00b7 1:51 am",
+ "updated": "Mon 19 Oct \u00b7 2:02 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -13,14 +13,22 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 8 pm Dubai).",
-   "price": null,
+   "price": 4164.07,
    "close_at": "12:00 am",
-   "change": null,
+   "change": 1.45,
    "size": 0.1,
    "datr": 71.49,
    "open_now": 0,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "2:00 am",
+     4164.07,
+     4162.62,
+     4166.01,
+     4155.96
+    ]
+   ],
    "history": [
     {
      "date": "2026-10-19",
@@ -160,8 +168,8 @@
     "dollar_5d": "fell",
     "vix_5d": "rose",
     "tnx_5d": "fell",
-    "dollar_driven": null,
-    "corr": null,
+    "dollar_driven": false,
+    "corr": -0.299,
     "low_attention": false,
     "notes": []
    },
@@ -220,7 +228,7 @@
    "net_label": "Net R / $ at $100 risk (v1.03 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 157.913,
+   "price": 157.898,
    "change_pips": null,
    "atr_pips": 83.1,
    "entries": [],
@@ -673,10 +681,18 @@
    "net_label": "Net $ per barrel (v1.03 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": null,
-   "change": null,
+   "price": 98.539,
+   "change": -0.33,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "2:00 am",
+     98.54,
+     98.87,
+     98.93,
+     98.46
+    ]
+   ],
    "journal": {
     "since": "19 Oct 2026",
     "weekdays": 1,
@@ -1015,10 +1031,18 @@
    "net_label": "Net points (v1.01 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": null,
-   "change": null,
+   "price": 29171.0,
+   "change": 57.9,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "2:00 am",
+     29171.0,
+     29113.1,
+     29192.8,
+     29101.7
+    ]
+   ],
    "journal": {
     "since": "19 Oct 2026",
     "weekdays": 1,
