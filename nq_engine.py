@@ -4,7 +4,10 @@ rolling base of recent minute bars (broker clock = New York + 7 h, bid prices). 
 a FILLER signal is a trade only if it fires before the day's first core signal (first filler of the day only); max 2 trades a day.
 Fills (same as the research): market = the minute's open; break = at the level when the minute trades to it; fade/limit = at the level
 only if the minute trades THROUGH it by max(0.25, 0.01 x range). Stop = 0.25 x 14-day average daily range from the fill level;
-no target; close at the day end (23:00 broker, Fri 22:50). No entry in the day-end minute."""
+no target; close at the day end (23:00 broker, Fri 22:50). No entry in the day-end minute.
+v1.01 EXITS (manage_v101, MT4-proven 18 Oct: his run, spread 18, 2020-26: green 58.7%, won 64.9%, net/DD 8.60, worst day -$2,039 at $1,000 risk):
+buys stop 0.5 x range, sells stop 0.25 x range and 1/3 size; close 25% when profit = 0.5 x risk (risk = stop distance incl. spread), then the rest
+closes at the entry; day lock: once the day reaches +3R, close all at +1.5R or less, no more trades; close at the day end."""
 import os, sys, io, json, contextlib, importlib, tempfile, pickle, numpy as np, pandas as pd
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -13,6 +16,7 @@ MODS = ['core', 'comp', 'spxC'] + [f'fam{s}' for s in ('', '2', '3', '4', '5', '
 SET = json.load(open(os.path.join(HERE, 'nq_set.json')))
 SETF = json.load(open(os.path.join(HERE, 'nq_set_full.json')))          # the full version (needs the gold engine replayed on Nasdaq)
 STOP_X = SET['stop']; TICK = 0.25; KEEP_DAYS = 300
+V101 = dict(buy_stop=0.5, sell_stop=0.25, sell_w=1/3, k=0.5, part=0.25, lock_pk=3.0, lock_fl=1.5)
 ENG_SET = dict(U2_Step=100.0, N2_Step=200.0, G3_Step=40.0, Spread=0.6)   # same settings as the research replay (replay_n.py raw 100 200 40)
 NEUTRAL = dict(d5=0, d1=0, vix=0, tnx=0, regime=lambda t: 0, attn=0)
 
@@ -133,7 +137,55 @@ def manage(B, j, d, px, now_idx, stop_x=None):
             if H[m] >= stop: return stop, 'stop', stop, B['t'][m]
     return stop, 'open', None, None
 
-def run_day(m, day, now=None, S=None):
+def manage_v101(B, picks, now_idx, sp, P=V101):
+    """v1.01 exits for the day's trades (same order of steps as the research sim ndx_dt/fix/nsim.py that the MT4 run matched):
+    per minute: 1) new trade (skipped once the day is locked); 2) trades from earlier minutes: stop first (a gap fills at the open), then the
+    25% level (part closed there, the rest's stop -> entry); 3) day lock at the minute's close. Close all at the day-end minute's open."""
+    O, H, L, C, A, EOD = B['O'], B['H'], B['L'], B['C'], B['A'], B['EOD']
+    if not picks: return []
+    j0 = picks[0][0]; ce = EOD[j0]
+    full_day = B['t'][ce].hour * 60 + B['t'][ce].minute >= eod_minutes(B['t'][j0])
+    legs = []; banked = 0.0; peak = 0.0; off = False; byj = {p[0]: p for p in picks}
+    def mark(g, m):
+        rem = 1 - P['part'] if g['half'] else 1.0; px = C[m] if g['d'] > 0 else C[m] + sp
+        return g['w'] * (g['bank'] + rem * g['d'] * (px - g['e']) / g['sd'])
+    def shut(g, px, m, why):
+        nonlocal banked
+        rem = 1 - P['part'] if g['half'] else 1.0
+        g['r'] = g['bank'] + rem * g['d'] * (px - g['e']) / g['sd']; banked += g['w'] * g['r']
+        g.update(on=False, ex=float(px), ext=B['t'][m], status=why)
+    last = min(ce, now_idx)
+    for m in range(j0, last + 1):
+        if m == ce and full_day:
+            for g in legs:
+                if g['on']: shut(g, O[m] if g['d'] > 0 else O[m] + sp, m, 'eod')
+            break
+        if m in byj and not off:
+            (j, oi, nm, d, px) = byj[m]; s_ = (P['buy_stop'] if d > 0 else P['sell_stop']) * A[j]
+            e = px + sp if d > 0 else px; sl = px - s_ if d > 0 else px + sp + s_
+            legs.append(dict(j=j, oi=oi, name=nm, d=d, px=px, e=e, sl=sl, sl0=sl, sd=s_, w=(1.0 if d > 0 else P['sell_w']),
+                             hp=e + d * P['k'] * abs(e - sl), half=False, half_t=None, bank=0.0, on=True, r=None, ex=None, ext=None, status='open'))
+        for g in legs:
+            if not g['on'] or m <= g['j']: continue
+            d = g['d']
+            if (d > 0 and L[m] <= g['sl']) or (d < 0 and H[m] + sp >= g['sl']):
+                px = min(g['sl'], O[m]) if d > 0 else max(g['sl'], O[m] + sp)
+                shut(g, px, m, 'be' if g['half'] else 'stopped'); continue
+            if not g['half'] and ((d > 0 and H[m] >= g['hp']) or (d < 0 and L[m] + sp <= g['hp'])):
+                g['bank'] = P['part'] * d * (g['hp'] - g['e']) / g['sd']; g['half'] = True; g['half_t'] = B['t'][m]
+                g['sl'] = max(g['sl'], g['e']) if d > 0 else min(g['sl'], g['e'])
+        tot = banked + sum(mark(g, m) for g in legs if g['on']); peak = max(peak, tot)
+        if P['lock_pk'] > 0 and not off and peak >= P['lock_pk'] and tot <= P['lock_fl']:
+            for g in legs:
+                if g['on']: shut(g, C[m] if g['d'] > 0 else C[m] + sp, m, 'day lock')
+            off = True
+    for g in legs:
+        g['r_now'] = g['r'] if g['r'] is not None else (g['bank'] + (1 - P['part'] if g['half'] else 1.0) * g['d'] *
+                                                       ((C[last] if g['d'] > 0 else C[last] + sp) - g['e']) / g['sd'])
+        g['locked_day'] = off
+    return legs
+
+def run_day(m, day, now=None, S=None, exits=None, sp=1.8):
     """m: minute bars (broker time) of the last ~300 days INCLUDING today's closed minutes; returns today's paper trades."""
     day = pd.Timestamp(day).normalize(); m = m[(m.index < day + pd.Timedelta(days=1))]
     if now is not None: m = m[m.index + pd.Timedelta(minutes=1) <= now]
@@ -153,6 +205,15 @@ def run_day(m, day, now=None, S=None):
     c = first_trade([e for e in ev if e[1] < nc]); f = first_trade([e for e in ev if e[1] >= nc])
     picks = ([c] if c else []) + ([f] if f and (c is None or f[0] < c[0]) else [])
     trades = []
+    if exits == 'v1.01':
+        for g in manage_v101(B, sorted(picks), len(B['O']) - 1, sp):
+            pts = None if g['r'] is None else g['w'] * ((V101['part'] * g['d'] * (g['hp'] - g['e']) if g['half'] else 0.0) +
+                                                       (1 - V101['part'] if g['half'] else 1.0) * g['d'] * (g['ex'] - g['e']))
+            trades.append(dict(t=B['t'][g['j']], j=g['j'], name=g['name'], role='core' if g['oi'] < nc else 'filler', dir=g['d'], px=g['px'], entry=g['e'],
+                               stop=float(g['sl']), stop0=float(g['sl0']), half_px=float(g['hp']), half=g['half'], half_t=g['half_t'],
+                               size='full' if g['w'] >= 1 else 'third', w=g['w'], sd=float(g['sd']), A=float(B['A'][g['j']]), status=g['status'],
+                               exit=g['ex'], exit_t=g['ext'], r=g['r'], r_now=g['r_now'], pts=pts, locked_day=g['locked_day']))
+        return trades
     for (j, oi, nm, d, px) in sorted(picks):
         stop, st, ex, ext = manage(B, j, d, px, len(B['O']) - 1, S['stop'])
         trades.append(dict(t=B['t'][j], j=j, name=nm, role='core' if oi < nc else 'filler', dir=d, px=px, stop=float(stop),
