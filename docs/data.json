@@ -2132,19 +2132,19 @@
    "live": false,
    "paper": true,
    "status": "Paper",
-   "version": "v1.01",
+   "version": "v1.03",
    "lots": 0.1,
    "stats": {
-    "direction": "53.6%",
-    "days": "99.5%",
-    "perday": "1.97",
-    "win": "37.4%",
-    "pf": "1.17",
-    "net": "+$6,879 at 0.10 lots",
-    "source": "MT4 backtest 2020-01-02 to 2026-06-12, 3,321 trades"
+    "direction": "\u2014",
+    "days": "68.7% green / 99.5% traded",
+    "perday": "1.86",
+    "win": "78.2%",
+    "pf": "1.38",
+    "net": "+$13,048 at $100 risk per trade",
+    "source": "MT4 backtest v1.03 2020-01-02 to 2026-06-12, 3,132 trades"
    },
    "pass_bar": {
-    "direction": 53.0,
+    "green": 60.0,
     "pf": 1.1,
     "months": 3
    },
@@ -4082,18 +4082,9 @@
     ]
    ],
    "journal": {
-    "since": "05 Oct 2026",
-    "weekdays": 10,
-    "trades": 17,
-    "decided": 12,
-    "direction": 25.0,
-    "days": 100.0,
-    "perday": 1.7,
-    "closed": 17,
-    "win": 35.3,
-    "pf": 0.31,
-    "net_pips": -196.9,
-    "net_usd": -124.51
+    "since": null,
+    "trades": 0,
+    "rules": "v1.03"
    },
    "jdays": [
     {
@@ -4477,7 +4468,11 @@
     }
    ],
    "feed_error": false,
-   "history_note": "history to 2026-10-15 (300 days)"
+   "history_note": "history to 2026-10-15 (300 days)",
+   "day_note": "stop: quiet signals \u00bc of the 14-day range, others \u00be \u00b7 close half at +0.5 x risk (quiet) / +0.1 x risk (others), then the rest closes at the entry \u00b7 day lock: once the day reaches +2R, close all at +1R, no more trades \u00b7 one trade per minute \u00b7 Heikin-Ashi 7am at \u2153 size \u00b7 close 6:00 pm broker (Fridays 2:00 pm)",
+   "what_note": "This page tracks whether live USD/JPY signals do as well as the v1.03 backtest. Decision after about 3 months.",
+   "cost_note": "Pips are for the whole trade (\u2153-size trades count one third), after Capital.com's spread (at least 1 pip). $ = at $100 risk per full-size trade, like the MT4 test.",
+   "net_label": "Net R / $ at $100 risk (v1.03 sizes)"
   },
   "DE40": {
    "code": "DE40",
