@@ -1,7 +1,7 @@
 """USDJPY PAPER signals for the page (no phone alerts, no real money). Called by run.py after gold, every 5 minutes.
-Replays today's Capital.com USDJPY minutes through the USDJPY_DAYTRADE v1.01 rules (yen_engine.py; checked against his MT4 run:
-3,321 of 3,321 trades 2020-2026, same minute and direction) and keeps a paper journal, judged after ~3 months
-(pass = right way first >= 53% and profit factor >= 1.10).
+Replays today's Capital.com USDJPY minutes through the USDJPY_DAYTRADE v1.03 rules (yen_engine.py; checked trade by trade against
+his MT4 v1.03 run 2020-2026) and keeps a paper journal, judged after ~3 months (pass = green days >= 60% and profit factor >= 1.10).
+Journal days are tagged with the rules they ran; the record counts only the current rules (v1.01 days 5-16 Oct 2026 stay but are not mixed in).
 Files: docs/usdjpy_hist.json (the EA's finished daily + hourly bars; seeded from his MT4 data to 2026-09-25, then extended with
 Capital.com minutes), docs/journal_usdjpy.json (every paper trade), docs/data.json -> markets.USDJPY (the page)."""
 import os, json, time, requests, numpy as np, pandas as pd
@@ -12,9 +12,10 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 HIST = os.path.join(HERE, 'docs', 'usdjpy_hist.json'); JOUR = os.path.join(HERE, 'docs', 'journal_usdjpy.json')
 PORTAL = os.path.join(HERE, 'docs', 'data.json')
 EPIC = os.environ.get('CAPITAL_EPIC_USDJPY', 'USDJPY'); LOTS = 0.10
-PASS = dict(direction=53.0, pf=1.10, months=3)
-BACKTEST = dict(direction='53.6%', days='99.5%', perday='1.97', win='37.4%', pf='1.17', net='+$6,879 at 0.10 lots',
-                source='MT4 backtest 2020-01-02 to 2026-06-12, 3,321 trades')
+PASS = dict(green=60.0, pf=1.10, months=3)
+RULES = 'v1.03'
+BACKTEST = dict(direction='—', days='68.7% green / 99.5% traded', perday='1.86', win='78.2%', pf='1.38', net='+$13,048 at $100 risk per trade',
+                source='MT4 backtest v1.03 2020-01-02 to 2026-06-12, 3,132 trades')
 
 def loadj(p, d):
     try: return json.load(open(p))
@@ -96,21 +97,23 @@ def main():
     hm = Y.FRI_CLOSE_HHMM if now.dayofweek == 4 else Y.CLOSE_HHMM
     eod = day + pd.Timedelta(hours=hm // 100, minutes=hm % 100)      # day-end close (6 pm broker since 2026-10-04)
     rows = [row(t, now >= eod) for t in trades]
+    locked = bool(trades and trades[-1].get('locked_day'))
     # ---- journal: one record per broker day, replaced on every run of that day
     if J.get('start') is None: J['start'] = str(day.date())
     J['days'] = sorted([d for d in J['days'] if d['date'] != str(day.date())] +
-                       [dict(date=str(day.date()), label=day.strftime('%a %d %b'), side=(rows[0]['side'] if rows else None), trades=rows,
+                       [dict(date=str(day.date()), rules=RULES, label=day.strftime('%a %d %b'), side=(rows[0]['side'] if rows else None), trades=rows,
                              atr_pips=round(eng.atr() * 100, 1), final=bool(now >= eod))], key=lambda d: d['date'])
     J['summary'] = summary(J, day)
     json.dump(J, open(JOUR, 'w'), indent=1)
     # ---- page card
     tod = b[b.index >= day]; inw = tod[[Y.inwin(secs(t)) for t in tod.index]]
     last = float(tod.c.iloc[-1]) if len(tod) else None; first = float(inw.o.iloc[0]) if len(inw) else None
-    last_sig = now >= day + pd.Timedelta(hours=19)
+    sig_end = min(day + pd.Timedelta(hours=19), eod); last_sig = now >= sig_end
     if rows:
         side = rows[0]['side']; state = side.lower()
-        msg = f"PAPER {side} day — later signals today are {side} only. Each trade holds until its stop or the {dubai(secs(eod))} Dubai close. No target."
-    elif last_sig: state, msg = 'none', f"No paper trade today (new signals stop at {dubai(secs(day + pd.Timedelta(hours=19)))} Dubai)."
+        msg = (f"PAPER {side} day — later signals today are {side} only. Each trade closes half at its ½ level, then the rest's stop moves to the entry; "
+               f"everything closes at the {dubai(secs(eod))} Dubai close." + (" Day lock hit: no more trades today." if locked else ''))
+    elif last_sig: state, msg = 'none', f"No paper trade today (new signals stop at {dubai(secs(sig_end))} Dubai)."
     else: state, msg = 'waiting', 'Waiting for the first signal.'
     spark = []
     if len(inw):
@@ -123,28 +126,43 @@ def main():
     print(f'USDJPY paper: {now} broker | trades today {len(rows)} | bars {len(b)} | history to {H["through"]} | added {added}')
 
 def base_card():
-    return dict(code='USDJPY', name='USD/JPY', symbol='USD/JPY', live=False, paper=True, status='Paper', version='v1.01', lots=LOTS,
-                stats=BACKTEST, pass_bar=PASS)
+    note = ('stop: quiet signals ¼ of the 14-day range, others ¾ · close half at +0.5 x risk (quiet) / +0.1 x risk (others), then the rest closes at the entry · '
+            'day lock: once the day reaches +2R, close all at +1R, no more trades · one trade per minute · Heikin-Ashi 7am at ⅓ size · '
+            'close 6:00 pm broker (Fridays 2:00 pm)')
+    return dict(code='USDJPY', name='USD/JPY', symbol='USD/JPY', live=False, paper=True, status='Paper', version=RULES, lots=LOTS,
+                stats=BACKTEST, pass_bar=PASS, day_note=note,
+                what_note='This page tracks whether live USD/JPY signals do as well as the v1.03 backtest. Decision after about 3 months.',
+                cost_note="Pips are for the whole trade (⅓-size trades count one third), after Capital.com's spread (at least 1 pip). $ = at $100 risk per full-size trade, like the MT4 test.",
+                net_label='Net R / $ at $100 risk (v1.03 sizes)')
 
 def row(t, day_over):
     st = t['status']
     if st == 'open' and day_over: st = 'close_now'
-    return dict(time=dubai(t['t']), side='BUY' if t['dir'] == 1 else 'SELL', sig=t['sig'], name=t['name'], price=t['px'], stop=t['stop'],
-                stop_pips=t['stop_pips'], first=t['first'], status=st, exit=t['exit'], exit_time=None if t['exit_t'] is None else dubai(t['exit_t']),
-                pips=t['pips'], usd=None if t['pips'] is None else round(t['pips'] * LOTS * 1000 / t['px'], 2), rwf=t['rwf'], spread=t['spread_pips'])
+    rs = None if t['r'] is None else round(t['r'] * t['w'], 3)
+    return dict(time=dubai(t['t']), side='BUY' if t['dir'] == 1 else 'SELL', sig=t['sig'], name=t['name'], price=t['px'], entry=t['entry'],
+                stop=t['stop'], stop0=t['stop0'], stop_pips=t['stop_pips'], half_px=t['half_px'], half=t['half'],
+                half_time=None if t['half_t'] is None else dubai(t['half_t']), size=t['size'], quiet=t['quiet'], first=t['first'], status=st,
+                exit=t['exit'], exit_time=None if t['exit_t'] is None else dubai(t['exit_t']), pips=t['pips'],
+                usd=None if t['pips'] is None else round(t['pips'] * LOTS * 1000 / t['px'], 2), r=t['r'], r_sized=rs,
+                usd_risk=None if rs is None else round(rs * Y.RISK_USD, 2), r_now=t['r_now'], rwf=t['rwf'], spread=t['spread_pips'])
 
 def summary(J, day=None):
+    """Paper record of the CURRENT rules only (v1.03 days); the older v1.01 days stay in the journal but are not mixed in."""
+    D3 = [d for d in J.get('days', []) if d.get('rules') == RULES]
+    if not D3: return dict(since=None, trades=0, rules=RULES)
+    J = dict(start=D3[0]['date'], days=D3)
     allt = [t for d in J.get('days', []) for t in d['trades']]
-    if not J.get('start'): return dict(since=None, trades=0)
     dec = [t['rwf'] for t in allt if t.get('rwf') is not None]; pp = [t['pips'] for t in allt if t.get('pips') is not None]
-    usd = [t['usd'] for t in allt if t.get('usd') is not None]
+    usd = [t['usd'] for t in allt if t.get('usd') is not None]; rr = [t['r_sized'] for t in allt if t.get('r_sized') is not None]
     end = str((day or pd.Timestamp(J['days'][-1]['date'])).date()) if J.get('days') else J['start']
     wd = max(1, len(pd.bdate_range(J['start'], end))); tdays = sum(1 for d in J['days'] if d['trades'])
     gp, gl = sum(p for p in pp if p > 0), -sum(p for p in pp if p < 0)
     return dict(since=pd.Timestamp(J['start']).strftime('%d %b %Y'), weekdays=wd, trades=len(allt), decided=len(dec),
                 direction=(round(100 * sum(dec) / len(dec), 1) if dec else None), days=round(100 * tdays / wd, 1), perday=round(len(allt) / wd, 2),
-                closed=len(pp), win=(round(100 * sum(p > 0 for p in pp) / len(pp), 1) if pp else None), pf=(round(gp / gl, 2) if gl > 0 else None),
-                net_pips=round(sum(pp), 1) if pp else None, net_usd=round(sum(usd), 2) if usd else None)
+                closed=len(pp), win=(round(100 * sum(p > 0 for p in pp) / len(pp), 1) if pp else None), pf=(round(sum(x for x in rr if x > 0) / -sum(x for x in rr if x < 0), 2) if any(x < 0 for x in rr) else None), pf_pips=(round(gp / gl, 2) if gl > 0 else None),
+                net_pips=round(sum(pp), 1) if pp else None, net_usd=round(sum(usd), 2) if usd else None, rules=RULES,
+                net_r=round(sum(rr), 2) if rr else None, net_usd_risk=round(sum(rr) * Y.RISK_USD, 2) if rr else None,
+                green=round(100 * sum(1 for d in J['days'] if sum(t.get('r_sized') or 0 for t in d['trades']) > 0) / wd, 1))
 
 def jdays(J):
     return J.get('days', [])[-30:][::-1]

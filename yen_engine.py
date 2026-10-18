@@ -1,4 +1,7 @@
-"""USDJPY_DAYTRADE v1.01 rules (the MT4 EA, 11 signals) as a PAPER engine for the portal - same logic as the EA, line by line.
+"""USDJPY_DAYTRADE v1.03 rules (the MT4 EA, 11 signals) as a PAPER engine for the portal - same logic as the EA, line by line.
+v1.03 exits: quiet signals stop 0.25 x range, close half at +0.5 x risk; other signals stop 0.75 x range, half at +0.10 x risk;
+after the half the rest closes at the entry price; day lock +2R / +1R; one trade per minute; Heikin-Ashi 7am at 1/3 size;
+close 18:00 broker, Fridays 14:00.
 Prices are Bid. Broker clock = New York + 7h. Window = 01:05-23:57 broker, Monday-Friday (FX rollover minutes left out).
 History = the EA's own daily and hourly bars: finished broker days / hours built from the window's minute bars.
 Times are integer seconds on the broker clock (naive)."""
@@ -8,7 +11,11 @@ NS = 11
 TAG = ['J13', 'L3', 'M8', 'N3', 'M1a', 'J21', 'M1b', 'L1', 'U5', 'L7', 'Q5']
 NAME = ['Heikin-Ashi 7am', 'Week-so-far break', 'Inside-week break', 'Inside-day break', 'Quiet 5-day break', 'Squeeze 4pm',
         'Quiet 2-day break', 'EMA10 break', 'Last-week break', 'Morning pullback', 'Hourly squeeze 3pm']
-PT = 0.001; STOP_X = 0.25; MIN_SPREAD = 0.01          # 1 pip = the MT4 test spread; the paper P/L never uses less
+PT = 0.001; MIN_SPREAD = 0.01                        # 1 pip = the MT4 test spread; the paper P/L never uses less
+QUIET = {2, 3, 4, 5, 6, 10}                          # EA signals 3,4,5,6,7,11 (inside-week / inside-day / quiet 5-day / squeeze 4pm / quiet 2-day / hourly squeeze)
+Q_STOP, Q_HALF, O_STOP, O_HALF = 0.25, 0.50, 0.75, 0.10   # stop = x 14-day range; half at + x risk (risk = stop distance incl. spread)
+PART, LOCK_PK, LOCK_FL, HA_W = 0.5, 2.0, 1.0, 1 / 3      # half part; day lock peak / floor in R; Heikin-Ashi 7am size
+RISK_USD = 100.0                                     # v1.03 set file Risk_Dollars=100: a full-size stop = $100 (the MT4 backtest's size)
 KEEP_DAYS, KEEP_HOURS = 300, 600                      # history kept in the cache (enough for the 120-day rank, EMA30, 200-hour rank)
 
 def dow(t): return int(((t // 86400) + 4) % 7)        # 0 = Sunday
@@ -20,7 +27,7 @@ def inwin(t):
     d = dow(t)
     if d < 1 or d > 5: return False
     mm = hour(t) * 60 + minute(t); return 65 <= mm <= 1437
-CLOSE_HHMM, FRI_CLOSE_HHMM = 1800, 1800              # v1.01 inputs Close_Hour=18, Friday_Close_HHMM=1800 (6 pm broker = London 4 pm fix; MT4 run 2026-10-04 passed)
+CLOSE_HHMM, FRI_CLOSE_HHMM = 1800, 1400              # v1.03 inputs Close_Hour=18, Friday_Close_HHMM=1400 (MT4 run 2026-10-18 passed)
 def isclose(t):
     hm = hour(t) * 100 + minute(t)
     return hm >= FRI_CLOSE_HHMM if dow(t) == 5 else hm >= CLOSE_HHMM
@@ -206,35 +213,95 @@ class Yen:
         return self._manage(TR, day, T, O_, H_, L_, C_, i0, i1, now, spread)
 
     def _manage(self, TR, day, T, O_, H_, L_, C_, i0, i1, now, spread):
-        """Exits exactly like the research / MT4 check: stop = 0.25 x 14-day range from the entry Bid, checked from the next minute
-        (a gap through the stop fills at that minute's open); close at the first minute at/after the close time (18:00 broker, Fridays too) at its open; P/L after
-        the spread (at least 1 pip). Right-way-first = 0.3 x 14-day range in favour before 0.3 against, up to the close minute."""
+        """v1.03 exits, in the order of the Python port that the MT4 v1.03 run matched (check/port103y.py), per minute:
+        1) new trades (skipped once the day is locked, and a 2nd trade in the same minute is skipped); buys fill at Ask = Bid + spread,
+           sells at Bid; stop = Bid - sd (buys) / Ask + sd (sells), risk = |entry - stop|; 2) trades from earlier minutes: stop first
+           (a gap fills at the minute's open), then the half level (half closed there, the rest's stop moves to the entry);
+           3) day lock at the minute's close: once the day (closed + open, in R) has reached +2R, everything closes at +1R or less and
+           no more trades that day. Close everything at the first minute at/after the close time, at its open.
+        R = the trade's full-size stop sd (the EA's lgU), so the Heikin-Ashi 7am trade counts 1/3. Right-way-first kept for the record
+        (0.3 x 14-day range in favour before 0.3 against, up to the close minute)."""
         w = [j for j in range(i0, i1) if inwin(int(T[j]))]
         ct = [j for j in w if isclose(int(T[j]))]; e_close = ct[0] if ct else None
-        eod_t = day + ((FRI_CLOSE_HHMM if dow(day) == 5 else CLOSE_HHMM) // 100) * 3600 + ((FRI_CLOSE_HHMM if dow(day) == 5 else CLOSE_HHMM) % 100) * 60
+        hm = FRI_CLOSE_HHMM if dow(day) == 5 else CLOSE_HHMM
+        eod_t = day + (hm // 100) * 3600 + (hm % 100) * 60
         day_over = now is not None and now >= eod_t
+        def SP(j):
+            if spread is None: return MIN_SPREAD
+            v = float(spread[j]); return max(MIN_SPREAD, v) if np.isfinite(v) else MIN_SPREAD
+        byi = {}
+        for tr in TR: byi.setdefault(tr['i'], []).append(tr)
+        legs = []; banked = 0.; peak = 0.; off = False
+        def mark(l, bid, sp):            # value of a leg in R (sized) at this Bid
+            rem = 1 - PART if l['half'] else 1.0; px = bid if l['d'] > 0 else bid + sp
+            return l['w'] * (l['bank'] + rem * l['d'] * (px - l['e']) / l['sd'])
+        def shut(l, px, j, why):
+            nonlocal banked
+            rem = 1 - PART if l['half'] else 1.0
+            l['r'] = l['bank'] + rem * l['d'] * (px - l['e']) / l['sd']; banked += l['w'] * l['r']
+            l.update(on=False, ex=px, ext=j, status=why)
+        for j in w:
+            if e_close is not None and j >= e_close: break
+            took = False
+            for tr in byi.get(j, []):
+                if off: continue
+                if took: continue
+                s, d, px = tr['s'], tr['dir'], tr['px']; q = s in QUIET
+                sd = (Q_STOP if q else O_STOP) * tr['atr']
+                if not sd > 0: continue
+                sp = SP(j); e = px + sp if d > 0 else px; sl = px - sd if d > 0 else px + sp + sd; k = Q_HALF if q else O_HALF
+                legs.append(dict(tr=tr, w=(HA_W if s == 0 else 1.0), d=d, px=px, e=e, sl=sl, sl0=sl, sd=sd, sp=sp,
+                                 hp=(e + d * k * abs(e - sl)) if k > 0 else None, half=False, half_t=None, bank=0., j=j, on=True,
+                                 r=None, ex=None, ext=None, status='open'))
+                took = True
+            sp = SP(j)
+            for l in legs:
+                if not l['on'] or j <= l['j']: continue
+                d = l['d']
+                if (d > 0 and L_[j] <= l['sl']) or (d < 0 and H_[j] + sp >= l['sl']):
+                    px = min(l['sl'], O_[j]) if d > 0 else max(l['sl'], O_[j] + sp)
+                    shut(l, px, j, 'be' if l['half'] else 'stopped'); continue
+                if not l['half'] and l['hp'] is not None and ((d > 0 and H_[j] >= l['hp']) or (d < 0 and L_[j] + sp <= l['hp'])):
+                    l['bank'] = PART * d * (l['hp'] - l['e']) / l['sd']; l['half'] = True; l['half_t'] = j
+                    l['sl'] = max(l['sl'], l['e']) if d > 0 else min(l['sl'], l['e'])
+            tot = banked + sum(mark(l, C_[j], sp) for l in legs if l['on']); peak = max(peak, tot)
+            if LOCK_PK > 0 and not off and peak >= LOCK_PK and tot <= LOCK_FL:
+                for l in legs:
+                    if l['on']: shut(l, C_[j] if l['d'] > 0 else C_[j] + sp, j, 'day lock')
+                off = True
+        if e_close is not None:
+            sp = SP(e_close)
+            for l in legs:
+                if l['on']: shut(l, O_[e_close] if l['d'] > 0 else O_[e_close] + sp, e_close, 'eod')
+        elif day_over and w:                 # day ended before the close minute (holiday / no data)
+            sp = SP(w[-1])
+            for l in legs:
+                if l['on']: shut(l, C_[w[-1]] if l['d'] > 0 else C_[w[-1]] + sp, w[-1], 'eod')
         out = []
-        for tr in TR:
-            i, d, px = tr['i'], tr['dir'], tr['px']; sd = STOP_X * tr['atr']; stop = px - d * sd; a = 0.3 * tr['atr']
-            sp = max(MIN_SPREAD, float(spread[i])) if spread is not None and np.isfinite(spread[i]) else MIN_SPREAD
+        lastj = w[-1] if w else None
+        for l in legs:
+            tr = l['tr']; i, d, px = l['j'], l['d'], l['px']; a = 0.3 * tr['atr']
             after = [j for j in w if j > i and (e_close is None or j <= e_close)]
-            ex = ext = None; status = 'open'
-            for j in after:
-                if j == e_close: ex, ext, status = O_[j], j, 'eod'; break
-                if d > 0 and O_[j] <= stop: ex, ext, status = O_[j], j, 'stopped'; break
-                if d > 0 and L_[j] <= stop: ex, ext, status = stop, j, 'stopped'; break
-                if d < 0 and O_[j] >= stop: ex, ext, status = O_[j], j, 'stopped'; break
-                if d < 0 and H_[j] >= stop: ex, ext, status = stop, j, 'stopped'; break
-            if ex is None and e_close is None and day_over and w and w[-1] > i:      # day ended before the close minute (holiday / no data)
-                ex, ext, status = C_[w[-1]], w[-1], 'eod'
             rwf = None
             for j in after:
                 up = (H_[j] - px) if d > 0 else (px - L_[j]); dn = (px - L_[j]) if d > 0 else (H_[j] - px)
                 if dn >= a and up >= a: rwf = None; break
                 if up >= a: rwf = 1; break
                 if dn >= a: rwf = 0; break
-            pips = None if ex is None else round(((ex - px) * d - sp) * 100, 1)
-            out.append(dict(t=int(T[i]), sig=TAG[tr['s']], name=NAME[tr['s']], dir=d, px=round(px, 3), stop=round(stop, 3), stop_pips=round(sd * 100, 1),
-                            first=bool(tr['first']), spread_pips=round(sp * 100, 1), status=status, exit=None if ex is None else round(float(ex), 3),
-                            exit_t=None if ext is None else int(T[ext]), pips=pips, rwf=rwf, atr=round(tr['atr'], 3)))
+            rem = 1 - PART if l['half'] else 1.0
+            if l['r'] is None:               # still open: value now (last closed minute)
+                now_px = None if lastj is None else (C_[lastj] if d > 0 else C_[lastj] + SP(lastj))
+                r_now = None if now_px is None else l['bank'] + rem * d * (now_px - l['e']) / l['sd']
+                pips = None
+            else:
+                r_now = l['r']
+                pips = l['w'] * ((PART * d * (l['hp'] - l['e']) if l['half'] else 0.) + rem * d * (l['ex'] - l['e'])) * 100
+            out.append(dict(t=int(T[i]), sig=TAG[tr['s']], name=NAME[tr['s']], dir=d, px=round(px, 3), entry=round(l['e'], 3),
+                            stop=round(l['sl'], 3), stop0=round(l['sl0'], 3), stop_pips=round(abs(l['e'] - l['sl0']) * 100, 1),
+                            half_px=None if l['hp'] is None else round(l['hp'], 3), half=bool(l['half']),
+                            half_t=None if l['half_t'] is None else int(T[l['half_t']]), size='third' if l['w'] < 1 else 'full', w=l['w'],
+                            quiet=tr['s'] in QUIET, first=bool(tr['first']), spread_pips=round(l['sp'] * 100, 1), status=l['status'],
+                            exit=None if l['ex'] is None else round(float(l['ex']), 3), exit_t=None if l['ext'] is None else int(T[l['ext']]),
+                            r=None if l['r'] is None else round(l['r'], 4), r_now=None if r_now is None else round(r_now, 4),
+                            pips=None if pips is None else round(pips, 1), rwf=rwf, atr=round(tr['atr'], 3), locked_day=off))
         return out
