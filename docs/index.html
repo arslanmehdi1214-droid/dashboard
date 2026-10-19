@@ -79,7 +79,7 @@ svg.eq{display:block;width:100%;height:56px;margin:12px 0}
 .closed{margin-top:28px}
 .hist{margin:0 0 18px;background:var(--panel);border-radius:14px;padding:16px}.hist:empty{display:none}
 .hist .hh{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}.hist .hh h3{margin:0}
-.hist .tot{display:flex;gap:18px;flex-wrap:wrap;font:500 12px Inter;color:var(--dim);margin-bottom:12px}.hist .tot b{display:block;font:700 16px var(--mono);color:var(--ink)}
+.hist .tot{display:flex;gap:18px;flex-wrap:wrap;font:500 12px Inter;color:var(--dim);margin:14px 0 0;padding-top:12px;border-top:1px solid var(--line)}.hist .tot b{display:block;font:700 16px var(--mono);color:var(--ink)}
 .hist .tabs2{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}.hist .tabs2 button{font:600 11.5px Inter;background:none;border:1px solid var(--line);color:var(--dim);border-radius:7px;padding:4px 9px;cursor:pointer}.hist .tabs2 button.on{border-color:var(--gold);color:var(--gold)}
 .cal5{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}.cal5 .dh{font:600 10.5px Inter;color:var(--dim);text-align:center;letter-spacing:.5px}
 .cal5 .cd{min-height:58px;border:1px solid var(--line);border-radius:9px;padding:6px 7px;font:500 11px Inter;color:var(--dim);display:flex;flex-direction:column;gap:2px;cursor:default}
@@ -93,7 +93,7 @@ svg.eq{display:block;width:100%;height:56px;margin:12px 0}
 .hnote{font:500 11px Inter;color:var(--dim);margin-top:10px}
 @media(max-width:860px){.hday>summary{grid-template-columns:118px 42px 1fr auto}.mnav .dim{flex-basis:100%;margin-left:0!important}.mnav{flex-wrap:wrap}.hday>summary .usd{display:none}.htr{grid-template-columns:60px 46px 1fr auto}.htr .usd{display:none}.cal5 .cd{min-height:50px;padding:5px}.cal5 .cd b{font-size:11px}}
 
-.acts{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin-bottom:14px}
+.pbar{padding:0 32px 14px}.acts{background:var(--panel);border:1px solid var(--gold);border-radius:12px;padding:10px 16px}.acts .nx{display:grid;grid-template-columns:auto auto 1fr;gap:12px;align-items:baseline;padding:6px 0;border-top:1px solid var(--line);font:600 14.5px Inter}.acts .nx:first-of-type{border-top:0}.acts .nx .who{font:700 13px Inter;white-space:nowrap}.acts .nx .do{color:var(--ink)}.acts .old{font:500 12px Inter;color:var(--dim);margin-top:6px}
 .acts .ah{display:flex;align-items:center;gap:10px;margin-bottom:6px}.acts .ah h3{margin:0}.acts .ah button{margin-left:auto;font:600 11.5px Inter;background:none;border:1px solid var(--line);color:var(--dim);border-radius:7px;padding:4px 9px;cursor:pointer}.acts .ah button.on{color:var(--gold);border-color:var(--gold)}
 .ac{display:grid;grid-template-columns:62px 110px 1fr;gap:10px;padding:6px 0;border-top:1px solid var(--line);font:500 13px Inter;align-items:baseline}.ac:first-of-type{border-top:0}
 .ac .tm{font:500 11.5px var(--mono);color:var(--dim)}.ac .k{font:800 11px Inter;letter-spacing:.5px;padding:3px 7px;border-radius:6px;text-align:center;background:rgba(255,255,255,.06)}
@@ -113,7 +113,7 @@ td{padding:9px 4px;border-bottom:1px solid var(--line)}td.r{text-align:right}
 .ev{display:grid;grid-template-columns:72px 1fr;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
 .ev .t{font:600 13px var(--mono)}.ev .cd{display:block;font:600 11.5px Inter;color:var(--amber);margin-top:2px}.ev .cd.hot{color:var(--sell)}
 .ev .h{font:700 14px Inter}.ev .h svg{width:15px;height:12px;margin-right:7px;vertical-align:-1px}.fold.High{fill:#e53935}.fold.Medium{fill:#fb8c00}.fold.Low{fill:#fdd835}.fold.Holiday{fill:#9e9e9e}
-.ev .x{font:500 12.5px Inter;color:var(--dim);margin-top:2px}
+.ev .x{font:500 12.5px Inter;color:var(--dim);margin-top:2px}.ev{cursor:pointer}.ev .evd{display:none;margin-top:8px;padding:10px 12px;background:var(--raise);border-radius:9px;font:500 12.5px Inter;line-height:1.55}.ev.open .evd{display:block}.ev .evd svg{width:13px;height:11px;margin-right:6px;vertical-align:-1px}.ev .evd a{color:var(--gold);font-weight:600;text-decoration:none}
 .day{font:700 11px Inter;letter-spacing:1.4px;text-transform:uppercase;color:var(--gold);padding-top:14px}
 .day:first-child{padding-top:0}
 .src{font:500 11.5px Inter;color:var(--dim);margin-top:12px}
@@ -121,7 +121,7 @@ td{padding:9px 4px;border-bottom:1px solid var(--line)}td.r{text-align:right}
 /* session tiles */
 .srow{max-width:1440px;margin:0 auto;padding:0 24px 12px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
 .st{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:14px}
-.st .nm{font:700 14px Inter}.st .nm small{display:block;font:500 12px Inter;color:var(--dim)}
+.st .nm{font:700 14px Inter}.st .nm small.lt{font:600 17px var(--mono);color:var(--gold);margin-top:2px;white-space:nowrap}.st .nm small{display:block;font:500 12px Inter;color:var(--dim)}
 .st .tm{margin-left:auto;text-align:right;font:500 11.5px Inter;color:var(--dim);white-space:nowrap}
 .st .tm b{display:block;font:700 19px var(--mono);color:var(--ink)}
 .st .s{font:700 10px Inter;letter-spacing:1.2px;padding:3px 7px;border-radius:5px;background:var(--raise);color:var(--dim)}
@@ -151,7 +151,7 @@ td{padding:9px 4px;border-bottom:1px solid var(--line)}td.r{text-align:right}
 .usd{font:500 11.5px var(--mono);color:var(--dim);text-align:right;margin:-6px 0 4px}
 .tvbox{border-radius:10px;overflow:hidden;background:var(--panel)}
 .lv2{font-weight:500;letter-spacing:0;text-transform:none;color:var(--dim)}
-.nw{display:block;padding:9px 0;border-bottom:1px solid var(--line);font:500 13px/1.4 Inter;color:var(--mute)}
+.nw{display:block;padding:9px 0;border-bottom:1px solid var(--line);font:600 13px/1.4 Inter;color:var(--ink);cursor:pointer}.nw .nh svg{width:14px;height:11px;margin-right:6px;vertical-align:-1px}.nw .nmeta{margin-top:3px;display:flex;flex-wrap:wrap;gap:4px 8px;align-items:baseline}.nw .nmeta .nchips{margin-left:0}.nw .why{font:500 12px Inter;color:var(--dim)}.nw .nd{display:none;margin-top:8px;padding:10px 12px;background:var(--raise);border-radius:9px;font:500 12.5px/1.55 Inter;color:var(--ink)}.nw.open .nd{display:block}.nw .nd a{color:var(--gold);font-weight:600;text-decoration:none}
 .nw:hover{color:var(--ink)}.nw.hot{color:var(--ink);font-weight:600}
 .nw .ag{display:inline-block;min-width:58px;font:500 11.5px var(--mono);color:var(--dim)}
 .nw i{font:700 9.5px Inter;font-style:normal;letter-spacing:1px;color:var(--bg);background:var(--amber);border-radius:4px;padding:1px 5px;margin-right:6px}
@@ -177,7 +177,7 @@ td{padding:9px 4px;border-bottom:1px solid var(--line)}td.r{text-align:right}
 @media(max-width:860px){.row{grid-template-columns:auto 1fr auto;gap:8px 10px}.row .nb,.row .mini{display:none}.row .btn{display:none}}
 .st .tm b.at{color:var(--mute);font-size:17px}.st .tm b.soon{color:var(--amber)}
 .nchips{display:inline-flex;gap:4px;margin-left:6px;vertical-align:1px}.nc{font:700 9.5px Inter;font-style:normal;letter-spacing:.6px;padding:1px 6px;border-radius:4px}
-.nc.Gold{background:rgba(226,194,122,.18);color:var(--gold)}.nc.Oil{background:rgba(143,160,255,.18);color:#a9b6ff}.nc.USDJPY{background:rgba(255,197,107,.15);color:var(--amber)}.nc.Nasdaq{background:rgba(155,231,196,.14);color:var(--live)}
+.nc.Gold{background:rgba(226,194,122,.18);color:var(--gold)}.nc.Oil{background:rgba(143,160,255,.18);color:#a9b6ff}.nc.USDJPY{background:rgba(255,197,107,.15);color:var(--amber)}.nc.Nasdaq{background:rgba(155,231,196,.14);color:var(--live)}.nc.Silver{background:rgba(200,206,214,.16);color:#d5dbe3}
 .oh{display:flex;align-items:center;gap:12px;margin-bottom:12px}.oh h3{margin:0}
 .sty{margin-left:auto;display:flex;gap:6px;align-items:center;font:500 11.5px Inter;color:var(--dim)}
 .sty button{background:var(--panel);border:1px solid var(--line);color:var(--mute);border-radius:7px;padding:4px 9px;font:600 11.5px Inter;cursor:pointer}.sty button.on{border-color:var(--gold);color:var(--ink)}
@@ -204,7 +204,7 @@ td{padding:9px 4px;border-bottom:1px solid var(--line)}td.r{text-align:right}
 @media(max-width:1200px){.term{grid-template-columns:250px minmax(0,1fr)}.rr{grid-column:1/-1;position:static}.hd{flex-wrap:wrap}.news{text-align:left;order:4}}
 @media(max-width:860px){
  .hd{flex-wrap:wrap;gap:10px 16px;padding:10px 16px}.clk{margin-left:auto}.mtab{order:3;flex-basis:100%}.clk b{font-size:17px}.clk small{display:none}
- .news{flex-basis:100%;display:flex;gap:8px;align-items:baseline}.news b{display:inline}.srow{padding:0 16px 10px;gap:6px;grid-template-columns:1fr 1fr}.st{flex-direction:column;align-items:flex-start;gap:4px;padding:8px 10px}.st .tm{margin-left:0;text-align:left}.st .tm b{font-size:15px}.st .s{display:none}.alert{padding:0 16px}
+ .news{flex-basis:100%;display:flex;gap:8px;align-items:baseline}.news b{display:inline}.srow{padding:0 16px 10px;gap:6px;grid-template-columns:1fr 1fr}.st{flex-direction:column;align-items:flex-start;gap:4px;padding:8px 10px}.st .tm{margin-left:0;text-align:left}.st .tm b{font-size:15px}.st .s{display:none}.alert{padding:0 16px}.pbar{padding:0 16px 10px}.acts .nx{grid-template-columns:1fr;gap:2px}
  header{position:static}.term{display:block;padding:16px 16px 90px}.rail{position:static}
  .cards{grid-template-columns:1fr}
  .pane{display:none}body[data-tab="mk"] .p-mk,body[data-tab="tr"] .p-tr,body[data-tab="nw"] .p-nw{display:block}
@@ -221,6 +221,7 @@ td{padding:9px 4px;border-bottom:1px solid var(--line)}td.r{text-align:right}
 </div>
  <div class="srow" id="ses"></div>
  <div class="alert" id="nalert"></div>
+ <div class="pbar"><div class="actlive" id="actlive"></div><div class="acts" id="acts"></div></div>
 </header>
 
 <main class="term">
@@ -228,18 +229,16 @@ td{padding:9px 4px;border-bottom:1px solid var(--line)}td.r{text-align:right}
   <div class="acc" id="acc" style="margin-top:0"></div>
  </aside>
  <section class="pane p-tr">
-  <div class="actlive" id="actlive" data-c="GOLD"></div>
-  <div class="acts" id="acts" data-c="GOLD"></div>
-  <div class="hist" id="histbox"></div>
   <div class="oh"><h3 id="oth">Open trades</h3><div class="sty" id="sty"><span>Layout option</span><button data-s="1">1 · Rows</button><button data-s="2" class="on">2 · Price ladder</button><button data-s="3">3 · Broker table</button></div></div>
   <div class="cards" id="cards"></div>
   <div class="idle" id="idle"></div>
   <div class="closed" id="closedbox"></div>
+  <div class="hist" id="histbox"></div>
  </section>
  <aside class="rail rr pane p-nw">
   <h3>Events · our 5 markets</h3><div id="cal"></div>
   <h3 style="margin-top:22px">News <span class="lv2" id="nstat"></span></h3><div id="news"></div>
-  <div class="src">Market movers for Gold, Silver, USD/JPY, Oil and Nasdaq · MarketWatch / Dow Jones (free) · checked every 30 seconds</div>
+  <div class="src" id="src_note">News: Walter Bloomberg + FinancialJuice (Telegram, live) · checked every 10 seconds</div>
  </aside>
 </main>
 <div class="mock"><span id="deskstat">Loading desk data…</span> · live prices Capital.com · 0.01-lot values per market still to be checked against Blueberry's contract specs · <a href="old.html" style="color:var(--gold)">Results &amp; journal (old desk) ↗</a></div>
@@ -267,7 +266,7 @@ const OILW=/crude|oil|opec|eia|petroleum|natural gas/i;
 function hits(e){const m=new Set(),c=e.country,t=e.title||'';if(/natural gas/i.test(t))return [];if(/crude|oil|opec|petroleum/i.test(t))return ['Oil'];
  if(c==='USD'){['Gold','Silver','USD/JPY','Nasdaq'].forEach(x=>m.add(x));if(OILW.test(t)||/CPI|Non-Farm|FOMC|Federal Funds|Fed Chair|PPI|Retail Sales|GDP/i.test(t))m.add('Oil')}
  if(c==='JPY')m.add('USD/JPY');if(c==='CNY'){m.add('Gold');m.add('Silver');m.add('Oil')}if(OILW.test(t))m.add('Oil');return [...m]}
-const G=[],T=[];
+const G=[],T=[],OPENEV=new Set();
 function buildG(){G.length=0;CAL.filter(e=>e.impact==='High'||e.impact==='Medium'||(e.impact==='Low'&&OILW.test(e.title||''))||(e.country==='USD'&&OILW.test(e.title||''))).forEach(e=>{const mk=hits(e);if(!mk.length)return;
  const g=G.find(g=>g.date===e.date&&g.country===e.country);
  if(g){g.items.push(e);mk.forEach(x=>g.mk.includes(x)||g.mk.push(x));if(e.impact==='High')g.impact='High'}
@@ -311,7 +310,7 @@ function tick(){const now=new Date();
  clk.textContent=now.toLocaleTimeString('en-US',{...TZ,hour:'numeric',minute:'2-digit',second:'2-digit'}).toLowerCase();cld.textContent='Dubai · '+dday(now);
  const L=SES.map(S=>{const W=wins(S,now),cur=W.find(w=>w.o<=now&&now<w.c),nx=W.find(w=>w.o>now);return {S,cur,w:cur||nx,next:cur?cur.c:nx.o}})
   .sort((a,b)=>(!!b.cur-!!a.cur)||(a.next-b.next));
- ses.innerHTML=L.map(x=>`<div class="st ${x.cur?'open':''}"><div class="nm">${x.S.n}<small>${t12(x.w.o)} – ${t12(x.w.c)}</small></div><span class="s">${x.cur?'OPEN':'CLOSED'}</span><div class="tm">${x.cur?'closes in<b>'+hms(x.next-now)+'</b>':(x.next-now<=15*6e4?'opens in<b class="soon">'+hms(x.next-now)+'</b>':'opens at<b class="at">'+t12(x.next)+(dkey(x.next)!==dkey(now)?' '+dday(x.next).split(',')[0]:'')+'</b>')}</div></div>`).join('');
+ ses.innerHTML=L.map(x=>`<div class="st ${x.cur?'open':''}"><div class="nm">${x.S.n}<small class="lt">${now.toLocaleTimeString('en-US',{timeZone:x.S.tz,hour:'numeric',minute:'2-digit'}).toLowerCase()}</small></div><span class="s">${x.cur?'OPEN':'CLOSED'}</span><div class="tm">${x.cur?'closes in<b>'+hms(x.next-now)+'</b>':(x.next-now<=15*6e4?'opens in<b class="soon">'+hms(x.next-now)+'</b>':'opens at<b class="at">'+t12(x.next)+(dkey(x.next)!==dkey(now)?' '+dday(x.next).split(',')[0]:'')+'</b>')}</div></div>`).join('');
  const n=G.find(g=>g.impact==='High'&&g.t>now);
  document.querySelectorAll('[data-cd]').forEach(el=>{const ms=+el.dataset.cd-now;el.textContent=ms>0?'in '+hms(ms):'released';el.classList.toggle('hot',ms>0&&ms<15*6e4)});
  alertTick(now);
@@ -333,13 +332,20 @@ function actsLive(){const m=MK.find(m=>m.c==='GOLD'),x=M.GOLD,l=m&&liveOf(m);if(
   else if(s*(e.stop-p)>=0)out.push({k:'S'+e.time+e.stop,t:`LIVE: price ${f(p,2)} is at the stop ${f(e.stop,2)} of your ${e.side} from ${e.time} — check it is closed`})});
  out.forEach(o=>{if(!liveFired[o.k]){liveFired[o.k]=1;beep(3);notify('Gold: '+o.t)}});
  actlive.innerHTML=out.map(o=>'⚡ '+o.t).join('<br>')}
+function nextStep(o){const {m,e}=o,dp=m.dp;if(e.next)return e.next;
+ if(e.half_px!=null&&!e.half)return `Close ${e.part!=null?Math.round(e.part*100)+'%':'half'} at ${f(e.half_px,dp)}, then move the stop to entry ${f(e.price,dp)} · stop now ${f(e.stop,dp)}`;
+ if(e.half)return `Part banked · stop at ${f(e.stop,dp)}${Math.abs(e.stop-e.price)>1e-9?' (trailing)':' (entry)'} · hold the rest to the stop or the day-end close`;
+ return `Hold · stop ${f(e.stop,dp)} · closes at the day end`}
 function actsRender(){const x=M.GOLD||{},A=(x.actions||[]).slice().reverse(),day=x.actions_day||'';
  const keys=A.map(a=>day+a.time+a.kind+a.text);
  if(seenA===null){seenA=new Set(keys)}else{const fresh=A.filter((a,i)=>!seenA.has(keys[i]));
   if(fresh.length){fresh.forEach((a,i)=>flashA[day+a.time+a.kind+a.text]=Date.now());const top=fresh[0];beep(top.kind==='HOLD'?1:3);notify('Gold: '+top.text);keys.forEach(k=>seenA.add(k))}}
- acts.innerHTML=`<div class="ah"><h3>Gold actions today</h3><button id="snd2" class="${sound?'on':''}">${sound?'Sound on':'Turn on sound'}</button></div>`+
-  (A.length?A.slice(0,10).map(a=>{const k=day+a.time+a.kind+a.text,nw=flashA[k]&&Date.now()-flashA[k]<10*6e4;return `<div class="ac ${nw?'new':''}"><span class="tm">${a.time}</span><span class="k ${a.kind}">${a.kind.replace('_',' ')}</span><span class="tx">${a.text}</span></div>`}).join('')
-  :`<div class="dim" style="font:500 13px Inter">No gold action yet today — ${x.message||'waiting for the first signal'}</div>`);
+ const op=T.filter(o=>!done(o.e));
+ const lines=op.map(o=>`<div class="nx" data-c="${o.m.c}"><span class="who ${o.e.side==='BUY'?'pos':'neg'}">${o.m.n} ${o.e.side}</span><span class="dim">${o.e.time}</span><span class="do">${nextStep(o)}</span></div>`).join('');
+ const a0=A[0],nw=a0&&flashA[day+a0.time+a0.kind+a0.text]&&Date.now()-flashA[day+a0.time+a0.kind+a0.text]<10*6e4;
+ acts.innerHTML=`<div class="ah"><h3>Do now</h3><button id="snd2" class="${sound?'on':''}">${sound?'Sound on':'Turn on sound'}</button></div>`+
+  (lines||`<div class="dim" style="font:500 13.5px Inter">No open trade — waiting for the next signal</div>`)+
+  (a0&&op.some(o=>o.m.c==='GOLD')?`<div class="old ${nw?'new':''}" data-c="GOLD">Gold last action ${a0.time}: ${a0.text}${A.length>1?` · ${A.length} actions today`:''}</div>`:'');
  const b=document.getElementById('snd2');if(b)b.onclick=()=>{sound=!sound;if(sound){beep(1);try{Notification.requestPermission&&Notification.requestPermission()}catch(e){}}actsRender()}}
 function ticket(c){const {o,px,mv,R,pl,risk}=c,{m,x,e,i}=o,st0=e.stop0??e.stop,sd=Math.abs(e.price-st0),sg1=e.side==='BUY'?1:-1,tgt=e.price+sg1*(e.half_px!=null?sd:2*sd);
  const lo=Math.min(st0,tgt),hi=Math.max(st0,tgt),P=v=>Math.max(0,Math.min(100,(v-lo)/(hi-lo)*100)),pp=v=>e.side==='SELL'?100-P(v):P(v),lv=liveOf(m);
@@ -376,6 +382,7 @@ try{renderHist()}catch(e){}
  oth.textContent=`Open trades · ${document.querySelectorAll('.row:not(.hide),.tk:not(.hide),.pt tr[data-c]:not(.hide)').length}`}
 function render(){
  try{actsLive()}catch(e){}
+ try{actsRender()}catch(e){}
  const C=T.map(o=>({o,...calc(o)})),tot=C.reduce((a,c)=>a+c.pl,0),op=C.filter(c=>!done(c.o.e)),cl=C.filter(c=>done(c.o.e));
  const tabs=[{c:'ALL',n:'All markets'}].concat(MK);
  mtab.innerHTML=tabs.map(m=>{if(m.c==='ALL')return `<button data-c="ALL" class="${SEL==='ALL'?'on':''}">All<small>${op.length} open</small></button>`;
@@ -396,9 +403,11 @@ function render(){
  const now=new Date();let ld='';
  cal.innerHTML=G.filter(g=>g.t>now).slice(0,7).map(g=>{const dk=dkey(g.t),hd=dk!==ld?`<div class="day">${dk===dkey(now)?'Today':dday(g.t)}</div>`:'';ld=dk;
   const m=g.t-now,l=g.items[0],fc=l.forecast?` · forecast ${l.forecast}, previous ${l.previous||'—'}`:'';
-  return hd+`<div class="ev" data-mk="${g.mk.join('|')}"><div class="t">${t12(g.t)}${m<864e5?`<span class="cd" data-cd="${+g.t}">in ${hms(m)}</span>`:''}</div>
+  const ffd=g.t.toLocaleDateString('en-US',{timeZone:'America/New_York',month:'short',day:'numeric',year:'numeric'}).replace(',','').split(' '),ffu=`https://www.forexfactory.com/calendar?day=${ffd[0].toLowerCase()}${ffd[1]}.${ffd[2]}`;
+  const det=`<div class="evd">${g.items.map(i=>`<div><svg viewBox="0 0 15 12" class="fold ${i.impact}"><path d="M0 1.5A1.5 1.5 0 0 1 1.5 0H5l1.6 1.8h6.9A1.5 1.5 0 0 1 15 3.3v7.2a1.5 1.5 0 0 1-1.5 1.5h-12A1.5 1.5 0 0 1 0 10.5z"/></svg><b>${i.title}</b> <span class="dim">${i.impact} impact · forecast ${i.forecast||'—'} · previous ${i.previous||'—'}</span></div>`).join('')}<div class="dim">${t12(g.t)} Dubai · ${dday(g.t)} · moves: ${g.mk.join(', ')}</div><a href="${ffu}" target="_blank" rel="noopener">Open on Forex Factory ↗</a></div>`;
+  return hd+`<div class="ev ${OPENEV.has(g.date+g.country)?'open':''}" data-mk="${g.mk.join('|')}" data-k="${g.date+g.country}" onclick="if(!event.target.closest('a')){this.classList.toggle('open');OPENEV[this.classList.contains('open')?'add':'delete'](this.dataset.k)}"><div class="t">${t12(g.t)}${m<864e5?`<span class="cd" data-cd="${+g.t}">in ${hms(m)}</span>`:''}</div>
    <div><div class="h"><svg viewBox="0 0 15 12" class="fold ${g.impact}"><path d="M0 1.5A1.5 1.5 0 0 1 1.5 0H5l1.6 1.8h6.9A1.5 1.5 0 0 1 15 3.3v7.2a1.5 1.5 0 0 1-1.5 1.5h-12A1.5 1.5 0 0 1 0 10.5z"/></svg>${g.country} ${l.title}${g.items.length>1?` <span class="dim">+${g.items.length-1}</span>`:''}</div>
-   <div class="x"><span class="nchips" style="margin-left:0">${g.mk.map(x=>`<em class="nc ${x.replace('/','')}">${x}</em>`).join('')}</span>${fc}</div></div></div>`}).join('')||'<div class="dim">No more big events this week</div>';
+   <div class="x"><span class="nchips" style="margin-left:0">${g.mk.map(x=>`<em class="nc ${x.replace('/','')}">${x}</em>`).join('')}</span>${fc}</div>${det}</div></div>`}).join('')||'<div class="dim">No more big events this week</div>';
 }
 function tvw(el,kind,cfg){const w=document.createElement('div');w.className='tradingview-widget-container';
  const i=document.createElement('div');i.className='tradingview-widget-container__widget';w.appendChild(i);
@@ -414,15 +423,56 @@ const NQ=/\b(Nasdaq|stocks?|equities|S&P|tech|chips?|semiconductors?|AI|Nvidia|A
 const NS=/\b(silver|precious metals?|bullion|gold|solar|industrial metals?|Fed|FOMC|Powell|Warsh|rate cuts?|CPI|inflation|PPI|payrolls?|dollar|yields?|tariffs?|China)\b/i;
 const mkOf=t=>JUNK.test(t)?[]:[NG.test(t)?'Gold':null,NS.test(t)?'Silver':null,NJ.test(t)?'USD/JPY':null,NO.test(t)?'Oil':null,NQ.test(t)?'Nasdaq':null].filter(Boolean);
 const HOT={test:t=>mkOf(t).length>0};
-let seenN=new Set(),firstN=true;
-async function loadNews(){try{const rs=await Promise.all(NF.map(u=>fetch(u,{cache:'no-store'}).then(r=>r.text())));const all=[];
- rs.forEach(x=>{const d=new DOMParser().parseFromString(x,'text/xml');d.querySelectorAll('item').forEach(it=>{const t=it.querySelector('title')?.textContent||'',l=it.querySelector('link')?.textContent||'',p=new Date(it.querySelector('pubDate')?.textContent||0);if(t&&!all.some(a=>a.t===t))all.push({t,l,p})})});
- all.sort((a,b)=>b.p-a.p);const now=new Date();
- news.innerHTML=all.filter(n=>HOT.test(n.t)).slice(0,12).map(n=>{const age=(now-n.p)/6e4,isNew=!firstN&&!seenN.has(n.t);
-  return `<a class="nw ${age<15?'fresh':''} ${HOT.test(n.t)?'hot':''} ${isNew?'flashn':''}" target="_blank" rel="noopener" href="${n.l}"><span class="ag">${age<60?Math.max(0,Math.round(age))+'m ago':t12(n.p)}</span>${age<15?'<i>NEW</i>':''}${n.t}<span class="nchips">${mkOf(n.t).map(x=>`<em class="nc ${x.replace('/','')}">${x}</em>`).join('')}</span></a>`}).join('');
- all.forEach(n=>seenN.add(n.t));firstN=false;nstat.textContent='· checked '+t12(now)}
- catch(e){nstat.textContent='· news feed unreachable, retrying'}}
-loadNews();setInterval(loadNews,30000);
+/* NEWS ENGINE (19 Oct 2026). Fastest free source = Telegram channels Walter Bloomberg + FinancialJuice through our Worker (/news, ~8 s fresh),
+   checked every 10 s; MarketWatch stays as the fallback. Each headline: folder (impact), markets it moves, expected direction with its
+   history (judged on years the rule never saw), and a one-line reason. Click a headline for the full text + source. */
+const REL={"ADP Non-Farm Employment Change": {"Gold": {"dir": -1,"hit": 0.75,"n": 64,"mag": 0.093},"Silver": {"dir": -1,"hit": 0.73,"n": 64,"mag": 0.089},"USD/JPY": {"dir": 1,"hit": 0.73,"n": 64,"mag": 0.073}},"Advance GDP q/q": {"Gold": {"dir": -1,"hit": 0.76,"n": 25,"mag": 0.123},"Silver": {"dir": -1,"hit": 0.56,"n": 25,"mag": 0.107},"USD/JPY": {"dir": 1,"hit": 0.56,"n": 25,"mag": 0.131},"Nasdaq": {"dir": 1,"hit": 0.7,"n": 23,"mag": 0.075}},"Average Hourly Earnings m/m": {"Gold": {"dir": -1,"hit": 0.61,"n": 57,"mag": 0.246},"Silver": {"dir": -1,"hit": 0.65,"n": 57,"mag": 0.216},"Oil": {"dir": -1,"hit": 0.58,"n": 57,"mag": 0.08},"Nasdaq": {"dir": -1,"hit": 0.58,"n": 57,"mag": 0.155}},"CB Consumer Confidence": {"Gold": {"dir": -1,"hit": 0.64,"n": 36,"mag": 0.072},"Silver": {"dir": -1,"hit": 0.58,"n": 36,"mag": 0.065},"USD/JPY": {"dir": 1,"hit": 0.67,"n": 36,"mag": 0.063},"Nasdaq": {"dir": 1,"hit": 0.56,"n": 32,"mag": 0.096}},"CPI m/m": {"Gold": {"dir": -1,"hit": 0.72,"n": 46,"mag": 0.209},"Silver": {"dir": -1,"hit": 0.67,"n": 46,"mag": 0.146},"USD/JPY": {"dir": 1,"hit": 0.77,"n": 47,"mag": 0.199},"Oil": {"dir": -1,"hit": 0.72,"n": 43,"mag": 0.071},"Nasdaq": {"dir": -1,"hit": 0.89,"n": 45,"mag": 0.149}},"CPI y/y": {"Gold": {"dir": -1,"hit": 0.67,"n": 54,"mag": 0.14},"Silver": {"dir": -1,"hit": 0.59,"n": 54,"mag": 0.114},"USD/JPY": {"dir": 1,"hit": 0.78,"n": 55,"mag": 0.11},"Nasdaq": {"dir": -1,"hit": 0.83,"n": 52,"mag": 0.087}},"Core CPI m/m": {"Gold": {"dir": -1,"hit": 0.69,"n": 48,"mag": 0.155},"Silver": {"dir": -1,"hit": 0.65,"n": 49,"mag": 0.155},"USD/JPY": {"dir": 1,"hit": 0.78,"n": 50,"mag": 0.111},"Oil": {"dir": -1,"hit": 0.65,"n": 46,"mag": 0.071},"Nasdaq": {"dir": -1,"hit": 0.89,"n": 47,"mag": 0.115}},"Core CPI y/y": {"USD/JPY": {"dir": 1,"hit": 0.73,"n": 52,"mag": 0.109},"Nasdaq": {"dir": -1,"hit": 0.82,"n": 50,"mag": 0.113}},"Core Retail Sales m/m": {"USD/JPY": {"dir": 1,"hit": 0.67,"n": 69,"mag": 0.096},"Nasdaq": {"dir": 1,"hit": 0.57,"n": 67,"mag": 0.061}},"ISM Manufacturing PMI": {"Gold": {"dir": -1,"hit": 0.63,"n": 76,"mag": 0.094},"USD/JPY": {"dir": 1,"hit": 0.68,"n": 76,"mag": 0.083},"Oil": {"dir": 1,"hit": 0.67,"n": 72,"mag": 0.087},"Nasdaq": {"dir": 1,"hit": 0.62,"n": 71,"mag": 0.109}},"ISM Services PMI": {"Gold": {"dir": -1,"hit": 0.62,"n": 68,"mag": 0.092},"Silver": {"dir": -1,"hit": 0.6,"n": 68,"mag": 0.093},"USD/JPY": {"dir": 1,"hit": 0.84,"n": 68,"mag": 0.083},"Nasdaq": {"dir": 1,"hit": 0.57,"n": 63,"mag": 0.114}},"Non-Farm Employment Change": {"Gold": {"dir": -1,"hit": 0.74,"n": 77,"mag": 0.233},"Silver": {"dir": -1,"hit": 0.68,"n": 77,"mag": 0.224},"USD/JPY": {"dir": 1,"hit": 0.78,"n": 80,"mag": 0.168},"Oil": {"dir": 1,"hit": 0.55,"n": 76,"mag": 0.091}},"PPI m/m": {"Gold": {"dir": -1,"hit": 0.66,"n": 53,"mag": 0.076},"USD/JPY": {"dir": 1,"hit": 0.74,"n": 54,"mag": 0.075}},"Prelim GDP q/q": {"Gold": {"dir": -1,"hit": 0.74,"n": 19,"mag": 0.101},"Silver": {"dir": -1,"hit": 0.58,"n": 19,"mag": 0.088}},"Prelim UoM Consumer Sentiment": {"Silver": {"dir": -1,"hit": 0.73,"n": 37,"mag": 0.058},"USD/JPY": {"dir": 1,"hit": 0.7,"n": 37,"mag": 0.061},"Nasdaq": {"dir": 1,"hit": 0.61,"n": 33,"mag": 0.102}},"Retail Sales m/m": {"Gold": {"dir": -1,"hit": 0.59,"n": 73,"mag": 0.095},"USD/JPY": {"dir": 1,"hit": 0.59,"n": 73,"mag": 0.098},"Nasdaq": {"dir": 1,"hit": 0.58,"n": 69,"mag": 0.063}},"Unemployment Claims": {"Gold": {"dir": 1,"hit": 0.64,"n": 151,"mag": 0.085},"Silver": {"dir": 1,"hit": 0.58,"n": 151,"mag": 0.074},"USD/JPY": {"dir": -1,"hit": 0.68,"n": 151,"mag": 0.075},"Oil": {"dir": -1,"hit": 0.56,"n": 138,"mag": 0.056}}};   // US data releases: event -> market -> {dir, hit, n} (surprise = actual vs forecast; picked 2008-19, judged 2020-26)
+const CATS=[{"rx": "\\b(BOJ|BANK OF JAPAN|UEDA|HIMINO|UCHIDA)\\b.*\\b(HIKE|RAISE|TIGHTEN\\w*|NORMALI\\w*)\\b|\\b(KATO|KATAYAMA|MIMURA|JAPAN'?S? FINANCE MINISTER|JAPAN MOF)\\b.*\\b(INTERVEN\\w*|EXCESSIVE|SPECULATIVE|ACTION|CONCERN|URGENCY)\\b|\\bYEN INTERVENTION\\b", "why": "BoJ tightening / yen-support talk \u2192 stronger yen, USD/JPY lower", "imp": "Medium", "mk": {"USD/JPY": {"dir": 0}}}, {"rx": "\\b(OPEC\\+?|SAUDI)\\b.*\\b(INCREASE|RAISE|BOOST|HIKE|ADD)\\b.*\\b(OUTPUT|PRODUCTION|SUPPLY)\\b|\\bSPR\\b.*\\b(RELEASE|SELL)\\b", "why": "More oil supply \u2192 oil price pressure", "imp": "Medium", "mk": {"Oil": {"dir": 0}}}, {"rx": "\\b(OPEC\\+?|SAUDI|OUTPUT|PRODUCTION)\\b.*\\b(CUT|CUTS|REDUCE|REDUCTION|HALT|SHUT)\\b|\\bHORMUZ\\b|\\b(REFINERY|PIPELINE|OIL FIELD|TANKER|TERMINAL)\\b.*\\b(ATTACK|FIRE|STRIKE|HIT|SHUT|SEIZED?)\\b|\\bSANCTIONS?\\b.*\\b(OIL|CRUDE|IRAN|RUSSIA|VENEZUELA)\\b", "why": "Less oil supply \u2192 oil price support", "imp": "Medium", "mk": {"Oil": {"dir": 0}}}, {"rx": "\\b(FED|FOMC|POWELL|WARSH|WALLER|BOWMAN|JEFFERSON|BARR|COOK|GOOLSBEE|HAMMACK|LOGAN|KASHKARI|MUSALEM|SCHMID|BOSTIC|DALY|WILLIAMS|BARKIN|HARKER|COLLINS|MIRAN)\\b.*\\b(HIKE|HIKES|HIKING|HAWKISH|RAISE RATES|RATE INCREASE|NO RUSH TO CUT|NOT IN A HURRY|HOLD RATES|HIGHER FOR LONGER|INFLATION (IS )?TOO HIGH|PREMATURE TO CUT)\\b", "why": "Hawkish Fed \u2192 dollar and yields up, usually weighs on gold and stocks", "imp": "Medium", "mk": {"Gold": {"dir": 0}, "Silver": {"dir": 0}, "USD/JPY": {"dir": 0}, "Nasdaq": {"dir": 0}}}, {"rx": "\\b(FED|FOMC|POWELL|WARSH|WALLER|BOWMAN|JEFFERSON|BARR|COOK|GOOLSBEE|HAMMACK|LOGAN|KASHKARI|MUSALEM|SCHMID|BOSTIC|DALY|WILLIAMS|BARKIN|HARKER|COLLINS|MIRAN)\\b.*\\b(CUT|CUTS|CUTTING|DOVISH|EASING|LOWER RATES|RATE REDUCTION)\\b", "why": "Dovish Fed \u2192 dollar and yields down, usually supports gold and stocks", "imp": "Medium", "mk": {"Gold": {"dir": 0}, "Silver": {"dir": 0}, "USD/JPY": {"dir": 0}, "Nasdaq": {"dir": 0}}}, {"rx": "\\bTARIFF.*\\b(PAUSE|PAUSES|DELAY|DELAYS|EXEMPT|EXEMPTION|CUT|CUTS|LOWER|LOWERS|REMOVE|REMOVES|LIFT|LIFTS|SUSPEND|SUSPENDS|ROLL BACK|TRUCE|DEAL)\\b|\\bTRADE (DEAL|AGREEMENT|TRUCE)\\b", "why": "Tariff relief \u2192 risk-on, stocks supported", "imp": "Medium", "mk": {"Nasdaq": {"dir": 0}, "Gold": {"dir": 0}, "USD/JPY": {"dir": 0}}}, {"rx": "\\bTARIFF.*\\b(IMPOSE|IMPOSES|IMPOSING|RAISE|RAISES|HIKE|INCREASE|NEW|THREATEN|THREATENS|ADDITIONAL|SLAP|EXPAND)\\b|\\b(IMPOSE|RAISE|THREATEN|NEW|ADDITIONAL)\\b.*\\bTARIFF", "why": "New tariffs \u2192 trade-war fear, stocks under pressure, safe havens bid", "imp": "Medium", "mk": {"Nasdaq": {"dir": 0}, "Gold": {"dir": 0}, "USD/JPY": {"dir": 0}}}, {"rx": "\\b(CEASEFIRE|CEASE-FIRE|PEACE (DEAL|TALKS|AGREEMENT|PLAN)|TRUCE|DE-ESCALAT\\w*|HOSTAGE (DEAL|RELEASE))\\b", "why": "De-escalation \u2192 less safe-haven demand, oil risk premium falls", "imp": "Medium", "mk": {"Gold": {"dir": 0}, "Oil": {"dir": 0}}}, {"rx": "\\b(STRIKES?|STRUCK|ATTACKS?|ATTACKED|MISSILES?|DRONES?|EXPLOSIONS?|BLASTS?|INVADE|INVASION|BOMBS?|BOMBING|KILLED|ESCALAT\\w*|AIRSTRIKES?|RETALIAT\\w*|MOBILIZ\\w*)\\b", "why": "Military escalation \u2192 safe-haven demand and oil-supply risk", "imp": "Medium", "mk": {"Gold": {"dir": 0}, "Oil": {"dir": 0}}}, {"rx": "\\b(CHINA|CHINESE|PBOC|BEIJING)\\b.*\\b(STIMULUS|RRR CUT|CUT (RESERVE|RATES?)|EASING|SUPPORT MEASURES|LIQUIDITY INJECTION)\\b", "why": "China stimulus \u2192 more demand for metals and oil", "imp": "Medium", "mk": {"Silver": {"dir": 0}, "Oil": {"dir": 0}}}, {"rx": "\\b(RECESSION|LAYOFFS|JOB CUTS|SHUTDOWN|DEFAULT|DOWNGRADE[SD]?)\\b", "why": "Growth or fiscal scare \u2192 risk-off, lower yields", "imp": "Medium", "mk": {"Nasdaq": {"dir": 0}, "Gold": {"dir": 0}, "USD/JPY": {"dir": 0}}}]; // breaking-news topics: {rx, why, imp, mk}. Tested 19 Oct on 34k Walter Bloomberg headlines (2024-26): NO topic had a reliable 5-30 min direction -> topics show the usual logic only, no arrows
+const RMAP=[[/\bCORE CPI M[\/O]?M\b/,'Core CPI m/m'],[/\bCORE CPI Y[\/O]?Y\b/,'Core CPI y/y'],[/\bCPI M[\/O]?M\b/,'CPI m/m'],[/\bCPI Y[\/O]?Y\b/,'CPI y/y'],
+ [/\b(NON-?FARM PAYROLLS|NFP)\b/,'Non-Farm Employment Change'],[/\bADP\b(?!.*WKLY|.*WEEKLY)/,'ADP Non-Farm Employment Change'],[/\bUNEMPLOYMENT RATE\b/,'Unemployment Rate'],
+ [/\bAVERAGE (HOURLY )?EARNINGS M[\/O]?M\b/,'Average Hourly Earnings m/m'],[/\bCORE RETAIL SALES|RETAIL SALES EX AUTOS? M[\/O]?M\b/,'Core Retail Sales m/m'],[/\bRETAIL SALES M[\/O]?M\b/,'Retail Sales m/m'],
+ [/\bPPI M[\/O]?M\b/,'PPI m/m'],[/\bISM (MANUFACTURING|MFG\.?) PMI\b/,'ISM Manufacturing PMI'],[/\bISM (SERVICES|NON-MANUFACTURING) PMI\b/,'ISM Services PMI'],
+ [/\b(INITIAL )?JOBLESS CLAIMS\b(?!.*CONTINU)/,'Unemployment Claims'],[/\b(UOM|MICHIGAN)\b.*SENTIMENT.*PRELIM|PRELIM.*(UOM|MICHIGAN).*SENTIMENT/,'Prelim UoM Consumer Sentiment'],
+ [/\b(CB|CONFERENCE BOARD) CONSUMER CONFIDENCE\b/,'CB Consumer Confidence'],[/\bGDP.*ADVANCE|ADVANCE.*GDP/,'Advance GDP q/q'],[/\bGDP.*PRELIM|PRELIM.*GDP/,'Prelim GDP q/q']];
+const RWHY={inf:['Hotter inflation than forecast → Fed stays tight, dollar and yields up','Cooler inflation than forecast → Fed can ease, dollar and yields down'],
+ grow:['Stronger US data than forecast → dollar and yields up','Weaker US data than forecast → dollar and yields down'],
+ claims:['More jobless claims than forecast → weaker jobs market, dollar down','Fewer jobless claims than forecast → firmer jobs market, dollar up']};
+const rKind=ev=>/CPI|PPI|Earnings/.test(ev)?'inf':/Claims/.test(ev)?'claims':'grow';
+const NMK={'Gold':'Gold','Silver':'Silver','USD/JPY':'USD/JPY','Oil':'Oil','Nasdaq':'Nasdaq'};
+const numv=x=>{const m=/^(-?[\d.,]+)\s*([KMBT%]?)/i.exec((x||'').trim());if(!m)return null;return parseFloat(m[1].replace(/,/g,''))*({K:1e3,M:1e6,B:1e9,T:1e12}[m[2].toUpperCase()]||1)};
+function classify(text){const U=text.toUpperCase(),out={imp:null,why:'',mk:[],kind:''},bang=/\u2757/.test(text);  // ❗ = FinancialJuice 'important' (moves ~1.4x larger, Apr-Sep 2026)
+ if(/\bACTUAL\b/.test(U)){
+  const m=/^(.*?)\s+ACTUAL\s+(\S+)\s*\(FORECAST\s+([^,]*),\s*PREVIOUS\s+([^)]*)\)/.exec(U.replace(/^\W+/,''));
+  if(m&&/^(US|U\.S\.)\b/.test(m[1])){const r=RMAP.find(([rx])=>rx.test(m[1])),a=numv(m[2]),f=numv(m[3]);
+   if(r&&a!=null&&f!=null&&REL[r[1]]){const s=Math.sign(a-f);out.kind='release';out.imp='High';
+    if(s===0){out.why=`${r[1]} in line with forecast → no surprise`;return out}
+    const why=RWHY[rKind(r[1])][s>0?0:1];
+    out.why=why;out.mk=Object.entries(REL[r[1]]).map(([mk,v])=>({mk,dir:v.dir*s,hit:v.hit,n:v.n}));return out}}}
+ for(const c of CATS){if(new RegExp(c.rx,'i').test(U)){out.kind='cat';out.imp=bang?'High':c.imp;out.why=c.why+' · history: no clear up/down';out.mk=Object.entries(c.mk).map(([mk,v])=>({mk,dir:v.dir,hit:v.hit,n:v.n}));return out}}
+ const mk=mkOf(text);if(mk.length||bang){out.imp=bang?'High':'Low';out.mk=mk.map(x=>({mk:x,dir:0}))}
+ return out}
+const fold=imp=>`<svg viewBox="0 0 15 12" class="fold ${imp}"><path d="M0 1.5A1.5 1.5 0 0 1 1.5 0H5l1.6 1.8h6.9A1.5 1.5 0 0 1 15 3.3v7.2a1.5 1.5 0 0 1-1.5 1.5h-12A1.5 1.5 0 0 1 0 10.5z"/></svg>`;
+const chip=x=>`<em class="nc ${x.mk.replace('/','')}">${x.mk}${x.dir>0?' ▲':x.dir<0?' ▼':''}</em>`;
+const OPENN=new Set();let NEWS=[],seenNews=new Set(),firstNews=true,newsSrc='';
+const sim=(a,b)=>{const A=new Set(a.toLowerCase().match(/[a-z]{4,}/g)||[]),B=new Set(b.toLowerCase().match(/[a-z]{4,}/g)||[]);let i=0;A.forEach(w=>{if(B.has(w))i++});return i/Math.max(1,Math.min(A.size,B.size))};
+async function loadNews(){const now=new Date();let items=null;
+ try{const j=await (await fetch(WORKER_URL+'news',{cache:'no-store'})).json();if(j.items&&j.items.length){items=j.items.map(i=>({id:i.id,t:i.text,l:i.url,p:new Date(i.t),src:i.ch==='WalterBloomberg'?'Walter Bloomberg':'FinancialJuice'}));newsSrc='Walter Bloomberg + FinancialJuice (Telegram, live)'}}catch(e){}
+ if(!items){try{const rs=await Promise.all(NF.map(u=>fetch(u,{cache:'no-store'}).then(r=>r.text())));items=[];
+  rs.forEach(x=>{const d=new DOMParser().parseFromString(x,'text/xml');d.querySelectorAll('item').forEach(it=>{const t=it.querySelector('title')?.textContent||'',l=it.querySelector('link')?.textContent||'',p=new Date(it.querySelector('pubDate')?.textContent||0);if(t)items.push({id:l||t,t,l,p,src:'MarketWatch'})})});newsSrc='MarketWatch (fallback)'}catch(e){nstat.textContent='· news feed unreachable, retrying';return}}
+ items.sort((a,b)=>b.p-a.p);const kept=[];
+ for(const n of items){n.c=classify(n.t);const d=kept.find(k=>Math.abs(k.p-n.p)<5*6e4&&sim(k.t,n.t)>=0.6);if(d){if(n.c.imp==='High'&&d.c.imp!=='High')d.c.imp='High';continue}if(n.c.imp)kept.push(n);if(kept.length>=14)break}
+ const fresh=kept.filter(n=>!firstNews&&!seenNews.has(n.id));
+ const red=fresh.find(n=>n.c.imp==='High');if(red){beep(2);notify('NEWS: '+red.t.slice(0,120))}
+ kept.forEach(n=>seenNews.add(n.id));firstNews=false;NEWS=kept;renderNews();nstat.textContent='· checked '+t12(now)}
+function renderNews(){const now=new Date();
+ news.innerHTML=NEWS.map(n=>{const age=(now-n.p)/6e4,c=n.c,isNew=age<3,txt=n.t.length>150?n.t.slice(0,150)+'…':n.t;
+  const lean=c.mk.filter(x=>x.dir).map(x=>`${x.mk} ${x.dir>0?'up':'down'} (${Math.round(x.hit*100)}% of ${x.n})`).join(' · ');
+  return `<div class="nw ${age<15?'fresh':''} ${OPENN.has(n.id)?'open':''}" data-id="${n.id}" data-mk="${c.mk.map(x=>NMK[x.mk]).join('|')}"><div class="nh">${fold(c.imp)}<span class="ag">${age<60?Math.max(0,Math.round(age))+'m ago':t12(n.p)}</span>${isNew?'<i>NEW</i>':''}${txt}</div>
+   <div class="nmeta"><span class="nchips">${c.mk.map(chip).join('')}</span>${c.why?`<span class="why">${c.why}</span>`:''}</div>
+   <div class="nd">${n.t}<br>${lean?`<b>History:</b> ${lean}<br>`:'<span class="dim">No reliable up/down lean in history for this type of headline.</span><br>'}<span class="dim">${n.src} · ${t12(n.p)} Dubai</span> · <a href="${n.l}" target="_blank" rel="noopener">Open source ↗</a></div></div>`}).join('')||'<div class="dim">No market-moving headlines right now</div>';
+ news.querySelectorAll('.nw').forEach(el=>el.onclick=e=>{if(e.target.closest('a'))return;const id=el.dataset.id;OPENN.has(id)?OPENN.delete(id):OPENN.add(id);el.classList.toggle('open')});
+ src_note.textContent=`News: ${newsSrc} · checked every 10 seconds · ▲▼ only on US data releases (direction held 55-89% of the time on 2020-26, years the rule never saw); red = data release or marked important, orange = Fed / tariffs / war / oil / BoJ topic, yellow = other`}
+loadNews();setInterval(loadNews,10000);
 function setT(){mtabs.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.t===document.body.dataset.tab))}
 mtabs.querySelectorAll('button').forEach(b=>b.onclick=()=>{document.body.dataset.tab=b.dataset.t;setT();scrollTo(0,0)});setT();
 sty.querySelectorAll('button').forEach(b=>b.onclick=()=>{STY=b.dataset.s;sty.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));render();applySel()});
@@ -439,39 +489,43 @@ const HMK=[
   tag:t=>(t.name||'').split(':')[0],info:t=>`in ${f(t.price,1)} · stop ${f(t.stop,1)}${t.exit!=null?` · out ${f(t.exit,1)}`:''}${t.res!=null?` · ${sg(t.res,1)} pts`:''}`},
  {c:'SILVER',n:'Silver',file:'journal_sv.json',usd:t=>{const r=t.res_sized??t.res;return r==null?null:r*50},
   tag:t=>(t.name||'')+(t.size>1?' · size '+t.size:''),info:t=>`in ${f(t.price,3)} · stop ${f(t.stop0??t.stop,3)} · ½ at ${f(t.half_px,3)}${t.half?' ✓':''}${t.exit!=null?` · out ${f(t.exit,3)}`:''}`}];
-let HJ={},HC=null,HV='list',HM=null,HALL=false;
+let HJ={},HC=null,HV='today',HM=null,HALL=false;
+const bkey=()=>{const n=new Date(new Date().toLocaleString('en-US',{timeZone:'America/New_York'}));n.setHours(n.getHours()+7);return n.getFullYear()+'-'+String(n.getMonth()+1).padStart(2,'0')+'-'+String(n.getDate()).padStart(2,'0')};
 const HST={stopped:'stop hit',be:'part banked, rest out at entry',trail:'part banked, rest out on the trailing stop',eod:'closed at day end',close_now:'close now (day end)',reversed:'reversed',open:'open'};
 const hmk=()=>HMK.find(m=>m.c===SEL);
 const tU=(m,t)=>{const v=m.usd(t);return v==null||isNaN(v)?null:v};
 function dPnl(m,d){const p=d.trades.map(t=>tU(m,t)).filter(v=>v!=null);return p.length?p.reduce((a,v)=>a+v,0):null}
 async function loadHist(){await Promise.all(HMK.map(async m=>{try{HJ[m.c]=await (await fetch(m.file+'?t='+Date.now(),{cache:'no-store'})).json()}catch(e){}}));renderHist()}
 function renderHist(){const m=hmk();if(!m){histbox.innerHTML='';HC=null;return}if(HC!==m.c){HC=m.c;HM=null;HALL=false}const JN=HJ[m.c];
- let h=`<div class="hh"><h3>${m.n} · trade history</h3><div class="tabs2"><button data-h="list" class="${HV==='list'?'on':''}">Trades</button><button data-h="cal" class="${HV==='cal'?'on':''}">P&amp;L calendar</button></div></div>`;
+ let h=`<div class="hh"><h3>${m.n} · trade history</h3><div class="tabs2"><button data-h="today" class="${HV==='today'?'on':''}">Trades</button><button data-h="cal" class="${HV==='cal'?'on':''}">P&amp;L calendar</button><button data-h="list" class="${HV==='list'?'on':''}">History</button></div></div>`;
  if(!JN||!JN.days){histbox.innerHTML=h+`<div class="dim">${m.n} history file unreachable, retrying</div>`;bindHist();return}
  const days=JN.days.filter(d=>d.trades&&d.trades.length).slice().reverse();
  const grp=ds=>{const pd=ds.map(d=>dPnl(m,d)).filter(v=>v!=null),tr=ds.flatMap(d=>d.trades).map(t=>tU(m,t)).filter(v=>v!=null);return{n:tr.length,win:tr.filter(v=>v>0).length,days:pd.length,green:pd.filter(v=>v>0).length,tot:pd.reduce((a,v)=>a+v,0)}};
  const box=(t,g,empty)=>g.days?`<div>${t}<b class="${g.tot>=0?'pos':'neg'}">${sg(g.tot*AED)} AED</b>${sg(g.tot)} $ · ${g.green}/${g.days} green days · ${g.win}/${g.n} trades won</div>`:`<div>${t}<b class="dim">no trades yet</b>${empty||''}</div>`;
  const old=d=>m.split&&d<m.split;
- h+=`<div class="tot">${m.split?box(m.newv+' rules (now)',grp(days.filter(d=>!old(d.date))),'first day Mon 19 Oct')+(days.some(d=>old(d.date))?box(m.oldv+' rules (before 19 Oct)',grp(days.filter(d=>old(d.date)))):''):box('Since '+(JN.summary&&JN.summary.since||JN.start),grp(days))}</div>`;
+ const TOT=`<div class="tot">${m.split?box('Since Mon 19 Oct',grp(days.filter(d=>!old(d.date))),'first day Mon 19 Oct')+(days.some(d=>old(d.date))?box('Before 19 Oct',grp(days.filter(d=>old(d.date)))):''):box('Since '+(JN.summary&&JN.summary.since||JN.start),grp(days))}</div>`;
+ const TK=bkey(),dayRow=(d,openIt)=>{const v=dPnl(m,d);return `<details class="hday" id="hd-${d.date}" ${openIt?'open':''}><summary><span>${d.label}</span><span class="${d.side==='BUY'?'pos':'neg'}">${d.side||''}</span><span class="dim">${d.trades.length} trade${d.trades.length>1?'s':''}${d.final?'':' · day running'}</span><b class="num ${v==null?'dim':v>=0?'pos':'neg'}">${v==null?'—':sg(v*AED)+' AED'}</b><span class="num dim usd">${v==null?'':sg(v)+' $'}</span></summary>
+   ${d.trades.map(t=>{const u=tU(m,t);return `<div class="htr"><span class="d">${t.time}</span><span class="${t.side==='BUY'?'pos':'neg'}">${t.side}</span><span><span class="dim">${m.tag(t)||''}</span> · ${m.info(t)} · <span class="dim">${HST[t.status]||t.status}</span></span><b class="num ${u==null?'dim':u>=0?'pos':'neg'}">${u==null?'open':sg(u*AED)+' AED'}</b><span class="num dim usd">${u==null?'':sg(u)+' $'}</span></div>`}).join('')}</details>`};
  if(HV==='cal'){const byD={};days.forEach(d=>byD[d.date]=d);const ms=[...new Set(JN.days.map(d=>d.date.slice(0,7)))].sort(),tdy=new Date().toLocaleDateString('en-CA',TZ);
   if(!ms.includes(tdy.slice(0,7)))ms.push(tdy.slice(0,7));if(!HM||!ms.includes(HM))HM=ms[ms.length-1];const mi=ms.indexOf(HM);
   const [Y,Mo]=HM.split('-').map(Number),first=new Date(Date.UTC(Y,Mo-1,1)),nd=new Date(Date.UTC(Y,Mo,0)).getUTCDate();const cells=[];const lead=(first.getUTCDay()+6)%7;if(lead<5)for(let i=0;i<lead;i++)cells.push('<div></div>');
   let mt=0,mg=0,mdays=0;
   for(let k=1;k<=nd;k++){const dt=new Date(Date.UTC(Y,Mo-1,k)),wd=dt.getUTCDay();if(wd===0||wd===6)continue;const key=dt.toISOString().slice(0,10),d=byD[key],v=d?dPnl(m,d):null;
    if(v!=null){mt+=v;mdays++;if(v>0)mg++}
-   cells.push(`<div class="cd ${v==null?(d?'':'x'):(v>0?'g':'r')} ${d?'t':''} ${key===tdy?'today':''}" ${d?`data-go="${key}"`:''}><span>${k}${d&&old(key)?' <small>'+m.oldv+'</small>':''}</span>${v!=null?`<b class="${v>=0?'pos':'neg'}">${sg(v*AED)}</b><small>${d.trades.length} trade${d.trades.length>1?'s':''}</small>`:(d?'<small>open</small>':'')}</div>`)}
+   cells.push(`<div class="cd ${v==null?(d?'':'x'):(v>0?'g':'r')} ${d?'t':''} ${key===tdy?'today':''}" ${d?`data-go="${key}"`:''}><span>${k}</span>${v!=null?`<b class="${v>=0?'pos':'neg'}">${sg(v*AED)}</b><small>${d.trades.length} trade${d.trades.length>1?'s':''}</small>`:(d?'<small>open</small>':'')}</div>`)}
   h+=`<div class="mnav"><button data-m="-1" ${mi<=0?'disabled':''}>‹</button><span>${first.toLocaleDateString('en-GB',{month:'long',year:'numeric',timeZone:'UTC'})}</span><button data-m="1" ${mi>=ms.length-1?'disabled':''}>›</button><span class="dim" style="font-weight:500;margin-left:auto">${mdays?`month ${sg(mt*AED)} AED · ${mg}/${mdays} green`:''}</span></div>
   <div class="cal5">${['MON','TUE','WED','THU','FRI'].map(x=>`<div class="dh">${x}</div>`).join('')}${cells.join('')}</div>`}
- else h+=days.length?days.slice(0,HALL?days.length:5).map(d=>{const v=dPnl(m,d);return `<details class="hday" id="hd-${d.date}"><summary><span>${d.label}${old(d.date)?'<span class="rv">'+m.oldv+'</span>':''}</span><span class="${d.side==='BUY'?'pos':'neg'}">${d.side||''}</span><span class="dim">${d.trades.length} trade${d.trades.length>1?'s':''}${d.final?'':' · day running'}</span><b class="num ${v==null?'dim':v>=0?'pos':'neg'}">${v==null?'—':sg(v*AED)+' AED'}</b><span class="num dim usd">${v==null?'':sg(v)+' $'}</span></summary>
-   ${d.trades.map(t=>{const u=tU(m,t);return `<div class="htr"><span class="d">${t.time}</span><span class="${t.side==='BUY'?'pos':'neg'}">${t.side}</span><span><span class="dim">${m.tag(t)||''}</span> · ${m.info(t)} · <span class="dim">${HST[t.status]||t.status}</span></span><b class="num ${u==null?'dim':u>=0?'pos':'neg'}">${u==null?'open':sg(u*AED)+' AED'}</b><span class="num dim usd">${u==null?'':sg(u)+' $'}</span></div>`}).join('')}</details>`}).join('')+(days.length>5?`<button class="hmore" data-more>${HALL?'Show last 5 days':'Show all '+days.length+' days'}</button>`:''):'<div class="dim">No trades recorded yet</div>';
+ else if(HV==='today'){const td=days.find(d=>d.date===TK);h+=td?dayRow(td,true):`<div class="dim">No ${m.n} trade yet today${(M[m.c]&&M[m.c].message)?' · '+M[m.c].message:''}</div>`}
+ else{const past=days.filter(d=>d.date!==TK);h+=past.length?past.slice(0,HALL?past.length:5).map(d=>dayRow(d,false)).join('')+(past.length>5?`<button class="hmore" data-more>${HALL?'Show last 5 days':'Show all '+past.length+' days'}</button>`:''):'<div class="dim">No earlier trades yet</div>'}
+ h+=TOT;
  const lot={GOLD:'1 oz',USDJPY:'$1,000',OIL:'10 bbl for a full-size trade (1/3-size trades count one third)',US100:'$0.10 per point',SILVER:'50 oz for a size-1 trade (size-2 trades count double)'}[m.c];
- h+=`<div class="hnote">${m.n} only · source: ${m.n} desk journal (${m.file}), live since ${JN.summary&&JN.summary.since||JN.start}. Each trade at 0.01 lot = ${lot}, after the spread.${m.split?' Days before 19 Oct ran the old '+m.oldv+' rules.':''}</div>`;
+ h+=`<div class="hnote">${m.n} only · source: ${m.n} desk journal (${m.file}), live since ${JN.summary&&JN.summary.since||JN.start}. Each trade at 0.01 lot = ${lot}, after the spread.${m.split?' Days before 19 Oct used the earlier rules (totals kept separate).':''}</div>`;
  histbox.innerHTML=h;bindHist()}
 function bindHist(){
  histbox.querySelectorAll('[data-more]').forEach(b=>b.onclick=()=>{HALL=!HALL;renderHist()});
  histbox.querySelectorAll('[data-h]').forEach(b=>b.onclick=()=>{HV=b.dataset.h;renderHist()});
  histbox.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{const J=HJ[HC];const ms=[...new Set(J.days.map(d=>d.date.slice(0,7)))].sort();const t=new Date().toLocaleDateString('en-CA',TZ).slice(0,7);if(!ms.includes(t))ms.push(t);HM=ms[Math.max(0,Math.min(ms.length-1,ms.indexOf(HM)+(+b.dataset.m)))];renderHist()});
- histbox.querySelectorAll('[data-go]').forEach(c=>c.onclick=()=>{HV='list';HALL=true;renderHist();const el=document.getElementById('hd-'+c.dataset.go);if(el){el.open=true;el.scrollIntoView({behavior:'smooth',block:'center'})}})}
+ histbox.querySelectorAll('[data-go]').forEach(c=>c.onclick=()=>{HV=c.dataset.go===bkey()?'today':'list';HALL=true;renderHist();const el=document.getElementById('hd-'+c.dataset.go);if(el){el.open=true;el.scrollIntoView({behavior:'smooth',block:'center'})}})}
 async function loadDesk(){try{const j=await (await fetch(DATA_URL+'?t='+Date.now(),{cache:'no-store'})).json();D=j;M=j.markets||{};buildT();render();actsRender();applySel();deskstat.textContent='Desk data '+((j.updated||'').split('·')[1]||j.updated||'').trim()}catch(e){deskstat.textContent='Desk data unreachable, retrying'}}
 async function loadCal(){for(const u of ['calendar.json?t='+Date.now(),WORKER_URL+'calendar']){try{const j=await (await fetch(u,{cache:'no-store'})).json();if(Array.isArray(j)&&j.length){CAL=j;buildG();render();applySel();return}}catch(e){}}}
 buildT();render();applySel();tick();loadDesk();loadCal();setInterval(loadDesk,60000);loadHist();setInterval(loadHist,5*60000);setInterval(loadCal,30*60000);setInterval(tick,1000);
