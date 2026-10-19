@@ -284,7 +284,7 @@ async function pullLive(){try{
  if(WORKER_URL){const j=await (await fetch(WORKER_URL,{cache:'no-store'})).json();MK.forEach(m=>{const q=j.prices&&j.prices[m.ep];if(q&&q.mid!=null)LIVE[m.c]={p:q.mid,t:Date.now(),src:'Capital.com'}})}
  else{const j=await (await fetch('https://api.gold-api.com/price/XAU',{cache:'no-store'})).json();if(j.price)LIVE.GOLD={p:j.price,t:Date.now(),src:'gold-api.com'}}
  render();applySel()}catch(e){}}
-function calc(o){const {m,x,e}=o,s=e.side==='BUY'?1:-1,px=done(e)?(e.exit??+x.price):nowPx(m,x),sd=Math.abs(e.price-(e.stop0??e.stop))||1,run=s*(px-e.price),mv=e.half?0.5*s*(e.half_px-e.price)+0.5*run:run;
+function calc(o){const {m,x,e}=o,s=e.side==='BUY'?1:-1,px=done(e)?(e.exit??+x.price):nowPx(m,x),sd=Math.abs(e.price-(e.stop0??e.stop))||1,run=s*(px-e.price),pq=e.part??0.5,mv=e.half?pq*s*(e.half_px-e.price)+(1-pq)*run:run;
  return {px,mv,R:mv/sd,pl:usd(m,mv,px),risk:usd(m,sd,px)}}
 const dirOf=x=>{const s=(x?.state||'').toUpperCase();return s.includes('BUY')?'BUY':s.includes('SELL')?'SELL':'NONE'};
 /* sessions in each city's own clock, shown in Dubai time */
@@ -346,7 +346,7 @@ function ticket(c){const {o,px,mv,R,pl,risk}=c,{m,x,e,i}=o,st0=e.stop0??e.stop,s
   <span class="side">${e.side==='BUY'?'▲':'▼'} ${e.side}</span>
   <div class="who"><a target="_blank" rel="noopener" href="https://www.tradingview.com/chart/?symbol=${m.tv}"><b>${m.n}</b></a> <span class="tag ${x.live?'live':''}">${x.live?'LIVE':'PAPER'}</span><small>${e.time} · risk AED ${f(risk*AED,0)}</small></div>
   <div class="lad"><div class="ln2"></div><div class="zl" style="left:${Math.min(pp(st0),pp(e.price))}%;width:${Math.abs(pp(e.price)-pp(st0))}%"></div><div class="zw" style="left:${Math.min(pp(e.price),pp(tgt))}%;width:${Math.abs(pp(tgt)-pp(e.price))}%"></div>
-   <span class="lb l">${f(st0,m.dp)}</span>${e.half_px!=null?`<span class="lb h" style="left:${pp(e.half_px)}%">${e.half?'½ banked':'½ at'} ${f(e.half_px,m.dp)}</span>`:''}<span class="lb c" style="left:${pp(e.price)}%">${f(e.price,m.dp)}</span><span class="lb r">${f(tgt,m.dp)}</span>
+   <span class="lb l">${f(st0,m.dp)}</span>${e.half_px!=null?`<span class="lb h" style="left:${pp(e.half_px)}%">${e.part!=null?(e.half?Math.round(e.part*100)+'% banked':'close '+Math.round(e.part*100)+'% at'):(e.half?'½ banked':'½ at')} ${f(e.half_px,m.dp)}</span>`:''}<span class="lb c" style="left:${pp(e.price)}%">${f(e.price,m.dp)}</span><span class="lb r">${f(tgt,m.dp)}</span>
    <div class="nowm" style="left:${pp(px)}%"><span>${f(px,m.dp)}<i class="dot ${lv?'on':''}"></i></span><i></i></div></div>
   <div class="pl"><b class="${pl>=0?'pos':'neg'}">${sg(pl*AED)} AED</b><small>${R<=-1?'<em class="hit">PAST STOP</em> ':''}${sg(pl)} $ · ${sg(R)}R</small></div>
   ${e.next?`<div class="nx">→ ${e.next}</div>`:''}
@@ -428,7 +428,7 @@ sty.querySelectorAll('button').forEach(b=>b.onclick=()=>{STY=b.dataset.s;sty.que
    after the spread, from the journal's own result: Gold pnl $/oz x 1 oz · USD/JPY pips on $1,000 · Oil res $/bbl x 10 bbl · Nasdaq res pts x $0.10 */
 const HMK=[
  {c:'GOLD',n:'Gold',file:'journal.json',split:'2026-10-19',oldv:'v2.06',newv:'v2.10',usd:t=>t.pnl,
-  tag:t=>t.tag,info:t=>`in ${f(t.price,2)} · stop ${f(t.stop0??t.stop,2)}${t.half_px!=null?` · ½ ${f(t.half_px,2)}${t.half?' ✓':''}`:''}${t.exit!=null?` · out ${f(t.exit,2)}`:''}`},
+  tag:t=>t.tag,info:t=>`in ${f(t.price,2)} · stop ${f(t.stop0??t.stop,2)}${t.half_px!=null?` · ${t.part!=null?Math.round(t.part*100)+'%':'½'} ${f(t.half_px,2)}${t.half?' ✓':''}`:''}${t.exit!=null?` · out ${f(t.exit,2)}`:''}`},
  {c:'USDJPY',n:'USD/JPY',file:'journal_usdjpy.json',usd:t=>t.pips==null||t.exit==null?null:t.pips*10/t.exit,
   tag:t=>t.name||t.sig,info:t=>`in ${f(t.price,3)} · stop ${f(t.stop,3)}${t.exit!=null?` · out ${f(t.exit,3)}`:''}${t.pips!=null?` · ${sg(t.pips,1)} pips`:''}`},
  {c:'OIL',n:'Oil',file:'journal_wti.json',usd:t=>{const r=t.res_sized??t.res;return r==null?null:r*10},
@@ -436,7 +436,7 @@ const HMK=[
  {c:'US100',n:'Nasdaq',file:'journal_nq.json',usd:t=>t.res==null?null:t.res*0.1,
   tag:t=>(t.name||'').split(':')[0],info:t=>`in ${f(t.price,1)} · stop ${f(t.stop,1)}${t.exit!=null?` · out ${f(t.exit,1)}`:''}${t.res!=null?` · ${sg(t.res,1)} pts`:''}`}];
 let HJ={},HC=null,HV='list',HM=null,HALL=false;
-const HST={stopped:'stop hit',be:'½ banked, rest out at entry',eod:'closed at day end',close_now:'close now (day end)',reversed:'reversed',open:'open'};
+const HST={stopped:'stop hit',be:'part banked, rest out at entry',trail:'part banked, rest out on the trailing stop',eod:'closed at day end',close_now:'close now (day end)',reversed:'reversed',open:'open'};
 const hmk=()=>HMK.find(m=>m.c===SEL);
 const tU=(m,t)=>{const v=m.usd(t);return v==null||isNaN(v)?null:v};
 function dPnl(m,d){const p=d.trades.map(t=>tU(m,t)).filter(v=>v!=null);return p.length?p.reduce((a,v)=>a+v,0):null}
