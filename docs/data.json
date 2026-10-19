@@ -1,5 +1,5 @@
 {
- "updated": "Mon 19 Oct \u00b7 1:17 pm",
+ "updated": "Mon 19 Oct \u00b7 1:28 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -20,9 +20,9 @@
    "feed_error": false,
    "state": "buy",
    "message": "BUY day \u2014 up to 2 BUY trades. Close HALF at the \u00bd level, then move the stop to entry; the rest runs to its stop or the day-end close at 12:00 am Dubai.",
-   "price": 4171.8,
+   "price": 4169.74,
    "close_at": "12:00 am",
-   "change": 9.18,
+   "change": 7.12,
    "size": 0.1,
    "datr": 71.49,
    "open_now": 1,
@@ -995,10 +995,24 @@
     ],
     [
      "1:15 pm",
-     4171.8,
+     4171.75,
      4171.96,
-     4172.51,
-     4171.24
+     4172.54,
+     4171.11
+    ],
+    [
+     "1:20 pm",
+     4169.75,
+     4171.74,
+     4172.38,
+     4169.5
+    ],
+    [
+     "1:25 pm",
+     4169.74,
+     4169.84,
+     4170.31,
+     4168.92
     ]
    ],
    "history": [
@@ -1200,8 +1214,8 @@
    "net_label": "Net R / $ at $100 risk (v1.03 sizes)",
    "state": "buy",
    "message": "PAPER BUY day \u2014 later signals today are BUY only. Each trade closes half at its \u00bd level, then the rest's stop moves to the entry; everything closes at the 7:00 pm Dubai close.",
-   "price": 158.152,
-   "change_pips": 24.6,
+   "price": 158.185,
+   "change_pips": 27.9,
    "atr_pips": 83.1,
    "entries": [
     {
@@ -2174,10 +2188,24 @@
     ],
     [
      "1:15 pm",
-     158.152,
+     158.173,
      158.157,
-     158.163,
+     158.175,
      158.148
+    ],
+    [
+     "1:20 pm",
+     158.183,
+     158.174,
+     158.192,
+     158.158
+    ],
+    [
+     "1:25 pm",
+     158.185,
+     158.184,
+     158.19,
+     158.177
     ]
    ],
    "journal": {
@@ -2657,8 +2685,8 @@
    "net_label": "Net $ per barrel (v1.03 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 97.789,
-   "change": -1.08,
+   "price": 98.019,
+   "change": -0.85,
    "entries": [],
    "spark": [
     [
@@ -3608,10 +3636,24 @@
     ],
     [
      "1:15 pm",
-     97.79,
+     97.76,
      97.84,
      97.87,
-     97.75
+     97.7
+    ],
+    [
+     "1:20 pm",
+     97.89,
+     97.75,
+     97.97,
+     97.72
+    ],
+    [
+     "1:25 pm",
+     98.02,
+     97.89,
+     98.05,
+     97.88
     ]
    ],
    "journal": {
@@ -3952,8 +3994,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "buy",
    "message": "1 paper trade today (1 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 12:00 am Dubai close. At most 2 trades a day.",
-   "price": 29500.1,
-   "change": 387.0,
+   "price": 29514.8,
+   "change": 401.7,
    "entries": [
     {
      "time": "1:02 pm",
@@ -3961,11 +4003,11 @@
      "name": "REV J4 day open \u00b10.75ATR first touch from 1pm fade",
      "role": "filler",
      "price": 29493.1,
-     "entry": 29494.9,
+     "entry": 29495.1,
      "stop": 29290.4,
      "stop0": 29290.4,
      "stop_pts": 202.7,
-     "half_px": 29597.1,
+     "half_px": 29597.5,
      "half": false,
      "half_time": null,
      "size": "full",
@@ -3978,9 +4020,9 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": 5.2,
+     "live": 19.7,
      "rwf": null,
-     "spread": 1.8
+     "spread": 2.05
     }
    ],
    "spark": [
@@ -4931,10 +4973,24 @@
     ],
     [
      "1:15 pm",
-     29500.1,
+     29510.8,
      29499.3,
-     29503.1,
+     29515.6,
      29494.6
+    ],
+    [
+     "1:20 pm",
+     29517.8,
+     29510.6,
+     29519.1,
+     29505.0
+    ],
+    [
+     "1:25 pm",
+     29514.8,
+     29517.6,
+     29520.3,
+     29509.2
     ]
    ],
    "journal": {
@@ -4965,11 +5021,11 @@
        "name": "REV J4 day open \u00b10.75ATR first touch from 1pm fade",
        "role": "filler",
        "price": 29493.1,
-       "entry": 29494.9,
+       "entry": 29495.1,
        "stop": 29290.4,
        "stop0": 29290.4,
        "stop_pts": 202.7,
-       "half_px": 29597.1,
+       "half_px": 29597.5,
        "half": false,
        "half_time": null,
        "size": "full",
@@ -4982,9 +5038,9 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": 5.2,
+       "live": 19.7,
        "rwf": null,
-       "spread": 1.8
+       "spread": 2.05
       }
      ],
      "final": false
