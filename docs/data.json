@@ -1,5 +1,5 @@
 {
- "updated": "Mon 19 Oct \u00b7 11:54 pm",
+ "updated": "Tue 20 Oct \u00b7 12:00 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -26,9 +26,9 @@
    "feed_error": false,
    "state": "buy",
    "message": "BUY day \u2014 up to 2 BUY trades. Close HALF at the \u00bd level, then move the stop to entry; the rest runs to its stop or the day-end close at 12:00 am Dubai.",
-   "price": 4143.08,
+   "price": 4142.14,
    "close_at": "12:00 am",
-   "change": -19.54,
+   "change": -20.48,
    "size": 0.1,
    "datr": 71.49,
    "open_now": 0,
@@ -1890,10 +1890,17 @@
     ],
     [
      "11:50 pm",
-     4143.08,
+     4142.15,
      4143.48,
      4143.91,
-     4142.22
+     4142.11
+    ],
+    [
+     "11:55 pm",
+     4142.14,
+     4142.18,
+     4142.49,
+     4141.2
     ]
    ],
    "history": [
@@ -2087,10 +2094,10 @@
    "what_note": "Forward test of silver v1.8 (honest entries) on live Capital.com prices. Checked after about 3 months against the backtest band.",
    "cost_note": "Results are $ per oz for the whole trade (half banked at +1R included) after Capital.com's spread (at least $0.05); x size (1 or 2); page money at 0.01 lot = 50 oz.",
    "net_label": "Net $/oz (v1.8 honest rules)",
-   "state": "waiting",
-   "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 57.126,
-   "change": 0.245,
+   "state": "none",
+   "message": "No paper trade today (no 2-of-3 agreement).",
+   "price": 57.075,
+   "change": 0.194,
    "entries": [],
    "spark": [
     [
@@ -3929,10 +3936,17 @@
     ],
     [
      "11:50 pm",
-     57.126,
+     57.109,
      57.185,
      57.185,
-     57.118
+     57.109
+    ],
+    [
+     "11:55 pm",
+     57.075,
+     57.112,
+     57.119,
+     57.05
     ]
    ],
    "journal": {
@@ -3956,7 +3970,7 @@
      "label": "Mon 19 Oct",
      "side": null,
      "trades": [],
-     "final": false
+     "final": true
     }
    ],
    "feed_error": false,
@@ -3994,8 +4008,8 @@
    "net_label": "Net R / $ at $100 risk (v1.03 sizes)",
    "state": "buy",
    "message": "PAPER BUY day \u2014 later signals today are BUY only. Each trade closes half at its \u00bd level, then the rest's stop moves to the entry; everything closes at the 7:00 pm Dubai close.",
-   "price": 158.528,
-   "change_pips": 62.2,
+   "price": 158.54,
+   "change_pips": 63.4,
    "atr_pips": 83.1,
    "entries": [
     {
@@ -5857,10 +5871,17 @@
     ],
     [
      "11:50 pm",
-     158.528,
+     158.529,
      158.532,
      158.541,
-     158.527
+     158.523
+    ],
+    [
+     "11:55 pm",
+     158.54,
+     158.528,
+     158.541,
+     158.524
     ]
    ],
    "journal": {
@@ -6340,8 +6361,8 @@
    "net_label": "Net $ per barrel (v1.03 sizes)",
    "state": "none",
    "message": "No paper trade today.",
-   "price": 98.329,
-   "change": -0.55,
+   "price": 98.244,
+   "change": -0.63,
    "entries": [],
    "spark": [
     [
@@ -8180,10 +8201,17 @@
     ],
     [
      "11:50 pm",
-     98.33,
+     98.31,
      98.32,
      98.37,
      98.3
+    ],
+    [
+     "11:55 pm",
+     98.24,
+     98.3,
+     98.31,
+     98.21
     ]
    ],
    "journal": {
@@ -8524,8 +8552,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "buy",
    "message": "2 paper trades today (0 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 12:00 am Dubai close. At most 2 trades a day.",
-   "price": 29538.5,
-   "change": 425.4,
+   "price": 29532.4,
+   "change": 419.3,
    "entries": [
     {
      "time": "1:02 pm",
@@ -10419,10 +10447,17 @@
     ],
     [
      "11:50 pm",
-     29538.5,
+     29553.7,
      29607.8,
      29607.8,
      29529.1
+    ],
+    [
+     "11:55 pm",
+     29532.4,
+     29553.8,
+     29573.7,
+     29517.4
     ]
    ],
    "journal": {
@@ -10502,7 +10537,7 @@
        "spread": 1.8
       }
      ],
-     "final": false
+     "final": true
     },
     {
      "date": "2026-10-16",
