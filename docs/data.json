@@ -1,5 +1,5 @@
 {
- "updated": "Tue 20 Oct \u00b7 1:50 am",
+ "updated": "Tue 20 Oct \u00b7 1:59 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -220,12 +220,12 @@
     "months": 3,
     "band": "3-month net at 0.01 lot (50 oz) inside the backtest 5-95% band: -$87 .. +$227 (median +$8)"
    },
-   "day_note": "14-day range $1.92 \u00b7 ONE trade a day when 2 of 3 agree (gold signal, fast gold catch-up, compression break) \u00b7 stop \u00bd range \u00b7 close half at +1x risk, stop to entry, then trail \u00bd range \u00b7 2x size when gold and silver were loosely linked over 20 days \u00b7 close 11:00 pm broker (Fri 10:50 pm)",
+   "day_note": "14-day range \u2014 \u00b7 ONE trade a day when 2 of 3 agree (gold signal, fast gold catch-up, compression break) \u00b7 stop \u00bd range \u00b7 close half at +1x risk, stop to entry, then trail \u00bd range \u00b7 2x size when gold and silver were loosely linked over 20 days \u00b7 close 11:00 pm broker (Fri 10:50 pm)",
    "what_note": "Forward test of silver v1.8 (honest entries) on live Capital.com prices. Checked after about 3 months against the backtest band.",
    "cost_note": "Results are $ per oz for the whole trade (half banked at +1R included) after Capital.com's spread (at least $0.05); x size (1 or 2); page money at 0.01 lot = 50 oz.",
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
-   "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break). \u00b7 note: no gold minutes yet",
+   "message": "Silver paper update failed at 2:00 am Dubai (ReadTimeout: HTTPSConnectionPool(host='demo-api-capital.backend-capital.com', port=443): Read timed out. (read timeout=20)) \u2014 shows the last good update; retries every minute.",
    "price": null,
    "change": null,
    "entries": [],
@@ -262,7 +262,7 @@
      "final": true
     }
    ],
-   "feed_error": false,
+   "feed_error": true,
    "epic": "SILVER",
    "close_at": "12:00 am",
    "gold_signals_today": 0,
@@ -297,7 +297,7 @@
    "net_label": "Net R / $ at $100 risk (v1.03 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 158.463,
+   "price": 158.456,
    "change_pips": null,
    "atr_pips": 84.0,
    "entries": [],
@@ -1140,8 +1140,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 29565.0,
-   "change": 10.6,
+   "price": 29567.6,
+   "change": 13.2,
    "entries": [],
    "spark": [
     [
@@ -1206,6 +1206,20 @@
      29560.2,
      29565.1,
      29560.2
+    ],
+    [
+     "1:50 am",
+     29564.3,
+     29564.1,
+     29566.6,
+     29562.9
+    ],
+    [
+     "1:55 am",
+     29567.6,
+     29564.5,
+     29567.6,
+     29564.1
     ]
    ],
    "journal": {
