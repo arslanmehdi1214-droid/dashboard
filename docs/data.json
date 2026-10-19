@@ -1,5 +1,5 @@
 {
- "updated": "Mon 19 Oct \u00b7 3:55 pm",
+ "updated": "Mon 19 Oct \u00b7 4:01 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -20,9 +20,9 @@
    "feed_error": false,
    "state": "buy",
    "message": "BUY day \u2014 up to 2 BUY trades. Close HALF at the \u00bd level, then move the stop to entry; the rest runs to its stop or the day-end close at 12:00 am Dubai.",
-   "price": 4168.42,
+   "price": 4159.62,
    "close_at": "12:00 am",
-   "change": 5.8,
+   "change": -3.0,
    "size": 0.1,
    "datr": 71.49,
    "open_now": 1,
@@ -1216,6 +1216,20 @@
      4168.22,
      4169.28,
      4167.46
+    ],
+    [
+     "3:55 pm",
+     4161.04,
+     4168.39,
+     4168.39,
+     4160.99
+    ],
+    [
+     "4:00 pm",
+     4159.62,
+     4160.93,
+     4161.48,
+     4159.49
     ]
    ],
    "history": [
@@ -1417,8 +1431,8 @@
    "net_label": "Net R / $ at $100 risk (v1.03 sizes)",
    "state": "buy",
    "message": "PAPER BUY day \u2014 later signals today are BUY only. Each trade closes half at its \u00bd level, then the rest's stop moves to the entry; everything closes at the 7:00 pm Dubai close.",
-   "price": 158.163,
-   "change_pips": 25.7,
+   "price": 158.239,
+   "change_pips": 33.3,
    "atr_pips": 83.1,
    "entries": [
     {
@@ -2612,6 +2626,20 @@
      158.172,
      158.186,
      158.147
+    ],
+    [
+     "3:55 pm",
+     158.227,
+     158.164,
+     158.232,
+     158.157
+    ],
+    [
+     "4:00 pm",
+     158.239,
+     158.226,
+     158.24,
+     158.218
     ]
    ],
    "journal": {
@@ -3091,8 +3119,8 @@
    "net_label": "Net $ per barrel (v1.03 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 98.024,
-   "change": -0.85,
+   "price": 98.104,
+   "change": -0.77,
    "entries": [],
    "spark": [
     [
@@ -4263,6 +4291,20 @@
      98.08,
      98.14,
      97.95
+    ],
+    [
+     "3:55 pm",
+     98.05,
+     98.01,
+     98.2,
+     97.97
+    ],
+    [
+     "4:00 pm",
+     98.1,
+     98.05,
+     98.11,
+     98.04
     ]
    ],
    "journal": {
@@ -4603,8 +4645,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "buy",
    "message": "1 paper trade today (1 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 12:00 am Dubai close. At most 2 trades a day.",
-   "price": 29531.8,
-   "change": 418.7,
+   "price": 29523.1,
+   "change": 410.0,
    "entries": [
     {
      "time": "1:02 pm",
@@ -4612,11 +4654,11 @@
      "name": "REV J4 day open \u00b10.75ATR first touch from 1pm fade",
      "role": "filler",
      "price": 29493.1,
-     "entry": 29495.0,
+     "entry": 29494.9,
      "stop": 29290.4,
      "stop0": 29290.4,
      "stop_pts": 202.7,
-     "half_px": 29597.3,
+     "half_px": 29597.1,
      "half": false,
      "half_time": null,
      "size": "full",
@@ -4629,9 +4671,9 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": 36.8,
+     "live": 28.2,
      "rwf": null,
-     "spread": 1.9
+     "spread": 1.8
     }
    ],
    "spark": [
@@ -5803,6 +5845,20 @@
      29523.7,
      29534.2,
      29517.8
+    ],
+    [
+     "3:55 pm",
+     29527.3,
+     29532.0,
+     29536.3,
+     29515.1
+    ],
+    [
+     "4:00 pm",
+     29523.1,
+     29525.8,
+     29526.1,
+     29514.3
     ]
    ],
    "journal": {
@@ -5833,11 +5889,11 @@
        "name": "REV J4 day open \u00b10.75ATR first touch from 1pm fade",
        "role": "filler",
        "price": 29493.1,
-       "entry": 29495.0,
+       "entry": 29494.9,
        "stop": 29290.4,
        "stop0": 29290.4,
        "stop_pts": 202.7,
-       "half_px": 29597.3,
+       "half_px": 29597.1,
        "half": false,
        "half_time": null,
        "size": "full",
@@ -5850,9 +5906,9 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": 36.8,
+       "live": 28.2,
        "rwf": null,
-       "spread": 1.9
+       "spread": 1.8
       }
      ],
      "final": false
