@@ -237,9 +237,9 @@ td{padding:9px 4px;border-bottom:1px solid var(--line)}td.r{text-align:right}
   <div class="closed" id="closedbox"></div>
  </section>
  <aside class="rail rr pane p-nw">
-  <h3>Events · our 4 markets</h3><div id="cal"></div>
+  <h3>Events · our 5 markets</h3><div id="cal"></div>
   <h3 style="margin-top:22px">News <span class="lv2" id="nstat"></span></h3><div id="news"></div>
-  <div class="src">Market movers for Gold, USD/JPY, Oil and Nasdaq · MarketWatch / Dow Jones (free) · checked every 30 seconds</div>
+  <div class="src">Market movers for Gold, Silver, USD/JPY, Oil and Nasdaq · MarketWatch / Dow Jones (free) · checked every 30 seconds</div>
  </aside>
 </main>
 <div class="mock"><span id="deskstat">Loading desk data…</span> · live prices Capital.com · 0.01-lot values per market still to be checked against Blueberry's contract specs · <a href="old.html" style="color:var(--gold)">Results &amp; journal (old desk) ↗</a></div>
@@ -250,7 +250,8 @@ let D={updated:'',markets:{}},M={},CAL=[];
 const MK=[{c:'GOLD',ep:'GOLD',n:'Gold',tag:'Gold',tv:'CAPITALCOM:XAUUSD',dp:2,lot:1,lotL:'1 oz'},
  {c:'USDJPY',ep:'USDJPY',n:'USD/JPY',tag:'USD/JPY',tv:'CAPITALCOM:USDJPY',dp:3,lot:1000,lotL:'$1,000'},
  {c:'OIL',ep:'OIL_CRUDE',n:'Oil',tag:'Oil',tv:'CAPITALCOM:USOIL',dp:2,lot:10,lotL:'10 bbl'},
- {c:'US100',ep:'US100',n:'Nasdaq 100',tag:'Nasdaq',tv:'CAPITALCOM:US100',dp:1,lot:0.1,lotL:'$0.10/pt'}];
+ {c:'US100',ep:'US100',n:'Nasdaq 100',tag:'Nasdaq',tv:'CAPITALCOM:US100',dp:1,lot:0.1,lotL:'$0.10/pt'},
+ {c:'SILVER',ep:'SILVER',n:'Silver',tag:'Silver',tv:'CAPITALCOM:SILVER',dp:3,lot:50,lotL:'50 oz'}];
 const CAP=25000,AED=3.6725,TZ={timeZone:'Asia/Dubai'};
 const t12=d=>d.toLocaleTimeString('en-US',{...TZ,hour:'numeric',minute:'2-digit'}).toLowerCase();
 const dday=d=>d.toLocaleDateString('en-US',{...TZ,weekday:'short',day:'numeric',month:'short'});
@@ -264,8 +265,8 @@ const hm=ms=>{const m=Math.max(0,Math.floor(ms/6e4));return m<60?m+'m':Math.floo
 /* calendar: our markets only, same-time releases grouped */
 const OILW=/crude|oil|opec|eia|petroleum|natural gas/i;
 function hits(e){const m=new Set(),c=e.country,t=e.title||'';if(/natural gas/i.test(t))return [];if(/crude|oil|opec|petroleum/i.test(t))return ['Oil'];
- if(c==='USD'){['Gold','USD/JPY','Nasdaq'].forEach(x=>m.add(x));if(OILW.test(t)||/CPI|Non-Farm|FOMC|Federal Funds|Fed Chair|PPI|Retail Sales|GDP/i.test(t))m.add('Oil')}
- if(c==='JPY')m.add('USD/JPY');if(c==='CNY'){m.add('Gold');m.add('Oil')}if(OILW.test(t))m.add('Oil');return [...m]}
+ if(c==='USD'){['Gold','Silver','USD/JPY','Nasdaq'].forEach(x=>m.add(x));if(OILW.test(t)||/CPI|Non-Farm|FOMC|Federal Funds|Fed Chair|PPI|Retail Sales|GDP/i.test(t))m.add('Oil')}
+ if(c==='JPY')m.add('USD/JPY');if(c==='CNY'){m.add('Gold');m.add('Silver');m.add('Oil')}if(OILW.test(t))m.add('Oil');return [...m]}
 const G=[],T=[];
 function buildG(){G.length=0;CAL.filter(e=>e.impact==='High'||e.impact==='Medium'||(e.impact==='Low'&&OILW.test(e.title||''))||(e.country==='USD'&&OILW.test(e.title||''))).forEach(e=>{const mk=hits(e);if(!mk.length)return;
  const g=G.find(g=>g.date===e.date&&g.country===e.country);
@@ -285,7 +286,7 @@ async function pullLive(){try{
  else{const j=await (await fetch('https://api.gold-api.com/price/XAU',{cache:'no-store'})).json();if(j.price)LIVE.GOLD={p:j.price,t:Date.now(),src:'gold-api.com'}}
  render();applySel()}catch(e){}}
 function calc(o){const {m,x,e}=o,s=e.side==='BUY'?1:-1,px=done(e)?(e.exit??+x.price):nowPx(m,x),sd=Math.abs(e.price-(e.stop0??e.stop))||1,run=s*(px-e.price),pq=e.part??0.5,mv=e.half?pq*s*(e.half_px-e.price)+(1-pq)*run:run;
- return {px,mv,R:mv/sd,pl:usd(m,mv,px),risk:usd(m,sd,px)}}
+ const k=m.c==='SILVER'?(+e.size||1):1;return {px,mv,R:mv/sd,pl:k*usd(m,mv,px),risk:k*usd(m,sd,px)}}
 const dirOf=x=>{const s=(x?.state||'').toUpperCase();return s.includes('BUY')?'BUY':s.includes('SELL')?'SELL':'NONE'};
 /* sessions in each city's own clock, shown in Dubai time */
 const SES=[{n:'Sydney',tz:'Australia/Sydney',o:7,c:16},{n:'Tokyo',tz:'Asia/Tokyo',o:9,c:18},{n:'London',tz:'Europe/London',o:8,c:17},{n:'New York',tz:'America/New_York',o:8,c:17}];
@@ -410,7 +411,8 @@ const NO=/\b(oil|crude|Brent|WTI|OPEC\+?|Saudi|Iran|Iraq|Russia|Houthis?|Middle 
 const JUNK=/^[‘'"“]|\b(I|my|me)\b.*\?|\bretire|\bmortgage|\bwedding|\bmy (wife|husband|sister|mother|father|financial adviser)\b/i;
 const NJ=/\b(yen|BOJ|Bank of Japan|Japan|Japanese|Ueda|Takaichi|dollar|Fed|FOMC|Powell|Warsh|rates?|rate cuts?|CPI|inflation|PPI|jobs report|payrolls?|Treasury|Treasuries|yields?|tariffs?)\b/i;
 const NQ=/\b(Nasdaq|stocks?|equities|S&P|tech|chips?|semiconductors?|AI|Nvidia|Apple|Microsoft|Alphabet|Amazon|Meta|Tesla|TSMC|earnings|Fed|FOMC|Powell|Warsh|rates?|rate cuts?|CPI|inflation|yields?|tariffs?)\b/i;
-const mkOf=t=>JUNK.test(t)?[]:[NG.test(t)?'Gold':null,NJ.test(t)?'USD/JPY':null,NO.test(t)?'Oil':null,NQ.test(t)?'Nasdaq':null].filter(Boolean);
+const NS=/\b(silver|precious metals?|bullion|gold|solar|industrial metals?|Fed|FOMC|Powell|Warsh|rate cuts?|CPI|inflation|PPI|payrolls?|dollar|yields?|tariffs?|China)\b/i;
+const mkOf=t=>JUNK.test(t)?[]:[NG.test(t)?'Gold':null,NS.test(t)?'Silver':null,NJ.test(t)?'USD/JPY':null,NO.test(t)?'Oil':null,NQ.test(t)?'Nasdaq':null].filter(Boolean);
 const HOT={test:t=>mkOf(t).length>0};
 let seenN=new Set(),firstN=true;
 async function loadNews(){try{const rs=await Promise.all(NF.map(u=>fetch(u,{cache:'no-store'}).then(r=>r.text())));const all=[];
@@ -434,7 +436,9 @@ const HMK=[
  {c:'OIL',n:'Oil',file:'journal_wti.json',usd:t=>{const r=t.res_sized??t.res;return r==null?null:r*10},
   tag:t=>t.name+(t.size?' · size '+t.size:''),info:t=>`in ${f(t.price,2)} · stop ${f(t.stop,2)}${t.exit!=null?` · out ${f(t.exit,2)}`:''}`},
  {c:'US100',n:'Nasdaq',file:'journal_nq.json',usd:t=>t.res==null?null:t.res*0.1,
-  tag:t=>(t.name||'').split(':')[0],info:t=>`in ${f(t.price,1)} · stop ${f(t.stop,1)}${t.exit!=null?` · out ${f(t.exit,1)}`:''}${t.res!=null?` · ${sg(t.res,1)} pts`:''}`}];
+  tag:t=>(t.name||'').split(':')[0],info:t=>`in ${f(t.price,1)} · stop ${f(t.stop,1)}${t.exit!=null?` · out ${f(t.exit,1)}`:''}${t.res!=null?` · ${sg(t.res,1)} pts`:''}`},
+ {c:'SILVER',n:'Silver',file:'journal_sv.json',usd:t=>{const r=t.res_sized??t.res;return r==null?null:r*50},
+  tag:t=>(t.name||'')+(t.size>1?' · size '+t.size:''),info:t=>`in ${f(t.price,3)} · stop ${f(t.stop0??t.stop,3)} · ½ at ${f(t.half_px,3)}${t.half?' ✓':''}${t.exit!=null?` · out ${f(t.exit,3)}`:''}`}];
 let HJ={},HC=null,HV='list',HM=null,HALL=false;
 const HST={stopped:'stop hit',be:'part banked, rest out at entry',trail:'part banked, rest out on the trailing stop',eod:'closed at day end',close_now:'close now (day end)',reversed:'reversed',open:'open'};
 const hmk=()=>HMK.find(m=>m.c===SEL);
@@ -460,7 +464,7 @@ function renderHist(){const m=hmk();if(!m){histbox.innerHTML='';HC=null;return}i
   <div class="cal5">${['MON','TUE','WED','THU','FRI'].map(x=>`<div class="dh">${x}</div>`).join('')}${cells.join('')}</div>`}
  else h+=days.length?days.slice(0,HALL?days.length:5).map(d=>{const v=dPnl(m,d);return `<details class="hday" id="hd-${d.date}"><summary><span>${d.label}${old(d.date)?'<span class="rv">'+m.oldv+'</span>':''}</span><span class="${d.side==='BUY'?'pos':'neg'}">${d.side||''}</span><span class="dim">${d.trades.length} trade${d.trades.length>1?'s':''}${d.final?'':' · day running'}</span><b class="num ${v==null?'dim':v>=0?'pos':'neg'}">${v==null?'—':sg(v*AED)+' AED'}</b><span class="num dim usd">${v==null?'':sg(v)+' $'}</span></summary>
    ${d.trades.map(t=>{const u=tU(m,t);return `<div class="htr"><span class="d">${t.time}</span><span class="${t.side==='BUY'?'pos':'neg'}">${t.side}</span><span><span class="dim">${m.tag(t)||''}</span> · ${m.info(t)} · <span class="dim">${HST[t.status]||t.status}</span></span><b class="num ${u==null?'dim':u>=0?'pos':'neg'}">${u==null?'open':sg(u*AED)+' AED'}</b><span class="num dim usd">${u==null?'':sg(u)+' $'}</span></div>`}).join('')}</details>`}).join('')+(days.length>5?`<button class="hmore" data-more>${HALL?'Show last 5 days':'Show all '+days.length+' days'}</button>`:''):'<div class="dim">No trades recorded yet</div>';
- const lot={GOLD:'1 oz',USDJPY:'$1,000',OIL:'10 bbl for a full-size trade (1/3-size trades count one third)',US100:'$0.10 per point'}[m.c];
+ const lot={GOLD:'1 oz',USDJPY:'$1,000',OIL:'10 bbl for a full-size trade (1/3-size trades count one third)',US100:'$0.10 per point',SILVER:'50 oz for a size-1 trade (size-2 trades count double)'}[m.c];
  h+=`<div class="hnote">${m.n} only · source: ${m.n} desk journal (${m.file}), live since ${JN.summary&&JN.summary.since||JN.start}. Each trade at 0.01 lot = ${lot}, after the spread.${m.split?' Days before 19 Oct ran the old '+m.oldv+' rules.':''}</div>`;
  histbox.innerHTML=h;bindHist()}
 function bindHist(){
