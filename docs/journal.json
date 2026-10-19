@@ -359,13 +359,13 @@
      "half": false,
      "half_time": null,
      "size": 0.1,
-     "status": "open",
+     "status": "stopped",
      "first": true,
-     "exit": null,
-     "exit_time": null,
-     "pnl": null,
+     "exit": 4151.74,
+     "exit_time": "5:43 pm",
+     "pnl": -36.25,
      "rwf": null,
-     "next": "Close HALF at 4195.24, then move the stop to entry 4187.99 \u00b7 stop now 4151.74"
+     "next": null
     }
    ],
    "skipped": 0,
@@ -379,8 +379,8 @@
   "decided": 16,
   "days": 90.9,
   "perday": 1.73,
-  "avg_pnl": -6.75,
-  "closed": 18,
-  "total_pnl_01": -12.15
+  "avg_pnl": -8.3,
+  "closed": 19,
+  "total_pnl_01": -15.77
  }
 }
