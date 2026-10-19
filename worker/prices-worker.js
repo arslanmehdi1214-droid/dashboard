@@ -1,12 +1,12 @@
 // Signal Desk — live price relay (Cloudflare Worker, free plan)
-// Reads Capital.com's own prices for the 4 desk markets and returns ONLY prices.
+// Reads Capital.com's own prices for the desk markets and returns ONLY prices; /news = breaking headlines; /calendar = FF week.
 // Your Capital.com keys stay here as encrypted secrets; they never reach the desk page.
 //
 // Secrets to add in Cloudflare (Settings > Variables and Secrets), same values as the GitHub secrets:
 //   CAPITAL_API_KEY, CAPITAL_IDENTIFIER, CAPITAL_API_PASSWORD
 // Plain variable:  CAPITAL_DEMO = 1  (1 = demo server, like the desk now; 0 = live server)
 
-const EPICS = ['GOLD', 'USDJPY', 'OIL_CRUDE', 'US100'];
+const EPICS = ['GOLD', 'USDJPY', 'OIL_CRUDE', 'US100', 'SILVER'];
 const ALLOWED = ['https://arslanmehdi1214-droid.github.io', 'null']; // 'null' = opening the page from a file on your computer
 const CACHE_SECONDS = 2;          // one Capital.com call serves every viewer for 2 seconds
 let session = null;               // { cst, token, at } kept while the worker stays warm
@@ -58,6 +58,41 @@ async function calendar(req) {
   return new Response(cal ? cal.body : '[]', { headers: cors(req) });
 }
 
+// Breaking news (free, no login): the public web pages of Telegram channels that post market headlines within seconds.
+// Walter Bloomberg (= @DeItaone on X, the source Forex Factory's red-folder stories quote) and FinancialJuice.
+const NEWS_CH = ['WalterBloomberg', 'FinancialJuice'];
+const NEWS_SECONDS = 8;           // one read serves every viewer for 8 seconds
+let news = null;
+function unesc(t) {
+  return t.replace(/<br\s*\/?>/g, ' ').replace(/<[^>]+>/g, '').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, '&')
+          .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&nbsp;/g, ' ')
+          .replace(/&#(\d+);/g, (m, n) => String.fromCodePoint(+n)).replace(/&#x([0-9a-f]+);/gi, (m, n) => String.fromCodePoint(parseInt(n, 16))).replace(/\s+/g, ' ').trim();
+}
+async function readChannel(ch) {
+  const r = await fetch('https://t.me/s/' + ch, { headers: { 'User-Agent': 'Mozilla/5.0 (signal-desk)' } });
+  if (!r.ok) throw new Error(ch + ' ' + r.status);
+  const html = await r.text(), out = [];
+  const parts = html.split('data-post="').slice(1);
+  for (const p of parts) {
+    const id = p.slice(0, p.indexOf('"'));
+    const tm = /datetime="([^"]+)"/.exec(p), tx = /tgme_widget_message_text[^>]*>([\s\S]*?)<\/div>/.exec(p);
+    if (!tm || !tx) continue;
+    const text = unesc(tx[1]).replace(/\(\s*@WalterBloomberg\s*\)/i, '').replace(/\|\s*FJ\s*$/i, '').trim();
+    if (text) out.push({ id, ch, t: tm[1], text, url: 'https://t.me/' + id });
+  }
+  return out;
+}
+async function newsRoute(req) {
+  if (!news || Date.now() - news.at > NEWS_SECONDS * 1000) {
+    const got = await Promise.allSettled(NEWS_CH.map(readChannel));
+    const items = got.flatMap(g => g.status === 'fulfilled' ? g.value : []);
+    const errs = got.filter(g => g.status !== 'fulfilled').map(g => String(g.reason));
+    items.sort((a, b) => (a.t < b.t ? 1 : -1));
+    if (items.length || !news) news = { body: JSON.stringify({ at: new Date().toISOString(), items: items.slice(0, 60), errors: errs }), at: Date.now() };
+  }
+  return new Response(news.body, { headers: cors(req) });
+}
+
 function cors(req) {
   const o = req.headers.get('Origin') || '';
   return { 'Access-Control-Allow-Origin': ALLOWED.includes(o) ? o : ALLOWED[0], 'Vary': 'Origin',
@@ -68,6 +103,7 @@ export default {
   async fetch(req, env, ctx) {
     if (req.method === 'OPTIONS') return new Response(null, { headers: cors(req) });
     if (new URL(req.url).pathname === '/calendar') return calendar(req);
+    if (new URL(req.url).pathname === '/news') return newsRoute(req);
     if (last && Date.now() - last.at < CACHE_SECONDS * 1000) return new Response(last.body, { headers: cors(req) });
     try {
       const body = JSON.stringify({ at: new Date().toISOString(), source: 'Capital.com', prices: await markets(env) });
