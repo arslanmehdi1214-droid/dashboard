@@ -1,5 +1,5 @@
 {
- "updated": "Tue 20 Oct \u00b7 1:00 am",
+ "updated": "Tue 20 Oct \u00b7 1:11 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -266,7 +266,7 @@
    "epic": "SILVER",
    "close_at": "12:00 am",
    "gold_signals_today": 0,
-   "history_note": "minutes from 2026-09-10 (28 days) \u00b7 325 daily bars from 2025-07-17 \u00b7 added SILVER 2026-10-19, GOLD 2026-10-19"
+   "history_note": "minutes from 2026-09-10 (28 days) \u00b7 325 daily bars from 2025-07-17"
   },
   "USDJPY": {
    "code": "USDJPY",
@@ -297,7 +297,7 @@
    "net_label": "Net R / $ at $100 risk (v1.03 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": null,
+   "price": 158.471,
    "change_pips": null,
    "atr_pips": 84.0,
    "entries": [],
@@ -750,7 +750,7 @@
     }
    ],
    "feed_error": false,
-   "history_note": "history to 2026-10-19 (300 days) \u00b7 added 2026-10-19"
+   "history_note": "history to 2026-10-19 (300 days)"
   },
   "DE40": {
    "code": "DE40",
@@ -1102,7 +1102,7 @@
    ],
    "feed_error": false,
    "epic": "OIL_CRUDE",
-   "history_note": "history to 2026-10-19 (60 days) \u00b7 added 2026-10-19"
+   "history_note": "history to 2026-10-19 (60 days)"
   },
   "US500": {
    "code": "US500",
@@ -1140,10 +1140,25 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": null,
-   "change": null,
+   "price": 29555.4,
+   "change": 1.0,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "1:05 am",
+     29554.4,
+     29554.4,
+     29554.5,
+     29548.9
+    ],
+    [
+     "1:10 am",
+     29555.4,
+     29554.5,
+     29555.5,
+     29554.5
+    ]
+   ],
    "journal": {
     "since": "19 Oct 2026",
     "weekdays": 2,
@@ -1419,7 +1434,7 @@
    "feed_error": false,
    "epic": "US100",
    "close_at": "12:00 am",
-   "history_note": "history to 2026-10-19 (358 days) \u00b7 added 2026-10-19"
+   "history_note": "history to 2026-10-19 (358 days)"
   }
  }
 }
