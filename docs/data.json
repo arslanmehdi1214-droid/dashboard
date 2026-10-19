@@ -1,5 +1,5 @@
 {
- "updated": "Mon 19 Oct \u00b7 6:59 am",
+ "updated": "Mon 19 Oct \u00b7 7:10 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -13,9 +13,9 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 8 pm Dubai).",
-   "price": 4176.23,
+   "price": 4178.37,
    "close_at": "12:00 am",
-   "change": 13.61,
+   "change": 15.75,
    "size": 0.1,
    "datr": 71.49,
    "open_now": 0,
@@ -436,10 +436,24 @@
     ],
     [
      "6:55 am",
-     4176.23,
+     4176.43,
      4173.72,
      4177.5,
      4173.63
+    ],
+    [
+     "7:00 am",
+     4175.55,
+     4176.45,
+     4177.13,
+     4173.84
+    ],
+    [
+     "7:05 am",
+     4178.37,
+     4175.57,
+     4179.95,
+     4175.52
     ]
    ],
    "history": [
@@ -639,12 +653,41 @@
    "what_note": "This page tracks whether live USD/JPY signals do as well as the v1.03 backtest. Decision after about 3 months.",
    "cost_note": "Pips are for the whole trade (\u2153-size trades count one third), after Capital.com's spread (at least 1 pip). $ = at $100 risk per full-size trade, like the MT4 test.",
    "net_label": "Net R / $ at $100 risk (v1.03 sizes)",
-   "state": "waiting",
-   "message": "Waiting for the first signal.",
-   "price": 157.984,
-   "change_pips": 7.8,
+   "state": "buy",
+   "message": "PAPER BUY day \u2014 later signals today are BUY only. Each trade closes half at its \u00bd level, then the rest's stop moves to the entry; everything closes at the 7:00 pm Dubai close.",
+   "price": 158.08,
+   "change_pips": 17.4,
    "atr_pips": 83.1,
-   "entries": [],
+   "entries": [
+    {
+     "time": "7:00 am",
+     "side": "BUY",
+     "sig": "J13",
+     "name": "Heikin-Ashi 7am",
+     "price": 157.986,
+     "entry": 157.998,
+     "stop": 157.998,
+     "stop0": 157.362,
+     "stop_pips": 63.6,
+     "half_px": 158.062,
+     "half": true,
+     "half_time": "7:05 am",
+     "size": "third",
+     "quiet": false,
+     "first": true,
+     "status": "open",
+     "exit": null,
+     "exit_time": null,
+     "pips": null,
+     "usd": null,
+     "r": null,
+     "r_sized": null,
+     "usd_risk": null,
+     "r_now": 0.1167,
+     "rwf": null,
+     "spread": 1.2
+    }
+   ],
    "spark": [
     [
      "2:05 am",
@@ -1054,20 +1097,34 @@
     ],
     [
      "6:55 am",
-     157.984,
+     157.988,
      157.983,
      157.994,
      157.972
+    ],
+    [
+     "7:00 am",
+     158.057,
+     157.986,
+     158.06,
+     157.981
+    ],
+    [
+     "7:05 am",
+     158.08,
+     158.058,
+     158.088,
+     158.058
     ]
    ],
    "journal": {
     "since": "19 Oct 2026",
     "weekdays": 1,
-    "trades": 0,
+    "trades": 1,
     "decided": 0,
     "direction": null,
-    "days": 0.0,
-    "perday": 0.0,
+    "days": 100.0,
+    "perday": 1.0,
     "closed": 0,
     "win": null,
     "pf": null,
@@ -1084,8 +1141,37 @@
      "date": "2026-10-19",
      "rules": "v1.03",
      "label": "Mon 19 Oct",
-     "side": null,
-     "trades": [],
+     "side": "BUY",
+     "trades": [
+      {
+       "time": "7:00 am",
+       "side": "BUY",
+       "sig": "J13",
+       "name": "Heikin-Ashi 7am",
+       "price": 157.986,
+       "entry": 157.998,
+       "stop": 157.998,
+       "stop0": 157.362,
+       "stop_pips": 63.6,
+       "half_px": 158.062,
+       "half": true,
+       "half_time": "7:05 am",
+       "size": "third",
+       "quiet": false,
+       "first": true,
+       "status": "open",
+       "exit": null,
+       "exit_time": null,
+       "pips": null,
+       "usd": null,
+       "r": null,
+       "r_sized": null,
+       "usd_risk": null,
+       "r_now": 0.1167,
+       "rwf": null,
+       "spread": 1.2
+      }
+     ],
      "atr_pips": 83.1,
      "final": false
     },
@@ -1508,8 +1594,8 @@
    "net_label": "Net $ per barrel (v1.03 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 97.424,
-   "change": -1.45,
+   "price": 97.439,
+   "change": -1.44,
    "entries": [],
    "spark": [
     [
@@ -1927,9 +2013,23 @@
     ],
     [
      "6:55 am",
-     97.42,
+     97.43,
      97.42,
      97.45,
+     97.38
+    ],
+    [
+     "7:00 am",
+     97.43,
+     97.43,
+     97.47,
+     97.39
+    ],
+    [
+     "7:05 am",
+     97.44,
+     97.44,
+     97.46,
      97.38
     ]
    ],
@@ -2271,8 +2371,8 @@
    "net_label": "Net points (v1.01 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 29540.5,
-   "change": 427.4,
+   "price": 29552.1,
+   "change": 439.0,
    "entries": [],
    "spark": [
     [
@@ -2690,10 +2790,24 @@
     ],
     [
      "6:55 am",
-     29540.5,
+     29543.2,
      29544.8,
      29553.8,
      29539.2
+    ],
+    [
+     "7:00 am",
+     29546.8,
+     29543.1,
+     29552.0,
+     29543.1
+    ],
+    [
+     "7:05 am",
+     29552.1,
+     29546.6,
+     29557.6,
+     29546.6
     ]
    ],
    "journal": {
