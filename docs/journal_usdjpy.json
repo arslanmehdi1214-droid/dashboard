@@ -417,16 +417,25 @@
    ],
    "atr_pips": 83.1,
    "final": true
+  },
+  {
+   "date": "2026-10-20",
+   "rules": "v1.03",
+   "label": "Tue 20 Oct",
+   "side": null,
+   "trades": [],
+   "atr_pips": 84.0,
+   "final": false
   }
  ],
  "summary": {
   "since": "19 Oct 2026",
-  "weekdays": 1,
+  "weekdays": 2,
   "trades": 1,
   "decided": 1,
   "direction": 100.0,
-  "days": 100.0,
-  "perday": 1.0,
+  "days": 50.0,
+  "perday": 0.5,
   "closed": 1,
   "win": 100.0,
   "pf": null,
@@ -436,6 +445,6 @@
   "rules": "v1.03",
   "net_r": 0.02,
   "net_usd_risk": 1.7,
-  "green": 100.0
+  "green": 50.0
  }
 }
