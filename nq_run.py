@@ -1,5 +1,5 @@
 """NASDAQ 100 PAPER signals for the page - ONE version since 18 Oct 2026: US100 = simple signals (Nasdaq prices only, nq_set.json) with the
-v1.01 EXITS (nq_engine.manage_v101; MT4-proven on these signals' trades, his run 18 Oct). The full version (US100F) was removed from the page
+v1.02 EXITS since 19 Oct (nq_engine.manage_v102; MT4-proven on these signals' trades, his run 19 Oct; v1.01 exits from 18 Oct before that). The full version (US100F) was removed from the page
 (same trades so far, worse with the v1.01 exits); its old journal docs/journal_nqf.json is left untouched.
 Original note: (no phone alerts, no real money). Called by run.py after gold, USDJPY and WTI, every minute.
 Replays today's Capital.com US Tech 100 minutes through the Nasdaq walk-forward set (nq_engine.py + nq_set.json = the 2026 set,
@@ -17,14 +17,14 @@ PORTAL = os.path.join(HERE, 'docs', 'data.json')
 EPIC = os.environ.get('CAPITAL_EPIC_NQ', 'US100')
 MIN_SPREAD = 1.8                      # the paper result never uses less than 1.8 index points (Capital.com US Tech 100 page)
 PASS = dict(green=55.0, pf=1.10, months=3)
-RULES = 'v1.01'                       # journal days are tagged; the card's record counts only the current rules
-BACKTEST = dict(direction='—', days='58.7% green / 95.3% traded', perday='1.32', win='64.9%', pf='1.24', net='+$102,485 at $1,000 risk per full trade',
-                source='MT4 replay with the v1.01 exits (his run 18 Oct, spread 1.8 pts), 2020-01-01..2026-09-30, 2,327 trades; worst day -$2,039')
+RULES = 'v1.02'                       # journal days are tagged; the card's record counts only the current rules (v1.01 days kept, not mixed)
+BACKTEST = dict(direction='—', days='59.2% green / 94.5% traded', perday='1.29', win='66.2%', pf='1.28', net='+$126,676 at $1,000 risk per full trade',
+                source='MT4 replay with the v1.02 exits (his run 19 Oct, spread 1.8 pts), 2020-01-01..2026-09-30, 2,272 trades; worst day -$2,046; net/DD 13.90')
 BACKTEST_F = dict(direction='53.2%', days='97%', perday='1.33', win='—', pf='1.17', net='+10.1 pts per weekday',
                   source='Python walk-forward 2020-2026 (signals re-picked each January, never seen when picked), 1.8 pt spread; '
                          'MT4 replay of the same trades (his run): 2,308 trades, PF 1.16, net +17,109 pts')
 VARIANTS = [dict(code='US100', name='Nasdaq 100', S=N.SET, jour=JOUR, stats=BACKTEST,
-                 what='Tracks whether live Nasdaq signals do as well as the v1.01 backtest. Decision after about 3 months.')]
+                 what='Tracks whether live Nasdaq signals do as well as the v1.02 backtest. Decision after about 3 months.')]
 REMOVED = ['US100F']                  # cards taken off the page on 18 Oct 2026
 
 def loadj(p, d):
@@ -114,9 +114,9 @@ def rwf(b, j, d, px, A):
     return None
 
 def row(t, b, now, eod, spread):
-    """One trade for the page. res = index points of the WHOLE trade at its v1.01 size (sells 1/3, the 25% part included), after the spread."""
-    st = t['status']; sp = max(MIN_SPREAD, spread or 0.0); P = N.V101
-    part_pts = P['part'] * t['dir'] * (t['half_px'] - t['entry']) if t['half'] else 0.0; rem = 1 - P['part'] if t['half'] else 1.0
+    """One trade for the page. res = index points of the WHOLE trade at its size (sells 1/3, the part close included), after the spread."""
+    st = t['status']; sp = max(MIN_SPREAD, spread or 0.0); pt = t.get('part', N.V101['part'])
+    part_pts = pt * t['dir'] * (t['half_px'] - t['entry']) if t['half'] else 0.0; rem = 1 - pt if t['half'] else 1.0
     if st == 'open' and now >= eod and len(b):                  # day over without a close-time bar: close at the last price
         ex = float(b.c.values[-1]) + (0 if t['dir'] > 0 else sp)
         t = dict(t, status='eod', exit=ex, exit_t=b.index[-1], pts=t['w'] * (part_pts + rem * t['dir'] * (ex - t['entry']))); st = 'eod'
@@ -127,13 +127,14 @@ def row(t, b, now, eod, spread):
         pxn = float(b.c.values[-1]) + (0 if t['dir'] > 0 else sp); live = round(t['w'] * (part_pts + rem * t['dir'] * (pxn - t['entry'])), 1)
     return dict(time=dubai(t['t']), side='BUY' if t['dir'] == 1 else 'SELL', name=t['name'], role=t['role'], price=round(t['px'], 1), entry=round(t['entry'], 1),
                 stop=round(t['stop'], 1), stop0=round(t['stop0'], 1), stop_pts=round(t['sd'], 1), half_px=round(t['half_px'], 1), half=bool(t['half']),
-                half_time=None if t['half_t'] is None else dubai(t['half_t']), size=t['size'], status=st,
+                half_time=None if t['half_t'] is None else dubai(t['half_t']), size=t['size'], status=st, part=round(pt, 2),
+                trail_pts=round(N.V102['trail'] * t['A'], 1),
                 exit=None if t['exit'] is None else round(t['exit'], 1), exit_time=None if t['exit_t'] is None else dubai(t['exit_t']),
                 res=res, res_sized=res, r=None if t['r'] is None else round(t['r'], 3), r_sized=None if t['r'] is None else round(t['r'] * t['w'], 3),
                 live=live, rwf=rwf(b, j, t['dir'], t['px'], t['A']), spread=round(sp, 2))
 
 def summary(J, day=None):
-    """Paper record of the CURRENT rules only (v1.01 days); older days (old exits, 12-16 Oct) stay in the journal but are not mixed in."""
+    """Paper record of the CURRENT rules only (v1.02 days); older days (12-16 Oct old exits, 19 Oct v1.01) stay in the journal but are not mixed in."""
     D3 = [d for d in J.get('days', []) if d.get('rules') == RULES]
     if not D3: return dict(since=None, trades=0, rules=RULES)
     J = dict(start=D3[0]['date'], days=D3)
@@ -152,13 +153,14 @@ def jdays(J): return J.get('days', [])[-30:][::-1]
 
 def base_card(A=None, V=None):
     V = V or VARIANTS[0]
-    note = ('14-day range ' + ('—' if A is None else f'{A:,.0f} pts') + ' · stop: buys ½ range, sells ¼ range · sells ⅓ size · close 25% at +0.5 x risk, '
-            'then the rest at the entry · day lock +3R/+1.5R · max 2 trades a day · close 11:00 pm broker (Fri 10:50 pm) = 12:00 am Dubai, 1:00 am in winter')
+    note = ('14-day range ' + ('—' if A is None else f'{A:,.0f} pts') + ' · stop: buys 0.4 x range, sells ¼ range · sells ⅓ size · at +0.5 x risk close 25% (buys) / 15% (sells), '
+            'stop to entry, then trail the rest 0.45 x range' + ('' if A is None else f' (= {0.45 * A:,.0f} pts)') + ' behind its best price · no new trades from 10:00 pm broker '
+            '(Fri 8:00 pm) · day lock +3R/+1.5R · max 2 trades a day · close 11:00 pm broker (Fri 10:50 pm) = 12:00 am Dubai, 1:00 am in winter')
     return dict(code=V['code'], name=V['name'], symbol='US100 · Capital.com US Tech 100', live=False, paper=True, status='Paper', version=V['S'].get('version', ''),
                 unit='pts', dp=1, stats=V['stats'], pass_bar=PASS, day_note=note,
                 what_note=V['what'],
-                cost_note="Results are index points for the whole trade at its v1.01 size (sells ⅓, the 25% part included), after Capital.com's spread (at least 1.8 points).",
-                net_label='Net points (v1.01 rules)')
+                cost_note="Results are index points for the whole trade at its v1.02 size (sells ⅓, the 25% / 15% part included), after Capital.com's spread (at least 1.8 points).",
+                net_label='Net points (v1.02 rules)')
 
 def main(feed=None, get=None, now=None):
     now = now or F.broker_now(); day = now.normalize()
@@ -198,7 +200,7 @@ def main(feed=None, get=None, now=None):
 
 def variant(V, allm, b, day, now, eod, spread, last, first, spark, hist, added):
     J = loadj(V['jour'], dict(start=None, days=[]))
-    trades = N.run_day(allm, day, now, S=V['S'], exits='v1.01', sp=max(MIN_SPREAD, spread or 0.0)) if len(b) else []
+    trades = N.run_day(allm, day, now, S=V['S'], exits=RULES, sp=max(MIN_SPREAD, spread or 0.0)) if len(b) else []
     rows = [row(t, b, now, eod, spread) for t in trades]
     if J.get('start') is None: J['start'] = str(day.date())
     A = trades[0]['A'] if trades else None
@@ -210,7 +212,8 @@ def variant(V, allm, b, day, now, eod, spread, last, first, spark, hist, added):
     if rows:
         op = [r for r in rows if r['status'] == 'open']; state = rows[-1]['side'].lower()
         locked = bool(trades and trades[-1].get('locked_day'))
-        msg = (f"{len(rows)} paper trade{'s' if len(rows) > 1 else ''} today ({len(op)} running). Each closes 25% at its part level, then the rest at the entry; "
+        msg = (f"{len(rows)} paper trade{'s' if len(rows) > 1 else ''} today ({len(op)} running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop "
+               f"goes to the entry and trails 0.45 x range behind the best price; "
                f"everything closes at the {dubai(eod)} Dubai close. At most 2 trades a day." + (" Day lock hit: no more trades today." if locked else ''))
     elif now >= eod: state, msg = 'none', 'No paper trade today.'
     else: state, msg = 'waiting', 'Waiting for the first signal.'
