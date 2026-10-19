@@ -1,5 +1,5 @@
 {
- "updated": "Mon 19 Oct \u00b7 1:28 pm",
+ "updated": "Mon 19 Oct \u00b7 1:29 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -20,9 +20,9 @@
    "feed_error": false,
    "state": "buy",
    "message": "BUY day \u2014 up to 2 BUY trades. Close HALF at the \u00bd level, then move the stop to entry; the rest runs to its stop or the day-end close at 12:00 am Dubai.",
-   "price": 4169.74,
+   "price": 4168.31,
    "close_at": "12:00 am",
-   "change": 7.12,
+   "change": 5.69,
    "size": 0.1,
    "datr": 71.49,
    "open_now": 1,
@@ -1009,10 +1009,10 @@
     ],
     [
      "1:25 pm",
-     4169.74,
+     4168.31,
      4169.84,
      4170.31,
-     4168.92
+     4168.24
     ]
    ],
    "history": [
@@ -1214,8 +1214,8 @@
    "net_label": "Net R / $ at $100 risk (v1.03 sizes)",
    "state": "buy",
    "message": "PAPER BUY day \u2014 later signals today are BUY only. Each trade closes half at its \u00bd level, then the rest's stop moves to the entry; everything closes at the 7:00 pm Dubai close.",
-   "price": 158.185,
-   "change_pips": 27.9,
+   "price": 158.193,
+   "change_pips": 28.7,
    "atr_pips": 83.1,
    "entries": [
     {
@@ -2202,9 +2202,9 @@
     ],
     [
      "1:25 pm",
-     158.185,
+     158.193,
      158.184,
-     158.19,
+     158.193,
      158.177
     ]
    ],
@@ -2685,8 +2685,8 @@
    "net_label": "Net $ per barrel (v1.03 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 98.019,
-   "change": -0.85,
+   "price": 98.014,
+   "change": -0.86,
    "entries": [],
    "spark": [
     [
@@ -3650,7 +3650,7 @@
     ],
     [
      "1:25 pm",
-     98.02,
+     98.01,
      97.89,
      98.05,
      97.88
@@ -3994,8 +3994,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "buy",
    "message": "1 paper trade today (1 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 12:00 am Dubai close. At most 2 trades a day.",
-   "price": 29514.8,
-   "change": 401.7,
+   "price": 29506.8,
+   "change": 393.7,
    "entries": [
     {
      "time": "1:02 pm",
@@ -4003,11 +4003,11 @@
      "name": "REV J4 day open \u00b10.75ATR first touch from 1pm fade",
      "role": "filler",
      "price": 29493.1,
-     "entry": 29495.1,
+     "entry": 29494.9,
      "stop": 29290.4,
      "stop0": 29290.4,
      "stop_pts": 202.7,
-     "half_px": 29597.5,
+     "half_px": 29597.1,
      "half": false,
      "half_time": null,
      "size": "full",
@@ -4020,9 +4020,9 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": 19.7,
+     "live": 11.9,
      "rwf": null,
-     "spread": 2.05
+     "spread": 1.8
     }
    ],
    "spark": [
@@ -4987,10 +4987,10 @@
     ],
     [
      "1:25 pm",
-     29514.8,
+     29506.8,
      29517.6,
      29520.3,
-     29509.2
+     29503.6
     ]
    ],
    "journal": {
@@ -5021,11 +5021,11 @@
        "name": "REV J4 day open \u00b10.75ATR first touch from 1pm fade",
        "role": "filler",
        "price": 29493.1,
-       "entry": 29495.1,
+       "entry": 29494.9,
        "stop": 29290.4,
        "stop0": 29290.4,
        "stop_pts": 202.7,
-       "half_px": 29597.5,
+       "half_px": 29597.1,
        "half": false,
        "half_time": null,
        "size": "full",
@@ -5038,9 +5038,9 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": 19.7,
+       "live": 11.9,
        "rwf": null,
-       "spread": 2.05
+       "spread": 1.8
       }
      ],
      "final": false
