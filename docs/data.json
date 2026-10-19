@@ -1,5 +1,5 @@
 {
- "updated": "Mon 19 Oct \u00b7 8:10 pm",
+ "updated": "Mon 19 Oct \u00b7 8:21 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -26,9 +26,9 @@
    "feed_error": false,
    "state": "buy",
    "message": "BUY day \u2014 up to 2 BUY trades. Close HALF at the \u00bd level, then move the stop to entry; the rest runs to its stop or the day-end close at 12:00 am Dubai.",
-   "price": 4141.83,
+   "price": 4142.69,
    "close_at": "12:00 am",
-   "change": -20.79,
+   "change": -19.93,
    "size": 0.1,
    "datr": 71.49,
    "open_now": 0,
@@ -1579,6 +1579,27 @@
      4142.22,
      4143.94,
      4139.45
+    ],
+    [
+     "8:10 pm",
+     4144.11,
+     4141.75,
+     4144.61,
+     4141.47
+    ],
+    [
+     "8:15 pm",
+     4143.58,
+     4144.14,
+     4144.62,
+     4143.46
+    ],
+    [
+     "8:20 pm",
+     4142.69,
+     4143.62,
+     4143.66,
+     4142.41
     ]
    ],
    "history": [
@@ -1774,8 +1795,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 57.208,
-   "change": 0.327,
+   "price": 57.237,
+   "change": 0.356,
    "entries": [],
    "spark": [
     [
@@ -3303,6 +3324,27 @@
      57.213,
      57.246,
      57.162
+    ],
+    [
+     "8:10 pm",
+     57.272,
+     57.204,
+     57.281,
+     57.196
+    ],
+    [
+     "8:15 pm",
+     57.256,
+     57.271,
+     57.281,
+     57.237
+    ],
+    [
+     "8:20 pm",
+     57.237,
+     57.257,
+     57.268,
+     57.23
     ]
    ],
    "journal": {
@@ -3364,8 +3406,8 @@
    "net_label": "Net R / $ at $100 risk (v1.03 sizes)",
    "state": "buy",
    "message": "PAPER BUY day \u2014 later signals today are BUY only. Each trade closes half at its \u00bd level, then the rest's stop moves to the entry; everything closes at the 7:00 pm Dubai close.",
-   "price": 158.534,
-   "change_pips": 62.8,
+   "price": 158.526,
+   "change_pips": 62.0,
    "atr_pips": 83.1,
    "entries": [
     {
@@ -4916,6 +4958,27 @@
      158.51,
      158.537,
      158.51
+    ],
+    [
+     "8:10 pm",
+     158.53,
+     158.535,
+     158.536,
+     158.518
+    ],
+    [
+     "8:15 pm",
+     158.523,
+     158.531,
+     158.534,
+     158.508
+    ],
+    [
+     "8:20 pm",
+     158.526,
+     158.524,
+     158.532,
+     158.523
     ]
    ],
    "journal": {
@@ -5395,8 +5458,8 @@
    "net_label": "Net $ per barrel (v1.03 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 98.534,
-   "change": -0.34,
+   "price": 98.624,
+   "change": -0.25,
    "entries": [],
    "spark": [
     [
@@ -6924,6 +6987,27 @@
      98.49,
      98.54,
      98.32
+    ],
+    [
+     "8:10 pm",
+     98.5,
+     98.56,
+     98.66,
+     98.46
+    ],
+    [
+     "8:15 pm",
+     98.62,
+     98.51,
+     98.63,
+     98.44
+    ],
+    [
+     "8:20 pm",
+     98.62,
+     98.61,
+     98.63,
+     98.6
     ]
    ],
    "journal": {
@@ -7264,8 +7348,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "buy",
    "message": "2 paper trades today (1 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 12:00 am Dubai close. At most 2 trades a day.",
-   "price": 29684.5,
-   "change": 571.4,
+   "price": 29673.4,
+   "change": 560.3,
    "entries": [
     {
      "time": "1:02 pm",
@@ -7317,7 +7401,7 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": 115.2,
+     "live": 106.9,
      "rwf": 1,
      "spread": 1.8
     }
@@ -8848,6 +8932,27 @@
      29697.5,
      29698.7,
      29667.6
+    ],
+    [
+     "8:10 pm",
+     29702.3,
+     29684.0,
+     29713.8,
+     29683.2
+    ],
+    [
+     "8:15 pm",
+     29687.2,
+     29702.5,
+     29710.9,
+     29680.5
+    ],
+    [
+     "8:20 pm",
+     29673.4,
+     29687.3,
+     29687.7,
+     29669.9
     ]
    ],
    "journal": {
@@ -8922,7 +9027,7 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": 115.2,
+       "live": 106.9,
        "rwf": 1,
        "spread": 1.8
       }
