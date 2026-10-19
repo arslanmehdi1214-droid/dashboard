@@ -1,5 +1,5 @@
 {
- "updated": "Mon 19 Oct \u00b7 10:43 am",
+ "updated": "Mon 19 Oct \u00b7 10:54 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -13,9 +13,9 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 8 pm Dubai).",
-   "price": 4176.56,
+   "price": 4180.41,
    "close_at": "12:00 am",
-   "change": 13.94,
+   "change": 17.79,
    "size": 0.1,
    "datr": 71.49,
    "open_now": 0,
@@ -751,10 +751,24 @@
     ],
     [
      "10:40 am",
-     4176.56,
+     4175.54,
      4176.33,
      4177.39,
-     4175.81
+     4175.26
+    ],
+    [
+     "10:45 am",
+     4178.14,
+     4175.56,
+     4178.2,
+     4174.14
+    ],
+    [
+     "10:50 am",
+     4180.41,
+     4178.13,
+     4180.56,
+     4177.79
     ]
    ],
    "history": [
@@ -956,8 +970,8 @@
    "net_label": "Net R / $ at $100 risk (v1.03 sizes)",
    "state": "buy",
    "message": "PAPER BUY day \u2014 later signals today are BUY only. Each trade closes half at its \u00bd level, then the rest's stop moves to the entry; everything closes at the 7:00 pm Dubai close.",
-   "price": 158.014,
-   "change_pips": 10.8,
+   "price": 157.967,
+   "change_pips": 6.1,
    "atr_pips": 83.1,
    "entries": [
     {
@@ -1713,10 +1727,24 @@
     ],
     [
      "10:40 am",
-     158.014,
+     158.013,
      158.003,
      158.015,
      157.988
+    ],
+    [
+     "10:45 am",
+     157.988,
+     158.014,
+     158.039,
+     157.986
+    ],
+    [
+     "10:50 am",
+     157.967,
+     157.989,
+     157.992,
+     157.962
     ]
    ],
    "journal": {
@@ -2196,8 +2224,8 @@
    "net_label": "Net $ per barrel (v1.03 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 96.844,
-   "change": -2.03,
+   "price": 96.854,
+   "change": -2.02,
    "entries": [],
    "spark": [
     [
@@ -2930,10 +2958,24 @@
     ],
     [
      "10:40 am",
-     96.84,
+     96.81,
      96.89,
      96.93,
-     96.83
+     96.79
+    ],
+    [
+     "10:45 am",
+     96.87,
+     96.82,
+     96.88,
+     96.79
+    ],
+    [
+     "10:50 am",
+     96.85,
+     96.86,
+     96.9,
+     96.82
     ]
    ],
    "journal": {
@@ -3256,26 +3298,26 @@
    "dp": 1,
    "stats": {
     "direction": "\u2014",
-    "days": "58.7% green / 95.3% traded",
-    "perday": "1.32",
-    "win": "64.9%",
-    "pf": "1.24",
-    "net": "+$102,485 at $1,000 risk per full trade",
-    "source": "MT4 replay with the v1.01 exits (his run 18 Oct, spread 1.8 pts), 2020-01-01..2026-09-30, 2,327 trades; worst day -$2,039"
+    "days": "59.2% green / 94.5% traded",
+    "perday": "1.29",
+    "win": "66.2%",
+    "pf": "1.28",
+    "net": "+$126,676 at $1,000 risk per full trade",
+    "source": "MT4 replay with the v1.02 exits (his run 19 Oct, spread 1.8 pts), 2020-01-01..2026-09-30, 2,272 trades; worst day -$2,046; net/DD 13.90"
    },
    "pass_bar": {
     "green": 55.0,
     "pf": 1.1,
     "months": 3
    },
-   "day_note": "14-day range \u2014 \u00b7 stop: buys \u00bd range, sells \u00bc range \u00b7 sells \u2153 size \u00b7 close 25% at +0.5 x risk, then the rest at the entry \u00b7 day lock +3R/+1.5R \u00b7 max 2 trades a day \u00b7 close 11:00 pm broker (Fri 10:50 pm) = 12:00 am Dubai, 1:00 am in winter",
-   "what_note": "Tracks whether live Nasdaq signals do as well as the v1.01 backtest. Decision after about 3 months.",
-   "cost_note": "Results are index points for the whole trade at its v1.01 size (sells \u2153, the 25% part included), after Capital.com's spread (at least 1.8 points).",
-   "net_label": "Net points (v1.01 rules)",
+   "day_note": "14-day range \u2014 \u00b7 stop: buys 0.4 x range, sells \u00bc range \u00b7 sells \u2153 size \u00b7 at +0.5 x risk close 25% (buys) / 15% (sells), stop to entry, then trail the rest 0.45 x range behind its best price \u00b7 no new trades from 10:00 pm broker (Fri 8:00 pm) \u00b7 day lock +3R/+1.5R \u00b7 max 2 trades a day \u00b7 close 11:00 pm broker (Fri 10:50 pm) = 12:00 am Dubai, 1:00 am in winter",
+   "what_note": "Tracks whether live Nasdaq signals do as well as the v1.02 backtest. Decision after about 3 months.",
+   "cost_note": "Results are index points for the whole trade at its v1.02 size (sells \u2153, the 25% / 15% part included), after Capital.com's spread (at least 1.8 points).",
+   "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 29592.1,
-   "change": 479.0,
+   "price": 29574.1,
+   "change": 461.0,
    "entries": [],
    "spark": [
     [
@@ -4008,10 +4050,24 @@
     ],
     [
      "10:40 am",
-     29592.1,
+     29584.2,
      29588.8,
      29597.5,
-     29586.6
+     29580.8
+    ],
+    [
+     "10:45 am",
+     29568.3,
+     29584.6,
+     29586.1,
+     29565.6
+    ],
+    [
+     "10:50 am",
+     29574.1,
+     29569.0,
+     29584.0,
+     29564.1
     ]
    ],
    "journal": {
@@ -4026,13 +4082,13 @@
     "win": null,
     "pf": null,
     "net": null,
-    "rules": "v1.01",
+    "rules": "v1.02",
     "green": 0.0
    },
    "jdays": [
     {
      "date": "2026-10-19",
-     "rules": "v1.01",
+     "rules": "v1.02",
      "label": "Mon 19 Oct",
      "side": null,
      "trades": [],
