@@ -295,6 +295,15 @@ def safe_main():
             import nq_run; nq_run.fail(e)
         except Exception:
             traceback.print_exc()
+    try:                                    # Silver paper page (v1.8 honest rules; a silver failure never touches the other cards)
+        import sv_run
+        sv_run.main()
+    except Exception as e:
+        traceback.print_exc()
+        try:
+            import sv_run; sv_run.fail(e)
+        except Exception:
+            traceback.print_exc()
 
 if __name__ == '__main__':
     safe_main()
