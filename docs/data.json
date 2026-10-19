@@ -1,5 +1,5 @@
 {
- "updated": "Mon 19 Oct \u00b7 10:54 am",
+ "updated": "Mon 19 Oct \u00b7 11:01 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -8,18 +8,45 @@
    "symbol": "XAU/USD",
    "live": true,
    "version": "v2.10",
-   "actions": [],
+   "actions": [
+    {
+     "time": "11:00 am",
+     "kind": "OPEN",
+     "side": "BUY",
+     "text": "OPEN BUY now ~4187.99 | stop 4151.74 (36.2 away) | close half at 4195.24 | signal N15 hsq"
+    }
+   ],
    "actions_day": "2026-10-19",
    "feed_error": false,
-   "state": "waiting",
-   "message": "Waiting for the first signal (signals can come until 8 pm Dubai).",
-   "price": 4180.41,
+   "state": "buy",
+   "message": "BUY day \u2014 up to 2 BUY trades. Close HALF at the \u00bd level, then move the stop to entry; the rest runs to its stop or the day-end close at 12:00 am Dubai.",
+   "price": 4188.53,
    "close_at": "12:00 am",
-   "change": 17.79,
+   "change": 25.91,
    "size": 0.1,
    "datr": 71.49,
-   "open_now": 0,
-   "entries": [],
+   "open_now": 1,
+   "entries": [
+    {
+     "time": "11:00 am",
+     "side": "BUY",
+     "tag": "N15 hsq",
+     "price": 4187.99,
+     "stop": 4151.74,
+     "stop0": 4151.74,
+     "half_px": 4195.24,
+     "half": false,
+     "half_time": null,
+     "size": 0.1,
+     "status": "open",
+     "first": true,
+     "exit": null,
+     "exit_time": null,
+     "pnl": null,
+     "rwf": null,
+     "next": "Close HALF at 4195.24, then move the stop to entry 4187.99 \u00b7 stop now 4151.74"
+    }
+   ],
    "spark": [
     [
      "2:00 am",
@@ -765,21 +792,35 @@
     ],
     [
      "10:50 am",
-     4180.41,
+     4180.94,
      4178.13,
-     4180.56,
+     4181.17,
      4177.79
+    ],
+    [
+     "10:55 am",
+     4183.76,
+     4180.95,
+     4186.29,
+     4179.49
+    ],
+    [
+     "11:00 am",
+     4188.53,
+     4183.86,
+     4188.98,
+     4183.86
     ]
    ],
    "history": [
     {
      "date": "2026-10-19",
      "label": "Mon 19 Oct",
-     "state": "none",
-     "entries": 0,
+     "state": "buy",
+     "entries": 1,
      "stopped": 0,
      "eod": 0,
-     "running": 0,
+     "running": 1,
      "rw": 0,
      "rd": 0,
      "pnl": null
@@ -925,11 +966,11 @@
    },
    "journal": {
     "since": "03 Oct 2026",
-    "trades": 18,
+    "trades": 19,
     "direction": 37.5,
     "decided": 16,
-    "days": 81.8,
-    "perday": 1.64,
+    "days": 90.9,
+    "perday": 1.73,
     "avg_pnl": -6.75,
     "closed": 18,
     "total_pnl_01": -12.15
@@ -970,8 +1011,8 @@
    "net_label": "Net R / $ at $100 risk (v1.03 sizes)",
    "state": "buy",
    "message": "PAPER BUY day \u2014 later signals today are BUY only. Each trade closes half at its \u00bd level, then the rest's stop moves to the entry; everything closes at the 7:00 pm Dubai close.",
-   "price": 157.967,
-   "change_pips": 6.1,
+   "price": 157.88,
+   "change_pips": -2.6,
    "atr_pips": 83.1,
    "entries": [
     {
@@ -1741,10 +1782,24 @@
     ],
     [
      "10:50 am",
-     157.967,
+     157.953,
      157.989,
      157.992,
-     157.962
+     157.95
+    ],
+    [
+     "10:55 am",
+     157.917,
+     157.952,
+     157.965,
+     157.897
+    ],
+    [
+     "11:00 am",
+     157.88,
+     157.92,
+     157.922,
+     157.874
     ]
    ],
    "journal": {
@@ -2224,8 +2279,8 @@
    "net_label": "Net $ per barrel (v1.03 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 96.854,
-   "change": -2.02,
+   "price": 96.664,
+   "change": -2.21,
    "entries": [],
    "spark": [
     [
@@ -2972,10 +3027,24 @@
     ],
     [
      "10:50 am",
-     96.85,
+     96.84,
      96.86,
      96.9,
      96.82
+    ],
+    [
+     "10:55 am",
+     96.81,
+     96.84,
+     96.88,
+     96.78
+    ],
+    [
+     "11:00 am",
+     96.66,
+     96.8,
+     96.8,
+     96.63
     ]
    ],
    "journal": {
@@ -3316,8 +3385,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 29574.1,
-   "change": 461.0,
+   "price": 29600.5,
+   "change": 487.4,
    "entries": [],
    "spark": [
     [
@@ -4064,10 +4133,24 @@
     ],
     [
      "10:50 am",
-     29574.1,
+     29572.0,
      29569.0,
      29584.0,
      29564.1
+    ],
+    [
+     "10:55 am",
+     29577.8,
+     29572.1,
+     29582.2,
+     29569.3
+    ],
+    [
+     "11:00 am",
+     29600.5,
+     29578.3,
+     29604.1,
+     29575.1
     ]
    ],
    "journal": {
