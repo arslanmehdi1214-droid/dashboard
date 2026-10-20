@@ -440,15 +440,15 @@
      "size": "third",
      "quiet": false,
      "first": true,
-     "status": "open",
-     "exit": null,
-     "exit_time": null,
-     "pips": null,
-     "usd": null,
-     "r": null,
-     "r_sized": null,
-     "usd_risk": null,
-     "r_now": 0.3971,
+     "status": "eod",
+     "exit": 157.991,
+     "exit_time": "7:00 pm",
+     "pips": 8.9,
+     "usd": 5.62,
+     "r": 0.4257,
+     "r_sized": 0.142,
+     "usd_risk": 14.2,
+     "r_now": 0.4257,
      "rwf": 1,
      "spread": 1.2
     },
@@ -510,7 +510,7 @@
     }
    ],
    "atr_pips": 84.0,
-   "final": false
+   "final": true
   }
  ],
  "summary": {
@@ -521,15 +521,15 @@
   "direction": 100.0,
   "days": 100.0,
   "perday": 2.0,
-  "closed": 3,
+  "closed": 4,
   "win": 100.0,
   "pf": null,
   "pf_pips": null,
-  "net_pips": 9.8,
-  "net_usd": 6.2,
+  "net_pips": 18.7,
+  "net_usd": 11.82,
   "rules": "v1.03",
-  "net_r": 0.33,
-  "net_usd_risk": 33.2,
+  "net_r": 0.47,
+  "net_usd_risk": 47.4,
   "green": 100.0
  }
 }
