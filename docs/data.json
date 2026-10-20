@@ -1,5 +1,5 @@
 {
- "updated": "Wed 21 Oct \u00b7 1:58 am",
+ "updated": "Wed 21 Oct \u00b7 2:09 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -13,14 +13,29 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 8 pm Dubai).",
-   "price": null,
+   "price": 4125.7,
    "close_at": "12:00 am",
-   "change": null,
+   "change": 0.27,
    "size": 0.1,
    "datr": 68.17,
    "open_now": 0,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "2:00 am",
+     4127.28,
+     4125.43,
+     4128.4,
+     4122.4
+    ],
+    [
+     "2:05 am",
+     4125.7,
+     4127.29,
+     4127.8,
+     4125.19
+    ]
+   ],
    "history": [
     {
      "date": "2026-10-21",
@@ -184,8 +199,8 @@
     "dollar_5d": "fell",
     "vix_5d": "rose",
     "tnx_5d": "fell",
-    "dollar_driven": null,
-    "corr": null,
+    "dollar_driven": false,
+    "corr": -0.284,
     "low_attention": false,
     "notes": []
    },
@@ -232,16 +247,31 @@
     "months": 3,
     "band": "3-month net at 0.01 lot (50 oz) inside the backtest 5-95% band: -$87 .. +$227 (median +$8)"
    },
-   "day_note": "14-day range $1.90 \u00b7 ONE trade a day when 2 of 3 agree (gold signal, fast gold catch-up, compression break) \u00b7 stop \u00bd range \u00b7 close half at +1x risk, stop to entry, then trail \u00bd range \u00b7 2x size when gold and silver were loosely linked over 20 days \u00b7 close 11:00 pm broker (Fri 10:50 pm)",
+   "day_note": "14-day range $1.94 \u00b7 ONE trade a day when 2 of 3 agree (gold signal, fast gold catch-up, compression break) \u00b7 stop \u00bd range \u00b7 close half at +1x risk, stop to entry, then trail \u00bd range \u00b7 2x size when gold and silver were loosely linked over 20 days \u00b7 close 11:00 pm broker (Fri 10:50 pm)",
    "what_note": "Forward test of silver v1.8 (honest entries) on live Capital.com prices. Checked after about 3 months against the backtest band.",
    "cost_note": "Results are $ per oz for the whole trade (half banked at +1R included) after Capital.com's spread (at least $0.05); x size (1 or 2); page money at 0.01 lot = 50 oz.",
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
-   "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break). \u00b7 note: no gold minutes yet",
-   "price": null,
-   "change": null,
+   "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
+   "price": 57.91,
+   "change": -0.289,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "2:00 am",
+     58.024,
+     58.199,
+     58.199,
+     57.917
+    ],
+    [
+     "2:05 am",
+     57.91,
+     58.025,
+     58.025,
+     57.909
+    ]
+   ],
    "journal": {
     "since": "19 Oct 2026",
     "weekdays": 3,
@@ -286,7 +316,7 @@
    "epic": "SILVER",
    "close_at": "12:00 am",
    "gold_signals_today": 0,
-   "history_note": "minutes from 2026-09-10 (29 days) \u00b7 325 daily bars from 2025-07-18"
+   "history_note": "minutes from 2026-09-10 (30 days) \u00b7 326 daily bars from 2025-07-18"
   },
   "USDJPY": {
    "code": "USDJPY",
@@ -317,11 +347,19 @@
    "net_label": "Net R / $ at $100 risk (v1.03 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 158.118,
-   "change_pips": null,
+   "price": 158.28,
+   "change_pips": 2.7,
    "atr_pips": 81.2,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "2:05 am",
+     158.28,
+     158.253,
+     158.28,
+     158.245
+    ]
+   ],
    "journal": {
     "since": "19 Oct 2026",
     "weekdays": 3,
@@ -902,10 +940,25 @@
    "net_label": "Net $ per barrel (v1.05)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": null,
-   "change": null,
+   "price": 97.863,
+   "change": -0.08,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "2:00 am",
+     97.91,
+     97.94,
+     98.16,
+     97.8
+    ],
+    [
+     "2:05 am",
+     97.86,
+     97.9,
+     97.91,
+     97.77
+    ]
+   ],
    "journal": {
     "since": "20 Oct 2026",
     "weekdays": 2,
@@ -1397,8 +1450,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 29708.0,
-   "change": 9.6,
+   "price": 29749.0,
+   "change": 50.6,
    "entries": [],
    "spark": [
     [
@@ -1473,10 +1526,24 @@
     ],
     [
      "1:55 am",
-     29708.0,
+     29716.5,
      29701.1,
-     29708.0,
+     29717.9,
      29701.1
+    ],
+    [
+     "2:00 am",
+     29778.6,
+     29739.1,
+     29785.1,
+     29735.9
+    ],
+    [
+     "2:05 am",
+     29749.0,
+     29779.3,
+     29787.3,
+     29741.3
     ]
    ],
    "journal": {
