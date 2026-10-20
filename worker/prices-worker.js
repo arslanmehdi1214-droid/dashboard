@@ -1,5 +1,6 @@
 // Signal Desk — live price relay (Cloudflare Worker, free plan)
-// Reads Capital.com's own prices for the desk markets and returns ONLY prices; /news = breaking headlines; /calendar = FF week.
+// Reads Capital.com's own prices for the desk markets and returns ONLY prices; /news = breaking headlines; /calendar = FF week;
+// /demo = the Capital.com DEMO account the auto-trader uses (balance, open positions, today's closed P/L; read-only).
 // Your Capital.com keys stay here as encrypted secrets; they never reach the desk page.
 //
 // Secrets to add in Cloudflare (Settings > Variables and Secrets), same values as the GitHub secrets:
@@ -93,6 +94,61 @@ async function newsRoute(req) {
   return new Response(news.body, { headers: cors(req) });
 }
 
+// Demo account (20 Oct): the Capital.com DEMO account the desk's auto-trader trades on - balance, open positions, today's closed P/L.
+// Read-only here (the Worker never places or changes trades). Demo server only: CAPITAL_DEMO must be "1".
+const DEMO_SECONDS = 4;
+let demo = null;
+async function capGet(env, path) {
+  if (!session || Date.now() - session.at > 8 * 60 * 1000) await login(env);
+  let r = await fetch(base(env) + path, { headers: { 'X-SECURITY-TOKEN': session.token, CST: session.cst } });
+  if (r.status === 401) { await login(env); r = await fetch(base(env) + path, { headers: { 'X-SECURITY-TOKEN': session.token, CST: session.cst } }); }
+  if (!r.ok) throw new Error(path.split('?')[0] + ' ' + r.status);
+  session.at = Date.now();
+  return r.json();
+}
+function brokerDayStartUtc() {
+  // broker day = New York time + 7 h -> it starts at 17:00 New York the evening before
+  const now = new Date();
+  const p = Object.fromEntries(new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', hourCycle: 'h23', year: 'numeric', month: '2-digit',
+    day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' }).formatToParts(now).map(x => [x.type, x.value]));
+  const nyAsUtc = Date.UTC(+p.year, +p.month - 1, +p.day, +p.hour, +p.minute, +p.second);
+  const offset = nyAsUtc - now.getTime();                       // New York offset vs UTC (ms, negative)
+  let start = Date.UTC(+p.year, +p.month - 1, +p.day, 17, 0, 0) - offset;
+  if (start > now.getTime()) start -= 86400000;
+  return new Date(start);
+}
+async function demoRoute(req, env) {
+  if (env.CAPITAL_DEMO === '0') return new Response(JSON.stringify({ error: 'demo route works on the demo server only' }), { status: 400, headers: cors(req) });
+  if (!demo || Date.now() - demo.at > DEMO_SECONDS * 1000) {
+    try {
+      const a = await capGet(env, '/api/v1/accounts');
+      const acc = (a.accounts || []).find(x => x.preferred) || (a.accounts || [])[0] || {};
+      const p = await capGet(env, '/api/v1/positions');
+      const positions = (p.positions || []).map(x => {
+        const q = x.position || {}, m = x.market || {};
+        return { dealId: q.dealId, epic: m.epic, name: m.instrumentName, direction: q.direction, size: q.size, level: q.level,
+                 stop: q.stopLevel ?? null, profit: q.profitLevel ?? null, upl: q.upl, currency: q.currency, opened: q.createdDateUTC,
+                 bid: m.bid, offer: m.offer };
+      });
+      const from = brokerDayStartUtc(), iso = d => d.toISOString().slice(0, 19);
+      let closed = [], realized = 0, txErr = null;
+      try {
+        const t = await capGet(env, '/api/v1/history/transactions?type=TRADE&from=' + iso(from) + '&to=' + iso(new Date(Date.now() + 60000)));
+        closed = (t.transactions || []).map(x => ({ t: x.dateUtc, name: x.instrumentName, amount: parseFloat(x.size), currency: x.currency, note: x.note, ref: x.reference }));
+        realized = closed.reduce((s, x) => s + (isFinite(x.amount) ? x.amount : 0), 0);
+      } catch (e) { txErr = String(e.message || e); }
+      const b = acc.balance || {};
+      demo = { at: Date.now(), body: JSON.stringify({ at: new Date().toISOString(), account: { id: acc.accountId, name: acc.accountName, type: acc.accountType,
+        currency: acc.currency, balance: b.balance, deposit: b.deposit, upl: b.profitLoss, available: b.available },
+        positions, closed_today: closed, realized_today: realized, day_start_utc: from.toISOString(), errors: txErr ? [txErr] : [] }) };
+    } catch (e) {
+      session = null;
+      return new Response(JSON.stringify({ error: String(e.message || e) }), { status: 502, headers: cors(req) });
+    }
+  }
+  return new Response(demo.body, { headers: cors(req) });
+}
+
 function cors(req) {
   const o = req.headers.get('Origin') || '';
   return { 'Access-Control-Allow-Origin': ALLOWED.includes(o) ? o : ALLOWED[0], 'Vary': 'Origin',
@@ -104,6 +160,7 @@ export default {
     if (req.method === 'OPTIONS') return new Response(null, { headers: cors(req) });
     if (new URL(req.url).pathname === '/calendar') return calendar(req);
     if (new URL(req.url).pathname === '/news') return newsRoute(req);
+    if (new URL(req.url).pathname === '/demo') return demoRoute(req, env);
     if (last && Date.now() - last.at < CACHE_SECONDS * 1000) return new Response(last.body, { headers: cors(req) });
     try {
       const body = JSON.stringify({ at: new Date().toISOString(), source: 'Capital.com', prices: await markets(env) });
