@@ -381,11 +381,11 @@
      "side": "BUY",
      "tag": "FILL range fade",
      "price": 4117.43,
-     "stop": 4082.35,
+     "stop": 4117.43,
      "stop0": 4082.35,
      "half_px": 4124.45,
-     "half": false,
-     "half_time": null,
+     "half": true,
+     "half_time": "1:16 pm",
      "size": 0.1,
      "status": "open",
      "first": true,
@@ -393,7 +393,7 @@
      "exit_time": null,
      "pnl": null,
      "rwf": null,
-     "next": "Close HALF at 4124.45, then move the stop to entry 4117.43 \u00b7 stop now 4082.35"
+     "next": "Half banked at 4124.45 \u00b7 stop is at entry 4117.43 \u00b7 hold the rest to the stop or the day-end close"
     }
    ],
    "skipped": 0,
