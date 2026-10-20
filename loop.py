@@ -43,6 +43,7 @@ def git(*a): return subprocess.run(['git', *a], capture_output=True, text=True)
 def push():
     git('add', 'sent.json', 'docs/*.json', 'docs/nq_min/*.npz')
     git('add', 'docs/sv_min')                                              # silver minute files (separate: a missing folder never blocks the rest)
+    git('add', 'autotrade_state.json', 'autotrade_log.json')              # demo auto-trader memory (which demo positions are ours)
     if git('diff', '--cached', '--quiet').returncode == 0: return 'nothing new'
     git('commit', '-m', 'alerts state')
     if git('push').returncode == 0: return 'pushed'
@@ -77,6 +78,8 @@ def main():
     except Exception: nq_run = None
     try: import sv_run                                                     # same for the silver paper page
     except Exception: sv_run = None
+    try: import autotrade                                                  # demo auto-trader: copies the desk's trades to the Capital.com DEMO account
+    except Exception as e: autotrade = None; print('autotrade not loaded:', type(e).__name__, e)
     while True:
         before = open(R.STATE).read() if os.path.exists(R.STATE) else ''
         if yen_run is not None and hasattr(yen_run, 'DEADLINE'): yen_run.DEADLINE = time.time() + 90
@@ -84,9 +87,14 @@ def main():
         if nq_run is not None and hasattr(nq_run, 'DEADLINE'): nq_run.DEADLINE = time.time() + 90
         if sv_run is not None and hasattr(sv_run, 'DEADLINE'): sv_run.DEADLINE = time.time() + 90
         R.safe_main(); n += 1
+        at_before = open('autotrade_state.json').read() if os.path.exists('autotrade_state.json') else ''
+        if autotrade is not None:
+            try: autotrade.run_once()
+            except Exception as e: print('autotrade error:', type(e).__name__, e)
+        at_changed = (open('autotrade_state.json').read() if os.path.exists('autotrade_state.json') else '') != at_before
         if feed_error(): _SHARED[0] = None; _H1.clear()                   # fresh session + full history next minute
         alerted = (open(R.STATE).read() if os.path.exists(R.STATE) else '') != before
-        if alerted or time.time() - last_push >= PUSH_EVERY:
+        if alerted or at_changed or time.time() - last_push >= PUSH_EVERY:
             print(time.strftime('%H:%M:%S'), 'check', n, '|', push()); last_push = time.time()
         if F.broker_now().dayofweek >= 5: print('weekend - one pass only'); break
         if (time.time() - start) / 60 >= MAX_MIN: print('time limit'); break

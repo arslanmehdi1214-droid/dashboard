@@ -1,4 +1,4 @@
-"""Runs every minute (GitHub Actions, via loop.py). GOLD v2.10 (18 Oct 2026; = v2.09 + no 2nd trade in the same minute): today's gold minute bars -> the EA's signals
+"""Runs every minute (GitHub Actions, via loop.py). GOLD v2.11 (20 Oct 2026; = v2.10 with NO half-close / no stop to entry, desk209.SPLIT=False). Was v2.10 (18 Oct 2026; = v2.09 + no 2nd trade in the same minute): today's gold minute bars -> the EA's signals
 (engine206.py, v2.06 signal set) -> the v2.10 trade rules (desk209.py: one direction, max 2 trades, half close at 0.20 x stop,
 stop to entry, rest to the day-end close, range-fade fill). Writes the page + the live journal, including the ACTIONS list
 (OPEN / ADD / HOLD / CLOSE HALF / STOP / REVERSE / CLOSE ALL). Desk only - no Telegram (his rule, 18 Oct).
@@ -11,7 +11,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 SIZE = float(os.environ.get('ALERT_SIZE_OZ', '0.1'))
 STATE = os.path.join(HERE, 'sent.json'); PORTAL = os.path.join(HERE, 'docs', 'data.json')
 JOURNAL = os.path.join(HERE, 'docs', 'journal.json'); INPUTS = os.path.join(HERE, 'docs', 'inputs.json')
-BACKTEST = dict(direction='—', days='72–73% green', perday='1.7', win='79–81%', pnl='—', source='MT4 backtest v2.10, his run 2020–2026 (worst day −2.1R)')
+BACKTEST_V210 = dict(direction='—', days='72–73% green', perday='1.7', win='79–81%', pnl='—', source='MT4 backtest v2.10, his run 2020–2026 (worst day −2.1R)')
+BACKTEST = dict(direction='—', days='45–46% green', perday='1.5', win='47–50%', pnl='—', source='MT4 backtest v2.11, his runs 20 Oct 2020–2026 ($162/day 2020–22, $189/day 2023–26 at $1,000 risk; worst day −3.6R)')
 
 def dubai(t): return F.broker_to_dubai(pd.Timestamp(t)).strftime('%-I:%M %p').lower()
 def eod_of(day):
@@ -77,7 +78,8 @@ def row(g, k=0):
     nxt = None
     if st == 'open':
         nxt = (f"Half banked at {g['half_px']:.2f} · stop is at entry {g['entry']:.2f} · hold the rest to the stop or the day-end close"
-               if half else f"Close HALF at {g['half_px']:.2f}, then move the stop to entry {g['entry']:.2f} · stop now {g['stop']:.2f}")
+               if half else (f"Close HALF at {g['half_px']:.2f}, then move the stop to entry {g['entry']:.2f} · stop now {g['stop']:.2f}" if g.get('half_px') is not None
+               else f"Hold to the stop {g['stop']:.2f} or the day-end close · no half-close (v2.11)"))
     return dict(time=dubai(g['t']), side='BUY' if g['dir'] == 1 else 'SELL', tag=g['tag'], price=g['entry'], stop=g['stop'],
                 stop0=g['stop0'], half_px=g['half_px'], half=half, half_time=(dubai(g['half_t']) if half else None), size=SIZE,
                 status=st, first=(k == 0), exit=g['exit'], exit_time=(dubai(g['exit_t']) if g['exit_t'] is not None else None),
@@ -219,11 +221,13 @@ def write_pages(now, day, m1, taken, skipped, inp, reg, src, eod, datr, acts=())
     dumpj(J, JOURNAL, indent=1)
     # ---- page data
     old = loadj(PORTAL, {}); others = {k: v for k, v in (old.get('markets') or {}).items() if k != 'GOLD'}
+    V211 = np.datetime64(day.date(), 'D') >= DK.V211_FROM               # v2.11 rules (no half-close) from the switch day
     last_sig = now >= day + pd.Timedelta(hours=19)
     if now.dayofweek >= 5: state, msg = 'closed', 'Market closed for the weekend'
     elif rows:
         side = rows[0]['side']; state = side.lower()
-        msg = (f"{side} day — up to 2 {side} trades. Close HALF at the ½ level, then move the stop to entry; the rest runs to its stop or the day-end close at {dubai(eod)} Dubai.")
+        msg = (f"{side} day — up to 2 {side} trades. Each runs to its stop or the day-end close at {dubai(eod)} Dubai (no half-close)." if V211 else
+               f"{side} day — up to 2 {side} trades. Close HALF at the ½ level, then move the stop to entry; the rest runs to its stop or the day-end close at {dubai(eod)} Dubai.")
     elif skipped and not last_sig: state, msg = 'blocked', 'The first signal was skipped by the dollar filter — watching for the next one.'
     elif last_sig: state, msg = 'none', 'No trade today — no signal (new signals stop at 8 pm Dubai).'
     else: state, msg = 'waiting', 'Waiting for the first signal (signals can come until 8 pm Dubai).'
@@ -240,13 +244,13 @@ def write_pages(now, day, m1, taken, skipped, inp, reg, src, eod, datr, acts=())
                          running=sum(t['status'] == 'open' for t in tr), rw=sum(1 for t in tr if t.get('rwf') == 1),
                          rd=sum(1 for t in tr if t.get('rwf') is not None),
                          pnl=(round(sum(t['pnl'] for t in tr if t.get('pnl') is not None), 2) if any(t.get('pnl') is not None for t in tr) else None)))
-    gold = dict(code='GOLD', name='Gold', symbol='XAU/USD', live=True, version='v2.10', actions=act_rows(acts), actions_day=str(day.date()), feed_error=False, state=state, message=msg, price=last, close_at=dubai(eod),
+    gold = dict(code='GOLD', name='Gold', symbol='XAU/USD', live=True, version=('v2.11' if V211 else 'v2.10'), actions=act_rows(acts), actions_day=str(day.date()), feed_error=False, state=state, message=msg, price=last, close_at=dubai(eod),
                 change=(None if last is None or first is None else round(last - first, 2)), size=SIZE, datr=round(datr, 2),
                 open_now=sum(r['status'] in ('open', 'close_now') for r in page_rows), entries=page_rows, spark=spark, history=hist,
                 inputs=dict(dollar_1d=inp.get('dollar_1d'), dollar_5d=inp.get('dollar_5d'), vix_5d=inp.get('vix_5d'), tnx_5d=inp.get('tnx_5d'),
                             dollar_driven=(None if reg is None else bool(reg)), corr=inp.get('corr'), low_attention=bool(inp.get('attn', 0)),
                             notes=inp.get('notes', [])),
-                stats=BACKTEST, journal=J['summary'])
+                stats=(BACKTEST if V211 else BACKTEST_V210), journal=J['summary'])
     data = dict(updated=F.broker_to_dubai(now).strftime('%a %d %b · %-I:%M %p').replace('AM', 'am').replace('PM', 'pm'),
                 source=src, markets=dict(GOLD=gold, **others))
     dumpj(data, PORTAL, indent=1)

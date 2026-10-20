@@ -1,4 +1,4 @@
-"""GOLD v2.09 trade manager for the Signal Desk (same rules as EA GOLD_DAYTRADE v2.09 + DT209_GOLD_MAX2_HALF020.set).
+"""GOLD v2.11 trade manager (SPLIT=False below; v2.09/v2.10 = SPLIT=True) for the Signal Desk (same rules as EA GOLD_DAYTRADE v2.09 + DT209_GOLD_MAX2_HALF020.set).
 Input: today's engine signals (engine206.run_day, skipped ones removed) + today's closed minute bars. Output: the trades he
 should hold (legs), their state, and a time-ordered list of ACTIONS for the page (no Telegram).
 
@@ -16,7 +16,9 @@ Prices: bars are Bid. Buys fill at Ask (= bid + spread) and exit at Bid; sells f
 import numpy as np
 
 SP = 0.5          # Capital.com gold spread ($/oz) - same as the engine's S['Spread']
-K = 0.20          # close half at K x stop distance (Split_At_x_Stop)
+V211_FROM = np.datetime64('2026-10-20')   # v2.11 from this broker day (MT4 passed twice 20 Oct): NO half-close, NO stop to entry -
+                                          # trades run to their stop or the day-end close (Use_Split_Exit=false). Earlier days = v2.10 (half at K).
+K = 0.20          # close half at K x stop distance (Split_At_x_Stop) - used only when SPLIT = True (v2.10)
 EX = 0.0          # extra $ beyond the half level (Split_Extra_Dollars)
 STOPX = 0.5       # stop = STOPX x 14-day range for every signal (Signal_Stop_Target, Stop_Other = 0)
 FILLX = 0.5       # stop for the fill trade (Fill_Stop_x_DailyATR)
@@ -41,6 +43,7 @@ def run(signals, day, m1, now, atr, eod, label=None):
     """signals: engine trades (dict t, dir, tag, px). day: np.datetime64[D]. m1: dict t,o,h,l,c (closed bars, broker time).
     atr: 14-day average daily range. eod: np.datetime64[m] day-end close. Returns (legs, actions)."""
     T = np.asarray(m1['t'], dtype='datetime64[m]'); O, H, L, C = (np.asarray(m1[k], float) for k in ('o', 'h', 'l', 'c'))
+    SPLIT = np.datetime64(day, 'D') < V211_FROM                      # True = v2.10 half-close rules (days before the switch)
     legs, act = [], []
     if len(T) == 0 or atr <= 0: return legs, act
     jidx = lambda t: int(np.searchsorted(T, np.datetime64(t, 'm'), side='left'))
@@ -59,9 +62,9 @@ def run(signals, day, m1, now, atr, eod, label=None):
         sd = (FILLX if kind == 'f' else STOPX) * atr
         if d > 0: e = p0 + SP; sl = (e - sd) if kind == 'f' else (p0 - sd)
         else: e = p0; sl = (e + sd) if kind == 'f' else (p0 + SP + sd)
-        risk = abs(e - sl); hp = e + d * (K * risk + EX)
+        risk = abs(e - sl); hp = (e + d * (K * risk + EX)) if SPLIT else None
         g = dict(j=j, t=t, dir=d, tag=tag, kind=kind, entry=round(e, 2), stop0=round(sl, 2), stop=round(sl, 2), risk=round(risk, 2),
-                 half_px=round(hp, 2), status='open', half_t=None, exit=None, exit_t=None, pnl_oz=None, time_txt=('from ' + label(t)) if label else '#%d' % (len(legs) + 1))
+                 half_px=(round(hp, 2) if hp is not None else None), status='open', half_t=None, exit=None, exit_t=None, pnl_oz=None, time_txt=('from ' + label(t)) if label else '#%d' % (len(legs) + 1))
         legs.append(g); return g
 
     def close_leg(g, px, t, why):
@@ -83,7 +86,7 @@ def run(signals, day, m1, now, atr, eod, label=None):
                     add(T[j], 'STOP', d, (f"{side(d)} {g['time_txt']}: stop at entry hit at {px:.2f} - the rest is closed, half was banked"
                                           if be else f"{side(d)} {g['time_txt']}: STOP HIT at {px:.2f} - trade closed"), round(px, 2))
                     continue
-                if g['status'] == 'open' and ((d > 0 and H[j] >= g['half_px']) or (d < 0 and L[j] + SP <= g['half_px'])):
+                if SPLIT and g['status'] == 'open' and ((d > 0 and H[j] >= g['half_px']) or (d < 0 and L[j] + SP <= g['half_px'])):
                     g.update(status='half', half_t=T[j], stop=g['entry'])
                     add(T[j], 'HALF', d, f"CLOSE HALF of your {side(d)} {g['time_txt']} now at {g['half_px']:.2f}, then MOVE STOP of the rest to {g['entry']:.2f} (entry)", g['half_px'])
 
@@ -96,7 +99,7 @@ def run(signals, day, m1, now, atr, eod, label=None):
             same_min = any(g['t'] == t for g in op)
             if len(op) < NMAX and not same_min:
                 g = new_leg(j, d, kind, p0, tag, t)
-                add(t, 'ADD', d, f"ADD {side(d)} (2nd trade) now ~{g['entry']:.2f} | stop {g['stop']:.2f} | close half at {g['half_px']:.2f} | signal {tag}", g['entry'])
+                add(t, 'ADD', d, f"ADD {side(d)} (2nd trade) now ~{g['entry']:.2f} | stop {g['stop']:.2f} | " + (f"close half at {g['half_px']:.2f}" if SPLIT else "no half-close: hold to the stop or the day-end close") + f" | signal {tag}", g['entry'])
             else:
                 add(t, 'HOLD', d, f"HOLD - new {side(d)} signal ({tag}) but {'a trade was opened this minute' if same_min else '2 trades are already open'}: do nothing")
             continue
@@ -105,7 +108,7 @@ def run(signals, day, m1, now, atr, eod, label=None):
             for g in op: close_leg(g, px, t, 'reversed')
             add(t, 'REVERSE', d, f"REVERSE - close ALL your {side(-d)} trades now (~{px:.2f}) and {side(d)} instead", round(px, 2))
         g = new_leg(j, d, kind, p0, tag, t)
-        add(t, 'OPEN', d, f"OPEN {side(d)} now ~{g['entry']:.2f} | stop {g['stop']:.2f} ({g['risk']:.1f} away) | close half at {g['half_px']:.2f} | signal {tag}", g['entry'])
+        add(t, 'OPEN', d, f"OPEN {side(d)} now ~{g['entry']:.2f} | stop {g['stop']:.2f} ({g['risk']:.1f} away) | " + (f"close half at {g['half_px']:.2f}" if SPLIT else "no half-close: hold to the stop or the day-end close") + f" | signal {tag}", g['entry'])
     walk(cur, len(T))
     after = np.datetime64(now, 'm') >= eod
     if after:
