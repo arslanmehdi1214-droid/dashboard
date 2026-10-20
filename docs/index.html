@@ -332,7 +332,7 @@ let STY='2',seenA=null,flashA={};
 let liveFired={};
 function actsLive(){const m=MK.find(m=>m.c==='GOLD'),x=M.GOLD,l=m&&liveOf(m);if(!x||!l){actlive.innerHTML='';return}const out=[];
  (x.entries||[]).forEach(e=>{if(done(e)||e.half_px==null)return;const s=e.side==='BUY'?1:-1,p=l.p;
-  if(!e.half&&s*(p-e.half_px)>=0)out.push({k:'H'+e.time,t:`LIVE: price ${f(p,2)} reached the ½ level of your ${e.side} from ${e.time} — CLOSE HALF now, then move the stop to ${f(e.price,2)} (entry)`});
+  if(!e.half&&s*(p-e.half_px)>=0)out.push({k:'H'+e.time,t:`LIVE: price ${f(p,2)} reached the ${e.part!=null?'part-close':'½'} level of your ${e.side} from ${e.time} — CLOSE ${e.part!=null?Math.round(e.part*100)+'%':'HALF'} now, then move the stop to ${f(e.price,2)} (entry)`});
   else if(s*(e.stop-p)>=0)out.push({k:'S'+e.time+e.stop,t:`LIVE: price ${f(p,2)} is at the stop ${f(e.stop,2)} of your ${e.side} from ${e.time} — check it is closed`})});
  out.forEach(o=>{if(!liveFired[o.k]){liveFired[o.k]=1;beep(3);notify('Gold: '+o.t)}});
  actlive.innerHTML=out.map(o=>'⚡ '+o.t).join('<br>')}
