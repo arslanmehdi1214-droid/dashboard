@@ -12,5 +12,19 @@
   "market": "OIL",
   "ok": true,
   "t": "Tue 20 Oct 3:37 PM"
+ },
+ {
+  "action": "error",
+  "detail": "ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))",
+  "market": "ALL",
+  "ok": false,
+  "t": "Tue 20 Oct 3:40 PM"
+ },
+ {
+  "action": "error",
+  "detail": "ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))",
+  "market": "ALL",
+  "ok": false,
+  "t": "Tue 20 Oct 3:48 PM"
  }
 ]
