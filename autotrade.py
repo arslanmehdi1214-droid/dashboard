@@ -55,14 +55,21 @@ class Demo:
         self.key = os.environ['CAPITAL_API_KEY']; self.ident = os.environ['CAPITAL_IDENTIFIER']; self.pw = os.environ['CAPITAL_API_PASSWORD']
         self.h = None; self.rules = {}; self.http = requests.Session(); self.last_order = 0.0
     def login(self):
+        try: return self._login()
+        except requests.exceptions.ConnectionError:                  # dropped connection: one fresh try
+            self.http.close(); self.http = requests.Session(); time.sleep(1); return self._login()
+    def _login(self):
         r = self.http.post(self.base + '/api/v1/session', headers={'X-CAP-API-KEY': self.key, 'Content-Type': 'application/json'},
                            json={'identifier': self.ident, 'password': self.pw, 'encryptedPassword': False}, timeout=20)
         r.raise_for_status(); self.h = {'X-SECURITY-TOKEN': r.headers['X-SECURITY-TOKEN'], 'CST': r.headers['CST']}
     def req(self, method, path, **kw):
         if self.h is None: self.login()
-        for attempt in (0, 1):
-            r = self.http.request(method, self.base + path, headers=self.h, timeout=20, **kw)
-            if r.status_code == 401 and attempt == 0: self.login(); continue
+        for attempt in (0, 1, 2):
+            try: r = self.http.request(method, self.base + path, headers=self.h, timeout=20, **kw)
+            except requests.exceptions.ConnectionError:              # Capital.com drops idle kept-alive connections: fresh connection, try again
+                if attempt == 2: raise
+                self.http.close(); self.http = requests.Session(); time.sleep(1); continue
+            if r.status_code == 401 and attempt < 2: self.login(); continue
             return r
     def positions(self):
         r = self.req('GET', '/api/v1/positions'); r.raise_for_status()
