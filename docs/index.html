@@ -96,7 +96,7 @@ svg.eq{display:block;width:100%;height:56px;margin:12px 0}
 @media(max-width:860px){.hday>summary{grid-template-columns:118px 42px 1fr auto}.mnav .dim{flex-basis:100%;margin-left:0!important}.mnav{flex-wrap:wrap}.hday>summary .usd{display:none}.htr{grid-template-columns:60px 46px 1fr auto}.htr .usd{display:none}.cal5 .cd{min-height:50px;padding:5px}.cal5 .cd b{font-size:11px}}
 
 .pbar{padding:0 32px 14px}.acts{background:var(--panel);border:1px solid var(--gold);border-radius:12px;padding:10px 16px}.acts .nx{display:grid;grid-template-columns:auto auto 1fr;gap:12px;align-items:baseline;padding:6px 0;border-top:1px solid var(--line);font:600 14.5px Inter}.acts .nx:first-of-type{border-top:0}.acts .nx .who{font:700 13px Inter;white-space:nowrap}.acts .nx .do{color:var(--ink)}.acts .old{font:500 12px Inter;color:var(--dim);margin-top:6px}
-.acts .ah{display:flex;align-items:center;gap:10px;margin-bottom:6px}.acts .ah h3{margin:0}.acts .ah button{margin-left:auto;font:600 11.5px Inter;background:none;border:1px solid var(--line);color:var(--dim);border-radius:7px;padding:4px 9px;cursor:pointer}.acts .ah button.on{color:var(--gold);border-color:var(--gold)}
+.acts .ah{display:flex;align-items:center;gap:10px;margin-bottom:6px}.acts .ah h3{margin:0}.acts .dnt{cursor:pointer;user-select:none}.acts .dnt .dnc{font:600 11.5px Inter;color:var(--gold);margin-left:6px;letter-spacing:0}.acts .dnt .car{color:var(--dim);margin-left:2px}.acts .ah button{margin-left:auto;font:600 11.5px Inter;background:none;border:1px solid var(--line);color:var(--dim);border-radius:7px;padding:4px 9px;cursor:pointer}.acts .ah button.on{color:var(--gold);border-color:var(--gold)}
 .ac{display:grid;grid-template-columns:62px 110px 1fr;gap:10px;padding:6px 0;border-top:1px solid var(--line);font:500 13px Inter;align-items:baseline}.ac:first-of-type{border-top:0}
 .ac .tm{font:500 11.5px var(--mono);color:var(--dim)}.ac .k{font:800 11px Inter;letter-spacing:.5px;padding:3px 7px;border-radius:6px;text-align:center;background:rgba(255,255,255,.06)}
 .ac .k.OPEN,.ac .k.ADD{background:rgba(46,204,113,.16);color:#2ecc71}.ac .k.HALF{background:rgba(255,184,0,.16);color:var(--amber)}.ac .k.STOP,.ac .k.REVERSE,.ac .k.CLOSE_ALL{background:var(--sellb);color:var(--sell)}.ac .k.HOLD{color:var(--dim)}
@@ -338,16 +338,19 @@ function nextStep(o){const {m,e}=o,dp=m.dp;if(e.next)return e.next;
  if(e.half_px!=null&&!e.half)return `Close ${e.part!=null?Math.round(e.part*100)+'%':'half'} at ${f(e.half_px,dp)}, then move the stop to entry ${f(e.price,dp)} · stop now ${f(e.stop,dp)}`;
  if(e.half)return `Part banked · stop at ${f(e.stop,dp)}${Math.abs(e.stop-e.price)>1e-9?' (trailing)':' (entry)'} · hold the rest to the stop or the day-end close`;
  return `Hold · stop ${f(e.stop,dp)} · closes at the day end`}
+let DN_OPEN=(()=>{try{return localStorage.getItem('doNowOpen')!=='0'}catch(e){return true}})(),DN_READY=false;
 function actsRender(){const x=M.GOLD||{},A=(x.actions||[]).slice().reverse(),day=x.actions_day||'';
  const keys=A.map(a=>day+a.time+a.kind+a.text);
  if(seenA===null){seenA=new Set(keys)}else{const fresh=A.filter((a,i)=>!seenA.has(keys[i]));
-  if(fresh.length){fresh.forEach((a,i)=>flashA[day+a.time+a.kind+a.text]=Date.now());const top=fresh[0];beep(top.kind==='HOLD'?1:3);notify('Gold: '+top.text);keys.forEach(k=>seenA.add(k))}}
+  if(fresh.length){fresh.forEach((a,i)=>flashA[day+a.time+a.kind+a.text]=Date.now());const top=fresh[0];beep(top.kind==='HOLD'?1:3);notify('Gold: '+top.text);keys.forEach(k=>seenA.add(k));if(DN_READY)DN_OPEN=true}}
  const op=T.filter(o=>!done(o.e));
  const lines=op.map(o=>`<div class="nx" data-c="${o.m.c}"><span class="who ${o.e.side==='BUY'?'pos':'neg'}">${o.m.n} ${o.e.side}</span><span class="dim">${o.e.time}</span><span class="do">${nextStep(o)}</span></div>`).join('');
  const a0=A[0],nw=a0&&flashA[day+a0.time+a0.kind+a0.text]&&Date.now()-flashA[day+a0.time+a0.kind+a0.text]<10*6e4;
- acts.innerHTML=`<div class="ah"><h3>Do now</h3><button id="snd2" class="${sound?'on':''}">${sound?'Sound on':'Turn on sound'}</button></div>`+
-  (lines||`<div class="dim" style="font:500 13.5px Inter">No open trade — waiting for the next signal</div>`)+
-  (a0&&op.some(o=>o.m.c==='GOLD')?`<div class="old ${nw?'new':''}" data-c="GOLD">Gold last action ${a0.time}: ${a0.text}${A.length>1?` · ${A.length} actions today`:''}</div>`:'');
+ acts.innerHTML=`<div class="ah"><h3 id="dnt" class="dnt" title="Show / hide">Do now <span class="dnc">${op.length?op.length+' open':'none open'}</span> <span class="car">${DN_OPEN?'▴':'▾'}</span></h3><button id="snd2" class="${sound?'on':''}">${sound?'Sound on':'Turn on sound'}</button></div>`+
+  (DN_OPEN?(lines||`<div class="dim" style="font:500 13.5px Inter">No open trade — waiting for the next signal</div>`)+
+  (a0&&op.some(o=>o.m.c==='GOLD')?`<div class="old ${nw?'new':''}" data-c="GOLD">Gold last action ${a0.time}: ${a0.text}${A.length>1?` · ${A.length} actions today`:''}</div>`:''):'');
+ if(M.GOLD)DN_READY=true;
+ const tg=document.getElementById('dnt');if(tg)tg.onclick=()=>{DN_OPEN=!DN_OPEN;try{localStorage.setItem('doNowOpen',DN_OPEN?'1':'0')}catch(e){}actsRender()};
  const b=document.getElementById('snd2');if(b)b.onclick=()=>{sound=!sound;if(sound){beep(1);try{Notification.requestPermission&&Notification.requestPermission()}catch(e){}}actsRender()}}
 function ticket(c){const {o,px,mv,R,pl,risk}=c,{m,x,e,i}=o,st0=e.stop0??e.stop,sd=Math.abs(e.price-st0),sg1=e.side==='BUY'?1:-1,tgt=e.price+sg1*(e.half_px!=null?sd:2*sd);
  const lo=Math.min(st0,tgt),hi=Math.max(st0,tgt),P=v=>Math.max(0,Math.min(100,(v-lo)/(hi-lo)*100)),pp=v=>e.side==='SELL'?100-P(v):P(v),lv=liveOf(m);
@@ -357,11 +360,11 @@ function ticket(c){const {o,px,mv,R,pl,risk}=c,{m,x,e,i}=o,st0=e.stop0??e.stop,s
   <div class="lad"><div class="ln2"></div><div class="zl" style="left:${Math.min(pp(st0),pp(e.price))}%;width:${Math.abs(pp(e.price)-pp(st0))}%"></div><div class="zw" style="left:${Math.min(pp(e.price),pp(tgt))}%;width:${Math.abs(pp(tgt)-pp(e.price))}%"></div>
    <span class="lb l">${f(st0,m.dp)}</span>${e.half_px!=null?`<span class="lb h" style="left:${pp(e.half_px)}%">${e.part!=null?(e.half?Math.round(e.part*100)+'% banked':'close '+Math.round(e.part*100)+'% at'):(e.half?'½ banked':'½ at')} ${f(e.half_px,m.dp)}</span>`:''}<span class="lb c" style="left:${pp(e.price)}%">${f(e.price,m.dp)}</span><span class="lb r">${f(tgt,m.dp)}</span>
    <div class="nowm" style="left:${pp(px)}%"><span>${f(px,m.dp)}<i class="dot ${lv?'on':''}"></i></span><i></i></div></div>
-  <div class="pl"><b class="${pl>=0?'pos':'neg'}">${sg(pl*AED)} AED</b><small>${R<=-1?'<em class="hit">PAST STOP</em> ':''}${sg(pl)} $ · ${sg(R)}R</small></div>
+  <div class="pl"><b class="${pl>=0?'pos':'neg'}">${sg(pl*AED)} AED</b><small>${R<=-1?'<em class="hit">PAST STOP</em> ':''}${sg(R)}R</small></div>
   ${e.next?`<div class="nx">→ ${e.next}</div>`:''}
  </div>`}
 function table(op){return `<div class="pt"><table><tr><th>Side</th><th>Market</th><th>Time</th><th class="r">Entry</th><th class="r">Stop</th><th class="r">Now</th><th class="r">R</th><th class="r">P/L</th></tr>${op.map(c=>{const {o,px,R,pl}=c,{m,x,e}=o,lv=liveOf(m);
- return `<tr data-c="${m.c}"><td><span class="${e.side}">${e.side==='BUY'?'▲':'▼'} ${e.side}</span></td><td><a target="_blank" rel="noopener" href="https://www.tradingview.com/chart/?symbol=${m.tv}"><b>${m.n}</b></a> <span class="tag ${x.live?'live':''}">${x.live?'LIVE':'PAPER'}</span></td><td class="dim">${e.time}</td><td class="r num">${f(e.price,m.dp)}</td><td class="r num">${f(e.stop,m.dp)}</td><td class="r num">${f(px,m.dp)} <i class="dot ${lv?'on':''}"></i></td><td class="r num ${R>=0?'pos':'neg'}">${sg(R)}</td><td class="r num big ${pl>=0?'pos':'neg'}">${sg(pl*AED)} AED<br><small class="dim">${sg(pl)} $</small></td></tr>`}).join('')}</table></div>`}
+ return `<tr data-c="${m.c}"><td><span class="${e.side}">${e.side==='BUY'?'▲':'▼'} ${e.side}</span></td><td><a target="_blank" rel="noopener" href="https://www.tradingview.com/chart/?symbol=${m.tv}"><b>${m.n}</b></a> <span class="tag ${x.live?'live':''}">${x.live?'LIVE':'PAPER'}</span></td><td class="dim">${e.time}</td><td class="r num">${f(e.price,m.dp)}</td><td class="r num">${f(e.stop,m.dp)}</td><td class="r num">${f(px,m.dp)} <i class="dot ${lv?'on':''}"></i></td><td class="r num ${R>=0?'pos':'neg'}">${sg(R)}</td><td class="r num big ${pl>=0?'pos':'neg'}">${sg(pl*AED)} AED</td></tr>`}).join('')}</table></div>`}
 function card(c){const {o,px,mv,R,pl,risk}=c,{m,x,e,i}=o;
  const pos=Math.max(2,Math.min(98,33.3+R*33.3)),lv=liveOf(m);
  const near=G.find(g=>g.impact==='High'&&g.mk.includes(m.tag)&&g.t>new Date()&&g.t-new Date()<30*6e4);
@@ -372,7 +375,7 @@ function card(c){const {o,px,mv,R,pl,risk}=c,{m,x,e,i}=o;
   <div class="nb"><small>Stop</small><b>${f(e.stop,m.dp)}</b></div>
   <div class="nb"><small>Now <i class="dot ${lv?'on':''}" title="${lv?'live':'desk price'}"></i></small><b>${f(px,m.dp)}</b></div>
   <div class="mini"><div class="trk"><div class="e"></div><div class="m" style="left:${pos}%"></div></div><small>risk AED ${f(risk*AED,0)}</small></div>
-  <div class="pl"><b class="${pl>=0?'pos':'neg'}">${sg(pl*AED)} AED</b><small>${sg(pl)} $ · ${sg(R)}R</small></div>
+  <div class="pl"><b class="${pl>=0?'pos':'neg'}">${sg(pl*AED)} AED</b><small>${sg(R)}R</small></div>
   ${e.next?`<div class="nx">→ ${e.next}</div>`:''}
   ${near?`<div class="warn">⚠ ${near.items[0].title} in ${hm(near.t-new Date())} — no new trades 2 min either side</div>`:''}
  </div>`}
@@ -398,7 +401,7 @@ function render(){
  cards.innerHTML=STY==='3'?table(op):op.map(STY==='2'?ticket:card).join('');
  const idle=MK.filter(m=>!T.some(o=>o.m===m&&!done(o.e)));
  idle.innerHTML=idle.length?idle.map(m=>`<span data-c="${m.c}"><b>${m.n}</b> ${dirOf(M[m.c])==='NONE'?'waiting for first signal':'no open trade'}</span>`).join(' &nbsp; '):'';
- closedbox.innerHTML=cl.length?`<h3>Closed today · ${cl.length}</h3><table>${cl.map(c=>`<tr data-c="${c.o.m.c}"><td>${c.o.m.n}</td><td class="${c.o.e.side==='BUY'?'pos':'neg'}">${c.o.e.side}</td><td class="num dim">${c.o.e.time}</td><td class="r num ${c.mv>=0?'pos':'neg'}">${sg(c.R)}R</td><td class="r num ${c.pl>=0?'pos':'neg'}">${sg(c.pl*AED)} AED</td><td class="r num dim">${sg(c.pl)} $</td></tr>`).join('')}</table>`:'';
+ closedbox.innerHTML=cl.length?`<h3>Closed today · ${cl.length}</h3><table>${cl.map(c=>`<tr data-c="${c.o.m.c}"><td>${c.o.m.n}</td><td class="${c.o.e.side==='BUY'?'pos':'neg'}">${c.o.e.side}</td><td class="num dim">${c.o.e.time}</td><td class="r num ${c.mv>=0?'pos':'neg'}">${sg(c.R)}R</td><td class="r num ${c.pl>=0?'pos':'neg'}">${sg(c.pl*AED)} AED</td></tr>`).join('')}</table>`:'';
  const now=new Date();let ld='';
  cal.innerHTML=G.filter(g=>g.t>now).slice(0,7).map(g=>{const dk=dkey(g.t),hd=dk!==ld?`<div class="day">${dk===dkey(now)?'Today':dday(g.t)}</div>`:'';ld=dk;
   const m=g.t-now,l=g.items[0],fc=l.forecast?` · forecast ${l.forecast}, previous ${l.previous||'—'}`:'';
@@ -500,12 +503,12 @@ function renderHist(){const m=hmk();if(!m){histbox.innerHTML='';HC=null;return}i
  if(!JN||!JN.days){histbox.innerHTML=h+`<div class="dim">${m.n} history file unreachable, retrying</div>`;bindHist();return}
  const days=JN.days.filter(d=>d.trades&&d.trades.length).slice().reverse();
  const grp=ds=>{const pd=ds.map(d=>dPnl(m,d)).filter(v=>v!=null),tr=ds.flatMap(d=>d.trades).map(t=>tU(m,t)).filter(v=>v!=null);return{n:tr.length,win:tr.filter(v=>v>0).length,days:pd.length,green:pd.filter(v=>v>0).length,tot:pd.reduce((a,v)=>a+v,0)}};
- const box=(t,g,empty)=>g.days?`<div>${t}<b class="${g.tot>=0?'pos':'neg'}">${sg(g.tot*AED)} AED</b>${sg(g.tot)} $ · ${g.green}/${g.days} green days · ${g.win}/${g.n} trades won</div>`:`<div>${t}<b class="dim">no trades yet</b>${empty||''}</div>`;
+ const box=(t,g,empty)=>g.days?`<div>${t}<b class="${g.tot>=0?'pos':'neg'}">${sg(g.tot*AED)} AED</b>${g.green}/${g.days} green days · ${g.win}/${g.n} trades won</div>`:`<div>${t}<b class="dim">no trades yet</b>${empty||''}</div>`;
  const old=d=>m.split&&d<m.split;
  const sL=m.split?new Date(m.split+'T12:00:00Z').toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',timeZone:'UTC'}).replace(',',''):'',sD=sL.split(' ').slice(1).join(' ');
  const TOT=`<div class="tot">${m.split?box('Since '+sL,grp(days.filter(d=>!old(d.date))),'first day '+sL)+(days.some(d=>old(d.date))?box('Before '+sD,grp(days.filter(d=>old(d.date)))):''):box('Since '+(JN.summary&&JN.summary.since||JN.start),grp(days))}</div>`;
- const TK=bkey(),dayRow=(d,openIt)=>{const v=dPnl(m,d);return `<details class="hday" id="hd-${d.date}" ${openIt?'open':''}><summary><span>${d.label}</span><span class="${d.side==='BUY'?'pos':'neg'}">${d.side||''}</span><span class="dim">${d.trades.length} trade${d.trades.length>1?'s':''}${d.final?'':' · day running'}</span><b class="num ${v==null?'dim':v>=0?'pos':'neg'}">${v==null?'—':sg(v*AED)+' AED'}</b><span class="num dim usd">${v==null?'':sg(v)+' $'}</span></summary>
-   ${d.trades.map(t=>{const u=tU(m,t);return `<div class="htr"><span class="d">${t.time}</span><span class="${t.side==='BUY'?'pos':'neg'}">${t.side}</span><span><span class="dim">${m.tag(t)||''}</span> · ${m.info(t)} · <span class="dim">${HST[t.status]||t.status}</span></span><b class="num ${u==null?'dim':u>=0?'pos':'neg'}">${u==null?'open':sg(u*AED)+' AED'}</b><span class="num dim usd">${u==null?'':sg(u)+' $'}</span></div>`}).join('')}</details>`};
+ const TK=bkey(),dayRow=(d,openIt)=>{const v=dPnl(m,d);return `<details class="hday" id="hd-${d.date}" ${openIt?'open':''}><summary><span>${d.label}</span><span class="${d.side==='BUY'?'pos':'neg'}">${d.side||''}</span><span class="dim">${d.trades.length} trade${d.trades.length>1?'s':''}${d.final?'':' · day running'}</span><b class="num ${v==null?'dim':v>=0?'pos':'neg'}">${v==null?'—':sg(v*AED)+' AED'}</b><span class="num dim usd"></span></summary>
+   ${d.trades.map(t=>{const u=tU(m,t);return `<div class="htr"><span class="d">${t.time}</span><span class="${t.side==='BUY'?'pos':'neg'}">${t.side}</span><span><span class="dim">${m.tag(t)||''}</span> · ${m.info(t)} · <span class="dim">${HST[t.status]||t.status}</span></span><b class="num ${u==null?'dim':u>=0?'pos':'neg'}">${u==null?'open':sg(u*AED)+' AED'}</b><span class="num dim usd"></span></div>`}).join('')}</details>`};
  if(HV==='cal'){const byD={};days.forEach(d=>byD[d.date]=d);const ms=[...new Set(JN.days.map(d=>d.date.slice(0,7)))].sort(),tdy=new Date().toLocaleDateString('en-CA',TZ);
   if(!ms.includes(tdy.slice(0,7)))ms.push(tdy.slice(0,7));if(!HM||!ms.includes(HM))HM=ms[ms.length-1];const mi=ms.indexOf(HM);
   const [Y,Mo]=HM.split('-').map(Number),first=new Date(Date.UTC(Y,Mo-1,1)),nd=new Date(Date.UTC(Y,Mo,0)).getUTCDate();const cells=[];const lead=(first.getUTCDay()+6)%7;if(lead<5)for(let i=0;i<lead;i++)cells.push('<div></div>');
@@ -518,8 +521,8 @@ function renderHist(){const m=hmk();if(!m){histbox.innerHTML='';HC=null;return}i
  else if(HV==='today'){const td=days.find(d=>d.date===TK);h+=td?dayRow(td,true):`<div class="dim">No ${m.n} trade yet today${(M[m.c]&&M[m.c].message)?' · '+M[m.c].message:''}</div>`}
  else{const past=days.filter(d=>d.date!==TK);h+=past.length?past.slice(0,HALL?past.length:5).map(d=>dayRow(d,false)).join('')+(past.length>5?`<button class="hmore" data-more>${HALL?'Show last 5 days':'Show all '+past.length+' days'}</button>`:''):'<div class="dim">No earlier trades yet</div>'}
  h+=TOT;
- const lot={GOLD:'1 oz',USDJPY:'$1,000',OIL:'10 bbl for a full-size trade (1/3-size trades count one third)',US100:'$0.10 per point',SILVER:'50 oz for a size-1 trade (size-2 trades count double)'}[m.c];
- h+=`<div class="hnote">${m.n} only · source: ${m.n} desk journal (${m.file}), live since ${JN.summary&&JN.summary.since||JN.start}. Each trade at 0.01 lot = ${lot}, after the spread.${m.split?' Days before 19 Oct used the earlier rules (totals kept separate).':''}</div>`;
+ const lot={GOLD:'1 oz',USDJPY:'1,000 units',OIL:'10 bbl for a full-size trade (1/3-size trades count one third)',US100:'0.10 per point (0.37 AED)',SILVER:'50 oz for a size-1 trade (size-2 trades count double)'}[m.c];
+ h+=`<div class="hnote">${m.n} only · source: ${m.n} desk journal (${m.file}), live since ${JN.summary&&JN.summary.since||JN.start}. Each trade at 0.01 lot = ${lot}, after the spread.${m.split?' Days before '+new Date(m.split+'T12:00:00Z').toLocaleDateString('en-GB',{day:'numeric',month:'short',timeZone:'UTC'})+' used the earlier rules (totals kept separate).':''}</div>`;
  histbox.innerHTML=h;bindHist()}
 function bindHist(){
  histbox.querySelectorAll('[data-more]').forEach(b=>b.onclick=()=>{HALL=!HALL;renderHist()});
@@ -562,12 +565,12 @@ function renderDemo(){
  const rows=P.map(p=>{const m=MK.find(z=>z.ep===p.epic)||{n:p.name||p.epic,dp:2},lab=DEMO_MAP[p.dealId],[pA,pU]=demoMoney(p.upl,cur);
   const k=lab?lab.k.split('|'):null,who=k?`${k[2]} · ${k[4]}${lab.role==='part'?' · part':''}`:'not from the desk';
   return `<div class="dpos"><div class="l1"><span><b class="${p.direction==='BUY'?'pos':'neg'}">${p.direction}</b> ${m.n} <span class="dim">${f(p.size,Number.isInteger(+p.size)?0:2)}</span></span><span class="pl ${(+p.upl||0)>=0?'pos':'neg'}">${sg(pA)} AED</span></div>
-   <div class="l2"><span>in ${f(p.level,m.dp)} · stop ${p.stop!=null?f(p.stop,m.dp):'—'}${p.profit!=null?' · target '+f(p.profit,m.dp):''}</span><span>${sg(pU)} $</span></div><div class="l2"><span>${who}</span></div></div>`}).join('');
+   <div class="l2"><span>in ${f(p.level,m.dp)} · stop ${p.stop!=null?f(p.stop,m.dp):'—'}${p.profit!=null?' · target '+f(p.profit,m.dp):''}</span></div><div class="l2"><span>${who}</span></div></div>`}).join('');
  const nc=(DEMO.closed_today||[]).length;
- acc.innerHTML=head+`<div class="big ${tot>=0?'pos':'neg'}">${sg(tA)} AED</div><div class="sub" style="font-family:var(--mono)">${sg(tU)} $ · closed ${sg(rA)} AED + open ${sg(uA)} AED</div>
+ acc.innerHTML=head+`<div class="big ${tot>=0?'pos':'neg'}">${sg(tA)} AED</div><div class="sub" style="font-family:var(--mono)">closed ${sg(rA)} AED + open ${sg(uA)} AED</div>
   <svg class="eq" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><line x1="0" x2="${w}" y1="${Y(0)}" y2="${Y(0)}" stroke="var(--line)" vector-effect="non-scaling-stroke"/>${ep?`<path d="${ep}" fill="none" stroke="${col}" stroke-width="1.6" vector-effect="non-scaling-stroke"/>`:''}</svg>
-  <div class="kv">Balance<b>AED ${f(bA,0)}</b></div><div class="usd">$${f(bU,0)}</div>
-  <div class="kv">Equity now<b>AED ${f(eA,0)}</b></div><div class="usd">$${f(eU,0)}</div>
+  <div class="kv">Balance<b>AED ${f(bA,0)}</b></div>
+  <div class="kv">Equity now<b>AED ${f(eA,0)}</b></div>
   <div class="kv">Open positions<b>${P.length}</b></div><div class="kv">Closed today<b>${nc}</b></div>
   ${rows}<div class="dnote">${a.name||'Demo'} · ${cur} · updated ${t12(new Date(DEMO.at))}${DEMO_ERR?' · last read failed: '+DEMO_ERR:''}</div>`;
 }
