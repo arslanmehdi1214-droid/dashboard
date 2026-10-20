@@ -1,5 +1,5 @@
 {
- "open_positions": 0,
+ "open_positions": 1,
  "risk_usd": 13.614703880190607,
  "trades": {
   "GOLD|2026-10-20|1:06 pm|BUY|FILL range fade": {
@@ -37,6 +37,23 @@
    "market": "OIL",
    "state": "not entered",
    "why": "desk trade seen 141 min after entry, status be"
+  },
+  "OIL|2026-10-20|3:36 pm|BUY|Open \u00b1 1 range": {
+   "desk_price": 101.04,
+   "market": "OIL",
+   "opened_at": "Tue 20 Oct 3:37 PM",
+   "rest": {
+    "id": "00000000-6c1a-426e-0495-7fc60004511e",
+    "level": 101.035,
+    "open": true,
+    "size": 1.2,
+    "tp": null
+   },
+   "risk_aed": 16.48,
+   "risk_usd": 4.54,
+   "side": "BUY",
+   "state": "open",
+   "stop": 97.3
   },
   "US100|2026-10-20|2:48 pm|BUY|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am": {
    "at": "Tue 20 Oct 3:24 PM",
