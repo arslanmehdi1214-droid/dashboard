@@ -381,19 +381,19 @@
      "side": "BUY",
      "tag": "FILL range fade",
      "price": 4117.43,
-     "stop": 4117.43,
+     "stop": 4082.35,
      "stop0": 4082.35,
-     "half_px": 4124.45,
-     "half": true,
-     "half_time": "1:16 pm",
+     "half_px": null,
+     "half": false,
+     "half_time": null,
      "size": 0.1,
-     "status": "be",
+     "status": "open",
      "first": true,
-     "exit": 4117.43,
-     "exit_time": "1:46 pm",
-     "pnl": 3.51,
+     "exit": null,
+     "exit_time": null,
+     "pnl": null,
      "rwf": null,
-     "next": null
+     "next": "Hold to the stop 4082.35 or the day-end close \u00b7 no half-close (v2.11)"
     }
    ],
    "skipped": 0,
@@ -407,8 +407,8 @@
   "decided": 16,
   "days": 91.7,
   "perday": 1.67,
-  "avg_pnl": -7.71,
-  "closed": 20,
-  "total_pnl_01": -15.42
+  "avg_pnl": -8.3,
+  "closed": 19,
+  "total_pnl_01": -15.77
  }
 }

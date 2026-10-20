@@ -7,56 +7,44 @@
    "name": "Gold",
    "symbol": "XAU/USD",
    "live": true,
-   "version": "v2.10",
+   "version": "v2.11",
    "actions": [
     {
      "time": "1:06 pm",
      "kind": "OPEN",
      "side": "BUY",
-     "text": "OPEN BUY now ~4117.43 | stop 4082.35 (35.1 away) | close half at 4124.45 | signal FILL range fade"
-    },
-    {
-     "time": "1:16 pm",
-     "kind": "HALF",
-     "side": "BUY",
-     "text": "CLOSE HALF of your BUY from 1:06 pm now at 4124.45, then MOVE STOP of the rest to 4117.43 (entry)"
-    },
-    {
-     "time": "1:46 pm",
-     "kind": "STOP",
-     "side": "BUY",
-     "text": "BUY from 1:06 pm: stop at entry hit at 4117.43 - the rest is closed, half was banked"
+     "text": "OPEN BUY now ~4117.43 | stop 4082.35 (35.1 away) | no half-close: hold to the stop or the day-end close | signal FILL range fade"
     }
    ],
    "actions_day": "2026-10-20",
    "feed_error": false,
    "state": "buy",
-   "message": "BUY day \u2014 up to 2 BUY trades. Close HALF at the \u00bd level, then move the stop to entry; the rest runs to its stop or the day-end close at 12:00 am Dubai.",
+   "message": "BUY day \u2014 up to 2 BUY trades. Each runs to its stop or the day-end close at 12:00 am Dubai (no half-close).",
    "price": 4122.16,
    "close_at": "12:00 am",
    "change": -20.16,
    "size": 0.1,
    "datr": 70.17,
-   "open_now": 0,
+   "open_now": 1,
    "entries": [
     {
      "time": "1:06 pm",
      "side": "BUY",
      "tag": "FILL range fade",
      "price": 4117.43,
-     "stop": 4117.43,
+     "stop": 4082.35,
      "stop0": 4082.35,
-     "half_px": 4124.45,
-     "half": true,
-     "half_time": "1:16 pm",
+     "half_px": null,
+     "half": false,
+     "half_time": null,
      "size": 0.1,
-     "status": "be",
+     "status": "open",
      "first": true,
-     "exit": 4117.43,
-     "exit_time": "1:46 pm",
-     "pnl": 3.51,
+     "exit": null,
+     "exit_time": null,
+     "pnl": null,
      "rwf": null,
-     "next": null
+     "next": "Hold to the stop 4082.35 or the day-end close \u00b7 no half-close (v2.11)"
     }
    ],
    "spark": [
@@ -1196,10 +1184,10 @@
      "entries": 1,
      "stopped": 0,
      "eod": 0,
-     "running": 0,
+     "running": 1,
      "rw": 0,
      "rd": 0,
-     "pnl": 3.51
+     "pnl": null
     },
     {
      "date": "2026-10-19",
@@ -1346,11 +1334,11 @@
    },
    "stats": {
     "direction": "\u2014",
-    "days": "72\u201373% green",
-    "perday": "1.7",
-    "win": "79\u201381%",
+    "days": "45\u201346% green",
+    "perday": "1.5",
+    "win": "47\u201350%",
     "pnl": "\u2014",
-    "source": "MT4 backtest v2.10, his run 2020\u20132026 (worst day \u22122.1R)"
+    "source": "MT4 backtest v2.11, his runs 20 Oct 2020\u20132026 ($162/day 2020\u201322, $189/day 2023\u201326 at $1,000 risk; worst day \u22123.6R)"
    },
    "journal": {
     "since": "03 Oct 2026",
@@ -1359,9 +1347,9 @@
     "decided": 16,
     "days": 91.7,
     "perday": 1.67,
-    "avg_pnl": -7.71,
-    "closed": 20,
-    "total_pnl_01": -15.42
+    "avg_pnl": -8.3,
+    "closed": 19,
+    "total_pnl_01": -15.77
    }
   },
   "SILVER": {
@@ -1393,8 +1381,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 57.204,
-   "change": 0.133,
+   "price": 57.195,
+   "change": 0.124,
    "entries": [],
    "spark": [
     [
@@ -2519,10 +2507,10 @@
     ],
     [
      "3:20 pm",
-     57.204,
+     57.195,
      57.206,
      57.227,
-     57.191
+     57.18
     ]
    ],
    "journal": {
@@ -2592,8 +2580,8 @@
    "net_label": "Net R / $ at $100 risk (v1.03 sizes)",
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Each trade closes half at its \u00bd level, then the rest's stop moves to the entry; everything closes at the 7:00 pm Dubai close.",
-   "price": 158.192,
-   "change_pips": -33.4,
+   "price": 158.188,
+   "change_pips": -33.8,
    "atr_pips": 84.0,
    "entries": [
     {
@@ -2620,7 +2608,7 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": 0.2566,
+     "r_now": 0.2597,
      "rwf": 1,
      "spread": 1.2
     },
@@ -3769,9 +3757,9 @@
     ],
     [
      "3:20 pm",
-     158.192,
+     158.188,
      158.166,
-     158.194,
+     158.201,
      158.166
     ]
    ],
@@ -3825,7 +3813,7 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": 0.2566,
+       "r_now": 0.2597,
        "rwf": 1,
        "spread": 1.2
       },
@@ -4318,8 +4306,8 @@
    "net_label": "Net $ per barrel (v1.03 sizes)",
    "state": "buy",
    "message": "PAPER BUY day \u2014 later signals today are BUY only. Close half at the \u00bd level, then move the stop to entry; everything closes at 9:00 pm Dubai. No new trades after 5:30 pm (one late first trade allowed).",
-   "price": 100.45,
-   "change": 2.42,
+   "price": 100.55,
+   "change": 2.52,
    "entries": [
     {
      "time": "10:00 am",
@@ -5550,9 +5538,9 @@
     ],
     [
      "3:20 pm",
-     100.45,
+     100.55,
      100.33,
-     100.46,
+     100.56,
      100.32
     ]
    ],
@@ -6010,8 +5998,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "buy",
    "message": "1 paper trade today (1 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 12:00 am Dubai close. At most 2 trades a day.",
-   "price": 29367.2,
-   "change": -187.2,
+   "price": 29366.4,
+   "change": -188.0,
    "entries": [
     {
      "time": "2:48 pm",
@@ -6019,11 +6007,11 @@
      "name": "REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am",
      "role": "filler",
      "price": 29400.0,
-     "entry": 29402.0,
+     "entry": 29402.5,
      "stop": 29187.7,
      "stop0": 29187.7,
      "stop_pts": 212.3,
-     "half_px": 29509.1,
+     "half_px": 29509.9,
      "half": false,
      "half_time": null,
      "size": "full",
@@ -6036,9 +6024,9 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": -34.8,
+     "live": -36.1,
      "rwf": null,
-     "spread": 2.0
+     "spread": 2.5
     }
    ],
    "spark": [
@@ -7241,7 +7229,7 @@
     ],
     [
      "3:20 pm",
-     29367.2,
+     29366.4,
      29361.2,
      29370.9,
      29357.6
@@ -7275,11 +7263,11 @@
        "name": "REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am",
        "role": "filler",
        "price": 29400.0,
-       "entry": 29402.0,
+       "entry": 29402.5,
        "stop": 29187.7,
        "stop0": 29187.7,
        "stop_pts": 212.3,
-       "half_px": 29509.1,
+       "half_px": 29509.9,
        "half": false,
        "half_time": null,
        "size": "full",
@@ -7292,9 +7280,9 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": -34.8,
+       "live": -36.1,
        "rwf": null,
-       "spread": 2.0
+       "spread": 2.5
       }
      ],
      "final": false
