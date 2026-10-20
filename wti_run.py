@@ -14,9 +14,9 @@ PORTAL = os.path.join(HERE, 'docs', 'data.json')
 EPIC = os.environ.get('CAPITAL_EPIC_WTI', 'OIL_CRUDE')
 MIN_SPREAD = 0.02                     # the paper result never uses less than 2 cents a barrel
 PASS = dict(green=60.0, pf=1.10, months=3)
-RULES = 'v1.03'                       # journal days are tagged; the card's record counts only the current rules
-BACKTEST = dict(direction='—', days='68.8% green / 93.9% traded', perday='1.91', win='85.3% / 83.6%', pf='1.36 / 1.20', net='+$35,232 / +$22,009 at 0.30 + 0.10 lots',
-                source='MT4 v1.03, his runs 18 Oct 2026, 2020-01 to 2026-09, 3,355 trades; spread 2 / spread 4 (worst day -$1,770)')
+RULES = 'v1.04'                       # journal days are tagged; the card's record counts only the current rules
+BACKTEST = dict(direction='—', days='65.7% green / 93.9% traded', perday='1.91', win='83.6%', pf='1.31', net='+$32,010 at 0.30 + 0.10 lots (v1.03: +$22,009)',
+                source='MT4 v1.04, his run 20 Oct 2026, 2020-01 to 2026-09, 3,355 trades, spread 4 (worst day -$1,862); $22.5/day 2020-22, $14.8/day 2023-26')
 
 def loadj(p, d):
     try: return json.load(open(p))
@@ -70,13 +70,13 @@ def row(t, now, day_over):
     res = None if t['exit'] is None else round(t['res'], 3) if t.get('res') is not None else round((t['exit'] - t['px']) * t['dir'] - sp, 3)
     w = 1.0 if t['size'] == 'full' else 1 / 3
     return dict(time=dubai(t['t']), side='BUY' if t['dir'] == 1 else 'SELL', name=t['name'], price=round(t['px'], 2), stop=round(t['stop'], 2), stop0=round(t.get('stop0', t['stop']), 2),
-                half_px=(None if t.get('half_px') is None else round(t['half_px'], 2)), half=bool(t.get('half')), late=bool(t.get('late')),
+                half_px=(None if t.get('half_px') is None else round(t['half_px'], 2)), half=bool(t.get('half')), part=t.get('part', 0.5), late=bool(t.get('late')),
                 stop_usd=round(abs(t['px'] - t.get('stop0', t['stop'])), 2), size=t['size'], first=t['first'], status=st,
                 exit=None if t['exit'] is None else round(t['exit'], 2), exit_time=None if t['exit_t'] is None else dubai(t['exit_t']),
                 res=res, res_sized=None if res is None else round(res * w, 3), rwf=t['rwf'], spread=round(sp, 3))
 
 def summary(J, day=None):
-    """Paper record of the CURRENT rules only (v1.03 days); older v1.02 days stay in the journal but are not mixed in."""
+    """Paper record of the CURRENT rules only (v1.04 days from 20 Oct 2026); older v1.02 / v1.03 days stay in the journal but are not mixed in."""
     D3 = [d for d in J.get('days', []) if d.get('rules') == RULES]
     if not D3: return dict(since=None, trades=0, rules=RULES)
     J = dict(start=D3[0]['date'], days=D3)
@@ -94,14 +94,14 @@ def summary(J, day=None):
 def jdays(J): return J.get('days', [])[-30:][::-1]
 
 def base_card(A=None):
-    note = ('14-day range ' + ('—' if A is None else f'${A:.2f}') + ' · stop: buys 1 range, sells ¾ range · close half at +0.05 (buys) / +0.15 (sells) '
+    note = ('14-day range ' + ('—' if A is None else f'${A:.2f}') + ' · stop: buys 1 range, sells ¾ range · close 25% at +0.05 (buys) / +0.15 (sells) '
             'x risk, then stop to entry · day lock +2R/+1R · no new trades after 4:30 pm broker (one late first trade to 7:00 pm) · close 8:00 pm broker = '
             '9:00 pm Dubai, 10:00 pm in winter · size: first trade and buys ⅓, later sells full while the day is in profit')
-    return dict(code='OIL', name='Oil (WTI)', symbol='WTI · Capital.com US Crude', live=False, paper=True, status='Paper', version='v1.03',
+    return dict(code='OIL', name='Oil (WTI)', symbol='WTI · Capital.com US Crude', live=False, paper=True, status='Paper', version='v1.04',
                 unit='usd', dp=2, stats=BACKTEST, pass_bar=PASS, day_note=note,
                 what_note='This page tracks whether live WTI signals do as well as the backtest. Decision after about 3 months.',
-                cost_note="Results are $ per barrel (v1.03 sizes: full or ⅓), from the signal price with the backtest's slip, after Capital.com's spread (at least 2 cents).",
-                net_label='Net $ per barrel (v1.03 sizes)')
+                cost_note="Results are $ per barrel (sizes: full or ⅓), from the signal price with the backtest's slip, after Capital.com's spread (at least 2 cents).",
+                net_label='Net $ per barrel (v1.04)')
 
 def main(feed=None, get=None, now=None):
     now = now or F.broker_now(); day = now.normalize()
@@ -135,7 +135,7 @@ def main(feed=None, get=None, now=None):
     if P is None: state, msg = 'none', 'No trading today (not enough history or the day after a long break - same rule as the EA).'
     elif rows:
         side = rows[0]['side']; state = side.lower()
-        msg = (f"PAPER {side} day — later signals today are {side} only. Close half at the ½ level, then move the stop to entry; "
+        msg = (f"PAPER {side} day — later signals today are {side} only. Close 25% at the part level, then move the stop to entry; "
                f"everything closes at {dubai(eod)} Dubai. No new trades after {dubai(day + pd.Timedelta(minutes=W.LAST_ENTRY))} (one late first trade allowed).")
     elif last_sig: state, msg = 'none', 'No paper trade today.'
     else: state, msg = 'waiting', 'Waiting for the first signal.'

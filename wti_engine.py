@@ -1,4 +1,4 @@
-"""WTI_DAYTRADE v1.03 rules (v1.02 signals + v1.03 exits/times/sizes) as a PAPER engine for the Signal Desk - same logic as the EA / its line-by-line Python port
+"""WTI_DAYTRADE v1.04 rules (= v1.03 + part-close 25% instead of 50%; his MT4 run 20 Oct 2026) as a PAPER engine for the Signal Desk - same logic as the EA / its line-by-line Python port
 (wti_ea_port.py: 4,300 of 4,300 MT4 trades 2020-2026 same minute and direction). Prices are Bid; broker clock = New York + 7 h.
 History = finished broker days: [date 'YYYY-MM-DD', open, high, low, close, settle] where settle = open of the first bar 21:30-21:35.
 Rules:
@@ -26,7 +26,8 @@ EDG = (0.05, 0.10, 0.20, 0.40); SLP = (0.013, 0.017, 0.020, 0.023, 0.025)   # MT
 RWF_X, MIN_DIST, ROUND_GAP = 0.3, 0.05, 0.15
 # ---- v1.03 exits / times / sizes (same inputs as the EA WTI_DAYTRADE v1.03, his MT4 runs 18 Oct 2026)
 BUY_STOP, SELL_STOP = 1.00, 0.75          # x 14-day range
-BUY_HALF, SELL_HALF = 0.05, 0.15          # close half at +k x the trade's risk, then the rest's stop goes to the entry price
+BUY_HALF, SELL_HALF = 0.05, 0.15          # close PART at +k x the trade's risk, then the rest's stop goes to the entry price
+PART = 0.25                               # v1.04: part closed at that level (v1.03 = 0.5)
 LOCK_PEAK, LOCK_FLOOR = 2.0, 1.0          # day up +2R -> close all if it falls back to +1R; no more trades that day
 LAST_ENTRY, LATE_FIRST, CLOSE_HM = 16 * 60 + 30, 19 * 60, 20 * 60      # broker minutes
 MIN_SP = 0.02
@@ -137,7 +138,7 @@ def run_day(P, t, O, H, L, C, now=None, spread=None, final=False):
                 b = min(g['stop'], O[m]) if d > 0 else max(g['stop'], O[m])
                 close_leg(g, b, m, 'be' if g['half'] else 'stopped'); continue
             if not g['half'] and ((d > 0 and H[m] >= g['half_px']) or (d < 0 and L[m] <= g['half_px'])):
-                g['bank'] += 0.5 * d * ((g['half_px'] if d > 0 else g['half_px'] + g['sp']) - g['e']) / g['sd']; g['q'] = 0.5; g['half'] = True
+                g['bank'] += PART * d * ((g['half_px'] if d > 0 else g['half_px'] + g['sp']) - g['e']) / g['sd']; g['q'] = 1.0 - PART; g['half'] = True
                 g['half_t'] = t[m]; g['stop'] = float(g['e'] if d > 0 else g['e'] - g['sp'])      # rest's stop = entry price (bid terms)
         tot = banked + sum(mark(g, C[m]) for g in legs if g['on']); peak = max(peak, tot)
         if not off and peak >= LOCK_PEAK and tot <= LOCK_FLOOR:
@@ -158,7 +159,7 @@ def run_day(P, t, O, H, L, C, now=None, spread=None, final=False):
             if dn >= tg: rwf = 0; decided = True; break
         res = None if g['on'] else round(g['bank'] * g['sd'], 4)          # $ per barrel for a FULL-size trade, spread included
         out.append(dict(i=m, t=t[m], dir=d, px=px, level=g['level'], fam=g['fam'], name=g['name'], stop=g['stop'], stop0=g['stop0'],
-                        half_px=g['half_px'], half=g['half'], first=g['first'], late=g['late'], size='full' if g['w'] == 1.0 else '1/3',
+                        half_px=g['half_px'], half=g['half'], part=PART, first=g['first'], late=g['late'], size='full' if g['w'] == 1.0 else '1/3',
                         status=('open' if g['on'] else g['why']), exit=g['exit'], exit_t=(None if g['exit_i'] is None else t[g['exit_i']]),
                         res=res, R=(None if g['on'] else round(g['bank'], 4)), rwf=rwf, rwf_final=decided or has_close or final, A=A, spread=g['sp']))
     return out
