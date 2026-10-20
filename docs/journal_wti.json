@@ -295,7 +295,7 @@
      "price": 99.55,
      "stop": 95.81,
      "stop0": 95.81,
-     "half_px": 99.78,
+     "half_px": 99.8,
      "half": false,
      "late": false,
      "stop_usd": 3.74,
@@ -307,17 +307,17 @@
      "res": null,
      "res_sized": null,
      "rwf": 0,
-     "spread": 0.04
+     "spread": 0.06
     },
     {
      "time": "11:15 am",
      "side": "BUY",
      "name": "Whole dollar",
      "price": 99.02,
-     "stop": 95.28,
+     "stop": 99.04,
      "stop0": 95.28,
-     "half_px": 99.25,
-     "half": false,
+     "half_px": 99.23,
+     "half": true,
      "late": false,
      "stop_usd": 3.74,
      "size": "1/3",
@@ -328,7 +328,7 @@
      "res": null,
      "res_sized": null,
      "rwf": null,
-     "spread": 0.04
+     "spread": 0.02
     }
    ],
    "range_usd": 3.74,
