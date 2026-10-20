@@ -1,5 +1,5 @@
 {
- "open_positions": 3,
+ "open_positions": 2,
  "risk_usd": 13.614703880190607,
  "trades": {
   "GOLD|2026-10-20|1:06 pm|BUY|FILL range fade": {
@@ -72,9 +72,10 @@
    "market": "USDJPY",
    "opened_at": "Tue 20 Oct 4:15 PM",
    "part": {
+    "closed_by": "Capital.com stop/target",
     "id": "00000000-6c1a-8afd-0495-7fc60004511e",
     "level": 158.091,
-    "open": true,
+    "open": false,
     "size": 4800.0,
     "tp": 157.972
    },
