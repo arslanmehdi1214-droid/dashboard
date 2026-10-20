@@ -306,7 +306,7 @@
      "exit_time": null,
      "res": null,
      "res_sized": null,
-     "rwf": null,
+     "rwf": 0,
      "spread": 0.04
     }
    ],
@@ -319,8 +319,8 @@
   "since": "19 Oct 2026",
   "weekdays": 2,
   "trades": 1,
-  "decided": 0,
-  "direction": null,
+  "decided": 1,
+  "direction": 0.0,
   "days": 50.0,
   "perday": 0.5,
   "closed": 0,
