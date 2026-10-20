@@ -133,7 +133,10 @@ async function demoRoute(req, env) {
       const from = brokerDayStartUtc(), iso = d => d.toISOString().slice(0, 19);
       let closed = [], realized = 0, txErr = null;
       try {
-        const t = await capGet(env, '/api/v1/history/transactions?type=TRADE&from=' + iso(from) + '&to=' + iso(new Date(Date.now() + 60000)));
+        const secs = Math.max(60, Math.floor((Date.now() - from.getTime()) / 1000));
+        let t;
+        try { t = await capGet(env, '/api/v1/history/transactions?type=TRADE&lastPeriod=' + secs); }
+        catch (e1) { t = await capGet(env, '/api/v1/history/transactions?type=TRADE&from=' + iso(from) + '&to=' + iso(new Date(Date.now() - 1000))); }
         closed = (t.transactions || []).map(x => ({ t: x.dateUtc, name: x.instrumentName, amount: parseFloat(x.size), currency: x.currency, note: x.note, ref: x.reference }));
         realized = closed.reduce((s, x) => s + (isFinite(x.amount) ? x.amount : 0), 0);
       } catch (e) { txErr = String(e.message || e); }
