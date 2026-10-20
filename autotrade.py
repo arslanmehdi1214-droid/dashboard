@@ -22,13 +22,15 @@ STATE_FILE = os.path.join(HERE, 'autotrade_state.json')
 LOG_FILE = os.path.join(HERE, 'autotrade_log.json')
 PORTAL = os.path.join(HERE, 'docs', 'data.json')
 DEMO_BASE = 'https://demo-api-capital.backend-capital.com'
-CONFIG_FILE = os.path.join(HERE, 'autotrade_config.json')   # {"on": true, "risk_usd": 100, "max_age_min": 5, "split": true} - edit this file to switch off / resize
+CONFIG_FILE = os.path.join(HERE, 'autotrade_config.json')   # {"on": true, "risk_aed": 20, "max_age_min": 5, "split": true} - edit this file to switch off / resize
 def _cfg():
     try:
         with open(CONFIG_FILE) as f: return json.load(f)
     except Exception: return {}
 CFG = _cfg()
-RISK_USD = float(os.environ.get('AUTOTRADE_RISK_USD', CFG.get('risk_usd', 100)))
+AED_PER_USD = 3.6725
+RISK_USD = float(os.environ['AUTOTRADE_RISK_USD']) if os.environ.get('AUTOTRADE_RISK_USD') else (
+    float(CFG['risk_aed']) / AED_PER_USD if 'risk_aed' in CFG else float(CFG.get('risk_usd', 100)))   # config "risk_aed" wins (AED account)
 MAX_AGE_MIN = float(os.environ.get('AUTOTRADE_MAX_AGE_MIN', CFG.get('max_age_min', 5)))
 SPLIT = bool(CFG.get('split', True))
 MAX_NEW_PER_PASS = 8          # new positions per minute, all markets
@@ -229,13 +231,14 @@ def run_once(api=None, portal=PORTAL, now=None):
             if p_size < rules['min'] or r_size < rules['min']:          # too small to split: one position, part handled by the stop move
                 p_size = 0.0; r_size = max(rnd_size(size, rules), rules['min'])
             side = 'BUY' if e['side'] == 'BUY' else 'SELL'; stop = rnd_px(e['stop'], rules); tp = rnd_px(e.get('half_px'), rules)
-            T[k] = dict(market=code, state='open', side=side, stop=float(e['stop']), desk_price=px, opened_at=stamp, risk_usd=round(RISK_USD * weight(code, e), 2))
+            real_aed = round((p_size + r_size) * usd_per_unit * AED_PER_USD, 2)      # what the first stop really costs after lot rounding / minimum size
+            T[k] = dict(market=code, state='open', side=side, stop=float(e['stop']), desk_price=px, opened_at=stamp, risk_usd=round(RISK_USD * weight(code, e), 2), risk_aed=real_aed)
             for role, sz, prof in (('part', p_size, tp), ('rest', r_size, None)):
                 if sz <= 0: continue
                 stt, did, lvl, why = api.open(cfg['epic'], side, sz, stop, prof)
                 if stt == 'ACCEPTED' and did:
                     T[k][role] = dict(id=did, size=sz, level=lvl, tp=prof, open=True); n_open += 1
-                    note(code, f'OPEN {side} {role}', f'{k} size {sz} at {lvl} stop {stop}' + (f' target {prof}' if prof else ''))
+                    note(code, f'OPEN {side} {role}', f'{k} size {sz} at {lvl} stop {stop}' + (f' target {prof}' if prof else '') + f' | trade risk {real_aed} AED')
                 else:
                     note(code, f'open {role} REJECTED', f'{k} size {sz} stop {stop}: {stt} {why}', False)
             if not any((T[k].get(r) or {}).get('open') for r in ('part', 'rest')): T[k]['state'] = 'not entered'; T[k]['why'] = 'rejected by Capital.com'
