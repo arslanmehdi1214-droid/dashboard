@@ -47,6 +47,8 @@ svg.spk{display:block;width:100%;height:28px;margin-top:8px}
 /* account */
 .acc{margin-top:28px;background:var(--panel);border-radius:14px;padding:16px}
 .acc .big{font:700 28px var(--mono);line-height:1.2}
+.dpos{border-top:1px solid var(--line);padding:8px 0 6px;font:500 12.5px Inter}.dpos .l1{display:flex;justify-content:space-between;gap:8px}.dpos .l2{display:flex;justify-content:space-between;gap:8px;font:500 11.5px var(--mono);color:var(--dim);margin-top:2px}
+.dpos .pl{font:600 13px var(--mono)}.dpos .l2 span:last-child{white-space:nowrap}.dnote{font:500 11.5px Inter;color:var(--dim);margin-top:6px}
 .acc .sub{font:500 13px Inter;color:var(--dim)}
 svg.eq{display:block;width:100%;height:56px;margin:12px 0}
 .kv{display:flex;justify-content:space-between;padding:7px 0;font:500 13px Inter;color:var(--dim)}
@@ -241,7 +243,7 @@ td{padding:9px 4px;border-bottom:1px solid var(--line)}td.r{text-align:right}
   <div class="src" id="src_note">News: Walter Bloomberg + FinancialJuice (Telegram, live) · checked every 10 seconds</div>
  </aside>
 </main>
-<div class="mock"><span id="deskstat">Loading desk data…</span> · live prices Capital.com · 0.01-lot values per market still to be checked against Blueberry's contract specs · <a href="old.html" style="color:var(--gold)">Results &amp; journal (old desk) ↗</a></div>
+<div class="mock"><span id="deskstat">Loading desk data…</span> · live prices Capital.com · left panel = your Capital.com demo account (the desk's auto-trader trades there) · <a href="old.html" style="color:var(--gold)">Results &amp; journal (old desk) ↗</a></div>
 <nav class="mtabs" id="mtabs"><button data-t="mk">Account</button><button data-t="tr">Trades</button><button data-t="nw">News</button></nav>
 
 <script>
@@ -391,10 +393,7 @@ function render(){
  const ev=equity(),w=300,h=56,lo=Math.min(0,...ev),hi=Math.max(0,...ev),r=hi-lo||1,Y=v=>(3+(h-6)*(1-(v-lo)/r)).toFixed(1);
  const ep=ev.length>1?ev.map((v,i)=>(i?'L':'M')+(i/(ev.length-1)*w).toFixed(1)+','+Y(v)).join(''):'',col=tot>=0?'var(--buy)':'var(--sell)';
  const used=Math.max(0,-tot);
- acc.innerHTML=`<h3>Today · model account</h3><div class="big ${tot>=0?'pos':'neg'}">${sg(tot*AED)} AED</div><div class="sub" style="font-family:var(--mono)">${sg(tot)} $</div><div class="sub">Blueberry $25K · 0.01 lot</div>
-  <svg class="eq" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><line x1="0" x2="${w}" y1="${Y(0)}" y2="${Y(0)}" stroke="var(--line)" vector-effect="non-scaling-stroke"/>${ep?`<path d="${ep}" fill="none" stroke="${col}" stroke-width="1.6" vector-effect="non-scaling-stroke"/>`:''}</svg>
-  <div class="kv">Daily loss used<b>AED ${f(used*AED,0)} / ${f(1000*AED,0)}</b></div><div class="usd">$${f(used,0)} / $1,000</div><div class="bar"><i style="width:${Math.min(100,used/10)}%;background:${used>700?'var(--sell)':used>400?'var(--amber)':'var(--buy)'}"></i></div>
-  <div class="kv">Static floor<b>AED ${f(22500*AED,0)}</b></div><div class="usd">$22,500</div><div class="kv">Phase 1 target<b class="dim">not started</b></div>`;
+ try{renderDemo()}catch(e){acc.innerHTML='<h3>Capital.com demo account</h3><div class="sub">could not draw: '+e.message+'</div>'}
  oth.textContent=`Open trades · ${op.length}`;
  cards.innerHTML=STY==='3'?table(op):op.map(STY==='2'?ticket:card).join('');
  const idle=MK.filter(m=>!T.some(o=>o.m===m&&!done(o.e)));
@@ -479,7 +478,7 @@ sty.querySelectorAll('button').forEach(b=>b.onclick=()=>{STY=b.dataset.s;sty.que
 /* ---- trade history + P&L calendar, ONE PER MARKET (each market's own journal file, never mixed). Every trade valued at 0.01 lot
    after the spread, from the journal's own result: Gold pnl $/oz x 1 oz · USD/JPY pips on $1,000 · Oil res $/bbl x 10 bbl · Nasdaq res pts x $0.10 */
 const HMK=[
- {c:'GOLD',n:'Gold',file:'journal.json',split:'2026-10-19',oldv:'v2.06',newv:'v2.10',usd:t=>t.pnl,
+ {c:'GOLD',n:'Gold',file:'journal.json',split:'2026-10-20',oldv:'v2.10',newv:'v2.11',usd:t=>t.pnl,
   tag:t=>t.tag,info:t=>`in ${f(t.price,2)} · stop ${f(t.stop0??t.stop,2)}${t.half_px!=null?` · ${t.part!=null?Math.round(t.part*100)+'%':'½'} ${f(t.half_px,2)}${t.half?' ✓':''}`:''}${t.exit!=null?` · out ${f(t.exit,2)}`:''}`},
  {c:'USDJPY',n:'USD/JPY',file:'journal_usdjpy.json',usd:t=>t.pips==null||t.exit==null?null:t.pips*10/t.exit,
   tag:t=>t.name||t.sig,info:t=>`in ${f(t.price,3)} · stop ${f(t.stop,3)}${t.exit!=null?` · out ${f(t.exit,3)}`:''}${t.pips!=null?` · ${sg(t.pips,1)} pips`:''}`},
@@ -503,7 +502,8 @@ function renderHist(){const m=hmk();if(!m){histbox.innerHTML='';HC=null;return}i
  const grp=ds=>{const pd=ds.map(d=>dPnl(m,d)).filter(v=>v!=null),tr=ds.flatMap(d=>d.trades).map(t=>tU(m,t)).filter(v=>v!=null);return{n:tr.length,win:tr.filter(v=>v>0).length,days:pd.length,green:pd.filter(v=>v>0).length,tot:pd.reduce((a,v)=>a+v,0)}};
  const box=(t,g,empty)=>g.days?`<div>${t}<b class="${g.tot>=0?'pos':'neg'}">${sg(g.tot*AED)} AED</b>${sg(g.tot)} $ · ${g.green}/${g.days} green days · ${g.win}/${g.n} trades won</div>`:`<div>${t}<b class="dim">no trades yet</b>${empty||''}</div>`;
  const old=d=>m.split&&d<m.split;
- const TOT=`<div class="tot">${m.split?box('Since Mon 19 Oct',grp(days.filter(d=>!old(d.date))),'first day Mon 19 Oct')+(days.some(d=>old(d.date))?box('Before 19 Oct',grp(days.filter(d=>old(d.date)))):''):box('Since '+(JN.summary&&JN.summary.since||JN.start),grp(days))}</div>`;
+ const sL=m.split?new Date(m.split+'T12:00:00Z').toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',timeZone:'UTC'}).replace(',',''):'',sD=sL.split(' ').slice(1).join(' ');
+ const TOT=`<div class="tot">${m.split?box('Since '+sL,grp(days.filter(d=>!old(d.date))),'first day '+sL)+(days.some(d=>old(d.date))?box('Before '+sD,grp(days.filter(d=>old(d.date)))):''):box('Since '+(JN.summary&&JN.summary.since||JN.start),grp(days))}</div>`;
  const TK=bkey(),dayRow=(d,openIt)=>{const v=dPnl(m,d);return `<details class="hday" id="hd-${d.date}" ${openIt?'open':''}><summary><span>${d.label}</span><span class="${d.side==='BUY'?'pos':'neg'}">${d.side||''}</span><span class="dim">${d.trades.length} trade${d.trades.length>1?'s':''}${d.final?'':' · day running'}</span><b class="num ${v==null?'dim':v>=0?'pos':'neg'}">${v==null?'—':sg(v*AED)+' AED'}</b><span class="num dim usd">${v==null?'':sg(v)+' $'}</span></summary>
    ${d.trades.map(t=>{const u=tU(m,t);return `<div class="htr"><span class="d">${t.time}</span><span class="${t.side==='BUY'?'pos':'neg'}">${t.side}</span><span><span class="dim">${m.tag(t)||''}</span> · ${m.info(t)} · <span class="dim">${HST[t.status]||t.status}</span></span><b class="num ${u==null?'dim':u>=0?'pos':'neg'}">${u==null?'open':sg(u*AED)+' AED'}</b><span class="num dim usd">${u==null?'':sg(u)+' $'}</span></div>`}).join('')}</details>`};
  if(HV==='cal'){const byD={};days.forEach(d=>byD[d.date]=d);const ms=[...new Set(JN.days.map(d=>d.date.slice(0,7)))].sort(),tdy=new Date().toLocaleDateString('en-CA',TZ);
@@ -528,7 +528,51 @@ function bindHist(){
  histbox.querySelectorAll('[data-go]').forEach(c=>c.onclick=()=>{HV=c.dataset.go===bkey()?'today':'list';HALL=true;renderHist();const el=document.getElementById('hd-'+c.dataset.go);if(el){el.open=true;el.scrollIntoView({behavior:'smooth',block:'center'})}})}
 async function loadDesk(){try{const j=await (await fetch(DATA_URL+'?t='+Date.now(),{cache:'no-store'})).json();D=j;M=j.markets||{};buildT();render();actsRender();applySel();deskstat.textContent='Desk data '+((j.updated||'').split('·')[1]||j.updated||'').trim()}catch(e){deskstat.textContent='Desk data unreachable, retrying'}}
 async function loadCal(){for(const u of ['calendar.json?t='+Date.now(),WORKER_URL+'calendar']){try{const j=await (await fetch(u,{cache:'no-store'})).json();if(Array.isArray(j)&&j.length){CAL=j;buildG();render();applySel();return}}catch(e){}}}
+// ---- Capital.com DEMO account (the desk's auto-trader trades here) ----
+let DEMO=null,DEMO_ERR=null,DEMO_MAP={},DEMO_SER=[];
+const DEMO_STATE_URL='https://raw.githubusercontent.com/arslanmehdi1214-droid/gold-alerts/main/autotrade_state.json';
+function demoKeyDay(){return DEMO&&DEMO.day_start_utc?DEMO.day_start_utc.slice(0,10):dkey(new Date())}
+function demoLoadSer(){try{const j=JSON.parse(localStorage.getItem('demoSer')||'{}');DEMO_SER=j.d===demoKeyDay()?j.s:[]}catch(e){DEMO_SER=DEMO_SER||[]}}
+function demoSaveSer(){try{localStorage.setItem('demoSer',JSON.stringify({d:demoKeyDay(),s:DEMO_SER.slice(-1500)}))}catch(e){}}
+async function pullDemo(){
+ if(!WORKER_URL)return;
+ try{const j=await (await fetch(WORKER_URL+'demo',{cache:'no-store'})).json();
+  if(j.error){DEMO_ERR=j.error}else{const first=!DEMO;DEMO=j;DEMO_ERR=null;if(first)demoLoadSer();
+   const today=(+j.realized_today||0)+(+j.account.upl||0);const n=Date.now();
+   if(!DEMO_SER.length||n-DEMO_SER[DEMO_SER.length-1][0]>=60000){DEMO_SER.push([n,today]);demoSaveSer()}else DEMO_SER[DEMO_SER.length-1]=[DEMO_SER[DEMO_SER.length-1][0],today]}
+ }catch(e){DEMO_ERR='no answer from the price service'}
+ try{renderDemo()}catch(e){}
+}
+async function pullDemoMap(){
+ try{const j=await (await fetch(DEMO_STATE_URL+'?t='+Date.now(),{cache:'no-store'})).json();const m={};
+  Object.entries(j.trades||{}).forEach(([k,v])=>['part','rest'].forEach(r=>{if(v[r]&&v[r].id)m[v[r].id]={k,role:r,risk:v.risk_usd}}));DEMO_MAP=m}catch(e){}
+}
+function demoMoney(x,cur){ // -> [AED, USD]
+ if(x==null||isNaN(x))return [null,null];x=+x;
+ if(cur==='AED')return [x,x/AED];return [x*AED,x];
+}
+function renderDemo(){
+ const head='<h3>Today · Capital.com demo account</h3>';
+ if(!DEMO){acc.innerHTML=head+`<div class="sub">${DEMO_ERR?'Not connected: '+DEMO_ERR:'Connecting…'}</div><div class="dnote">The desk's auto-trader places every desk trade on this demo account.</div>`;return}
+ const a=DEMO.account||{},cur=a.currency||'USD',up=+a.upl||0,rl=+DEMO.realized_today||0,tot=up+rl;
+ const [tA,tU]=demoMoney(tot,cur),[bA,bU]=demoMoney(a.balance,cur),[eA,eU]=demoMoney((+a.balance||0)+up,cur),[rA,rU]=demoMoney(rl,cur),[uA,uU]=demoMoney(up,cur);
+ const ev=[0].concat(DEMO_SER.map(x=>x[1])),w=300,h=56,lo=Math.min(0,...ev),hi=Math.max(0,...ev),r=hi-lo||1,Y=v=>(3+(h-6)*(1-(v-lo)/r)).toFixed(1);
+ const ep=ev.length>1?ev.map((v,i)=>(i?'L':'M')+(i/(ev.length-1)*w).toFixed(1)+','+Y(v)).join(''):'',col=tot>=0?'var(--buy)':'var(--sell)';
+ const P=(DEMO.positions||[]).slice().sort((x,y)=>(x.opened||'')<(y.opened||'')?-1:1);
+ const rows=P.map(p=>{const m=MK.find(z=>z.ep===p.epic)||{n:p.name||p.epic,dp:2},lab=DEMO_MAP[p.dealId],[pA,pU]=demoMoney(p.upl,cur);
+  const k=lab?lab.k.split('|'):null,who=k?`${k[2]} · ${k[4]}${lab.role==='part'?' · part':''}`:'not from the desk';
+  return `<div class="dpos"><div class="l1"><span><b class="${p.direction==='BUY'?'pos':'neg'}">${p.direction}</b> ${m.n} <span class="dim">${f(p.size,Number.isInteger(+p.size)?0:2)}</span></span><span class="pl ${(+p.upl||0)>=0?'pos':'neg'}">${sg(pA)} AED</span></div>
+   <div class="l2"><span>in ${f(p.level,m.dp)} · stop ${p.stop!=null?f(p.stop,m.dp):'—'}${p.profit!=null?' · target '+f(p.profit,m.dp):''}</span><span>${sg(pU)} $</span></div><div class="l2"><span>${who}</span></div></div>`}).join('');
+ const nc=(DEMO.closed_today||[]).length;
+ acc.innerHTML=head+`<div class="big ${tot>=0?'pos':'neg'}">${sg(tA)} AED</div><div class="sub" style="font-family:var(--mono)">${sg(tU)} $ · closed ${sg(rA)} AED + open ${sg(uA)} AED</div>
+  <svg class="eq" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><line x1="0" x2="${w}" y1="${Y(0)}" y2="${Y(0)}" stroke="var(--line)" vector-effect="non-scaling-stroke"/>${ep?`<path d="${ep}" fill="none" stroke="${col}" stroke-width="1.6" vector-effect="non-scaling-stroke"/>`:''}</svg>
+  <div class="kv">Balance<b>AED ${f(bA,0)}</b></div><div class="usd">$${f(bU,0)}</div>
+  <div class="kv">Equity now<b>AED ${f(eA,0)}</b></div><div class="usd">$${f(eU,0)}</div>
+  <div class="kv">Open positions<b>${P.length}</b></div><div class="kv">Closed today<b>${nc}</b></div>
+  ${rows}<div class="dnote">${a.name||'Demo'} · ${cur} · updated ${t12(new Date(DEMO.at))}${DEMO_ERR?' · last read failed: '+DEMO_ERR:''}</div>`;
+}
 buildT();render();applySel();tick();loadDesk();loadCal();setInterval(loadDesk,60000);loadHist();setInterval(loadHist,5*60000);setInterval(loadCal,30*60000);setInterval(tick,1000);
 pullLive();setInterval(pullLive,WORKER_URL?3000:5000);
+pullDemoMap().then(pullDemo);setInterval(pullDemo,5000);setInterval(pullDemoMap,60000);
 const fixH=()=>document.documentElement.style.setProperty('--hh',document.querySelector('header').offsetHeight+'px');fixH();addEventListener('resize',fixH);
 </script></body></html>
