@@ -1,4 +1,5 @@
-"""WTI_DAYTRADE v1.04 rules (= v1.03 + part-close 25% instead of 50%; his MT4 run 20 Oct 2026) as a PAPER engine for the Signal Desk - same logic as the EA / its line-by-line Python port
+"""WTI_DAYTRADE v1.05 rules (= v1.04 + the day's FIRST trade, if a SELL, is FULL size when P['first_sell_full'] is set: last EIA Cushing report = build AND yesterday's close < close 5 trading days earlier; his MT4 run 20 Oct 2026)
+(v1.04 = v1.03 + part-close 25% instead of 50%) as a PAPER engine for the Signal Desk - same logic as the EA / its line-by-line Python port
 (wti_ea_port.py: 4,300 of 4,300 MT4 trades 2020-2026 same minute and direction). Prices are Bid; broker clock = New York + 7 h.
 History = finished broker days: [date 'YYYY-MM-DD', open, high, low, close, settle] where settle = open of the first bar 21:30-21:35.
 Rules:
@@ -120,7 +121,7 @@ def run_day(P, t, O, H, L, C, now=None, spread=None, final=False):
             if m == lastm and d == lastd: continue
             sd = (BUY_STOP if d > 0 else SELL_STOP) * A; sp = SPm(m)
             st = banked + sum(mark(g, px) for g in legs if g['on'])
-            w = (1 / 3) if len(legs) == 0 else ((1.0 if st > 0 else 1 / 3) if d < 0 else 1.0)
+            w = ((1.0 if (d < 0 and P.get('first_sell_full')) else 1 / 3) if len(legs) == 0 else ((1.0 if st > 0 else 1 / 3) if d < 0 else 1.0))   # v1.05 first sell
             if d > 0: w = min(w, 1 / 3)
             e = px + sp if d > 0 else px                                   # buy fills at the ask, sell at the bid
             stop_b = px - sd if d > 0 else px + sd                          # stop in BID terms (sell stop = ask + sd)

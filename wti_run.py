@@ -4,19 +4,20 @@ run A of the v1.03 EA, 2020-01 to 2026-09: 3,355 of 3,355 trades same minute + d
 and keeps a paper journal, judged after ~3 months (pass = green days >= 60% and profit factor >= 1.10 with v1.03 sizes after Capital.com's spread).
 Files: docs/wti_hist.json (finished broker days: date, open, high, low, close, settle; seeded from HistData to 2026-10-02, then extended
 with Capital.com minutes), docs/journal_wti.json (every paper trade), docs/data.json -> markets.OIL (the page)."""
-import os, json, time, requests, numpy as np, pandas as pd
+import os, re, json, time, requests, numpy as np, pandas as pd
 import feeds as F, wti_engine as W
 DEADLINE = time.time() + 240          # loop.py resets this every minute; the WTI part never holds up gold
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 HIST = os.path.join(HERE, 'docs', 'wti_hist.json'); JOUR = os.path.join(HERE, 'docs', 'journal_wti.json')
 PORTAL = os.path.join(HERE, 'docs', 'data.json')
+CUSH = os.path.join(HERE, 'docs', 'cushing.json')     # v1.05: EIA weekly Cushing crude stocks (thousand barrels) by week end
 EPIC = os.environ.get('CAPITAL_EPIC_WTI', 'OIL_CRUDE')
 MIN_SPREAD = 0.02                     # the paper result never uses less than 2 cents a barrel
 PASS = dict(green=60.0, pf=1.10, months=3)
-RULES = 'v1.04'                       # journal days are tagged; the card's record counts only the current rules
-BACKTEST = dict(direction='—', days='65.7% green / 93.9% traded', perday='1.91', win='83.6%', pf='1.31', net='+$32,010 at 0.30 + 0.10 lots (v1.03: +$22,009)',
-                source='MT4 v1.04, his run 20 Oct 2026, 2020-01 to 2026-09, 3,355 trades, spread 4 (worst day -$1,862); $22.5/day 2020-22, $14.8/day 2023-26')
+RULES = 'v1.05'                       # journal days are tagged; the card's record counts only the current rules
+BACKTEST = dict(direction='—', days='65.7% green / 93.9% traded', perday='1.91', win='83.6%', pf='1.33', net='+$37,406 at 0.30 + 0.10 lots (v1.04: +$32,010)',
+                source='MT4 v1.05, his run 20 Oct 2026, 2020-01 to 2026-09, 3,355 trades, spread 4 (worst day -$1,724); $26.7/day 2020-22, $17.0/day 2023-26')
 
 def loadj(p, d):
     try: return json.load(open(p))
@@ -63,6 +64,44 @@ def catch_up(feed, H, day, get=None):
         json.dump(H, open(HIST, 'w'), separators=(',', ':'))
     return added
 
+EIA_URL = 'https://www.eia.gov/dnav/pet/hist/LeafHandler.ashx?n=PET&s=W_EPC0_SAX_YCUOK_MBBL&f=W'
+def eia_parse(s):
+    """EIA weekly table (one row per month: 'YYYY-Mon', then MM/DD + value pairs) -> [[week_end 'YYYY-MM-DD', stocks], ...]."""
+    out = []
+    for row in re.findall(r"<tr>\s*<td class='B6'>(.*?)</tr>", s, re.S):
+        y = re.search(r'(\d{4})-', row)
+        if not y: continue
+        cells = re.findall(r"<td class='B5'>([^<]*)</td>\s*<td class='B3'>([^<]*)</td>", row)
+        for dd, v in cells:
+            dd = dd.replace('&nbsp;', '').strip(); v = v.replace('&nbsp;', '').replace(',', '').strip()
+            if not dd or not v: continue
+            m_, d_ = dd.split('/'); out.append([f"{y.group(1)}-{int(m_):02d}-{int(d_):02d}", float(v)])
+    return out
+def cushing(day):
+    """v1.05: latest Cushing stock change released BEFORE `day` (release = week end Friday + 5 days, Wednesday). Refreshes the stored
+    series from eia.gov at most once an hour while a newer report is due. Returns (build True/False/None, week end, change)."""
+    C = loadj(CUSH, dict(weeks=[], last_try=0))
+    last = pd.Timestamp(C['weeks'][-1][0]) if C['weeks'] else pd.Timestamp('2000-01-01')
+    if day >= last + pd.Timedelta(days=12) and time.time() - C.get('last_try', 0) > 3600:
+        C['last_try'] = time.time()
+        try:
+            r = requests.get(EIA_URL, timeout=15, headers={'User-Agent': 'Mozilla/5.0'})
+            w = eia_parse(r.text) if r.status_code == 200 else []
+            if len(w) > 100: C['weeks'] = w[-600:]
+        except Exception as e: print('cushing fetch failed', type(e).__name__)
+        json.dump(C, open(CUSH, 'w'), separators=(',', ':'))
+    rel = [(pd.Timestamp(a) + pd.Timedelta(days=5), a, v) for a, v in C['weeks']]
+    prev = [(t, a, v) for t, a, v in rel if t < day]
+    if len(prev) < 2: return None, None, None
+    ch = prev[-1][2] - prev[-2][2]
+    return ch > 0, prev[-1][1], ch
+def first_sell_full(H, day):
+    """v1.05 rule for `day`: last Cushing report = build AND yesterday's close < close 5 trading days earlier."""
+    cl = [r[4] for r in H['days'] if pd.Timestamp(r[0]) < day]
+    down = len(cl) > 5 and cl[-1] < cl[-6]
+    b, wk, ch = cushing(day)
+    return bool(b and down), dict(cushing_build=b, cushing_week=wk, cushing_change=ch, down5=bool(down))
+
 def row(t, now, day_over):
     st = t['status']
     if st == 'open' and day_over: st = 'close_now'
@@ -76,7 +115,7 @@ def row(t, now, day_over):
                 res=res, res_sized=None if res is None else round(res * w, 3), rwf=t['rwf'], spread=round(sp, 3))
 
 def summary(J, day=None):
-    """Paper record of the CURRENT rules only (v1.04 days from 20 Oct 2026); older v1.02 / v1.03 days stay in the journal but are not mixed in."""
+    """Paper record of the CURRENT rules only (v1.05 days from 20 Oct 2026); older v1.02 / v1.03 / v1.04 days stay in the journal but are not mixed in."""
     D3 = [d for d in J.get('days', []) if d.get('rules') == RULES]
     if not D3: return dict(since=None, trades=0, rules=RULES)
     J = dict(start=D3[0]['date'], days=D3)
@@ -97,11 +136,11 @@ def base_card(A=None):
     note = ('14-day range ' + ('—' if A is None else f'${A:.2f}') + ' · stop: buys 1 range, sells ¾ range · close 25% at +0.05 (buys) / +0.15 (sells) '
             'x risk, then stop to entry · day lock +2R/+1R · no new trades after 4:30 pm broker (one late first trade to 7:00 pm) · close 8:00 pm broker = '
             '9:00 pm Dubai, 10:00 pm in winter · size: first trade and buys ⅓, later sells full while the day is in profit')
-    return dict(code='OIL', name='Oil (WTI)', symbol='WTI · Capital.com US Crude', live=False, paper=True, status='Paper', version='v1.04',
+    return dict(code='OIL', name='Oil (WTI)', symbol='WTI · Capital.com US Crude', live=False, paper=True, status='Paper', version='v1.05',
                 unit='usd', dp=2, stats=BACKTEST, pass_bar=PASS, day_note=note,
                 what_note='This page tracks whether live WTI signals do as well as the backtest. Decision after about 3 months.',
                 cost_note="Results are $ per barrel (sizes: full or ⅓), from the signal price with the backtest's slip, after Capital.com's spread (at least 2 cents).",
-                net_label='Net $ per barrel (v1.04)')
+                net_label='Net $ per barrel (v1.05)')
 
 def main(feed=None, get=None, now=None):
     now = now or F.broker_now(); day = now.normalize()
@@ -121,6 +160,9 @@ def main(feed=None, get=None, now=None):
     added = catch_up(feed, H, day, get)
     b = get(feed, day, now); b = b[(b.index >= day) & (b.index + pd.Timedelta(minutes=1) <= now)]       # today's closed minute bars only
     P = W.prep(H['days'], day)
+    try: fsf, finfo = first_sell_full(H, day)
+    except Exception as e: fsf, finfo = False, dict(cushing_build=None, cushing_week=None, cushing_change=None, down5=False); print('v1.05 rule failed', e)
+    if P is not None: P['first_sell_full'] = fsf
     hm = W.close_hm(day); eod = day + pd.Timedelta(minutes=hm); day_over = now >= eod
     trades = W.run_day(P, b.index, b.o.values, b.h.values, b.l.values, b.c.values, spread=b.sp.values) if (P and len(b)) else []
     rows = [row(t, now, day_over) for t in trades]
@@ -145,7 +187,10 @@ def main(feed=None, get=None, now=None):
         spark = [[F.broker_to_dubai(t).strftime('%-I:%M %p').lower(), round(float(r.c), 2), round(float(r.o), 2), round(float(r.h), 2), round(float(r.l), 2)] for t, r in g5.iterrows()]
     mk['OIL'] = dict(base_card(None if P is None else P['A']), state=state, message=msg, price=last, change=(None if last is None or first is None else round(last - first, 2)),
                      entries=rows, spark=spark, journal=J['summary'], jdays=jdays(J), feed_error=False, epic=EPIC,
-                     history_note=f"history to {H['through']} ({len(H['days'])} days)" + (f" · added {', '.join(added)}" if added else ''))
+                     history_note=f"history to {H['through']} ({len(H['days'])} days)" + (f" · added {', '.join(added)}" if added else ''),
+                     day_note=base_card(None if P is None else P['A'])['day_note'] + ' · v1.05: ' + ('First sell today: FULL size (Cushing stocks rose in the last EIA report and oil is down over 5 days)' if fsf else
+                                   'First sell today: 1/3 size (' + ('Cushing build' if finfo['cushing_build'] else 'Cushing draw' if finfo['cushing_build'] is False else 'Cushing data missing')
+                                   + ', 5-day move ' + ('down' if finfo['down5'] else 'up') + ')') + (f" · EIA week {finfo['cushing_week']}: {finfo['cushing_change']:+,.0f}k bbl" if finfo['cushing_week'] else ''))
     json.dump(old, open(PORTAL, 'w'), indent=1)
     print(f'WTI paper: {now} broker | trades today {len(rows)} | bars {len(b)} | history to {H["through"]} | added {added}')
 
