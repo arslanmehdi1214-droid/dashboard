@@ -412,11 +412,11 @@
      "stop_usd": 3.74,
      "size": "1/3",
      "first": false,
-     "status": "open",
-     "exit": null,
-     "exit_time": null,
-     "res": null,
-     "res_sized": null,
+     "status": "stopped",
+     "exit": 97.3,
+     "exit_time": "6:19 pm",
+     "res": -3.781,
+     "res_sized": -1.26,
      "rwf": 0,
      "spread": 0.04
     }
@@ -434,11 +434,11 @@
   "direction": 33.3,
   "days": 100.0,
   "perday": 6.0,
-  "closed": 5,
-  "win": 100.0,
-  "pf": null,
-  "net": 0.08,
+  "closed": 6,
+  "win": 83.3,
+  "pf": 0.06,
+  "net": -1.18,
   "rules": "v1.05",
-  "green": 100.0
+  "green": 0.0
  }
 }
