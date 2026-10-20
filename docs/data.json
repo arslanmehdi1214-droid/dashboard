@@ -1,5 +1,5 @@
 {
- "updated": "Tue 20 Oct \u00b7 3:16 pm",
+ "updated": "Tue 20 Oct \u00b7 3:23 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -32,9 +32,9 @@
    "feed_error": false,
    "state": "buy",
    "message": "BUY day \u2014 up to 2 BUY trades. Close HALF at the \u00bd level, then move the stop to entry; the rest runs to its stop or the day-end close at 12:00 am Dubai.",
-   "price": 4122.56,
+   "price": 4122.16,
    "close_at": "12:00 am",
-   "change": -19.76,
+   "change": -20.16,
    "size": 0.1,
    "datr": 70.17,
    "open_now": 0,
@@ -1175,10 +1175,17 @@
     ],
     [
      "3:15 pm",
-     4122.56,
+     4122.85,
      4123.25,
-     4123.57,
-     4122.51
+     4123.89,
+     4121.71
+    ],
+    [
+     "3:20 pm",
+     4122.16,
+     4122.84,
+     4123.44,
+     4121.79
     ]
    ],
    "history": [
@@ -1386,8 +1393,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 57.212,
-   "change": 0.141,
+   "price": 57.204,
+   "change": 0.133,
    "entries": [],
    "spark": [
     [
@@ -2505,10 +2512,17 @@
     ],
     [
      "3:15 pm",
-     57.212,
+     57.207,
      57.214,
      57.238,
-     57.21
+     57.19
+    ],
+    [
+     "3:20 pm",
+     57.204,
+     57.206,
+     57.227,
+     57.191
     ]
    ],
    "journal": {
@@ -2578,8 +2592,8 @@
    "net_label": "Net R / $ at $100 risk (v1.03 sizes)",
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Each trade closes half at its \u00bd level, then the rest's stop moves to the entry; everything closes at the 7:00 pm Dubai close.",
-   "price": 158.157,
-   "change_pips": -36.9,
+   "price": 158.192,
+   "change_pips": -33.4,
    "atr_pips": 84.0,
    "entries": [
     {
@@ -2606,7 +2620,7 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": 0.2843,
+     "r_now": 0.2566,
      "rwf": 1,
      "spread": 1.2
     },
@@ -3748,10 +3762,17 @@
     ],
     [
      "3:15 pm",
-     158.157,
+     158.165,
      158.145,
-     158.168,
+     158.182,
      158.144
+    ],
+    [
+     "3:20 pm",
+     158.192,
+     158.166,
+     158.194,
+     158.166
     ]
    ],
    "journal": {
@@ -3804,7 +3825,7 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": 0.2843,
+       "r_now": 0.2566,
        "rwf": 1,
        "spread": 1.2
       },
@@ -4297,8 +4318,8 @@
    "net_label": "Net $ per barrel (v1.03 sizes)",
    "state": "buy",
    "message": "PAPER BUY day \u2014 later signals today are BUY only. Close half at the \u00bd level, then move the stop to entry; everything closes at 9:00 pm Dubai. No new trades after 5:30 pm (one late first trade allowed).",
-   "price": 100.38,
-   "change": 2.34,
+   "price": 100.45,
+   "change": 2.42,
    "entries": [
     {
      "time": "10:00 am",
@@ -5522,10 +5543,17 @@
     ],
     [
      "3:15 pm",
-     100.38,
+     100.32,
      100.31,
-     100.4,
-     100.31
+     100.44,
+     100.25
+    ],
+    [
+     "3:20 pm",
+     100.45,
+     100.33,
+     100.46,
+     100.32
     ]
    ],
    "journal": {
@@ -5982,8 +6010,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "buy",
    "message": "1 paper trade today (1 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 12:00 am Dubai close. At most 2 trades a day.",
-   "price": 29366.7,
-   "change": -187.7,
+   "price": 29367.2,
+   "change": -187.2,
    "entries": [
     {
      "time": "2:48 pm",
@@ -5991,11 +6019,11 @@
      "name": "REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am",
      "role": "filler",
      "price": 29400.0,
-     "entry": 29401.8,
+     "entry": 29402.0,
      "stop": 29187.7,
      "stop0": 29187.7,
      "stop_pts": 212.3,
-     "half_px": 29508.8,
+     "half_px": 29509.1,
      "half": false,
      "half_time": null,
      "size": "full",
@@ -6008,9 +6036,9 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": -35.1,
+     "live": -34.8,
      "rwf": null,
-     "spread": 1.8
+     "spread": 2.0
     }
    ],
    "spark": [
@@ -7206,10 +7234,17 @@
     ],
     [
      "3:15 pm",
-     29366.7,
+     29361.3,
      29370.7,
      29373.7,
-     29364.8
+     29353.8
+    ],
+    [
+     "3:20 pm",
+     29367.2,
+     29361.2,
+     29370.9,
+     29357.6
     ]
    ],
    "journal": {
@@ -7240,11 +7275,11 @@
        "name": "REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am",
        "role": "filler",
        "price": 29400.0,
-       "entry": 29401.8,
+       "entry": 29402.0,
        "stop": 29187.7,
        "stop0": 29187.7,
        "stop_pts": 212.3,
-       "half_px": 29508.8,
+       "half_px": 29509.1,
        "half": false,
        "half_time": null,
        "size": "full",
@@ -7257,9 +7292,9 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": -35.1,
+       "live": -34.8,
        "rwf": null,
-       "spread": 1.8
+       "spread": 2.0
       }
      ],
      "final": false
