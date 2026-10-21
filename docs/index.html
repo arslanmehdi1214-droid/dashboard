@@ -289,7 +289,7 @@ async function pullLive(){try{
  else{const j=await (await fetch('https://api.gold-api.com/price/XAU',{cache:'no-store'})).json();if(j.price)LIVE.GOLD={p:j.price,t:Date.now(),src:'gold-api.com'}}
  render();applySel()}catch(e){}}
 function calc(o){const {m,x,e}=o,s=e.side==='BUY'?1:-1,px=done(e)?(e.exit??+x.price):nowPx(m,x),sd=Math.abs(e.price-(e.stop0??e.stop))||1,run=s*(px-e.price),pq=e.part??0.5,mv=e.half?pq*s*(e.half_px-e.price)+(1-pq)*run:run;
- const k=m.c==='SILVER'?(+e.size||1):1;return {px,mv,R:mv/sd,pl:k*usd(m,mv,px),risk:k*usd(m,sd,px)}}
+ const k=m.c==='SILVER'?(+e.size||1):m.c==='GOLD'?(+e.size_x||1):1;return {px,mv,R:mv/sd,pl:k*usd(m,mv,px),risk:k*usd(m,sd,px)}}
 const dirOf=x=>{const s=(x?.state||'').toUpperCase();return s.includes('BUY')?'BUY':s.includes('SELL')?'SELL':'NONE'};
 /* sessions in each city's own clock, shown in Dubai time */
 const SES=[{n:'Sydney',tz:'Australia/Sydney',o:7,c:16},{n:'Tokyo',tz:'Asia/Tokyo',o:9,c:18},{n:'London',tz:'Europe/London',o:8,c:17},{n:'New York',tz:'America/New_York',o:8,c:17}];
@@ -483,8 +483,8 @@ sty.querySelectorAll('button').forEach(b=>b.onclick=()=>{STY=b.dataset.s;sty.que
 /* ---- trade history + P&L calendar, ONE PER MARKET (each market's own journal file, never mixed). Every trade valued at 0.01 lot
    after the spread, from the journal's own result: Gold pnl $/oz x 1 oz · USD/JPY pips on $1,000 · Oil res $/bbl x 10 bbl · Nasdaq res pts x $0.10 */
 const HMK=[
- {c:'GOLD',n:'Gold',file:'journal.json',split:'2026-10-20',oldv:'v2.10',newv:'v2.11',usd:t=>t.pnl,
-  tag:t=>t.tag,info:t=>`in ${f(t.price,2)} · stop ${f(t.stop0??t.stop,2)}${t.half_px!=null?` · ${t.part!=null?Math.round(t.part*100)+'%':'½'} ${f(t.half_px,2)}${t.half?' ✓':''}`:''}${t.exit!=null?` · out ${f(t.exit,2)}`:''}`},
+ {c:'GOLD',n:'Gold',file:'journal.json',split:'2026-10-22',oldv:'v2.11',newv:'v2.15',usd:t=>t.pnl,
+  tag:t=>t.tag+(t.size_x&&t.size_x!=1?' · size x'+t.size_x:''),info:t=>`in ${f(t.price,2)} · stop ${f(t.stop0??t.stop,2)}${t.half_px!=null?` · ${t.part!=null?Math.round(t.part*100)+'%':'½'} ${f(t.half_px,2)}${t.half?' ✓':''}`:''}${t.exit!=null?` · out ${f(t.exit,2)}`:''}`},
  {c:'USDJPY',n:'USD/JPY',file:'journal_usdjpy.json',usd:t=>t.pips==null||t.exit==null?null:t.pips*10/t.exit,
   tag:t=>t.name||t.sig,info:t=>`in ${f(t.price,3)} · stop ${f(t.stop,3)}${t.exit!=null?` · out ${f(t.exit,3)}`:''}${t.pips!=null?` · ${sg(t.pips,1)} pips`:''}`},
  {c:'OIL',n:'Oil',file:'journal_wti.json',usd:t=>{const r=t.res_sized??t.res;return r==null?null:r*10},
