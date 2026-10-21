@@ -192,7 +192,9 @@ def run_once(api=None, portal=PORTAL, now=None):
                 if e.get('half') and tr.get('part') and tr['part'].get('open'):
                     closes.append((k, dict(tr, rest=None), 'desk: part close'))
                 want = e.get('stop')
-                if want is not None and abs(float(want) - float(tr.get('stop', want))) > 1e-9: moves.append((k, tr, float(want)))
+                if want is not None:   # 21 Oct: ignore tiny desk stop wobbles (yen stop flipped 0.6 pip every minute as the entry-bar spread was re-read)
+                    cur = float(tr.get('stop', want)); rd = abs(float(e.get('price') or want) - float(e.get('stop0') or want))
+                    if abs(float(want) - cur) > max(1e-9, 0.05 * rd): moves.append((k, tr, float(want)))
         # trades we still hold from an EARLIER desk day (the day-end close was missed): close them
         # ... or whose desk row has vanished for 3 minutes in a row (the desk re-drew its day): close them too
         for k, tr in T.items():
