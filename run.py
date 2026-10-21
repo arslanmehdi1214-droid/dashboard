@@ -1,4 +1,4 @@
-"""Runs every minute (GitHub Actions, via loop.py). GOLD v2.11 (20 Oct 2026; = v2.10 with NO half-close / no stop to entry, desk209.SPLIT=False). Was v2.10 (18 Oct 2026; = v2.09 + no 2nd trade in the same minute): today's gold minute bars -> the EA's signals
+"""Runs every minute (GitHub Actions, via loop.py). GOLD v2.15 from 22 Oct 2026 (= v2.11 + day lock 2R/0.5R + real-yield size 1.5 + strong-family size 1.5 + add a 3rd trade when every open trade is up 1.25x its stop; desk209.V215_FROM; MT4 his run passed 21 Oct). Before: GOLD v2.11 (20 Oct 2026; = v2.10 with NO half-close / no stop to entry, desk209.SPLIT=False). Was v2.10 (18 Oct 2026; = v2.09 + no 2nd trade in the same minute): today's gold minute bars -> the EA's signals
 (engine206.py, v2.06 signal set) -> the v2.10 trade rules (desk209.py: one direction, max 2 trades, half close at 0.20 x stop,
 stop to entry, rest to the day-end close, range-fade fill). Writes the page + the live journal, including the ACTIONS list
 (OPEN / ADD / HOLD / CLOSE HALF / STOP / REVERSE / CLOSE ALL). Desk only - no Telegram (his rule, 18 Oct).
@@ -12,7 +12,8 @@ SIZE = float(os.environ.get('ALERT_SIZE_OZ', '0.1'))
 STATE = os.path.join(HERE, 'sent.json'); PORTAL = os.path.join(HERE, 'docs', 'data.json')
 JOURNAL = os.path.join(HERE, 'docs', 'journal.json'); INPUTS = os.path.join(HERE, 'docs', 'inputs.json')
 BACKTEST_V210 = dict(direction='—', days='72–73% green', perday='1.7', win='79–81%', pnl='—', source='MT4 backtest v2.10, his run 2020–2026 (worst day −2.1R)')
-BACKTEST = dict(direction='—', days='45–46% green', perday='1.5', win='47–50%', pnl='—', source='MT4 backtest v2.11, his runs 20 Oct 2020–2026 ($162/day 2020–22, $189/day 2023–26 at $1,000 risk; worst day −3.6R)')
+BACKTEST = dict(direction='—', days='49% green (53% of trade days)', perday='1.5', win='0% hit target · 51% closed in profit', pnl='—', source='MT4 backtest v2.15, his run 21 Oct 2020–2026 ($247/day 2020–22, $263/day 2023–26 at $1,000 risk; worst day −$4,681)')
+BACKTEST_V211 = dict(direction='—', days='45–46% green', perday='1.5', win='47–50%', pnl='—', source='MT4 backtest v2.11, his runs 20 Oct 2020–2026 ($162/day 2020–22, $189/day 2023–26 at $1,000 risk; worst day −3.6R)')
 
 def dubai(t): return F.broker_to_dubai(pd.Timestamp(t)).strftime('%-I:%M %p').lower()
 def eod_of(day):
@@ -57,6 +58,31 @@ def regime_today(feed, h1, day, now):
     except Exception as e:
         print('regime not computed:', type(e).__name__, e); return None, None
 
+RY_FILE = os.path.join(HERE, 'docs', 'realyield.json')   # v2.15: US 10-yr real yield (Treasury daily real yield curve = FRED DFII10)
+RY_URL = 'https://home.treasury.gov/resource-center/data-chart-center/interest-rates/daily-treasury-rates.csv/{y}/all?type=daily_treasury_real_yield_curve&field_tdr_date_value={y}&page&_format=csv'
+def realyield(day):
+    """v2.13 sizing input for broker day `day`: change of the 10-yr real yield on its latest date <= day - 2 calendar days (vs the previous
+    date). Refreshes docs/realyield.json from treasury.gov at most once an hour while that date is missing. None = unknown (no yield size)."""
+    import time
+    R = loadj(RY_FILE, dict(rows=[], last_try=0)); need = (day - pd.Timedelta(days=2)).normalize()
+    have = pd.Timestamp(R['rows'][-1][0]) if R['rows'] else pd.Timestamp('2000-01-01')
+    if have < need - pd.Timedelta(days=4) or (have < need and time.time() - R.get('last_try', 0) > 3600):
+        R['last_try'] = time.time(); rows = {r[0]: r[1] for r in R['rows']}
+        for y in sorted({need.year - 1, need.year}):
+            try:
+                r = requests.get(RY_URL.format(y=y), timeout=15, headers={'User-Agent': 'Mozilla/5.0'})
+                if r.status_code != 200: continue
+                lines = r.text.strip().splitlines(); hd = [h.strip('"') for h in lines[0].split(',')]; c = hd.index('10 YR')
+                for ln in lines[1:]:
+                    v = ln.split(',')
+                    if len(v) > c and v[c].strip():
+                        m_, d_, y_ = v[0].split('/'); rows[f'{y_}-{int(m_):02d}-{int(d_):02d}'] = float(v[c])
+            except Exception as e: print('real yield fetch failed', y, type(e).__name__)
+        R['rows'] = sorted(rows.items())[-400:]; dumpj(R, RY_FILE)
+    prev = [r for r in R['rows'] if pd.Timestamp(r[0]) <= need]
+    if len(prev) < 2 or pd.Timestamp(prev[-1][0]) < need - pd.Timedelta(days=6): return None
+    return round(prev[-1][1] - prev[-2][1], 4)
+
 def fmt(e):
     side = 'BUY' if e['dir'] == 1 else 'SELL'
     if e['kind'] == 'ENTRY':
@@ -71,7 +97,7 @@ def fmt(e):
         return f"GOLD: first {side} signal skipped by the dollar filter ({e['tag']}) - waiting for the next one | {dubai(e['t'])} Dubai"
     return str(e)
 
-STATUS = {'open': 'open', 'half': 'open', 'stop hit': 'stopped', 'stop at entry': 'be', 'day end': 'eod', 'reversed': 'reversed'}
+STATUS = {'open': 'open', 'half': 'open', 'stop hit': 'stopped', 'stop at entry': 'be', 'day end': 'eod', 'reversed': 'reversed', 'day lock': 'lock'}
 def row(g, k=0):
     """One v2.10 trade (desk209 leg) -> page/journal row. price = his fill (Ask for buys, Bid for sells)."""
     st = STATUS.get(g['status'], g['status']); half = g.get('half_t') is not None
@@ -79,11 +105,11 @@ def row(g, k=0):
     if st == 'open':
         nxt = (f"Half banked at {g['half_px']:.2f} · stop is at entry {g['entry']:.2f} · hold the rest to the stop or the day-end close"
                if half else (f"Close HALF at {g['half_px']:.2f}, then move the stop to entry {g['entry']:.2f} · stop now {g['stop']:.2f}" if g.get('half_px') is not None
-               else f"Hold to the stop {g['stop']:.2f} or the day-end close · no half-close (v2.11)"))
+               else f"Hold to the stop {g['stop']:.2f} or the day-end close · no half-close" + (f" · size x{g.get('size_x', 1):g}" if g.get('size_x', 1) != 1 else "")))
     return dict(time=dubai(g['t']), side='BUY' if g['dir'] == 1 else 'SELL', tag=g['tag'], price=g['entry'], stop=g['stop'],
                 stop0=g['stop0'], half_px=g['half_px'], half=half, half_time=(dubai(g['half_t']) if half else None), size=SIZE,
                 status=st, first=(k == 0), exit=g['exit'], exit_time=(dubai(g['exit_t']) if g['exit_t'] is not None else None),
-                pnl=g['pnl_oz'], rwf=None, next=nxt)
+                pnl=(None if g['pnl_oz'] is None else round(g['pnl_oz'] * g.get('size_x', 1.0), 2)), pnl_oz=g['pnl_oz'], size_x=g.get('size_x', 1.0), rwf=None, next=nxt)
 def act_rows(acts):
     return [dict(time=dubai(a['t']), kind=a['kind'], side=a['side'], text=a['text']) for a in acts]
 
@@ -101,7 +127,11 @@ def compute(h1, m1, day, now, inp):
     mm = dict(t=m1.index.values.astype('datetime64[m]'), o=m1.o.values, h=m1.h.values, l=m1.l.values, c=m1.c.values)
     sig = E.run_day(dayst, D, Hh, mm, einp) if len(m1) else []
     taken = [t for t in sig if not t.get('skipped')]; skipped = [t for t in sig if t.get('skipped')]
-    legs, acts = DK.run(taken, dayst, mm, np.datetime64(now, 'm'), D.atr(0), np.datetime64(eod_of(day), 'm'), label=dubai) if len(m1) else ([], [])
+    ry = None
+    if dayst >= DK.V215_FROM:
+        try: ry = realyield(day)
+        except Exception as e: print('real yield failed', type(e).__name__, e)
+    legs, acts = DK.run(taken, dayst, mm, np.datetime64(now, 'm'), D.atr(0), np.datetime64(eod_of(day), 'm'), label=dubai, ry=ry) if len(m1) else ([], [])
     return legs, acts, skipped, D
 
 def missed_days(J, now, cache):
@@ -222,11 +252,13 @@ def write_pages(now, day, m1, taken, skipped, inp, reg, src, eod, datr, acts=())
     # ---- page data
     old = loadj(PORTAL, {}); others = {k: v for k, v in (old.get('markets') or {}).items() if k != 'GOLD'}
     V211 = np.datetime64(day.date(), 'D') >= DK.V211_FROM               # v2.11 rules (no half-close) from the switch day
+    V215 = np.datetime64(day.date(), 'D') >= DK.V215_FROM               # v2.15 rules from their switch day
     last_sig = now >= day + pd.Timedelta(hours=19)
     if now.dayofweek >= 5: state, msg = 'closed', 'Market closed for the weekend'
     elif rows:
         side = rows[0]['side']; state = side.lower()
-        msg = (f"{side} day — up to 2 {side} trades. Each runs to its stop or the day-end close at {dubai(eod)} Dubai (no half-close)." if V211 else
+        msg = (f"{side} day — up to 2 {side} trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at {dubai(eod)} Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R." if V215 else
+               f"{side} day — up to 2 {side} trades. Each runs to its stop or the day-end close at {dubai(eod)} Dubai (no half-close)." if V211 else
                f"{side} day — up to 2 {side} trades. Close HALF at the ½ level, then move the stop to entry; the rest runs to its stop or the day-end close at {dubai(eod)} Dubai.")
     elif skipped and not last_sig: state, msg = 'blocked', 'The first signal was skipped by the dollar filter — watching for the next one.'
     elif last_sig: state, msg = 'none', 'No trade today — no signal (new signals stop at 8 pm Dubai).'
@@ -244,13 +276,13 @@ def write_pages(now, day, m1, taken, skipped, inp, reg, src, eod, datr, acts=())
                          running=sum(t['status'] == 'open' for t in tr), rw=sum(1 for t in tr if t.get('rwf') == 1),
                          rd=sum(1 for t in tr if t.get('rwf') is not None),
                          pnl=(round(sum(t['pnl'] for t in tr if t.get('pnl') is not None), 2) if any(t.get('pnl') is not None for t in tr) else None)))
-    gold = dict(code='GOLD', name='Gold', symbol='XAU/USD', live=True, version=('v2.11' if V211 else 'v2.10'), actions=act_rows(acts), actions_day=str(day.date()), feed_error=False, state=state, message=msg, price=last, close_at=dubai(eod),
+    gold = dict(code='GOLD', name='Gold', symbol='XAU/USD', live=True, version=('v2.15' if V215 else 'v2.11' if V211 else 'v2.10'), actions=act_rows(acts), actions_day=str(day.date()), feed_error=False, state=state, message=msg, price=last, close_at=dubai(eod),
                 change=(None if last is None or first is None else round(last - first, 2)), size=SIZE, datr=round(datr, 2),
                 open_now=sum(r['status'] in ('open', 'close_now') for r in page_rows), entries=page_rows, spark=spark, history=hist,
                 inputs=dict(dollar_1d=inp.get('dollar_1d'), dollar_5d=inp.get('dollar_5d'), vix_5d=inp.get('vix_5d'), tnx_5d=inp.get('tnx_5d'),
                             dollar_driven=(None if reg is None else bool(reg)), corr=inp.get('corr'), low_attention=bool(inp.get('attn', 0)),
                             notes=inp.get('notes', [])),
-                stats=(BACKTEST if V211 else BACKTEST_V210), journal=J['summary'])
+                stats=(BACKTEST if V215 else BACKTEST_V211 if V211 else BACKTEST_V210), journal=J['summary'])
     data = dict(updated=F.broker_to_dubai(now).strftime('%a %d %b · %-I:%M %p').replace('AM', 'am').replace('PM', 'pm'),
                 source=src, markets=dict(GOLD=gold, **others))
     dumpj(data, PORTAL, indent=1)

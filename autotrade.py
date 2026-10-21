@@ -140,7 +140,7 @@ def entry_time(txt, now):
     return c if c <= now + dt.timedelta(minutes=1) else c - dt.timedelta(days=1)
 def weight(code, e):
     s = e.get('size')
-    if code == 'GOLD': return 1.0                                   # one-position gold: every leg is size 1
+    if code == 'GOLD': return float(e.get('size_x') or 1.0)         # gold v2.15: leg size 1 / 1.5 / 2.25 (real-yield x strong-family); older rows 1
     if isinstance(s, (int, float)): return float(s)
     s = str(s).lower()
     return 1.0 if s in ('full', '1', '1.0') else (1 / 3 if s in ('third', '1/3', '⅓') else 1.0)

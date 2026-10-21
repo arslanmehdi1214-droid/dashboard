@@ -1,4 +1,4 @@
-"""GOLD v2.11 trade manager (SPLIT=False below; v2.09/v2.10 = SPLIT=True) for the Signal Desk (same rules as EA GOLD_DAYTRADE v2.09 + DT209_GOLD_MAX2_HALF020.set).
+"""GOLD v2.15 trade manager (from V215_FROM; v2.11 before that) (SPLIT=False below; v2.09/v2.10 = SPLIT=True) for the Signal Desk (same rules as EA GOLD_DAYTRADE v2.09 + DT209_GOLD_MAX2_HALF020.set).
 Input: today's engine signals (engine206.run_day, skipped ones removed) + today's closed minute bars. Output: the trades he
 should hold (legs), their state, and a time-ordered list of ACTIONS for the page (no Telegram).
 
@@ -24,6 +24,20 @@ STOPX = 0.5       # stop = STOPX x 14-day range for every signal (Signal_Stop_Ta
 FILLX = 0.5       # stop for the fill trade (Fill_Stop_x_DailyATR)
 NMAX = 2          # Max_Same_Way_Trades
 FILL_FROM, FILL_MIN, FILL_HOURS = 10 * 60, 120, 6
+# ---- v2.15 (= EA GOLD_DAYTRADE v2.15 + DT215_GOLD_ADDWIN.set, MT4 passed 21 Oct: $247/$263 per weekday at $1,000 risk 2020-22/2023-26)
+V215_FROM = np.datetime64('2026-10-22')   # from this broker day: day lock + real-yield size + strong-family size + add to winners
+LOCK_AT, LOCK_KEEP = 2.0, 0.5             # v2.12 day lock: once today's gold result (closed + open, in R) reached +2R, close ALL and stop if it falls to +0.5R
+RY_SIZE = 1.5                             # v2.13: a trade AGAINST the latest known 1-day change of the US 10-yr real yield (dated 2+ days before) = size 1.5
+FAM_SIZE = 1.5                            # v2.14: strong-family signals (quiet/compression breakouts) = size 1.5 (signal trades only, not the fill)
+STRONG = {'G1', 'G2', 'G3', 'G4', 'G5', 'G6', 'G7', 'G8', 'G9', 'G10', 'G11', 'G13', 'A15', 'N11', 'N13', 'N16', 'N16b', 'S24', 'T15'}
+PYRN, PYRX = 3, 1.25                      # v2.15: a 3rd same-way trade only if EVERY open trade is up >= 1.25 x its own stop distance
+
+
+def size_of(kind, tag, d, ry):
+    """v2.15 size multiplier of a new trade. ry = latest known real-yield 1-day change (None = unknown -> no yield size)."""
+    fam = FAM_SIZE if (kind == 's' and str(tag).split(' ')[0] in STRONG) else 1.0
+    yz = RY_SIZE if (ry is not None and ((ry > 0 and d > 0) or (ry < 0 and d < 0))) else 1.0
+    return round(fam * yz, 4)
 
 
 def fill_event(T, O, H, L, day, eod):
@@ -39,11 +53,13 @@ def fill_event(T, O, H, L, day, eod):
     return None
 
 
-def run(signals, day, m1, now, atr, eod, label=None):
+def run(signals, day, m1, now, atr, eod, label=None, ry=None):
     """signals: engine trades (dict t, dir, tag, px). day: np.datetime64[D]. m1: dict t,o,h,l,c (closed bars, broker time).
     atr: 14-day average daily range. eod: np.datetime64[m] day-end close. Returns (legs, actions)."""
     T = np.asarray(m1['t'], dtype='datetime64[m]'); O, H, L, C = (np.asarray(m1[k], float) for k in ('o', 'h', 'l', 'c'))
     SPLIT = np.datetime64(day, 'D') < V211_FROM                      # True = v2.10 half-close rules (days before the switch)
+    V215 = np.datetime64(day, 'D') >= V215_FROM                      # True = v2.15 lock + sizes + add to winners
+    st = dict(closedR=0.0, peak=0.0, locked=False)
     legs, act = [], []
     if len(T) == 0 or atr <= 0: return legs, act
     jidx = lambda t: int(np.searchsorted(T, np.datetime64(t, 'm'), side='left'))
@@ -63,7 +79,8 @@ def run(signals, day, m1, now, atr, eod, label=None):
         if d > 0: e = p0 + SP; sl = (e - sd) if kind == 'f' else (p0 - sd)
         else: e = p0; sl = (e + sd) if kind == 'f' else (p0 + SP + sd)
         risk = abs(e - sl); hp = (e + d * (K * risk + EX)) if SPLIT else None
-        g = dict(j=j, t=t, dir=d, tag=tag, kind=kind, entry=round(e, 2), stop0=round(sl, 2), stop=round(sl, 2), risk=round(risk, 2),
+        g = dict(j=j, t=t, dir=d, tag=tag, kind=kind, entry=round(e, 2), stop0=round(sl, 2), stop=round(sl, 2), risk=round(risk, 2), sd=sd,
+                 size_x=(size_of(kind, tag, d, ry) if V215 else 1.0),
                  half_px=(round(hp, 2) if hp is not None else None), status='open', half_t=None, exit=None, exit_t=None, pnl_oz=None, time_txt=('from ' + label(t)) if label else '#%d' % (len(legs) + 1))
         legs.append(g); return g
 
@@ -71,6 +88,7 @@ def run(signals, day, m1, now, atr, eod, label=None):
         d = g['dir']; full = 0.5 if g['status'] == 'half' else 1.0
         banked = 0.5 * d * (g['half_px'] - g['entry']) if g['status'] == 'half' else 0.0
         g.update(exit=round(px, 2), exit_t=t, status=why, pnl_oz=round(banked + full * d * (px - g['entry']), 2))
+        st['closedR'] += g['size_x'] * (banked + full * d * (px - g['entry'])) / g['sd']
 
     def walk(j0, j1):
         """Stops and half-closes on bars j0..j1-1 (bars after each trade's entry bar)."""
@@ -89,27 +107,37 @@ def run(signals, day, m1, now, atr, eod, label=None):
                 if SPLIT and g['status'] == 'open' and ((d > 0 and H[j] >= g['half_px']) or (d < 0 and L[j] + SP <= g['half_px'])):
                     g.update(status='half', half_t=T[j], stop=g['entry'])
                     add(T[j], 'HALF', d, f"CLOSE HALF of your {side(d)} {g['time_txt']} now at {g['half_px']:.2f}, then MOVE STOP of the rest to {g['entry']:.2f} (entry)", g['half_px'])
+            op = openl()
+            if V215 and op:                      # v2.12 day lock on this bar's close (same as the EA / Python sim11)
+                d0 = op[0]['dir']; pxc = C[j] if d0 > 0 else C[j] + SP
+                tot = st['closedR'] + sum(g['size_x'] * d0 * (pxc - g['entry']) / g['sd'] for g in op); st['peak'] = max(st['peak'], tot)
+                if st['peak'] >= LOCK_AT and tot <= LOCK_KEEP:
+                    for g in op: close_leg(g, pxc, T[j], 'day lock')
+                    add(T[j], 'LOCK', d0, f"DAY LOCK - CLOSE ALL your gold trades now (~{pxc:.2f}): today reached +{st['peak']:.1f}R and fell back to +{tot:.1f}R. No more gold trades today", round(pxc, 2))
+                    st['locked'] = True; return
 
     cur = 0
     for (j, d, kind, p0, tag, t) in ev:
         walk(cur, j); cur = j                    # bars before this event
+        if st['locked']: break
         if T[min(j, len(T) - 1)] >= eod: break
         op = openl()
         if op and op[0]['dir'] == d:
             same_min = any(g['t'] == t for g in op)
-            if len(op) < NMAX and not same_min:
+            win = V215 and len(op) >= NMAX and len(op) < PYRN and all(d * (p0 - g['entry']) / g['sd'] >= PYRX for g in op)
+            if (len(op) < NMAX or win) and not same_min:
                 g = new_leg(j, d, kind, p0, tag, t)
-                add(t, 'ADD', d, f"ADD {side(d)} (2nd trade) now ~{g['entry']:.2f} | stop {g['stop']:.2f} | " + (f"close half at {g['half_px']:.2f}" if SPLIT else "no half-close: hold to the stop or the day-end close") + f" | signal {tag}", g['entry'])
+                add(t, 'ADD', d, f"ADD {side(d)} ({len(op) + 1}{'nd' if len(op) == 1 else 'rd'} trade{', all open trades are up 1.25x their stop' if win else ''}) now ~{g['entry']:.2f} | stop {g['stop']:.2f} | " + (f"close half at {g['half_px']:.2f}" if SPLIT else "no half-close: hold to the stop or the day-end close") + (f" | size x{g['size_x']:g}" if g['size_x'] != 1 else "") + f" | signal {tag}", g['entry'])
             else:
-                add(t, 'HOLD', d, f"HOLD - new {side(d)} signal ({tag}) but {'a trade was opened this minute' if same_min else '2 trades are already open'}: do nothing")
+                add(t, 'HOLD', d, f"HOLD - new {side(d)} signal ({tag}) but {'a trade was opened this minute' if same_min else (str(len(op)) + ' trades are already open' + (' and not all are up 1.25x their stop' if V215 and len(op) < PYRN else ''))}: do nothing")
             continue
         if op:   # opposite signal against an open (fill) trade: close all, turn round
             px = p0 if op[0]['dir'] > 0 else p0 + SP
             for g in op: close_leg(g, px, t, 'reversed')
             add(t, 'REVERSE', d, f"REVERSE - close ALL your {side(-d)} trades now (~{px:.2f}) and {side(d)} instead", round(px, 2))
         g = new_leg(j, d, kind, p0, tag, t)
-        add(t, 'OPEN', d, f"OPEN {side(d)} now ~{g['entry']:.2f} | stop {g['stop']:.2f} ({g['risk']:.1f} away) | " + (f"close half at {g['half_px']:.2f}" if SPLIT else "no half-close: hold to the stop or the day-end close") + f" | signal {tag}", g['entry'])
-    walk(cur, len(T))
+        add(t, 'OPEN', d, f"OPEN {side(d)} now ~{g['entry']:.2f} | stop {g['stop']:.2f} ({g['risk']:.1f} away) | " + (f"close half at {g['half_px']:.2f}" if SPLIT else "no half-close: hold to the stop or the day-end close") + (f" | size x{g['size_x']:g}" if g['size_x'] != 1 else "") + f" | signal {tag}", g['entry'])
+    if not st['locked']: walk(cur, len(T))
     after = np.datetime64(now, 'm') >= eod
     if after:
         op = openl()
