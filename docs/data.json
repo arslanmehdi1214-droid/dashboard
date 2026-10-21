@@ -1,5 +1,5 @@
 {
- "updated": "Wed 21 Oct \u00b7 1:49 pm",
+ "updated": "Wed 21 Oct \u00b7 1:50 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -20,9 +20,9 @@
    "feed_error": false,
    "state": "buy",
    "message": "BUY day \u2014 up to 2 BUY trades. Each runs to its stop or the day-end close at 12:00 am Dubai (no half-close).",
-   "price": 4121.75,
+   "price": 4121.57,
    "close_at": "12:00 am",
-   "change": -3.68,
+   "change": -3.86,
    "size": 0.1,
    "datr": 68.17,
    "open_now": 1,
@@ -1037,10 +1037,10 @@
     ],
     [
      "1:45 pm",
-     4121.75,
+     4121.57,
      4122.01,
      4122.72,
-     4121.23
+     4121.09
     ]
    ],
    "history": [
@@ -1260,8 +1260,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 57.319,
-   "change": -0.88,
+   "price": 57.327,
+   "change": -0.872,
    "entries": [],
    "spark": [
     [
@@ -2253,7 +2253,7 @@
     ],
     [
      "1:45 pm",
-     57.319,
+     57.327,
      57.362,
      57.378,
      57.303
@@ -4021,8 +4021,8 @@
    "net_label": "Net $ per barrel (v1.05)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 99.183,
-   "change": 1.25,
+   "price": 99.153,
+   "change": 1.22,
    "entries": [],
    "spark": [
     [
@@ -5014,9 +5014,9 @@
     ],
     [
      "1:45 pm",
-     99.18,
+     99.15,
      99.01,
-     99.19,
+     99.21,
      98.93
     ]
    ],
@@ -5511,8 +5511,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "sell",
    "message": "1 paper trade today (1 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 12:00 am Dubai close. At most 2 trades a day.",
-   "price": 29605.6,
-   "change": -92.8,
+   "price": 29610.8,
+   "change": -87.6,
    "entries": [
     {
      "time": "1:15 pm",
@@ -5521,10 +5521,10 @@
      "role": "filler",
      "price": 29600.0,
      "entry": 29600.0,
-     "stop": 29736.8,
-     "stop0": 29736.8,
+     "stop": 29736.5,
+     "stop0": 29736.5,
      "stop_pts": 134.7,
-     "half_px": 29531.6,
+     "half_px": 29531.7,
      "half": false,
      "half_time": null,
      "size": "third",
@@ -5537,9 +5537,9 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": -2.6,
+     "live": -4.2,
      "rwf": null,
-     "spread": 2.1
+     "spread": 1.8
     }
    ],
    "spark": [
@@ -6609,10 +6609,10 @@
     ],
     [
      "1:45 pm",
-     29605.6,
+     29610.8,
      29638.4,
      29645.9,
-     29605.6
+     29596.3
     ]
    ],
    "journal": {
@@ -6644,10 +6644,10 @@
        "role": "filler",
        "price": 29600.0,
        "entry": 29600.0,
-       "stop": 29736.8,
-       "stop0": 29736.8,
+       "stop": 29736.5,
+       "stop0": 29736.5,
        "stop_pts": 134.7,
-       "half_px": 29531.6,
+       "half_px": 29531.7,
        "half": false,
        "half_time": null,
        "size": "third",
@@ -6660,9 +6660,9 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": -2.6,
+       "live": -4.2,
        "rwf": null,
-       "spread": 2.1
+       "spread": 1.8
       }
      ],
      "final": false
