@@ -1,5 +1,5 @@
 {
- "updated": "Wed 21 Oct \u00b7 11:15 am",
+ "updated": "Wed 21 Oct \u00b7 11:16 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -20,9 +20,9 @@
    "feed_error": false,
    "state": "buy",
    "message": "BUY day \u2014 up to 2 BUY trades. Each runs to its stop or the day-end close at 12:00 am Dubai (no half-close).",
-   "price": 4114.5,
+   "price": 4113.37,
    "close_at": "12:00 am",
-   "change": -10.93,
+   "change": -12.06,
    "size": 0.1,
    "datr": 68.17,
    "open_now": 1,
@@ -824,6 +824,13 @@
      4115.51,
      4116.06,
      4113.39
+    ],
+    [
+     "11:15 am",
+     4113.37,
+     4114.41,
+     4114.41,
+     4112.99
     ]
    ],
    "history": [
@@ -1043,8 +1050,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 57.196,
-   "change": -1.003,
+   "price": 57.158,
+   "change": -1.041,
    "entries": [],
    "spark": [
     [
@@ -1823,6 +1830,13 @@
      57.211,
      57.23,
      57.162
+    ],
+    [
+     "11:15 am",
+     57.158,
+     57.193,
+     57.193,
+     57.153
     ]
    ],
    "journal": {
@@ -1900,8 +1914,8 @@
    "net_label": "Net R / $ at $100 risk (v1.03 sizes)",
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Each trade closes half at its \u00bd level, then the rest's stop moves to the entry; everything closes at the 7:00 pm Dubai close.",
-   "price": 158.177,
-   "change_pips": -7.6,
+   "price": 158.182,
+   "change_pips": -7.1,
    "atr_pips": 81.2,
    "entries": [
     {
@@ -1928,7 +1942,7 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": 0.1084,
+     "r_now": 0.1027,
      "rwf": null,
      "spread": 1.2
     },
@@ -1939,10 +1953,10 @@
      "name": "EMA10 break",
      "price": 158.148,
      "entry": 158.148,
-     "stop": 158.778,
-     "stop0": 158.778,
-     "stop_pips": 63.0,
-     "half_px": 158.085,
+     "stop": 158.769,
+     "stop0": 158.769,
+     "stop_pips": 62.1,
+     "half_px": 158.086,
      "half": false,
      "half_time": null,
      "size": "full",
@@ -1956,9 +1970,9 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": -0.0643,
+     "r_now": -0.0758,
      "rwf": null,
-     "spread": 2.1
+     "spread": 1.2
     }
    ],
    "spark": [
@@ -2731,6 +2745,13 @@
      158.158,
      158.183,
      158.156
+    ],
+    [
+     "11:15 am",
+     158.182,
+     158.178,
+     158.194,
+     158.175
     ]
    ],
    "journal": {
@@ -2783,7 +2804,7 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": 0.1084,
+       "r_now": 0.1027,
        "rwf": null,
        "spread": 1.2
       },
@@ -2794,10 +2815,10 @@
        "name": "EMA10 break",
        "price": 158.148,
        "entry": 158.148,
-       "stop": 158.778,
-       "stop0": 158.778,
-       "stop_pips": 63.0,
-       "half_px": 158.085,
+       "stop": 158.769,
+       "stop0": 158.769,
+       "stop_pips": 62.1,
+       "half_px": 158.086,
        "half": false,
        "half_time": null,
        "size": "full",
@@ -2811,9 +2832,9 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": -0.0643,
+       "r_now": -0.0758,
        "rwf": null,
-       "spread": 2.1
+       "spread": 1.2
       }
      ],
      "atr_pips": 81.2,
@@ -3370,8 +3391,8 @@
    "net_label": "Net $ per barrel (v1.05)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 98.608,
-   "change": 0.67,
+   "price": 98.623,
+   "change": 0.69,
    "entries": [],
    "spark": [
     [
@@ -4150,6 +4171,13 @@
      98.68,
      98.73,
      98.52
+    ],
+    [
+     "11:15 am",
+     98.62,
+     98.61,
+     98.66,
+     98.6
     ]
    ],
    "journal": {
@@ -4643,8 +4671,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 29673.9,
-   "change": -24.5,
+   "price": 29670.5,
+   "change": -27.9,
    "entries": [],
    "spark": [
     [
@@ -5500,6 +5528,13 @@
      29665.0,
      29692.0,
      29661.8
+    ],
+    [
+     "11:15 am",
+     29670.5,
+     29672.0,
+     29675.6,
+     29669.0
     ]
    ],
    "journal": {
