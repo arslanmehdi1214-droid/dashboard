@@ -1,5 +1,5 @@
 {
- "updated": "Wed 21 Oct \u00b7 8:47 am",
+ "updated": "Wed 21 Oct \u00b7 8:58 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -20,9 +20,9 @@
    "feed_error": false,
    "state": "buy",
    "message": "BUY day \u2014 up to 2 BUY trades. Each runs to its stop or the day-end close at 12:00 am Dubai (no half-close).",
-   "price": 4116.12,
+   "price": 4115.08,
    "close_at": "12:00 am",
-   "change": -9.31,
+   "change": -10.35,
    "size": 0.1,
    "datr": 68.17,
    "open_now": 1,
@@ -617,10 +617,24 @@
     ],
     [
      "8:45 am",
-     4116.12,
+     4115.0,
      4115.88,
      4116.68,
-     4115.83
+     4114.86
+    ],
+    [
+     "8:50 am",
+     4114.42,
+     4114.99,
+     4115.32,
+     4114.05
+    ],
+    [
+     "8:55 am",
+     4115.08,
+     4114.4,
+     4115.26,
+     4114.02
     ]
    ],
    "history": [
@@ -840,8 +854,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 57.318,
-   "change": -0.881,
+   "price": 57.278,
+   "change": -0.921,
    "entries": [],
    "spark": [
     [
@@ -1413,10 +1427,24 @@
     ],
     [
      "8:45 am",
-     57.318,
+     57.31,
      57.314,
      57.335,
      57.303
+    ],
+    [
+     "8:50 am",
+     57.274,
+     57.312,
+     57.315,
+     57.263
+    ],
+    [
+     "8:55 am",
+     57.278,
+     57.273,
+     57.285,
+     57.267
     ]
    ],
    "journal": {
@@ -1494,8 +1522,8 @@
    "net_label": "Net R / $ at $100 risk (v1.03 sizes)",
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Each trade closes half at its \u00bd level, then the rest's stop moves to the entry; everything closes at the 7:00 pm Dubai close.",
-   "price": 158.078,
-   "change_pips": -17.5,
+   "price": 158.091,
+   "change_pips": -16.2,
    "atr_pips": 81.2,
    "entries": [
     {
@@ -1522,7 +1550,7 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": 0.1881,
+     "r_now": 0.1774,
      "rwf": null,
      "spread": 1.2
     }
@@ -2090,10 +2118,24 @@
     ],
     [
      "8:45 am",
-     158.078,
+     158.107,
      158.088,
-     158.095,
+     158.107,
      158.074
+    ],
+    [
+     "8:50 am",
+     158.108,
+     158.108,
+     158.109,
+     158.096
+    ],
+    [
+     "8:55 am",
+     158.091,
+     158.107,
+     158.108,
+     158.082
     ]
    ],
    "journal": {
@@ -2146,7 +2188,7 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": 0.1881,
+       "r_now": 0.1774,
        "rwf": null,
        "spread": 1.2
       }
@@ -2705,8 +2747,8 @@
    "net_label": "Net $ per barrel (v1.05)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 98.778,
-   "change": 0.84,
+   "price": 98.633,
+   "change": 0.69,
    "entries": [],
    "spark": [
     [
@@ -3278,10 +3320,24 @@
     ],
     [
      "8:45 am",
-     98.78,
+     98.75,
      98.7,
      98.78,
      98.69
+    ],
+    [
+     "8:50 am",
+     98.69,
+     98.76,
+     98.77,
+     98.68
+    ],
+    [
+     "8:55 am",
+     98.63,
+     98.7,
+     98.7,
+     98.63
     ]
    ],
    "journal": {
@@ -3775,8 +3831,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 29707.1,
-   "change": 8.7,
+   "price": 29701.5,
+   "change": 3.1,
    "entries": [],
    "spark": [
     [
@@ -4425,10 +4481,24 @@
     ],
     [
      "8:45 am",
-     29707.1,
+     29707.9,
      29710.9,
      29714.3,
-     29706.6
+     29705.3
+    ],
+    [
+     "8:50 am",
+     29700.6,
+     29707.8,
+     29709.6,
+     29697.3
+    ],
+    [
+     "8:55 am",
+     29701.5,
+     29700.4,
+     29707.5,
+     29696.4
     ]
    ],
    "journal": {
