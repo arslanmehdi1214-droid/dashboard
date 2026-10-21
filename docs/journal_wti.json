@@ -457,16 +457,26 @@
    "range_usd": 3.94,
    "traded": true,
    "final": true
+  },
+  {
+   "date": "2026-10-22",
+   "rules": "v1.05",
+   "label": "Thu 22 Oct",
+   "side": null,
+   "trades": [],
+   "range_usd": 3.88,
+   "traded": true,
+   "final": false
   }
  ],
  "summary": {
   "since": "20 Oct 2026",
-  "weekdays": 2,
+  "weekdays": 3,
   "trades": 7,
   "decided": 7,
   "direction": 28.6,
-  "days": 100.0,
-  "perday": 3.5,
+  "days": 66.7,
+  "perday": 2.33,
   "closed": 7,
   "win": 71.4,
   "pf": 0.03,
