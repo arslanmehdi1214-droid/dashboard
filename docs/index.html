@@ -375,13 +375,14 @@ function demoOf(m,e){if(!DEMO||!DEMO.positions)return null;const tg=e.tag||e.nam
  const P=DEMO.positions.filter(p=>{const l=DEMO_MAP[p.dealId];if(!l)return false;const k=l.k.split('|');return k[0]===m.c&&k[2]===e.time&&k[3]===e.side&&k[4]===String(tg)});
  if(!P.length)return null;const cur=(DEMO.account||{}).currency||'USD';let sz=0,lv=0,up=0,st=null;
  P.forEach(p=>{const z=+p.size||0;sz+=z;lv+=(+p.level||0)*z;up+=+p.upl||0;if(p.stop!=null)st=+p.stop});
- return {size:sz,level:sz?lv/sz:+P[0].level,stop:st,aed:demoMoney(up,cur)[0]}}
+ const rk=(DEMO_MAP[P[0].dealId]||{}).risk;
+ return {size:sz,level:sz?lv/sz:+P[0].level,stop:st,aed:demoMoney(up,cur)[0],risk:rk!=null?+rk:null}}
 function ticket(c){const {o,px}=c,{m,x,e,i}=o,dp=demoOf(m,e),ep=dp?dp.level:e.price,st0=e.stop0??e.stop,sd=Math.abs(ep-st0)||1,sg1=e.side==='BUY'?1:-1,tgt=ep+sg1*(e.half_px!=null?sd:2*sd);
  const R=sg1*(px-ep)/sd,plA=dp?dp.aed:c.pl*AED;
  const lo=Math.min(st0,tgt),hi=Math.max(st0,tgt),P=v=>Math.max(0,Math.min(100,(v-lo)/(hi-lo)*100)),pp=v=>e.side==='SELL'?100-P(v):P(v),lv=liveOf(m);
  return `<div class="tk ${e.side}" data-c="${m.c}">
   <span class="side">${e.side==='BUY'?'▲':'▼'} ${e.side}</span>
-  <div class="who"><a target="_blank" rel="noopener" href="https://www.tradingview.com/chart/?symbol=${m.tv}"><b>${m.n}</b></a> <span class="tag ${x.live?'live':''}">${x.live?'LIVE':'PAPER'}</span><small>${e.time} · ${dp?'Capital.com size '+f(dp.size,Number.isInteger(dp.size)?0:2):'not on the demo account'}</small></div>
+  <div class="who"><a target="_blank" rel="noopener" href="https://www.tradingview.com/chart/?symbol=${m.tv}"><b>${m.n}</b></a> <span class="tag ${x.live?'live':''}">${x.live?'LIVE':'PAPER'}</span><small>${e.time} · risk AED ${f(dp&&dp.risk!=null?dp.risk:c.risk*AED,0)} · ${dp?'size '+f(dp.size,Number.isInteger(dp.size)?0:2):'not on the demo account'}</small></div>
   <div class="lad"><div class="ln2"></div><div class="zl" style="left:${Math.min(pp(st0),pp(ep))}%;width:${Math.abs(pp(ep)-pp(st0))}%"></div><div class="zw" style="left:${Math.min(pp(ep),pp(tgt))}%;width:${Math.abs(pp(tgt)-pp(ep))}%"></div>
    <span class="lb l">${f(st0,m.dp)}</span>${e.half_px!=null?`<span class="lb h" style="left:${pp(e.half_px)}%">${e.part!=null?(e.half?Math.round(e.part*100)+'% banked':'close '+Math.round(e.part*100)+'% at'):(e.half?'½ banked':'½ at')} ${f(e.half_px,m.dp)}</span>`:''}<span class="lb c" style="left:${pp(ep)}%">${f(ep,m.dp)}</span><span class="lb r">${f(tgt,m.dp)}</span>
    <div class="nowm" style="left:${pp(px)}%"><span>${f(px,m.dp)}<i class="dot ${lv?'on':''}"></i></span><i></i></div></div>
@@ -572,7 +573,7 @@ async function pullDemo(){
 }
 async function pullDemoMap(){
  try{const j=await (await fetch(DEMO_STATE_URL+'?t='+Date.now(),{cache:'no-store'})).json();const m={};
-  Object.entries(j.trades||{}).forEach(([k,v])=>['part','rest'].forEach(r=>{if(v[r]&&v[r].id)m[v[r].id]={k,role:r,risk:v.risk_usd}}));DEMO_MAP=m}catch(e){}
+  Object.entries(j.trades||{}).forEach(([k,v])=>['part','rest'].forEach(r=>{if(v[r]&&v[r].id)m[v[r].id]={k,role:r,risk:v.risk_aed}}));DEMO_MAP=m}catch(e){}
 }
 function demoMoney(x,cur){ // -> [AED, USD]
  if(x==null||isNaN(x))return [null,null];x=+x;
@@ -596,7 +597,7 @@ function renderDemo(){
   <div class="kv">Balance<b>AED ${f(bA,0)}</b></div>
   <div class="kv">Equity now<b>AED ${f(eA,0)}</b></div>
   <div class="kv">Open positions<b>${P.length}</b></div><div class="kv">Closed today<b>${nc}</b></div>
-  ${rows}<div class="dnote">${a.name||'Demo'} · ${cur} · updated ${t12(new Date(DEMO.at))}${DEMO_ERR?' · last read failed: '+DEMO_ERR:''}</div>`;
+  <div class="dnote">${a.name||'Demo'} · ${cur} · updated ${t12(new Date(DEMO.at))}${DEMO_ERR?' · last read failed: '+DEMO_ERR:''}</div>`;
 }
 buildT();render();applySel();tick();loadDesk();loadCal();setInterval(loadDesk,60000);loadHist();setInterval(loadHist,5*60000);setInterval(loadCal,30*60000);setInterval(tick,1000);
 pullLive();setInterval(pullLive,WORKER_URL?3000:5000);
