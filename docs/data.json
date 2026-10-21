@@ -1,5 +1,5 @@
 {
- "updated": "Wed 21 Oct \u00b7 11:58 pm",
+ "updated": "Thu 22 Oct \u00b7 12:00 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -14,15 +14,21 @@
      "kind": "OPEN",
      "side": "BUY",
      "text": "OPEN BUY now ~4124.64 | stop 4090.06 (34.6 away) | no half-close: hold to the stop or the day-end close | signal N15 hsq"
+    },
+    {
+     "time": "12:00 am",
+     "kind": "CLOSE_ALL",
+     "side": "BUY",
+     "text": "END OF DAY - CLOSE ALL your gold trades now (1 open)"
     }
    ],
    "actions_day": "2026-10-21",
    "feed_error": false,
    "state": "buy",
    "message": "BUY day \u2014 up to 2 BUY trades. Each runs to its stop or the day-end close at 12:00 am Dubai (no half-close).",
-   "price": 4133.56,
+   "price": 4134.45,
    "close_at": "12:00 am",
-   "change": 8.13,
+   "change": 9.02,
    "size": 0.1,
    "datr": 68.17,
    "open_now": 1,
@@ -38,15 +44,15 @@
      "half": false,
      "half_time": null,
      "size": 0.1,
-     "status": "open",
+     "status": "close_now",
      "first": true,
-     "exit": null,
-     "exit_time": null,
-     "pnl": null,
-     "pnl_oz": null,
+     "exit": 4134.45,
+     "exit_time": "12:00 am",
+     "pnl": 9.81,
+     "pnl_oz": 9.81,
      "size_x": 1.0,
      "rwf": null,
-     "next": "Hold to the stop 4090.06 or the day-end close \u00b7 no half-close"
+     "next": null
     }
    ],
    "spark": [
@@ -1893,9 +1899,9 @@
     ],
     [
      "11:55 pm",
-     4133.56,
+     4134.45,
      4133.36,
-     4134.08,
+     4134.82,
      4131.64
     ]
    ],
@@ -1906,11 +1912,11 @@
      "state": "buy",
      "entries": 1,
      "stopped": 0,
-     "eod": 0,
-     "running": 1,
+     "eod": 1,
+     "running": 0,
      "rw": 0,
      "rd": 0,
-     "pnl": null
+     "pnl": 9.81
     },
     {
      "date": "2026-10-20",
@@ -2082,9 +2088,9 @@
     "decided": 16,
     "days": 92.3,
     "perday": 1.69,
-    "avg_pnl": -8.85,
-    "closed": 21,
-    "total_pnl_01": -18.59
+    "avg_pnl": -8.0,
+    "closed": 22,
+    "total_pnl_01": -17.6
    }
   },
   "SILVER": {
@@ -2114,10 +2120,10 @@
    "what_note": "Forward test of silver v1.8 (honest entries) on live Capital.com prices. Checked after about 3 months against the backtest band.",
    "cost_note": "Results are $ per oz for the whole trade (half banked at +1R included) after Capital.com's spread (at least $0.05); x size (1 or 2); page money at 0.01 lot = 50 oz.",
    "net_label": "Net $/oz (v1.8 honest rules)",
-   "state": "waiting",
-   "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 57.85,
-   "change": -0.349,
+   "state": "none",
+   "message": "No paper trade today (no 2-of-3 agreement).",
+   "price": 57.872,
+   "change": -0.327,
    "entries": [],
    "spark": [
     [
@@ -3963,9 +3969,9 @@
     ],
     [
      "11:55 pm",
-     57.85,
+     57.872,
      57.869,
-     57.875,
+     57.882,
      57.807
     ]
    ],
@@ -3990,7 +3996,7 @@
      "label": "Wed 21 Oct",
      "side": null,
      "trades": [],
-     "final": false
+     "final": true
     },
     {
      "date": "2026-10-20",
@@ -4044,8 +4050,8 @@
    "net_label": "Net R / $ at $100 risk (v1.03 sizes)",
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Each trade closes half at its \u00bd level, then the rest's stop moves to the entry; everything closes at the 7:00 pm Dubai close.",
-   "price": 158.196,
-   "change_pips": -5.7,
+   "price": 158.197,
+   "change_pips": -5.6,
    "atr_pips": 81.2,
    "entries": [
     {
@@ -5970,10 +5976,10 @@
     ],
     [
      "11:55 pm",
-     158.196,
+     158.197,
      158.19,
      158.203,
-     158.183
+     158.182
     ]
    ],
    "journal": {
@@ -6641,8 +6647,8 @@
    "net_label": "Net $ per barrel (v1.05)",
    "state": "buy",
    "message": "PAPER BUY day \u2014 later signals today are BUY only. Close 25% at the part level, then move the stop to entry; everything closes at 9:00 pm Dubai. No new trades after 5:30 pm (one late first trade allowed).",
-   "price": 97.448,
-   "change": -0.49,
+   "price": 97.458,
+   "change": -0.48,
    "entries": [
     {
      "time": "2:14 pm",
@@ -8511,9 +8517,9 @@
     ],
     [
      "11:55 pm",
-     97.45,
+     97.46,
      97.28,
-     97.47,
+     97.53,
      97.26
     ]
    ],
@@ -9031,8 +9037,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "sell",
    "message": "1 paper trade today (0 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 12:00 am Dubai close. At most 2 trades a day.",
-   "price": 29847.7,
-   "change": 149.3,
+   "price": 29811.9,
+   "change": 113.5,
    "entries": [
     {
      "time": "1:15 pm",
@@ -10983,10 +10989,10 @@
     ],
     [
      "11:55 pm",
-     29847.7,
+     29811.9,
      29848.5,
      29853.9,
-     29836.9
+     29808.7
     ]
    ],
    "journal": {
@@ -11039,7 +11045,7 @@
        "spread": 1.8
       }
      ],
-     "final": false
+     "final": true
     },
     {
      "date": "2026-10-20",
