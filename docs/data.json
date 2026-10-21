@@ -1,5 +1,5 @@
 {
- "updated": "Wed 21 Oct \u00b7 10:43 am",
+ "updated": "Wed 21 Oct \u00b7 10:44 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -20,9 +20,9 @@
    "feed_error": false,
    "state": "buy",
    "message": "BUY day \u2014 up to 2 BUY trades. Each runs to its stop or the day-end close at 12:00 am Dubai (no half-close).",
-   "price": 4114.69,
+   "price": 4114.49,
    "close_at": "12:00 am",
-   "change": -10.74,
+   "change": -10.94,
    "size": 0.1,
    "datr": 68.17,
    "open_now": 1,
@@ -778,7 +778,7 @@
     ],
     [
      "10:40 am",
-     4114.69,
+     4114.49,
      4113.86,
      4115.06,
      4113.53
@@ -1001,8 +1001,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 57.204,
-   "change": -0.995,
+   "price": 57.199,
+   "change": -1.0,
    "entries": [],
    "spark": [
     [
@@ -1735,7 +1735,7 @@
     ],
     [
      "10:40 am",
-     57.204,
+     57.199,
      57.183,
      57.207,
      57.168
@@ -1816,8 +1816,8 @@
    "net_label": "Net R / $ at $100 risk (v1.03 sizes)",
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Each trade closes half at its \u00bd level, then the rest's stop moves to the entry; everything closes at the 7:00 pm Dubai close.",
-   "price": 158.141,
-   "change_pips": -11.2,
+   "price": 158.132,
+   "change_pips": -12.1,
    "atr_pips": 81.2,
    "entries": [
     {
@@ -1844,7 +1844,7 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": 0.1372,
+     "r_now": 0.1437,
      "rwf": null,
      "spread": 1.2
     },
@@ -1855,9 +1855,9 @@
      "name": "EMA10 break",
      "price": 158.148,
      "entry": 158.148,
-     "stop": 158.767,
-     "stop0": 158.767,
-     "stop_pips": 61.9,
+     "stop": 158.769,
+     "stop0": 158.769,
+     "stop_pips": 62.1,
      "half_px": 158.086,
      "half": false,
      "half_time": null,
@@ -1872,9 +1872,9 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": -0.0069,
+     "r_now": 0.0063,
      "rwf": null,
-     "spread": 1.0
+     "spread": 1.2
     }
    ],
    "spark": [
@@ -2601,10 +2601,10 @@
     ],
     [
      "10:40 am",
-     158.141,
+     158.132,
      158.142,
      158.145,
-     158.138
+     158.131
     ]
    ],
    "journal": {
@@ -2657,7 +2657,7 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": 0.1372,
+       "r_now": 0.1437,
        "rwf": null,
        "spread": 1.2
       },
@@ -2668,9 +2668,9 @@
        "name": "EMA10 break",
        "price": 158.148,
        "entry": 158.148,
-       "stop": 158.767,
-       "stop0": 158.767,
-       "stop_pips": 61.9,
+       "stop": 158.769,
+       "stop0": 158.769,
+       "stop_pips": 62.1,
        "half_px": 158.086,
        "half": false,
        "half_time": null,
@@ -2685,9 +2685,9 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": -0.0069,
+       "r_now": 0.0063,
        "rwf": null,
-       "spread": 1.0
+       "spread": 1.2
       }
      ],
      "atr_pips": 81.2,
@@ -3244,7 +3244,7 @@
    "net_label": "Net $ per barrel (v1.05)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 99.048,
+   "price": 99.043,
    "change": 1.11,
    "entries": [],
    "spark": [
@@ -3978,7 +3978,7 @@
     ],
     [
      "10:40 am",
-     99.05,
+     99.04,
      99.02,
      99.08,
      99.0
@@ -4475,8 +4475,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 29654.6,
-   "change": -43.8,
+   "price": 29655.4,
+   "change": -43.0,
    "entries": [],
    "spark": [
     [
@@ -5286,7 +5286,7 @@
     ],
     [
      "10:40 am",
-     29654.6,
+     29655.4,
      29648.6,
      29656.9,
      29644.1
