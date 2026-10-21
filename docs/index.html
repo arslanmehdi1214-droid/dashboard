@@ -376,7 +376,7 @@ function demoOf(m,e){if(!DEMO||!DEMO.positions)return null;const tg=e.tag||e.nam
  if(!P.length)return null;const cur=(DEMO.account||{}).currency||'USD';let sz=0,lv=0,up=0,st=null;
  P.forEach(p=>{const z=+p.size||0;sz+=z;lv+=(+p.level||0)*z;up+=+p.upl||0;if(p.stop!=null)st=+p.stop});
  return {size:sz,level:sz?lv/sz:+P[0].level,stop:st,aed:demoMoney(up,cur)[0]}}
-function ticket(c){const {o,px}=c,{m,x,e,i}=o,dp=demoOf(m,e),ep=dp?dp.level:e.price,st0=dp&&dp.stop!=null?dp.stop:(e.stop0??e.stop),sd=Math.abs(ep-st0)||1,sg1=e.side==='BUY'?1:-1,tgt=ep+sg1*(e.half_px!=null?sd:2*sd);
+function ticket(c){const {o,px}=c,{m,x,e,i}=o,dp=demoOf(m,e),ep=dp?dp.level:e.price,st0=e.stop0??e.stop,sd=Math.abs(ep-st0)||1,sg1=e.side==='BUY'?1:-1,tgt=ep+sg1*(e.half_px!=null?sd:2*sd);
  const R=sg1*(px-ep)/sd,plA=dp?dp.aed:c.pl*AED;
  const lo=Math.min(st0,tgt),hi=Math.max(st0,tgt),P=v=>Math.max(0,Math.min(100,(v-lo)/(hi-lo)*100)),pp=v=>e.side==='SELL'?100-P(v):P(v),lv=liveOf(m);
  return `<div class="tk ${e.side}" data-c="${m.c}">
@@ -587,7 +587,7 @@ function renderDemo(){
  const ep=ev.length>1?ev.map((v,i)=>(i?'L':'M')+(i/(ev.length-1)*w).toFixed(1)+','+Y(v)).join(''):'',col=tot>=0?'var(--buy)':'var(--sell)';
  const P=(DEMO.positions||[]).slice().sort((x,y)=>(x.opened||'')<(y.opened||'')?-1:1);
  const rows=P.map(p=>{const m=MK.find(z=>z.ep===p.epic)||{n:p.name||p.epic,dp:2},lab=DEMO_MAP[p.dealId],[pA,pU]=demoMoney(p.upl,cur);
-  const k=lab?lab.k.split('|'):null,who=k?`${k[2]} · ${k[4]}${lab.role==='part'?' · part':''}`:'not from the desk';
+  const k=lab?lab.k.split('|'):null,who=k?`desk trade ${k[2]}${lab.role==='part'?' · part':''}`:'not from the desk';
   return `<div class="dpos"><div class="l1"><span><b class="${p.direction==='BUY'?'pos':'neg'}">${p.direction}</b> ${m.n} <span class="dim">${f(p.size,Number.isInteger(+p.size)?0:2)}</span></span><span class="pl ${(+p.upl||0)>=0?'pos':'neg'}">${sg(pA)} AED</span></div>
    <div class="l2"><span>in ${f(p.level,m.dp)} · stop ${p.stop!=null?f(p.stop,m.dp):'—'}${p.profit!=null?' · target '+f(p.profit,m.dp):''}</span></div><div class="l2"><span>${who}</span></div></div>`}).join('');
  const nc=(DEMO.closed_today||[]).length;
