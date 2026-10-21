@@ -1,5 +1,5 @@
 {
- "updated": "Wed 21 Oct \u00b7 7:31 am",
+ "updated": "Wed 21 Oct \u00b7 7:32 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -8,18 +8,45 @@
    "symbol": "XAU/USD",
    "live": true,
    "version": "v2.11",
-   "actions": [],
+   "actions": [
+    {
+     "time": "7:31 am",
+     "kind": "OPEN",
+     "side": "BUY",
+     "text": "OPEN BUY now ~4124.64 | stop 4090.06 (34.6 away) | no half-close: hold to the stop or the day-end close | signal N15 hsq"
+    }
+   ],
    "actions_day": "2026-10-21",
    "feed_error": false,
-   "state": "waiting",
-   "message": "Waiting for the first signal (signals can come until 8 pm Dubai).",
-   "price": 4121.84,
+   "state": "buy",
+   "message": "BUY day \u2014 up to 2 BUY trades. Each runs to its stop or the day-end close at 12:00 am Dubai (no half-close).",
+   "price": 4125.06,
    "close_at": "12:00 am",
-   "change": -3.59,
+   "change": -0.37,
    "size": 0.1,
    "datr": 68.17,
-   "open_now": 0,
-   "entries": [],
+   "open_now": 1,
+   "entries": [
+    {
+     "time": "7:31 am",
+     "side": "BUY",
+     "tag": "N15 hsq",
+     "price": 4124.64,
+     "stop": 4090.06,
+     "stop0": 4090.06,
+     "half_px": null,
+     "half": false,
+     "half_time": null,
+     "size": 0.1,
+     "status": "open",
+     "first": true,
+     "exit": null,
+     "exit_time": null,
+     "pnl": null,
+     "rwf": null,
+     "next": "Hold to the stop 4090.06 or the day-end close \u00b7 no half-close (v2.11)"
+    }
+   ],
    "spark": [
     [
      "2:00 am",
@@ -485,9 +512,9 @@
     ],
     [
      "7:30 am",
-     4121.84,
+     4125.06,
      4120.96,
-     4122.43,
+     4125.06,
      4120.66
     ]
    ],
@@ -495,11 +522,11 @@
     {
      "date": "2026-10-21",
      "label": "Wed 21 Oct",
-     "state": "none",
-     "entries": 0,
+     "state": "buy",
+     "entries": 1,
      "stopped": 0,
      "eod": 0,
-     "running": 0,
+     "running": 1,
      "rw": 0,
      "rd": 0,
      "pnl": null
@@ -669,11 +696,11 @@
    },
    "journal": {
     "since": "03 Oct 2026",
-    "trades": 21,
+    "trades": 22,
     "direction": 37.5,
     "decided": 16,
-    "days": 84.6,
-    "perday": 1.62,
+    "days": 92.3,
+    "perday": 1.69,
     "avg_pnl": -8.85,
     "closed": 21,
     "total_pnl_01": -18.59
@@ -708,8 +735,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 57.532,
-   "change": -0.667,
+   "price": 57.581,
+   "change": -0.618,
    "entries": [],
    "spark": [
     [
@@ -1176,9 +1203,9 @@
     ],
     [
      "7:30 am",
-     57.532,
+     57.581,
      57.49,
-     57.541,
+     57.582,
      57.487
     ]
    ],
@@ -1225,7 +1252,7 @@
    "feed_error": false,
    "epic": "SILVER",
    "close_at": "12:00 am",
-   "gold_signals_today": 0,
+   "gold_signals_today": 1,
    "history_note": "minutes from 2026-09-10 (30 days) \u00b7 326 daily bars from 2025-07-18"
   },
   "USDJPY": {
@@ -1257,8 +1284,8 @@
    "net_label": "Net R / $ at $100 risk (v1.03 sizes)",
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Each trade closes half at its \u00bd level, then the rest's stop moves to the entry; everything closes at the 7:00 pm Dubai close.",
-   "price": 158.231,
-   "change_pips": -2.2,
+   "price": 158.216,
+   "change_pips": -3.7,
    "atr_pips": 81.2,
    "entries": [
     {
@@ -1285,7 +1312,7 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": 0.023,
+     "r_now": 0.0476,
      "rwf": null,
      "spread": 1.2
     }
@@ -1748,10 +1775,10 @@
     ],
     [
      "7:30 am",
-     158.231,
+     158.216,
      158.232,
      158.234,
-     158.229
+     158.215
     ]
    ],
    "journal": {
@@ -1804,7 +1831,7 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": 0.023,
+       "r_now": 0.0476,
        "rwf": null,
        "spread": 1.2
       }
@@ -2363,8 +2390,8 @@
    "net_label": "Net $ per barrel (v1.05)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 98.893,
-   "change": 0.95,
+   "price": 98.838,
+   "change": 0.9,
    "entries": [],
    "spark": [
     [
@@ -2831,10 +2858,10 @@
     ],
     [
      "7:30 am",
-     98.89,
+     98.84,
      98.92,
      98.92,
-     98.89
+     98.83
     ]
    ],
    "journal": {
@@ -3328,8 +3355,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 29764.3,
-   "change": 65.9,
+   "price": 29770.1,
+   "change": 71.7,
    "entries": [],
    "spark": [
     [
@@ -3873,9 +3900,9 @@
     ],
     [
      "7:30 am",
-     29764.3,
+     29770.1,
      29766.6,
-     29769.6,
+     29773.4,
      29761.6
     ]
    ],
