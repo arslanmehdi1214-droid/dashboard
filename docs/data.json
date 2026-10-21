@@ -1,5 +1,5 @@
 {
- "updated": "Wed 21 Oct \u00b7 2:15 pm",
+ "updated": "Wed 21 Oct \u00b7 2:21 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -20,9 +20,9 @@
    "feed_error": false,
    "state": "buy",
    "message": "BUY day \u2014 up to 2 BUY trades. Each runs to its stop or the day-end close at 12:00 am Dubai (no half-close).",
-   "price": 4114.82,
+   "price": 4115.79,
    "close_at": "12:00 am",
-   "change": -10.61,
+   "change": -9.64,
    "size": 0.1,
    "datr": 68.17,
    "open_now": 1,
@@ -1076,6 +1076,20 @@
      4116.83,
      4117.43,
      4114.49
+    ],
+    [
+     "2:15 pm",
+     4114.8,
+     4114.73,
+     4115.86,
+     4111.42
+    ],
+    [
+     "2:20 pm",
+     4115.79,
+     4114.82,
+     4116.17,
+     4114.82
     ]
    ],
    "history": [
@@ -1295,8 +1309,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 57.235,
-   "change": -0.964,
+   "price": 57.282,
+   "change": -0.917,
    "entries": [],
    "spark": [
     [
@@ -2327,6 +2341,20 @@
      57.227,
      57.263,
      57.196
+    ],
+    [
+     "2:15 pm",
+     57.254,
+     57.233,
+     57.271,
+     57.172
+    ],
+    [
+     "2:20 pm",
+     57.282,
+     57.255,
+     57.294,
+     57.255
     ]
    ],
    "journal": {
@@ -2404,8 +2432,8 @@
    "net_label": "Net R / $ at $100 risk (v1.03 sizes)",
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Each trade closes half at its \u00bd level, then the rest's stop moves to the entry; everything closes at the 7:00 pm Dubai close.",
-   "price": 158.103,
-   "change_pips": -15.0,
+   "price": 158.104,
+   "change_pips": -14.9,
    "atr_pips": 81.2,
    "entries": [
     {
@@ -2432,7 +2460,7 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": 0.156,
+     "r_now": 0.1667,
      "rwf": null,
      "spread": 1.2
     },
@@ -2444,25 +2472,25 @@
      "price": 158.148,
      "entry": 158.148,
      "stop": 158.148,
-     "stop0": 158.778,
-     "stop_pips": 63.0,
-     "half_px": 158.085,
+     "stop0": 158.769,
+     "stop_pips": 62.1,
+     "half_px": 158.086,
      "half": true,
-     "half_time": "11:32 am",
+     "half_time": "11:31 am",
      "size": "full",
      "quiet": false,
      "first": false,
      "status": "be",
      "exit": 158.148,
      "exit_time": "12:01 pm",
-     "pips": 3.2,
-     "usd": 2.02,
-     "r": 0.0517,
-     "r_sized": 0.052,
-     "usd_risk": 5.2,
-     "r_now": 0.0517,
+     "pips": 3.1,
+     "usd": 1.96,
+     "r": 0.051,
+     "r_sized": 0.051,
+     "usd_risk": 5.1,
+     "r_now": 0.051,
      "rwf": null,
-     "spread": 2.1
+     "spread": 1.2
     }
    ],
    "spark": [
@@ -3487,6 +3515,20 @@
      158.112,
      158.12,
      158.079
+    ],
+    [
+     "2:15 pm",
+     158.108,
+     158.104,
+     158.127,
+     158.1
+    ],
+    [
+     "2:20 pm",
+     158.104,
+     158.107,
+     158.108,
+     158.103
     ]
    ],
    "journal": {
@@ -3501,11 +3543,11 @@
     "win": 100.0,
     "pf": null,
     "pf_pips": null,
-    "net_pips": 21.9,
-    "net_usd": 13.84,
+    "net_pips": 21.8,
+    "net_usd": 13.78,
     "rules": "v1.03",
     "net_r": 0.53,
-    "net_usd_risk": 52.6,
+    "net_usd_risk": 52.5,
     "green": 100.0
    },
    "jdays": [
@@ -3539,7 +3581,7 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": 0.156,
+       "r_now": 0.1667,
        "rwf": null,
        "spread": 1.2
       },
@@ -3551,25 +3593,25 @@
        "price": 158.148,
        "entry": 158.148,
        "stop": 158.148,
-       "stop0": 158.778,
-       "stop_pips": 63.0,
-       "half_px": 158.085,
+       "stop0": 158.769,
+       "stop_pips": 62.1,
+       "half_px": 158.086,
        "half": true,
-       "half_time": "11:32 am",
+       "half_time": "11:31 am",
        "size": "full",
        "quiet": false,
        "first": false,
        "status": "be",
        "exit": 158.148,
        "exit_time": "12:01 pm",
-       "pips": 3.2,
-       "usd": 2.02,
-       "r": 0.0517,
-       "r_sized": 0.052,
-       "usd_risk": 5.2,
-       "r_now": 0.0517,
+       "pips": 3.1,
+       "usd": 1.96,
+       "r": 0.051,
+       "r_sized": 0.051,
+       "usd_risk": 5.1,
+       "r_now": 0.051,
        "rwf": null,
-       "spread": 2.1
+       "spread": 1.2
       }
      ],
      "atr_pips": 81.2,
@@ -4126,8 +4168,8 @@
    "net_label": "Net $ per barrel (v1.05)",
    "state": "buy",
    "message": "PAPER BUY day \u2014 later signals today are BUY only. Close 25% at the part level, then move the stop to entry; everything closes at 9:00 pm Dubai. No new trades after 5:30 pm (one late first trade allowed).",
-   "price": 100.023,
-   "change": 2.08,
+   "price": 99.768,
+   "change": 1.83,
    "entries": [
     {
      "time": "2:14 pm",
@@ -4136,7 +4178,7 @@
      "price": 100.02,
      "stop": 96.08,
      "stop0": 96.08,
-     "half_px": 100.26,
+     "half_px": 100.3,
      "half": false,
      "part": 0.25,
      "late": false,
@@ -4149,7 +4191,7 @@
      "res": null,
      "res_sized": null,
      "rwf": null,
-     "spread": 0.04
+     "spread": 0.08
     }
    ],
    "spark": [
@@ -5181,6 +5223,20 @@
      99.64,
      100.03,
      99.63
+    ],
+    [
+     "2:15 pm",
+     99.84,
+     100.01,
+     100.15,
+     99.8
+    ],
+    [
+     "2:20 pm",
+     99.77,
+     99.84,
+     99.84,
+     99.75
     ]
    ],
    "journal": {
@@ -5212,7 +5268,7 @@
        "price": 100.02,
        "stop": 96.08,
        "stop0": 96.08,
-       "half_px": 100.26,
+       "half_px": 100.3,
        "half": false,
        "part": 0.25,
        "late": false,
@@ -5225,7 +5281,7 @@
        "res": null,
        "res_sized": null,
        "rwf": null,
-       "spread": 0.04
+       "spread": 0.08
       }
      ],
      "range_usd": 3.94,
@@ -5697,8 +5753,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "sell",
    "message": "1 paper trade today (1 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 12:00 am Dubai close. At most 2 trades a day.",
-   "price": 29555.1,
-   "change": -143.3,
+   "price": 29569.3,
+   "change": -129.1,
    "entries": [
     {
      "time": "1:15 pm",
@@ -5707,10 +5763,10 @@
      "role": "filler",
      "price": 29600.0,
      "entry": 29600.0,
-     "stop": 29736.5,
-     "stop0": 29736.5,
+     "stop": 29736.8,
+     "stop0": 29736.8,
      "stop_pts": 134.7,
-     "half_px": 29531.7,
+     "half_px": 29531.6,
      "half": false,
      "half_time": null,
      "size": "third",
@@ -5723,9 +5779,9 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": 14.4,
+     "live": 9.5,
      "rwf": null,
-     "spread": 1.8
+     "spread": 2.1
     }
    ],
    "spark": [
@@ -6834,6 +6890,20 @@
      29573.6,
      29581.6,
      29553.9
+    ],
+    [
+     "2:15 pm",
+     29562.4,
+     29554.1,
+     29567.1,
+     29539.4
+    ],
+    [
+     "2:20 pm",
+     29569.3,
+     29563.3,
+     29570.5,
+     29563.3
     ]
    ],
    "journal": {
@@ -6865,10 +6935,10 @@
        "role": "filler",
        "price": 29600.0,
        "entry": 29600.0,
-       "stop": 29736.5,
-       "stop0": 29736.5,
+       "stop": 29736.8,
+       "stop0": 29736.8,
        "stop_pts": 134.7,
-       "half_px": 29531.7,
+       "half_px": 29531.6,
        "half": false,
        "half_time": null,
        "size": "third",
@@ -6881,9 +6951,9 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": 14.4,
+       "live": 9.5,
        "rwf": null,
-       "spread": 1.8
+       "spread": 2.1
       }
      ],
      "final": false
