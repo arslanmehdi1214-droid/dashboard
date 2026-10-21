@@ -1,5 +1,5 @@
 {
- "open_positions": 2,
+ "open_positions": 1,
  "risk_usd": 13.614703880190607,
  "trades": {
   "GOLD|2026-10-20|1:06 pm|BUY|FILL range fade": {
@@ -96,16 +96,17 @@
    "market": "OIL",
    "opened_at": "Wed 21 Oct 2:15 PM",
    "rest": {
+    "closed_by": "desk: close_now",
     "id": "00000000-6cd7-3235-0495-7fc60004511e",
     "level": 100.123,
-    "open": true,
+    "open": false,
     "size": 1.1,
     "tp": null
    },
    "risk_aed": 15.92,
    "risk_usd": 4.54,
    "side": "BUY",
-   "state": "open",
+   "state": "closed",
    "stop": 96.08
   },
   "US100|2026-10-20|2:48 pm|BUY|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am": {
