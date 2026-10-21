@@ -1,5 +1,5 @@
 {
- "updated": "Wed 21 Oct \u00b7 7:32 am",
+ "updated": "Wed 21 Oct \u00b7 7:36 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -20,9 +20,9 @@
    "feed_error": false,
    "state": "buy",
    "message": "BUY day \u2014 up to 2 BUY trades. Each runs to its stop or the day-end close at 12:00 am Dubai (no half-close).",
-   "price": 4125.06,
+   "price": 4124.11,
    "close_at": "12:00 am",
-   "change": -0.37,
+   "change": -1.32,
    "size": 0.1,
    "datr": 68.17,
    "open_now": 1,
@@ -512,10 +512,17 @@
     ],
     [
      "7:30 am",
-     4125.06,
+     4123.74,
      4120.96,
-     4125.06,
+     4125.5,
      4120.66
+    ],
+    [
+     "7:35 am",
+     4124.11,
+     4123.7,
+     4124.54,
+     4123.61
     ]
    ],
    "history": [
@@ -735,8 +742,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 57.581,
-   "change": -0.618,
+   "price": 57.546,
+   "change": -0.653,
    "entries": [],
    "spark": [
     [
@@ -1203,10 +1210,17 @@
     ],
     [
      "7:30 am",
-     57.581,
+     57.548,
      57.49,
-     57.582,
+     57.592,
      57.487
+    ],
+    [
+     "7:35 am",
+     57.546,
+     57.549,
+     57.554,
+     57.541
     ]
    ],
    "journal": {
@@ -1284,8 +1298,8 @@
    "net_label": "Net R / $ at $100 risk (v1.03 sizes)",
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Each trade closes half at its \u00bd level, then the rest's stop moves to the entry; everything closes at the 7:00 pm Dubai close.",
-   "price": 158.216,
-   "change_pips": -3.7,
+   "price": 158.179,
+   "change_pips": -7.4,
    "atr_pips": 81.2,
    "entries": [
     {
@@ -1295,12 +1309,12 @@
      "name": "Heikin-Ashi 7am",
      "price": 158.257,
      "entry": 158.257,
-     "stop": 158.878,
+     "stop": 158.257,
      "stop0": 158.878,
      "stop_pips": 62.1,
      "half_px": 158.195,
-     "half": false,
-     "half_time": null,
+     "half": true,
+     "half_time": "7:35 am",
      "size": "third",
      "quiet": false,
      "first": true,
@@ -1312,7 +1326,7 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": 0.0476,
+     "r_now": 0.1052,
      "rwf": null,
      "spread": 1.2
     }
@@ -1775,10 +1789,17 @@
     ],
     [
      "7:30 am",
-     158.216,
+     158.197,
      158.232,
      158.234,
-     158.215
+     158.191
+    ],
+    [
+     "7:35 am",
+     158.179,
+     158.198,
+     158.198,
+     158.179
     ]
    ],
    "journal": {
@@ -1814,12 +1835,12 @@
        "name": "Heikin-Ashi 7am",
        "price": 158.257,
        "entry": 158.257,
-       "stop": 158.878,
+       "stop": 158.257,
        "stop0": 158.878,
        "stop_pips": 62.1,
        "half_px": 158.195,
-       "half": false,
-       "half_time": null,
+       "half": true,
+       "half_time": "7:35 am",
        "size": "third",
        "quiet": false,
        "first": true,
@@ -1831,7 +1852,7 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": 0.0476,
+       "r_now": 0.1052,
        "rwf": null,
        "spread": 1.2
       }
@@ -2390,8 +2411,8 @@
    "net_label": "Net $ per barrel (v1.05)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 98.838,
-   "change": 0.9,
+   "price": 98.983,
+   "change": 1.05,
    "entries": [],
    "spark": [
     [
@@ -2858,10 +2879,17 @@
     ],
     [
      "7:30 am",
-     98.84,
+     98.81,
      98.92,
      98.92,
-     98.83
+     98.74
+    ],
+    [
+     "7:35 am",
+     98.98,
+     98.82,
+     98.98,
+     98.82
     ]
    ],
    "journal": {
@@ -3355,8 +3383,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 29770.1,
-   "change": 71.7,
+   "price": 29760.9,
+   "change": 62.5,
    "entries": [],
    "spark": [
     [
@@ -3900,10 +3928,17 @@
     ],
     [
      "7:30 am",
-     29770.1,
+     29763.5,
      29766.6,
-     29773.4,
-     29761.6
+     29776.0,
+     29759.0
+    ],
+    [
+     "7:35 am",
+     29760.9,
+     29763.9,
+     29764.6,
+     29759.6
     ]
    ],
    "journal": {
