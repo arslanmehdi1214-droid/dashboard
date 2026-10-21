@@ -1,5 +1,5 @@
 {
- "updated": "Wed 21 Oct \u00b7 4:49 pm",
+ "updated": "Wed 21 Oct \u00b7 5:00 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -20,9 +20,9 @@
    "feed_error": false,
    "state": "buy",
    "message": "BUY day \u2014 up to 2 BUY trades. Each runs to its stop or the day-end close at 12:00 am Dubai (no half-close).",
-   "price": 4125.08,
+   "price": 4129.5,
    "close_at": "12:00 am",
-   "change": -0.35,
+   "change": 4.07,
    "size": 0.1,
    "datr": 68.17,
    "open_now": 1,
@@ -1291,10 +1291,24 @@
     ],
     [
      "4:45 pm",
-     4125.08,
+     4126.01,
      4126.41,
      4127.41,
-     4124.8
+     4124.51
+    ],
+    [
+     "4:50 pm",
+     4128.37,
+     4125.98,
+     4128.51,
+     4125.89
+    ],
+    [
+     "4:55 pm",
+     4129.5,
+     4128.41,
+     4130.63,
+     4127.08
     ]
    ],
    "history": [
@@ -1514,8 +1528,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 57.394,
-   "change": -0.805,
+   "price": 57.464,
+   "change": -0.735,
    "entries": [],
    "spark": [
     [
@@ -2759,10 +2773,24 @@
     ],
     [
      "4:45 pm",
-     57.394,
+     57.404,
      57.416,
      57.444,
      57.38
+    ],
+    [
+     "4:50 pm",
+     57.436,
+     57.403,
+     57.449,
+     57.398
+    ],
+    [
+     "4:55 pm",
+     57.464,
+     57.437,
+     57.484,
+     57.433
     ]
    ],
    "journal": {
@@ -2840,8 +2868,8 @@
    "net_label": "Net R / $ at $100 risk (v1.03 sizes)",
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Each trade closes half at its \u00bd level, then the rest's stop moves to the entry; everything closes at the 7:00 pm Dubai close.",
-   "price": 157.947,
-   "change_pips": -30.6,
+   "price": 157.889,
+   "change_pips": -36.4,
    "atr_pips": 81.2,
    "entries": [
     {
@@ -2868,7 +2896,7 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": 0.2956,
+     "r_now": 0.3432,
      "rwf": 1,
      "spread": 1.2
     },
@@ -2924,7 +2952,7 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": 0.3682,
+     "r_now": 0.511,
      "rwf": null,
      "spread": 1.2
     }
@@ -4164,10 +4192,24 @@
     ],
     [
      "4:45 pm",
-     157.947,
+     157.95,
      157.915,
-     157.949,
+     157.956,
      157.908
+    ],
+    [
+     "4:50 pm",
+     157.903,
+     157.951,
+     157.951,
+     157.901
+    ],
+    [
+     "4:55 pm",
+     157.889,
+     157.902,
+     157.919,
+     157.882
     ]
    ],
    "journal": {
@@ -4220,7 +4262,7 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": 0.2956,
+       "r_now": 0.3432,
        "rwf": 1,
        "spread": 1.2
       },
@@ -4276,7 +4318,7 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": 0.3682,
+       "r_now": 0.511,
        "rwf": null,
        "spread": 1.2
       }
@@ -4835,8 +4877,8 @@
    "net_label": "Net $ per barrel (v1.05)",
    "state": "buy",
    "message": "PAPER BUY day \u2014 later signals today are BUY only. Close 25% at the part level, then move the stop to entry; everything closes at 9:00 pm Dubai. No new trades after 5:30 pm (one late first trade allowed).",
-   "price": 97.793,
-   "change": -0.14,
+   "price": 97.123,
+   "change": -0.81,
    "entries": [
     {
      "time": "2:14 pm",
@@ -6103,10 +6145,24 @@
     ],
     [
      "4:45 pm",
-     97.79,
+     97.66,
      97.67,
      97.87,
      97.63
+    ],
+    [
+     "4:50 pm",
+     97.34,
+     97.65,
+     97.65,
+     97.32
+    ],
+    [
+     "4:55 pm",
+     97.12,
+     97.33,
+     97.34,
+     97.03
     ]
    ],
    "journal": {
@@ -6623,8 +6679,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "sell",
    "message": "1 paper trade today (1 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 12:00 am Dubai close. At most 2 trades a day.",
-   "price": 29655.5,
-   "change": -42.9,
+   "price": 29669.8,
+   "change": -28.6,
    "entries": [
     {
      "time": "1:15 pm",
@@ -6649,7 +6705,7 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": -19.1,
+     "live": -23.9,
      "rwf": null,
      "spread": 1.8
     }
@@ -7973,10 +8029,24 @@
     ],
     [
      "4:45 pm",
-     29655.5,
+     29656.6,
      29654.3,
      29668.8,
      29645.3
+    ],
+    [
+     "4:50 pm",
+     29659.0,
+     29656.0,
+     29671.8,
+     29656.0
+    ],
+    [
+     "4:55 pm",
+     29669.8,
+     29659.5,
+     29677.5,
+     29650.5
     ]
    ],
    "journal": {
@@ -8024,7 +8094,7 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": -19.1,
+       "live": -23.9,
        "rwf": null,
        "spread": 1.8
       }
