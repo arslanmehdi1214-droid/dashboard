@@ -276,6 +276,13 @@ function buildG(){G.length=0;CAL.filter(e=>e.impact==='High'||e.impact==='Medium
  if(g){g.items.push(e);mk.forEach(x=>g.mk.includes(x)||g.mk.push(x));if(e.impact==='High')g.impact='High'}
  else G.push({date:e.date,t:new Date(e.date),country:e.country,impact:e.impact,items:[e],mk})});
  G.forEach(g=>g.items.sort((a,b)=>(b.impact==='High')-(a.impact==='High')));G.sort((a,b)=>a.t-b.t)}
+/* expected outcome of a scheduled release (his 21 Oct ask): which way each market moved in the 15 min after it, by surprise (actual vs forecast),
+   rule picked on 2008-19 and shown with the % it held on 2020-26 (years the rule never saw). The number itself cannot be called in advance. */
+function evOut(g){try{return evOut0(g)}catch(e){return ''}}
+function evOut0(g){const L=g.items.filter(i=>REL[i.title]);if(!L.length)return g.items.some(i=>i.country==='USD')?'<div class="x dim">Expected move: no reliable up/down history for this release</div>':'';
+ return L.slice(0,2).map(i=>{const r=Object.entries(REL[i.title]).filter(([mk,v])=>v.hit>=0.55).sort((a,b)=>b[1].hit-a[1].hit);if(!r.length)return `<div class="x dim">${i.title}: no reliable up/down history</div>`;
+  const arr=(d)=>r.map(([mk,v])=>`<b>${mk}</b> <span class="${v.dir*d>0?'pos':'neg'}">${v.dir*d>0?'▲ up':'▼ down'}</span> <span class="dim">${Math.round(v.hit*100)}%</span>`).join(' · ');
+  return `<div class="x evo">${L.length>1?'<span class="dim">'+i.title+':</span> ':''}If <b>higher</b> than forecast → first 15 min: ${arr(1)}<br>If <b>lower</b>: ${arr(-1)}<br><span class="dim">% = how often that held on 2020-26 (years the rule never saw). The number itself is a coin flip before release.</span></div>`}).join('')}
 function buildT(){T.length=0;MK.forEach(m=>{const x=M[m.c];if(x&&x.entries)x.entries.forEach((e,i)=>T.push({m,x,e,i:i+1}))})}
 const done=e=>e.status&&e.status!=='open';
 /* LIVE PRICES: the Cloudflare Worker (Capital.com, every few seconds). Until it exists, gold comes live from gold-api.com (free) and the rest use the desk price. */
@@ -411,7 +418,7 @@ function render(){
   const det=`<div class="evd">${g.items.map(i=>`<div><svg viewBox="0 0 15 12" class="fold ${i.impact}"><path d="M0 1.5A1.5 1.5 0 0 1 1.5 0H5l1.6 1.8h6.9A1.5 1.5 0 0 1 15 3.3v7.2a1.5 1.5 0 0 1-1.5 1.5h-12A1.5 1.5 0 0 1 0 10.5z"/></svg><b>${i.title}</b> <span class="dim">${i.impact} impact · forecast ${i.forecast||'—'} · previous ${i.previous||'—'}</span></div>`).join('')}<div class="dim">${t12(g.t)} Dubai · ${dday(g.t)} · moves: ${g.mk.join(', ')}</div><a href="${ffu}" target="_blank" rel="noopener">Open on Forex Factory ↗</a></div>`;
   return hd+`<div class="ev ${OPENEV.has(g.date+g.country)?'open':''}" data-mk="${g.mk.join('|')}" data-k="${g.date+g.country}" onclick="if(!event.target.closest('a')){this.classList.toggle('open');OPENEV[this.classList.contains('open')?'add':'delete'](this.dataset.k)}"><div class="t">${t12(g.t)}${m<864e5?`<span class="cd" data-cd="${+g.t}">in ${hms(m)}</span>`:''}</div>
    <div><div class="h"><svg viewBox="0 0 15 12" class="fold ${g.impact}"><path d="M0 1.5A1.5 1.5 0 0 1 1.5 0H5l1.6 1.8h6.9A1.5 1.5 0 0 1 15 3.3v7.2a1.5 1.5 0 0 1-1.5 1.5h-12A1.5 1.5 0 0 1 0 10.5z"/></svg>${g.country} ${l.title}${g.items.length>1?` <span class="dim">+${g.items.length-1}</span>`:''}</div>
-   <div class="x"><span class="nchips" style="margin-left:0">${g.mk.map(x=>`<em class="nc ${x.replace('/','')}">${x}</em>`).join('')}</span>${fc}</div>${det}</div></div>`}).join('')||'<div class="dim">No more big events this week</div>';
+   <div class="x"><span class="nchips" style="margin-left:0">${g.mk.map(x=>`<em class="nc ${x.replace('/','')}">${x}</em>`).join('')}</span>${fc}</div>${evOut(g)}${det}</div></div>`}).join('')||'<div class="dim">No more big events this week</div>';
 }
 function tvw(el,kind,cfg){const w=document.createElement('div');w.className='tradingview-widget-container';
  const i=document.createElement('div');i.className='tradingview-widget-container__widget';w.appendChild(i);
