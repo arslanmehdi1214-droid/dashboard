@@ -1,5 +1,5 @@
 {
- "open_positions": 2,
+ "open_positions": 4,
  "risk_usd": 13.614703880190607,
  "trades": {
   "GOLD|2026-10-20|1:06 pm|BUY|FILL range fade": {
@@ -134,6 +134,30 @@
    "market": "USDJPY",
    "state": "not entered",
    "why": "desk trade seen 504 min after entry, status open"
+  },
+  "USDJPY|2026-10-21|10:30 am|SELL|EMA10 break": {
+   "desk_price": 158.148,
+   "market": "USDJPY",
+   "opened_at": "Wed 21 Oct 10:31 AM",
+   "part": {
+    "id": "00000000-6cb0-1a55-0495-7fc60004511e",
+    "level": 158.148,
+    "open": true,
+    "size": 1700.0,
+    "tp": 158.086
+   },
+   "rest": {
+    "id": "00000000-6cb0-1a64-0495-7fc60004511e",
+    "level": 158.148,
+    "open": true,
+    "size": 1700.0,
+    "tp": null
+   },
+   "risk_aed": 49.03,
+   "risk_usd": 13.61,
+   "side": "SELL",
+   "state": "open",
+   "stop": 158.769
   },
   "USDJPY|2026-10-21|7:00 am|SELL|Heikin-Ashi 7am": {
    "desk_price": 158.257,
