@@ -1,5 +1,5 @@
 {
- "open_positions": 3,
+ "open_positions": 2,
  "risk_usd": 13.614703880190607,
  "trades": {
   "GOLD|2026-10-20|1:06 pm|BUY|FILL range fade": {
@@ -243,16 +243,17 @@
     "tp": 158.195
    },
    "rest": {
+    "closed_by": "desk: eod",
     "id": "00000000-6cae-a633-0495-7fc60004511e",
     "level": 158.25,
-    "open": true,
+    "open": false,
     "size": 600.0,
     "tp": null
    },
    "risk_aed": 15.85,
    "risk_usd": 4.54,
    "side": "SELL",
-   "state": "open",
+   "state": "closed",
    "stop": 158.257
   }
  }
