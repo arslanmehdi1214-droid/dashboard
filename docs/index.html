@@ -128,6 +128,14 @@ td{padding:9px 4px;border-bottom:1px solid var(--line)}td.r{text-align:right}
 .st .tm b{display:block;font:700 19px var(--mono);color:var(--ink)}
 .st .s{font:700 10px Inter;letter-spacing:1.2px;padding:3px 7px;border-radius:5px;background:var(--raise);color:var(--dim)}
 .st.open{border-color:rgba(155,231,196,.4)}.st.open .s{background:rgba(155,231,196,.12);color:var(--live)}.st.open .tm b{color:var(--live)}
+.st{position:relative;overflow:hidden;transition:border-color .4s,box-shadow .4s}.st .nm{min-width:0}.st .nm .s{margin-left:6px;vertical-align:2px}.st .tm{flex-shrink:0}.st .nm small.dh{font:500 11.5px Inter;color:var(--dim);margin-top:2px;white-space:nowrap}
+.st.open{box-shadow:0 0 0 1px rgba(155,231,196,.15),0 0 18px rgba(155,231,196,.08);animation:glow 3s ease-in-out infinite}
+@keyframes glow{0%,100%{box-shadow:0 0 0 1px rgba(155,231,196,.12),0 0 10px rgba(155,231,196,.05)}50%{box-shadow:0 0 0 1px rgba(155,231,196,.35),0 0 22px rgba(155,231,196,.16)}}
+.st .lvd{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--live);margin-right:6px;vertical-align:1px;animation:blink 1.2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.st .sbar{position:absolute;left:0;right:0;bottom:0;height:3px;background:rgba(155,231,196,.08)}.st .sbar i{display:block;height:100%;background:linear-gradient(90deg,rgba(155,231,196,.35),var(--live));transition:width 1s linear}
+.st.soon{border-color:rgba(255,197,107,.7);animation:soonp 1.2s ease-in-out infinite}.st.soon .s{background:rgba(255,197,107,.15);color:var(--amber)}.st.soon .tm b{color:var(--amber)}
+@keyframes soonp{0%,100%{box-shadow:0 0 0 0 rgba(255,197,107,.0)}50%{box-shadow:0 0 0 3px rgba(255,197,107,.25),0 0 18px rgba(255,197,107,.18)}}
 .alert{display:none;max-width:1440px;margin:0 auto 12px;padding:0 24px}
 .alert.on{display:block}
 .alert div{display:flex;align-items:center;gap:14px;flex-wrap:wrap;border-radius:12px;padding:10px 16px;font:500 13.5px Inter}
@@ -233,7 +241,7 @@ td{padding:9px 4px;border-bottom:1px solid var(--line)}td.r{text-align:right}
   <div class="acc" id="acc" style="margin-top:0"></div>
  </aside>
  <section class="pane p-tr">
-  <div class="oh"><h3 id="oth">Open trades</h3><div class="sty" id="sty"><span>Layout option</span><button data-s="1">1 · Rows</button><button data-s="2" class="on">2 · Price ladder</button><button data-s="3">3 · Broker table</button></div></div>
+  <div class="oh"><h3 id="oth">Open trades</h3><div class="sty" id="sty" style="display:none"><span>Layout option</span><button data-s="1">1 · Rows</button><button data-s="2" class="on">2 · Price ladder</button><button data-s="3">3 · Broker table</button></div></div>
   <div class="cards" id="cards"></div>
   <div class="idle" id="idle"></div>
   <div class="closed" id="closedbox"></div>
@@ -321,7 +329,8 @@ function tick(){const now=new Date();
  clk.textContent=now.toLocaleTimeString('en-US',{...TZ,hour:'numeric',minute:'2-digit',second:'2-digit'}).toLowerCase();cld.textContent='Dubai · '+dday(now);
  const L=SES.map(S=>{const W=wins(S,now),cur=W.find(w=>w.o<=now&&now<w.c),nx=W.find(w=>w.o>now);return {S,cur,w:cur||nx,next:cur?cur.c:nx.o}})
   .sort((a,b)=>(!!b.cur-!!a.cur)||(a.next-b.next));
- ses.innerHTML=L.map(x=>`<div class="st ${x.cur?'open':''}"><div class="nm">${x.S.n}<small class="lt">${now.toLocaleTimeString('en-US',{timeZone:x.S.tz,hour:'numeric',minute:'2-digit'}).toLowerCase()}</small></div><span class="s">${x.cur?'OPEN':'CLOSED'}</span><div class="tm">${x.cur?'closes in<b>'+hms(x.next-now)+'</b>':(x.next-now<=15*6e4?'opens in<b class="soon">'+hms(x.next-now)+'</b>':'opens at<b class="at">'+t12(x.next)+(dkey(x.next)!==dkey(now)?' '+dday(x.next).split(',')[0]:'')+'</b>')}</div></div>`).join('');
+ ses.innerHTML=L.map(x=>{const soon=!x.cur&&x.next-now<=15*6e4,pc=x.cur?Math.min(100,Math.max(0,(now-x.cur.o)/(x.cur.c-x.cur.o)*100)):0;
+  return `<div class="st ${x.cur?'open':''} ${soon?'soon':''}"><div class="nm">${x.S.n} <span class="s">${x.cur?'<i class="lvd"></i>OPEN':soon?'SOON':'CLOSED'}</span><small class="lt">${now.toLocaleTimeString('en-US',{timeZone:x.S.tz,hour:'numeric',minute:'2-digit'}).toLowerCase()}</small><small class="dh">${t12(x.w.o)} – ${t12(x.w.c)} Dubai</small></div>${x.cur?`<div class="sbar"><i style="width:${pc.toFixed(2)}%"></i></div>`:''}<div class="tm">${x.cur?'closes in<b>'+hms(x.next-now)+'</b>':(x.next-now<=15*6e4?'opens in<b class="soon">'+hms(x.next-now)+'</b>':'opens at<b class="at">'+t12(x.next)+(dkey(x.next)!==dkey(now)?' '+dday(x.next).split(',')[0]:'')+'</b>')}</div></div>`}).join('');
  const n=G.find(g=>g.impact==='High'&&g.t>now);
  document.querySelectorAll('[data-cd]').forEach(el=>{const ms=+el.dataset.cd-now;el.textContent=ms>0?'in '+hms(ms):'released';el.classList.toggle('hot',ms>0&&ms<15*6e4)});
  alertTick(now);
@@ -351,26 +360,32 @@ let DN_OPEN=(()=>{try{return localStorage.getItem('doNowOpen')!=='0'}catch(e){re
 function actsRender(){const x=M.GOLD||{},A=(x.actions||[]).slice().reverse(),day=x.actions_day||'';
  const keys=A.map(a=>day+a.time+a.kind+a.text);
  if(seenA===null){seenA=new Set(keys)}else{const fresh=A.filter((a,i)=>!seenA.has(keys[i]));
-  if(fresh.length){fresh.forEach((a,i)=>flashA[day+a.time+a.kind+a.text]=Date.now());const top=fresh[0];beep(top.kind==='HOLD'?1:3);notify('Gold: '+top.text);keys.forEach(k=>seenA.add(k));if(DN_READY)DN_OPEN=true}}
+  if(fresh.length){fresh.forEach((a,i)=>flashA[day+a.time+a.kind+a.text]=Date.now());const top=fresh[0];beep(top.kind==='HOLD'?1:3);notify('Gold: '+top.text.replace(/\s*\|\s*signal .*$/,''));keys.forEach(k=>seenA.add(k));if(DN_READY)DN_OPEN=true}}
  const op=T.filter(o=>!done(o.e));
  const lines=op.map(o=>`<div class="nx" data-c="${o.m.c}"><span class="who ${o.e.side==='BUY'?'pos':'neg'}">${o.m.n} ${o.e.side}</span><span class="dim">${o.e.time}</span><span class="do">${nextStep(o)}</span></div>`).join('');
  const a0=A[0],nw=a0&&flashA[day+a0.time+a0.kind+a0.text]&&Date.now()-flashA[day+a0.time+a0.kind+a0.text]<10*6e4;
  acts.innerHTML=`<div class="ah"><h3 id="dnt" class="dnt" title="Show / hide">Do now <span class="dnc">${op.length?op.length+' open':'none open'}</span> <span class="car">${DN_OPEN?'▴':'▾'}</span></h3><button id="snd2" class="${sound?'on':''}">${sound?'Sound on':'Turn on sound'}</button></div>`+
   (DN_OPEN?(lines||`<div class="dim" style="font:500 13.5px Inter">No open trade — waiting for the next signal</div>`)+
-  (a0&&op.some(o=>o.m.c==='GOLD')?`<div class="old ${nw?'new':''}" data-c="GOLD">Gold last action ${a0.time}: ${a0.text}${A.length>1?` · ${A.length} actions today`:''}</div>`:''):'');
+  (a0&&op.some(o=>o.m.c==='GOLD')?`<div class="old ${nw?'new':''}" data-c="GOLD">Gold last action ${a0.time}: ${a0.text.replace(/\s*\|\s*signal .*$/,'')}${A.length>1?` · ${A.length} actions today`:''}</div>`:''):'');
  if(M.GOLD)DN_READY=true;
  const tg=document.getElementById('dnt');if(tg)tg.onclick=()=>{DN_OPEN=!DN_OPEN;try{localStorage.setItem('doNowOpen',DN_OPEN?'1':'0')}catch(e){}actsRender()};
  const b=document.getElementById('snd2');if(b)b.onclick=()=>{sound=!sound;if(sound){beep(1);try{Notification.requestPermission&&Notification.requestPermission()}catch(e){}}actsRender()}}
-function ticket(c){const {o,px,mv,R,pl,risk}=c,{m,x,e,i}=o,st0=e.stop0??e.stop,sd=Math.abs(e.price-st0),sg1=e.side==='BUY'?1:-1,tgt=e.price+sg1*(e.half_px!=null?sd:2*sd);
+/* his 21 Oct ask: open trades show the REAL Capital.com demo position (size, entry, stop, P/L) when the auto-trader holds it */
+function demoOf(m,e){if(!DEMO||!DEMO.positions)return null;const tg=e.tag||e.name||e.sig||'';
+ const P=DEMO.positions.filter(p=>{const l=DEMO_MAP[p.dealId];if(!l)return false;const k=l.k.split('|');return k[0]===m.c&&k[2]===e.time&&k[3]===e.side&&k[4]===String(tg)});
+ if(!P.length)return null;const cur=(DEMO.account||{}).currency||'USD';let sz=0,lv=0,up=0,st=null;
+ P.forEach(p=>{const z=+p.size||0;sz+=z;lv+=(+p.level||0)*z;up+=+p.upl||0;if(p.stop!=null)st=+p.stop});
+ return {size:sz,level:sz?lv/sz:+P[0].level,stop:st,aed:demoMoney(up,cur)[0]}}
+function ticket(c){const {o,px}=c,{m,x,e,i}=o,dp=demoOf(m,e),ep=dp?dp.level:e.price,st0=dp&&dp.stop!=null?dp.stop:(e.stop0??e.stop),sd=Math.abs(ep-st0)||1,sg1=e.side==='BUY'?1:-1,tgt=ep+sg1*(e.half_px!=null?sd:2*sd);
+ const R=sg1*(px-ep)/sd,plA=dp?dp.aed:c.pl*AED;
  const lo=Math.min(st0,tgt),hi=Math.max(st0,tgt),P=v=>Math.max(0,Math.min(100,(v-lo)/(hi-lo)*100)),pp=v=>e.side==='SELL'?100-P(v):P(v),lv=liveOf(m);
  return `<div class="tk ${e.side}" data-c="${m.c}">
   <span class="side">${e.side==='BUY'?'▲':'▼'} ${e.side}</span>
-  <div class="who"><a target="_blank" rel="noopener" href="https://www.tradingview.com/chart/?symbol=${m.tv}"><b>${m.n}</b></a> <span class="tag ${x.live?'live':''}">${x.live?'LIVE':'PAPER'}</span><small>${e.time} · risk AED ${f(risk*AED,0)}</small></div>
-  <div class="lad"><div class="ln2"></div><div class="zl" style="left:${Math.min(pp(st0),pp(e.price))}%;width:${Math.abs(pp(e.price)-pp(st0))}%"></div><div class="zw" style="left:${Math.min(pp(e.price),pp(tgt))}%;width:${Math.abs(pp(tgt)-pp(e.price))}%"></div>
-   <span class="lb l">${f(st0,m.dp)}</span>${e.half_px!=null?`<span class="lb h" style="left:${pp(e.half_px)}%">${e.part!=null?(e.half?Math.round(e.part*100)+'% banked':'close '+Math.round(e.part*100)+'% at'):(e.half?'½ banked':'½ at')} ${f(e.half_px,m.dp)}</span>`:''}<span class="lb c" style="left:${pp(e.price)}%">${f(e.price,m.dp)}</span><span class="lb r">${f(tgt,m.dp)}</span>
+  <div class="who"><a target="_blank" rel="noopener" href="https://www.tradingview.com/chart/?symbol=${m.tv}"><b>${m.n}</b></a> <span class="tag ${x.live?'live':''}">${x.live?'LIVE':'PAPER'}</span><small>${e.time} · ${dp?'Capital.com size '+f(dp.size,Number.isInteger(dp.size)?0:2):'not on the demo account'}</small></div>
+  <div class="lad"><div class="ln2"></div><div class="zl" style="left:${Math.min(pp(st0),pp(ep))}%;width:${Math.abs(pp(ep)-pp(st0))}%"></div><div class="zw" style="left:${Math.min(pp(ep),pp(tgt))}%;width:${Math.abs(pp(tgt)-pp(ep))}%"></div>
+   <span class="lb l">${f(st0,m.dp)}</span>${e.half_px!=null?`<span class="lb h" style="left:${pp(e.half_px)}%">${e.part!=null?(e.half?Math.round(e.part*100)+'% banked':'close '+Math.round(e.part*100)+'% at'):(e.half?'½ banked':'½ at')} ${f(e.half_px,m.dp)}</span>`:''}<span class="lb c" style="left:${pp(ep)}%">${f(ep,m.dp)}</span><span class="lb r">${f(tgt,m.dp)}</span>
    <div class="nowm" style="left:${pp(px)}%"><span>${f(px,m.dp)}<i class="dot ${lv?'on':''}"></i></span><i></i></div></div>
-  <div class="pl"><b class="${pl>=0?'pos':'neg'}">${sg(pl*AED)} AED</b><small>${R<=-1?'<em class="hit">PAST STOP</em> ':''}${sg(R)}R</small></div>
-  ${e.next?`<div class="nx">→ ${e.next}</div>`:''}
+  <div class="pl"><b class="${plA>=0?'pos':'neg'}">${sg(plA)} AED</b><small>${R<=-1?'<em class="hit">PAST STOP</em> ':''}${sg(R)}R</small></div>
  </div>`}
 function table(op){return `<div class="pt"><table><tr><th>Side</th><th>Market</th><th>Time</th><th class="r">Entry</th><th class="r">Stop</th><th class="r">Now</th><th class="r">R</th><th class="r">P/L</th></tr>${op.map(c=>{const {o,px,R,pl}=c,{m,x,e}=o,lv=liveOf(m);
  return `<tr data-c="${m.c}"><td><span class="${e.side}">${e.side==='BUY'?'▲':'▼'} ${e.side}</span></td><td><a target="_blank" rel="noopener" href="https://www.tradingview.com/chart/?symbol=${m.tv}"><b>${m.n}</b></a> <span class="tag ${x.live?'live':''}">${x.live?'LIVE':'PAPER'}</span></td><td class="dim">${e.time}</td><td class="r num">${f(e.price,m.dp)}</td><td class="r num">${f(e.stop,m.dp)}</td><td class="r num">${f(px,m.dp)} <i class="dot ${lv?'on':''}"></i></td><td class="r num ${R>=0?'pos':'neg'}">${sg(R)}</td><td class="r num big ${pl>=0?'pos':'neg'}">${sg(pl*AED)} AED</td></tr>`}).join('')}</table></div>`}
@@ -407,7 +422,7 @@ function render(){
  const used=Math.max(0,-tot);
  try{renderDemo()}catch(e){acc.innerHTML='<h3>Capital.com demo account</h3><div class="sub">could not draw: '+e.message+'</div>'}
  oth.textContent=`Open trades · ${op.length}`;
- cards.innerHTML=STY==='3'?table(op):op.map(STY==='2'?ticket:card).join('');
+ cards.innerHTML=op.map(ticket).join('');
  const idle=MK.filter(m=>!T.some(o=>o.m===m&&!done(o.e)));
  idle.innerHTML=idle.length?idle.map(m=>`<span data-c="${m.c}"><b>${m.n}</b> ${dirOf(M[m.c])==='NONE'?'waiting for first signal':'no open trade'}</span>`).join(' &nbsp; '):'';
  closedbox.innerHTML=cl.length?`<h3>Closed today · ${cl.length}</h3><table>${cl.map(c=>`<tr data-c="${c.o.m.c}"><td>${c.o.m.n}</td><td class="${c.o.e.side==='BUY'?'pos':'neg'}">${c.o.e.side}</td><td class="num dim">${c.o.e.time}</td><td class="r num ${c.mv>=0?'pos':'neg'}">${sg(c.R)}R</td><td class="r num ${c.pl>=0?'pos':'neg'}">${sg(c.pl*AED)} AED</td></tr>`).join('')}</table>`:'';
