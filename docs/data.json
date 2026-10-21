@@ -1,5 +1,5 @@
 {
- "updated": "Wed 21 Oct \u00b7 10:33 am",
+ "updated": "Wed 21 Oct \u00b7 10:34 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -20,9 +20,9 @@
    "feed_error": false,
    "state": "buy",
    "message": "BUY day \u2014 up to 2 BUY trades. Each runs to its stop or the day-end close at 12:00 am Dubai (no half-close).",
-   "price": 4118.24,
+   "price": 4117.94,
    "close_at": "12:00 am",
-   "change": -7.19,
+   "change": -7.49,
    "size": 0.1,
    "datr": 68.17,
    "open_now": 1,
@@ -764,9 +764,9 @@
     ],
     [
      "10:30 am",
-     4118.24,
+     4117.94,
      4115.5,
-     4118.39,
+     4119.19,
      4115.42
     ]
    ],
@@ -987,8 +987,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 57.292,
-   "change": -0.907,
+   "price": 57.266,
+   "change": -0.933,
    "entries": [],
    "spark": [
     [
@@ -1707,9 +1707,9 @@
     ],
     [
      "10:30 am",
-     57.292,
+     57.266,
      57.187,
-     57.292,
+     57.297,
      57.185
     ]
    ],
@@ -1788,8 +1788,8 @@
    "net_label": "Net R / $ at $100 risk (v1.03 sizes)",
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Each trade closes half at its \u00bd level, then the rest's stop moves to the entry; everything closes at the 7:00 pm Dubai close.",
-   "price": 158.124,
-   "change_pips": -12.9,
+   "price": 158.127,
+   "change_pips": -12.6,
    "atr_pips": 81.2,
    "entries": [
     {
@@ -1816,7 +1816,7 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": 0.1519,
+     "r_now": 0.1478,
      "rwf": null,
      "spread": 1.2
     },
@@ -1827,9 +1827,9 @@
      "name": "EMA10 break",
      "price": 158.148,
      "entry": 158.148,
-     "stop": 158.767,
-     "stop0": 158.767,
-     "stop_pips": 61.9,
+     "stop": 158.769,
+     "stop0": 158.769,
+     "stop_pips": 62.1,
      "half_px": 158.086,
      "half": false,
      "half_time": null,
@@ -1844,9 +1844,9 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": 0.0227,
+     "r_now": 0.0145,
      "rwf": null,
-     "spread": 1.0
+     "spread": 1.2
     }
    ],
    "spark": [
@@ -2559,10 +2559,10 @@
     ],
     [
      "10:30 am",
-     158.124,
+     158.127,
      158.152,
      158.153,
-     158.124
+     158.121
     ]
    ],
    "journal": {
@@ -2615,7 +2615,7 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": 0.1519,
+       "r_now": 0.1478,
        "rwf": null,
        "spread": 1.2
       },
@@ -2626,9 +2626,9 @@
        "name": "EMA10 break",
        "price": 158.148,
        "entry": 158.148,
-       "stop": 158.767,
-       "stop0": 158.767,
-       "stop_pips": 61.9,
+       "stop": 158.769,
+       "stop0": 158.769,
+       "stop_pips": 62.1,
        "half_px": 158.086,
        "half": false,
        "half_time": null,
@@ -2643,9 +2643,9 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": 0.0227,
+       "r_now": 0.0145,
        "rwf": null,
-       "spread": 1.0
+       "spread": 1.2
       }
      ],
      "atr_pips": 81.2,
@@ -3202,8 +3202,8 @@
    "net_label": "Net $ per barrel (v1.05)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 98.943,
-   "change": 1.0,
+   "price": 98.858,
+   "change": 0.92,
    "entries": [],
    "spark": [
     [
@@ -3922,10 +3922,10 @@
     ],
     [
      "10:30 am",
-     98.94,
+     98.86,
      98.98,
      99.03,
-     98.92
+     98.86
     ]
    ],
    "journal": {
@@ -4419,8 +4419,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 29650.6,
-   "change": -47.8,
+   "price": 29651.1,
+   "change": -47.3,
    "entries": [],
    "spark": [
     [
@@ -5216,9 +5216,9 @@
     ],
     [
      "10:30 am",
-     29650.6,
+     29651.1,
      29633.0,
-     29654.5,
+     29654.6,
      29628.9
     ]
    ],
