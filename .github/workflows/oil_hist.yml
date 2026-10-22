@@ -1,0 +1,34 @@
+name: oil-hist-oneoff
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency: oil-hist
+jobs:
+  pull:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      - run: pip install -r requirements.txt
+      - name: Download Capital.com oil minute history (read-only)
+        env:
+          CAPITAL_API_KEY: ${{ secrets.CAPITAL_API_KEY }}
+          CAPITAL_IDENTIFIER: ${{ secrets.CAPITAL_IDENTIFIER }}
+          CAPITAL_API_PASSWORD: ${{ secrets.CAPITAL_API_PASSWORD }}
+          CAPITAL_DEMO: '1'
+          HIST_EPIC: OIL_CRUDE
+          HIST_YEARS: '3'
+        run: python oil_hist.py
+      - name: Save the file
+        if: always()
+        run: |
+          git config user.name gold-bot; git config user.email gold-bot@users.noreply.github.com
+          git add data/oil_hist_min.csv.gz data/oil_hist_summary.json 2>/dev/null || true
+          git diff --cached --quiet || (git commit -m "oil minute history (one-off)" && (git push || (git pull --rebase -X theirs && git push)))
