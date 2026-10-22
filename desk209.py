@@ -72,14 +72,15 @@ def run(signals, day, m1, now, atr, eod, label=None, ry=None):
     side = lambda d: 'BUY' if d > 0 else 'SELL'
     openl = lambda: [g for g in legs if g['status'] in ('open', 'half')]
 
-    def add(t, kind, d, text, px=None): act.append(dict(t=t, kind=kind, side=side(d), text=text, price=px))
+    def add(t, kind, d, text, px=None, g=None):   # li = index of the leg this action belongs to (None = whole-position action)
+        act.append(dict(t=t, kind=kind, side=side(d), text=text, price=px, li=(None if g is None else g['li'])))
 
     def new_leg(j, d, kind, p0, tag, t):
         sd = (FILLX if kind == 'f' else STOPX) * atr
         if d > 0: e = p0 + SP; sl = (e - sd) if kind == 'f' else (p0 - sd)
         else: e = p0; sl = (e + sd) if kind == 'f' else (p0 + SP + sd)
         risk = abs(e - sl); hp = (e + d * (K * risk + EX)) if SPLIT else None
-        g = dict(j=j, t=t, dir=d, tag=tag, kind=kind, entry=round(e, 2), stop0=round(sl, 2), stop=round(sl, 2), risk=round(risk, 2), sd=sd,
+        g = dict(li=len(legs), j=j, t=t, dir=d, tag=tag, kind=kind, p0=float(p0), entry=round(e, 2), stop0=round(sl, 2), stop=round(sl, 2), risk=round(risk, 2), sd=sd,
                  size_x=(size_of(kind, tag, d, ry) if V215 else 1.0),
                  half_px=(round(hp, 2) if hp is not None else None), status='open', half_t=None, exit=None, exit_t=None, pnl_oz=None, time_txt=('from ' + label(t)) if label else '#%d' % (len(legs) + 1))
         legs.append(g); return g
@@ -91,22 +92,32 @@ def run(signals, day, m1, now, atr, eod, label=None, ry=None):
         st['closedR'] += g['size_x'] * (banked + full * d * (px - g['entry'])) / g['sd']
 
     def walk(j0, j1):
-        """Stops and half-closes on bars j0..j1-1 (bars after each trade's entry bar)."""
+        """Stops and half-closes on bars j0..j1-1. FIX 22 Oct (fixpack): the stop is live from the fill, like the EA and
+        engine206.manage - in the ENTRY minute the part of the bar after the fill is checked on the EA tester's tick path
+        (up bar O-L-H-C, down bar O-H-L-C; a fill at the bar open meets the whole bar). Before: the entry minute was skipped."""
         for j in range(j0, j1):
             if T[j] >= eod: return
             for g in openl():
-                if j <= g['j']: continue
+                if j < g['j']: continue
                 d = g['dir']
+                if j == g['j']:
+                    at_open = abs(g['p0'] - O[j]) < 1e-9; up_bar = C[j] >= O[j]
+                    if d > 0: hit = (L[j] if (at_open or not up_bar) else C[j]) <= g['stop']
+                    else: hit = (H[j] if (at_open or up_bar) else C[j]) + SP >= g['stop']
+                    if hit:
+                        close_leg(g, g['stop'], T[j], 'stop hit')
+                        add(T[j], 'STOP', d, f"{side(d)} {g['time_txt']}: STOP HIT at {g['stop']:.2f} in its entry minute - trade closed", g['stop'], g)
+                    continue
                 if (d > 0 and L[j] <= g['stop']) or (d < 0 and H[j] + SP >= g['stop']):
                     px = min(g['stop'], O[j]) if d > 0 else max(g['stop'], O[j] + SP)
                     be = g['status'] == 'half'
                     close_leg(g, px, T[j], 'stop at entry' if be else 'stop hit')
                     add(T[j], 'STOP', d, (f"{side(d)} {g['time_txt']}: stop at entry hit at {px:.2f} - the rest is closed, half was banked"
-                                          if be else f"{side(d)} {g['time_txt']}: STOP HIT at {px:.2f} - trade closed"), round(px, 2))
+                                          if be else f"{side(d)} {g['time_txt']}: STOP HIT at {px:.2f} - trade closed"), round(px, 2), g)
                     continue
                 if SPLIT and g['status'] == 'open' and ((d > 0 and H[j] >= g['half_px']) or (d < 0 and L[j] + SP <= g['half_px'])):
                     g.update(status='half', half_t=T[j], stop=g['entry'])
-                    add(T[j], 'HALF', d, f"CLOSE HALF of your {side(d)} {g['time_txt']} now at {g['half_px']:.2f}, then MOVE STOP of the rest to {g['entry']:.2f} (entry)", g['half_px'])
+                    add(T[j], 'HALF', d, f"CLOSE HALF of your {side(d)} {g['time_txt']} now at {g['half_px']:.2f}, then MOVE STOP of the rest to {g['entry']:.2f} (entry)", g['half_px'], g)
             op = openl()
             if V215 and op:                      # v2.12 day lock on this bar's close (same as the EA / Python sim11)
                 d0 = op[0]['dir']; pxc = C[j] if d0 > 0 else C[j] + SP
@@ -127,7 +138,7 @@ def run(signals, day, m1, now, atr, eod, label=None, ry=None):
             win = V215 and len(op) >= NMAX and len(op) < PYRN and all(d * (p0 - g['entry']) / g['sd'] >= PYRX for g in op)
             if (len(op) < NMAX or win) and not same_min:
                 g = new_leg(j, d, kind, p0, tag, t)
-                add(t, 'ADD', d, f"ADD {side(d)} ({len(op) + 1}{'nd' if len(op) == 1 else 'rd'} trade{', all open trades are up 1.25x their stop' if win else ''}) now ~{g['entry']:.2f} | stop {g['stop']:.2f} | " + (f"close half at {g['half_px']:.2f}" if SPLIT else "no half-close: hold to the stop or the day-end close") + (f" | size x{g['size_x']:g}" if g['size_x'] != 1 else "") + f" | signal {tag}", g['entry'])
+                add(t, 'ADD', d, f"ADD {side(d)} ({len(op) + 1}{'nd' if len(op) == 1 else 'rd'} trade{', all open trades are up 1.25x their stop' if win else ''}) now ~{g['entry']:.2f} | stop {g['stop']:.2f} | " + (f"close half at {g['half_px']:.2f}" if SPLIT else "no half-close: hold to the stop or the day-end close") + (f" | size x{g['size_x']:g}" if g['size_x'] != 1 else "") + f" | signal {tag}", g['entry'], g)
             else:
                 add(t, 'HOLD', d, f"HOLD - new {side(d)} signal ({tag}) but {'a trade was opened this minute' if same_min else (str(len(op)) + ' trades are already open' + (' and not all are up 1.25x their stop' if V215 and len(op) < PYRN else ''))}: do nothing")
             continue
@@ -136,7 +147,7 @@ def run(signals, day, m1, now, atr, eod, label=None, ry=None):
             for g in op: close_leg(g, px, t, 'reversed')
             add(t, 'REVERSE', d, f"REVERSE - close ALL your {side(-d)} trades now (~{px:.2f}) and {side(d)} instead", round(px, 2))
         g = new_leg(j, d, kind, p0, tag, t)
-        add(t, 'OPEN', d, f"OPEN {side(d)} now ~{g['entry']:.2f} | stop {g['stop']:.2f} ({g['risk']:.1f} away) | " + (f"close half at {g['half_px']:.2f}" if SPLIT else "no half-close: hold to the stop or the day-end close") + (f" | size x{g['size_x']:g}" if g['size_x'] != 1 else "") + f" | signal {tag}", g['entry'])
+        add(t, 'OPEN', d, f"OPEN {side(d)} now ~{g['entry']:.2f} | stop {g['stop']:.2f} ({g['risk']:.1f} away) | " + (f"close half at {g['half_px']:.2f}" if SPLIT else "no half-close: hold to the stop or the day-end close") + (f" | size x{g['size_x']:g}" if g['size_x'] != 1 else "") + f" | signal {tag}", g['entry'], g)
     if not st['locked']: walk(cur, len(T))
     after = np.datetime64(now, 'm') >= eod
     if after:

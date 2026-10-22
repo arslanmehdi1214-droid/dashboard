@@ -13,9 +13,10 @@ DEADLINE = time.time() + 240          # loop.py resets this every minute; the Na
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 MIN = os.path.join(HERE, 'docs', 'nq_min'); JOUR = os.path.join(HERE, 'docs', 'journal_nq.json')
-PORTAL = os.path.join(HERE, 'docs', 'data.json')
+PORTAL = os.path.join(HERE, 'docs', 'data.json'); STATE = os.path.join(HERE, 'docs', 'nq_state.json')   # data-check memory (22 Oct)
 EPIC = os.environ.get('CAPITAL_EPIC_NQ', 'US100')
-MIN_SPREAD = 1.8                      # the paper result never uses less than 1.8 index points (Capital.com US Tech 100 page)
+MIN_SPREAD = 1.8                      # 22 Oct fix: the paper levels and results use exactly 1.8 index points (as the MT4 v1.02 test);
+                                      # the live Capital.com spread is shown only (spread_live)
 PASS = dict(green=55.0, pf=1.10, months=3)
 RULES = 'v1.02'                       # journal days are tagged; the card's record counts only the current rules (v1.01 days kept, not mixed)
 BACKTEST = dict(direction='—', days='59.2% green / 94.5% traded', perday='1.29', win='66.2%', pf='1.28', net='+$126,676 at $1,000 risk per full trade',
@@ -35,6 +36,58 @@ def dumpj(o, p, **kw):
     with open(tmp, 'w') as f: json.dump(o, f, **kw)
     os.replace(tmp, p)
 def dubai(t): return F.broker_to_dubai(pd.Timestamp(t)).strftime('%-I:%M %p').lower()
+
+# ---------------- data checks (22 Oct fix) ----------------
+# Finished days: saved only when reasonably complete (>= 85% of the usual minute count for that weekday in the stored history); otherwise
+# retried next run without moving on. A day is called a holiday (or a short day, saved as it is) only after 3 tries at least 30 min apart.
+# Today: newest closed bar older than 3 min, or a hole of more than 3 missing minutes (during market hours) = feed error
+# (the card keeps the last good update). A hole that is still there 5 min after it was first seen is taken as a hole in the source itself.
+FULL_SHARE, TRIES, TRY_GAP, LATE, HOLE_OK = 0.85, 3, pd.Timedelta(minutes=30), pd.Timedelta(minutes=3), pd.Timedelta(minutes=5)
+OPEN_HM = 75                          # market hours checked: 01:15 broker .. the day end (23:00, Fri 22:50)
+
+class FeedError(RuntimeError):
+    pass
+
+def load_state(): return loadj(STATE, {})
+def save_state(st): dumpj(st, STATE, indent=1)
+
+def usual_count(hist, d):
+    """usual number of minute bars of a stored day on d's weekday (median of the last 8 such days; else of the last 20 days)."""
+    if hist is None or not len(hist): return None
+    c = hist.groupby(hist.index.normalize()).size()
+    same = c[c.index.dayofweek == d.dayofweek].iloc[-8:]
+    if len(same) >= 2: return float(same.median())
+    return float(c.iloc[-20:].median()) if len(c) >= 3 else None
+
+def judge_day(st, key, n, usual, now):
+    """-> 'save' (complete), 'short' (still partial after 3 tries: saved as it is), 'holiday' (< 60 bars after 3 tries) or 'wait'."""
+    tries = st.setdefault('tries', {})
+    if n >= (60 if usual is None else max(60, FULL_SHARE * usual)):
+        tries.pop(key, None); return 'save'
+    t = tries.setdefault(key, [])
+    if not t or pd.Timestamp(now) - pd.Timestamp(t[-1]) >= TRY_GAP: t.append(str(now))
+    if len(t) < TRIES: return 'wait'
+    tries.pop(key, None)
+    return 'holiday' if n < 60 else 'short'
+
+def feed_check(b, now, eod, st, key):
+    """None if today's closed bars look complete, else the reason (market hours only)."""
+    hm = now.hour * 60 + now.minute
+    if now >= eod or hm < OPEN_HM: return None
+    if not len(b): return 'no price bars received for today'
+    age = now - (b.index[-1] + pd.Timedelta(minutes=1))
+    if age > LATE: return f'newest closed price bar ({dubai(b.index[-1])} Dubai) is {age.total_seconds() / 60:.0f} min old'
+    w = b.index                                          # holes anywhere today (a missing 900-minute chunk too), not only the last hour
+    gaps = [(a, c) for a, c in zip(w[:-1], w[1:]) if c - a - pd.Timedelta(minutes=1) > LATE]
+    st0 = now.normalize() + pd.Timedelta(minutes=OPEN_HM)
+    if w[0] > st0: gaps = [(st0, w[0])] + gaps             # first bar of the day missing
+    day = str(now.normalize().date()); seen = st.setdefault('holes', {}).setdefault(key, {})
+    for k in [k for k in seen if not k.startswith(day)]: seen.pop(k)
+    bad = []
+    for a, c in gaps:
+        k = str(a); seen.setdefault(k, str(now))
+        if now - pd.Timestamp(seen[k]) < HOLE_OK: bad.append(f'{dubai(a)}-{dubai(c)}')
+    return f'price bars missing between {", ".join(bad)} Dubai' if bad else None
 
 def load_hist():
     fr = []
@@ -91,17 +144,23 @@ def minutes(feed, start_b, end_b):
     d.index = F.utc_to_broker(pd.to_datetime(d.t)); d = d[d.index.dayofweek < 5]
     return d[['o', 'h', 'l', 'c', 'sp']].astype(float).sort_index()
 
-def catch_up(feed, hist, day, get=None):
-    """Add every finished weekday after the last stored day and before `day` (Capital.com minutes)."""
-    get = get or minutes; last = hist.index[-1].normalize(); added = []
+def catch_up(feed, hist, day, get=None, now=None, st=None):
+    """Add every finished weekday after the last stored day and before `day` (Capital.com minutes), only when complete (judge_day).
+    Returns (added, pending): pending = the day still being retried (nothing after it is added yet)."""
+    get = get or minutes; now = now or F.broker_now(); st = {} if st is None else st
+    last = hist.index[-1].normalize(); added = []; hol = st.setdefault('holidays', [])
     while last + pd.Timedelta(days=1) < day:
         nxt = last + pd.Timedelta(days=1)
-        if nxt.dayofweek < 5:
+        if nxt.dayofweek < 5 and str(nxt.date()) not in hol:
             b = get(feed, nxt, nxt + pd.Timedelta(days=1)); b = b[(b.index >= nxt) & (b.index < nxt + pd.Timedelta(days=1))]
-            if len(b) >= 60: save_day(b); added.append(str(nxt.date()))
-            else: added.append(str(nxt.date()) + ' (no prices - holiday)')
+            u = usual_count(hist.iloc[-60 * 1500:], nxt); v = judge_day(st, str(nxt.date()), len(b), u, now)
+            if v in ('save', 'short'):
+                save_day(b); hist = pd.concat([hist, b[['o', 'h', 'l', 'c']]]); added.append(str(nxt.date()) + (' (short day)' if v == 'short' else ''))
+            elif v == 'holiday': hol.append(str(nxt.date())); added.append(str(nxt.date()) + ' (no prices - holiday)')
+            else: return added, [f'{nxt.date()}: {len(b)} of ~{u or 60:.0f} minute bars so far - retrying']
         last = nxt
-    return added
+    hol[:] = [h for h in hol if h >= str((day - pd.Timedelta(days=90)).date())]
+    return added, []
 
 def rwf(b, j, d, px, A):
     """Right way first: +0.3 x range before -0.3 x range, until the day end (None = not decided yet / never)."""
@@ -114,8 +173,9 @@ def rwf(b, j, d, px, A):
     return None
 
 def row(t, b, now, eod, spread):
-    """One trade for the page. res = index points of the WHOLE trade at its size (sells 1/3, the part close included), after the spread."""
-    st = t['status']; sp = max(MIN_SPREAD, spread or 0.0); pt = t.get('part', N.V101['part'])
+    """One trade for the page. res = index points of the WHOLE trade at its size (sells 1/3, the part close included), after the 1.8 pt spread.
+    spread = today's live median spread (shown only, 22 Oct fix)."""
+    st = t['status']; sp = MIN_SPREAD; pt = t.get('part', N.V101['part'])
     part_pts = pt * t['dir'] * (t['half_px'] - t['entry']) if t['half'] else 0.0; rem = 1 - pt if t['half'] else 1.0
     if st == 'open' and now >= eod and len(b):                  # day over without a close-time bar: close at the last price
         ex = float(b.c.values[-1]) + (0 if t['dir'] > 0 else sp)
@@ -131,7 +191,7 @@ def row(t, b, now, eod, spread):
                 trail_pts=round(N.V102['trail'] * t['A'], 1),
                 exit=None if t['exit'] is None else round(t['exit'], 1), exit_time=None if t['exit_t'] is None else dubai(t['exit_t']),
                 res=res, res_sized=res, r=None if t['r'] is None else round(t['r'], 3), r_sized=None if t['r'] is None else round(t['r'] * t['w'], 3),
-                live=live, rwf=rwf(b, j, t['dir'], t['px'], t['A']), spread=round(sp, 2))
+                live=live, rwf=rwf(b, j, t['dir'], t['px'], t['A']), spread=round(sp, 2), spread_live=None if spread is None else round(spread, 2))
 
 def summary(J, day=None):
     """Paper record of the CURRENT rules only (v1.02 days); older days (12-16 Oct old exits, 19 Oct v1.01) stay in the journal but are not mixed in."""
@@ -159,10 +219,12 @@ def base_card(A=None, V=None):
     return dict(code=V['code'], name=V['name'], symbol='US100 · Capital.com US Tech 100', live=False, paper=True, status='Paper', version=V['S'].get('version', ''),
                 unit='pts', dp=1, stats=V['stats'], pass_bar=PASS, day_note=note,
                 what_note=V['what'],
-                cost_note="Results are index points for the whole trade at its v1.02 size (sells ⅓, the 25% / 15% part included), after Capital.com's spread (at least 1.8 points).",
+                cost_note="Results are index points for the whole trade at its v1.02 size (sells ⅓, the 25% / 15% part included), after a fixed 1.8-point spread "
+                          "(as in the MT4 test; entry, stop and part levels use it too). Capital.com's live spread is shown for reference only.",
                 net_label='Net points (v1.02 rules)')
 
 def main(feed=None, get=None, now=None):
+    global DEADLINE; DEADLINE = time.time() + 75     # 22 Oct fix: own 75 s time budget per market (no shared window)
     now = now or F.broker_now(); day = now.normalize()
     old = loadj(PORTAL, {}); mk = old.setdefault('markets', {})
     for c in REMOVED: mk.pop(c, None)
@@ -176,11 +238,15 @@ def main(feed=None, get=None, now=None):
     if feed is None:
         if not os.environ.get('CAPITAL_API_KEY'): raise RuntimeError('Nasdaq paper needs the Capital.com prices')
         feed = F.Capital()
-    hist = load_hist()
-    added = catch_up(feed, hist, day, get)
+    hist = load_hist(); st = load_state()
+    added, pend = catch_up(feed, hist, day, get, now, st); save_state(st)
+    if pend: raise FeedError('minute history not complete yet (' + '; '.join(pend) + ')')
     if added: hist = load_hist()
+    fin = finish_old_days(hist, day, st)
     b = get(feed, day, now); b = b[(b.index >= day) & (b.index + pd.Timedelta(minutes=1) <= now)]      # today's closed minute bars only
     eod = day + pd.Timedelta(minutes=N.eod_minutes(day))
+    bad = feed_check(b, now, eod, st, 'US100'); save_state(st)
+    if bad: raise FeedError(bad)
     allm = pd.concat([hist[hist.index < day].iloc[-N.KEEP_DAYS * 1500:], b[['o', 'h', 'l', 'c']]])
     spread = float(np.nanmedian(b.sp.values)) if len(b) and np.isfinite(b.sp.values).any() else None
     last = float(b.c.iloc[-1]) if len(b) else None; first = float(b.o.iloc[0]) if len(b) else None
@@ -191,17 +257,37 @@ def main(feed=None, get=None, now=None):
     errs = []
     for V in VARIANTS:                                   # each version on its own: one failing never stops the other
         try:
-            mk[V['code']] = variant(V, allm, b, day, now, eod, spread, last, first, spark, hist, added)
+            mk[V['code']] = variant(V, allm, b, day, now, eod, spread, last, first, spark, hist, added + [f'finished {x}' for x in fin])
         except Exception as e:
             errs.append((V, e))
     for V, e in errs: mark_failed(mk, V, e)
     dumpj(old, PORTAL, indent=1)
-    print(f'Nasdaq paper: {now} broker | bars {len(b)} | history to {hist.index[-1].date()} | added {added} | failed {[V["code"] for V, _ in errs]}')
+    print(f'Nasdaq paper: {now} broker | bars {len(b)} | history to {hist.index[-1].date()} | added {added} | finished {fin} | failed {[V["code"] for V, _ in errs]}')
+
+def finish_old_days(hist, day, st):
+    """22 Oct fix: a journal day left non-final (the desk stopped before its close) is re-run on its stored full day and closed."""
+    done = []
+    for V in VARIANTS:
+        J = loadj(V['jour'], dict(start=None, days=[])); ch = False
+        for jd in J.get('days', []):
+            if jd.get('final') or jd.get('rules') != RULES or jd['date'] >= str(day.date()): continue
+            d = pd.Timestamp(jd['date']); nd = d + pd.Timedelta(days=1)
+            if jd['date'] in st.get('holidays', []): jd['final'] = True; ch = True; done.append(jd['date']); continue
+            b = hist[(hist.index >= d) & (hist.index < nd)]
+            if not len(b) or d < day - pd.Timedelta(days=10): continue        # not stored yet (catch-up retries) / too old to redo
+            allm = pd.concat([hist[hist.index < d].iloc[-N.KEEP_DAYS * 1500:], b])
+            trades = N.run_day(allm, d, nd, S=V['S'], exits=RULES, sp=MIN_SPREAD)
+            rows = [row(t, b, nd, d + pd.Timedelta(minutes=N.eod_minutes(d)), None) for t in trades]
+            jd.update(trades=rows, side=(rows[0]['side'] if rows else None), final=True, finished_late=True); ch = True; done.append(jd['date'])
+        if ch: J['summary'] = summary(J, day); dumpj(J, V['jour'], indent=1)
+    return done
 
 def variant(V, allm, b, day, now, eod, spread, last, first, spark, hist, added):
     J = loadj(V['jour'], dict(start=None, days=[]))
+    if not len(b) and any(d['date'] == str(day.date()) and d.get('trades') for d in J.get('days', [])):
+        raise FeedError('no price bars for a day that already has trades')
     N.LAST_PICKS.clear()
-    trades = N.run_day(allm, day, now, S=V['S'], exits=RULES, sp=max(MIN_SPREAD, spread or 0.0)) if len(b) else []
+    trades = N.run_day(allm, day, now, S=V['S'], exits=RULES, sp=MIN_SPREAD) if len(b) else []     # 22 Oct fix: fixed 1.8 pt levels
     if V['code'] == 'US100':                             # 22 Oct: the day's Nasdaq picks for the S&P page (it copies them in US hours)
         dumpj(dict(day=str(day.date()), picks=N.LAST_PICKS.get('picks', []) if N.LAST_PICKS.get('day') == str(day.date()) else [],
                    at=str(now)), os.path.join(HERE, 'docs', 'nq_picks.json'), indent=1)

@@ -28,7 +28,8 @@ def minutes(feed, start_b, end_b):
     """Capital.com OIL_CRUDE minute bars between two broker times: index broker time, Bid o/h/l/c + spread (ask close - bid close)."""
     if feed.h is None: feed.login()
     to_utc = lambda b: (pd.Timestamp(b) - pd.Timedelta(hours=7)).tz_localize(F.NY, ambiguous=False, nonexistent='shift_forward').tz_convert('UTC').tz_localize(None)
-    t0, end = to_utc(start_b), to_utc(end_b); out = []
+    global SKIPPED
+    t0, end = to_utc(start_b), to_utc(end_b); out = []; SKIPPED = 0
     while t0 < end:
         if time.time() > DEADLINE: raise TimeoutError('WTI time budget used up - next run continues')
         t1 = min(end, t0 + pd.Timedelta(minutes=900))
@@ -41,6 +42,7 @@ def minutes(feed, start_b, end_b):
                             np.nan if ask is None else ask - p['closePrice']['bid']))
         elif r.status_code not in (400, 404):
             r.raise_for_status()
+        else: SKIPPED += 1                    # 400/404 = no prices in that chunk (weekend - or a Capital.com hiccup): counted for the log
         t0 = t1; time.sleep(0.15)
     if not out: return pd.DataFrame(columns=['o', 'h', 'l', 'c', 'sp'], index=pd.DatetimeIndex([]), dtype=float)
     d = pd.DataFrame(out, columns=['t', 'o', 'h', 'l', 'c', 'sp']).drop_duplicates('t')
@@ -50,19 +52,66 @@ def day_bars(b, day):
     b = b[(b.index >= day) & (b.index < day + pd.Timedelta(days=1))]
     return b.index, b.o.values, b.h.values, b.l.values, b.c.values
 
+SKIPPED = 0                           # chunks the last minutes() call got no prices for (400/404)
+# 23 Oct fix: a finished day is saved only when it is reasonably complete; otherwise the history does not advance and the next run retries
+EXP_MIN = 1365                        # minutes in a full broker day (his WTI M1 data 2025-26: median 1,362-1,370 by weekday)
+COMPLETE = 0.85                       # complete = >= 85% of that weekday's usual minute count AND the 21:30-21:35 settlement bar
+TRIES, TRY_SECS = 3, 1800             # an empty / short download is accepted (holiday / short day) only after 3 tries spread over >= 30 min
+STALE_SECS, GAP_MIN, LOOK_MIN = 180, 3, 60   # today: newest closed minute older than 3 min, or > 3 missing minutes in the last 60 = feed error
+CHECK_FROM, CHECK_TO = 1 * 60 + 10, 20 * 60 + 5   # broker minutes the today-check runs (market reopens 1:00; the desk's day ends with the 20:00 bar)
+
+def usual_minutes(H, wd):
+    """Usual minute count for weekday `wd` (0 = Monday): median of the last 10 complete days stored, else EXP_MIN."""
+    v = [n for d, n in sorted((H.get('nmin') or {}).items()) if pd.Timestamp(d).dayofweek == wd][-10:]
+    return float(np.median(v)) if len(v) >= 3 else float(EXP_MIN)
+
+def tried_enough(H, key):
+    """Counts one more try for day `key`; True once there were >= TRIES tries spread over >= TRY_SECS."""
+    t = H.setdefault('tries', {}).setdefault(key, [0, time.time()]); t[0] += 1
+    return t[0] >= TRIES and time.time() - t[1] >= TRY_SECS
+
 def catch_up(feed, H, day, get=None):
-    """Add every finished weekday after H['through'] and before `day` (Capital.com minutes). Saves after each day."""
-    get = get or minutes; last = pd.Timestamp(H['through']); added = []
+    """Add every finished weekday after H['through'] and before `day` (Capital.com minutes) - only when the day has >= 85% of its usual
+    minutes and the settlement bar. A short / empty download does NOT advance the history: the next run retries. After 3 tries over
+    >= 30 min the day is taken as it is (>= 60 bars: short day; fewer: holiday, as before). Saves after each day.
+    Returns (added, waiting) - waiting = why the history is not up to date yet."""
+    get = get or minutes; last = pd.Timestamp(H['through']); added = []; H.setdefault('nmin', {})
+    def save(): json.dump(H, open(HIST, 'w'), separators=(',', ':'))
     while last + pd.Timedelta(days=1) < day:
-        nxt = last + pd.Timedelta(days=1)
+        nxt = last + pd.Timedelta(days=1); key = str(nxt.date())
         if nxt.dayofweek < 5:
             t, o, h, l, c = day_bars(get(feed, nxt, nxt + pd.Timedelta(days=1)), nxt)
+            row_ = W.daily_from_minutes(t, o, h, l, c) if len(t) else None
+            usual = usual_minutes(H, nxt.dayofweek)
+            full = len(t) >= COMPLETE * usual and row_[4] is not None
+            if full: H['nmin'][key] = int(len(t))
+            elif not tried_enough(H, key):
+                save()
+                return added, (f"{key}: {len(t)} of ~{usual:.0f} minutes" + ('' if (row_ and row_[4] is not None) else ', no settlement bar')
+                               + f" so far - retrying (try {H['tries'][key][0]} of {TRIES})")
             if len(t) >= 60:
-                H['days'].append([str(nxt.date()), *W.daily_from_minutes(t, o, h, l, c)]); added.append(str(nxt.date()))
-            else: added.append(str(nxt.date()) + ' (no prices - holiday)')
-        last = nxt; H['through'] = str(last.date()); H['days'] = H['days'][-W.KEEP_DAYS:]
-        json.dump(H, open(HIST, 'w'), separators=(',', ':'))
-    return added
+                H['days'].append([key, *row_]); added.append(key + ('' if full else f' (short day, {len(t)} minutes' + ('' if row_[4] is not None else ', no settlement') + ')'))
+            else: added.append(key + f' (no prices after {TRIES} tries over {TRY_SECS // 60} min - holiday)')
+            H.get('tries', {}).pop(key, None)
+        last = nxt; H['through'] = key; H['days'] = H['days'][-W.KEEP_DAYS:]; H['nmin'] = dict(sorted(H['nmin'].items())[-40:])
+        save()
+    return added, None
+
+def feed_health(b, now, day):
+    """Today's minutes good enough to trade on? (ok, why). Checked Mon-Fri 1:10-20:05 broker: newest closed minute older than 3 min,
+    > 3 missing minutes in the last 60, or < 85% of the minutes since 1:00 = not ok."""
+    hm_now = now.hour * 60 + now.minute
+    if now.dayofweek >= 5 or not (CHECK_FROM <= hm_now <= CHECK_TO): return True, ''
+    tw = b.index[b.index >= day + pd.Timedelta(hours=1)]
+    if not len(tw): return False, 'no oil prices yet today (market closed?)'
+    age = (now - (tw[-1] + pd.Timedelta(minutes=1))).total_seconds()
+    if age > STALE_SECS: return False, f'newest closed minute is {int(age // 60)} min old'
+    x = tw[tw >= now - pd.Timedelta(minutes=LOOK_MIN + 1)].values.astype('datetime64[s]').astype(np.int64)
+    if len(x) > 1 and np.diff(x).max() > (GAP_MIN + 1) * 60:
+        return False, f'{int(np.diff(x).max()) // 60 - 1} minutes missing in the last {LOOK_MIN} min'
+    want = int((tw[-1] - (day + pd.Timedelta(hours=1))).total_seconds() // 60) + 1
+    if want >= 60 and len(tw) < COMPLETE * want: return False, f'only {len(tw)} of {want} minutes today'
+    return True, ''
 
 EIA_URL = 'https://www.eia.gov/dnav/pet/hist/LeafHandler.ashx?n=PET&s=W_EPC0_SAX_YCUOK_MBBL&f=W'
 def eia_parse(s):
@@ -77,9 +126,23 @@ def eia_parse(s):
             if not dd or not v: continue
             m_, d_ = dd.split('/'); out.append([f"{y.group(1)}-{int(m_):02d}-{int(d_):02d}", float(v)])
     return out
+STALE_DAYS = 8                        # newest released report older than this = stale -> rule off (first sell 1/3)
+_HOL = []
+def eia_release(week_end):
+    """Broker time the EIA Weekly Petroleum Status Report for the week ending `week_end` (Friday) comes out: normally Wednesday 10:30 am
+    New York; a US federal holiday on the Monday-Wednesday before moves it to Thursday (11:00 am New York). Broker = New York + 7 h."""
+    if not _HOL:
+        from pandas.tseries.holiday import USFederalHolidayCalendar
+        _HOL.append(set(USFederalHolidayCalendar().holidays('2010-01-01', '2040-12-31')))
+    we = pd.Timestamp(week_end).normalize()
+    late = any(we + pd.Timedelta(days=k) in _HOL[0] for k in (3, 4, 5))
+    return we + pd.Timedelta(days=6, hours=11 + 7) if late else we + pd.Timedelta(days=5, hours=10.5 + 7)
+
 def cushing(day):
-    """v1.05: latest Cushing stock change released BEFORE `day` (release = week end Friday + 5 days, Wednesday). Refreshes the stored
-    series from eia.gov at most once an hour while a newer report is due. Returns (build True/False/None, week end, change)."""
+    """v1.05: latest Cushing stock change RELEASED (real EIA release time, see eia_release) before broker day `day` starts. Refreshes the
+    stored series from eia.gov at most once an hour while a newer report is due. The answer is worked out once per broker day and then
+    frozen (docs/cushing.json 'frozen'), so a report fetched later in the day can never change a first sell already shown.
+    Returns (build True/False/None, week end, change, stale) - stale (newest released report > 8 days old, or none): build = None."""
     C = loadj(CUSH, dict(weeks=[], last_try=0))
     last = pd.Timestamp(C['weeks'][-1][0]) if C['weeks'] else pd.Timestamp('2000-01-01')
     if day >= last + pd.Timedelta(days=12) and time.time() - C.get('last_try', 0) > 3600:
@@ -90,17 +153,30 @@ def cushing(day):
             if len(w) > 100: C['weeks'] = w[-600:]
         except Exception as e: print('cushing fetch failed', type(e).__name__)
         json.dump(C, open(CUSH, 'w'), separators=(',', ':'))
-    rel = [(pd.Timestamp(a) + pd.Timedelta(days=5), a, v) for a, v in C['weeks']]
-    prev = [(t, a, v) for t, a, v in rel if t < day]
-    if len(prev) < 2: return None, None, None
-    ch = prev[-1][2] - prev[-2][2]
-    return ch > 0, prev[-1][1], ch
+    key = str(pd.Timestamp(day).date()); fz = C.get('frozen') or {}
+    if fz.get('day') == key: return tuple(fz['res'])
+    prev = [(eia_release(a), a, v) for a, v in C['weeks']]; prev = [x for x in prev if x[0] < day]
+    if len(prev) < 2: res = (None, None, None, True)
+    else:
+        ch = float(prev[-1][2] - prev[-2][2]); stale = (day - prev[-1][0]) > pd.Timedelta(days=STALE_DAYS)
+        res = (None if stale else bool(ch > 0), prev[-1][1], ch, bool(stale))
+    C['frozen'] = dict(day=key, res=list(res)); json.dump(C, open(CUSH, 'w'), separators=(',', ':'))
+    return res
 def first_sell_full(H, day):
-    """v1.05 rule for `day`: last Cushing report = build AND yesterday's close < close 5 trading days earlier."""
+    """v1.05 rule for `day`: last Cushing report = build AND yesterday's close < close 5 trading days earlier (off when Cushing is stale)."""
     cl = [r[4] for r in H['days'] if pd.Timestamp(r[0]) < day]
     down = len(cl) > 5 and cl[-1] < cl[-6]
-    b, wk, ch = cushing(day)
-    return bool(b and down), dict(cushing_build=b, cushing_week=wk, cushing_change=ch, down5=bool(down))
+    b, wk, ch, stale = cushing(day)
+    return bool(b and down), dict(cushing_build=b, cushing_week=wk, cushing_change=ch, down5=bool(down), cushing_stale=bool(stale))
+
+def hold(why):
+    """Keep the last good WTI card, with feed_error=True so the auto-trader leaves oil alone this minute; journal untouched."""
+    old = loadj(PORTAL, {}); mk = old.setdefault('markets', {}); c = mk.get('OIL') or {}
+    c = {k: v for k, v in c.items() if k not in ('status', 'note')} if c.get('paper') is None else c
+    c.update({k: v for k, v in base_card().items() if k != 'day_note'}); c.setdefault('entries', []); c.setdefault('state', 'waiting'); c['feed_error'] = True
+    c['message'] = (f"Oil prices not complete at {F.broker_to_dubai(F.broker_now()).strftime('%-I:%M %p').lower()} Dubai ({why}) "
+                    "— shows the last good update; checks again next minute.")
+    mk['OIL'] = c; json.dump(old, open(PORTAL, 'w'), indent=1); print('WTI held:', why)
 
 def row(t, now, day_over):
     st = t['status']
@@ -139,10 +215,11 @@ def base_card(A=None):
     return dict(code='OIL', name='Oil (WTI)', symbol='WTI · Capital.com US Crude', live=False, paper=True, status='Paper', version='v1.05',
                 unit='usd', dp=2, stats=BACKTEST, pass_bar=PASS, day_note=note,
                 what_note='This page tracks whether live WTI signals do as well as the backtest. Decision after about 3 months.',
-                cost_note="Results are $ per barrel (sizes: full or ⅓), from the signal price with the backtest's slip, after Capital.com's spread (at least 2 cents).",
+                cost_note="Results are $ per barrel (sizes: full or ⅓), from the signal price with the backtest's slip, after a fixed 4-cent spread (the MT4 test's spread and Capital.com's usual; fixed so shown levels never change).",
                 net_label='Net $ per barrel (v1.05)')
 
 def main(feed=None, get=None, now=None):
+    global DEADLINE; DEADLINE = time.time() + 75                       # 22 Oct: own time budget per market
     now = now or F.broker_now(); day = now.normalize()
     H = loadj(HIST, None)
     if H is None: raise RuntimeError('docs/wti_hist.json missing')
@@ -157,14 +234,17 @@ def main(feed=None, get=None, now=None):
     if feed is None:
         if not os.environ.get('CAPITAL_API_KEY'): raise RuntimeError('WTI paper needs the Capital.com prices')
         feed = F.Capital()
-    added = catch_up(feed, H, day, get)
+    added, wait = catch_up(feed, H, day, get)
+    if wait: return hold('history not complete: ' + wait)
     b = get(feed, day, now); b = b[(b.index >= day) & (b.index + pd.Timedelta(minutes=1) <= now)]       # today's closed minute bars only
+    ok, why = feed_health(b, now, day)
+    if not ok: return hold(why)
     P = W.prep(H['days'], day)
     try: fsf, finfo = first_sell_full(H, day)
-    except Exception as e: fsf, finfo = False, dict(cushing_build=None, cushing_week=None, cushing_change=None, down5=False); print('v1.05 rule failed', e)
+    except Exception as e: fsf, finfo = False, dict(cushing_build=None, cushing_week=None, cushing_change=None, down5=False, cushing_stale=False); print('v1.05 rule failed', e)
     if P is not None: P['first_sell_full'] = fsf
     hm = W.close_hm(day); eod = day + pd.Timedelta(minutes=hm); day_over = now >= eod
-    trades = W.run_day(P, b.index, b.o.values, b.h.values, b.l.values, b.c.values, spread=b.sp.values) if (P and len(b)) else []
+    trades = W.run_day(P, b.index, b.o.values, b.h.values, b.l.values, b.c.values) if (P and len(b)) else []     # 23 Oct: fixed 4-cent spread inside the engine
     rows = [row(t, now, day_over) for t in trades]
     if J.get('start') is None: J['start'] = str(day.date())
     J['days'] = sorted([d for d in J['days'] if d['date'] != str(day.date())] +
@@ -187,12 +267,13 @@ def main(feed=None, get=None, now=None):
         spark = [[F.broker_to_dubai(t).strftime('%-I:%M %p').lower(), round(float(r.c), 2), round(float(r.o), 2), round(float(r.h), 2), round(float(r.l), 2)] for t, r in g5.iterrows()]
     mk['OIL'] = dict(base_card(None if P is None else P['A']), state=state, message=msg, price=last, change=(None if last is None or first is None else round(last - first, 2)),
                      entries=rows, spark=spark, journal=J['summary'], jdays=jdays(J), feed_error=False, epic=EPIC,
+                     live_spread=(round(float(np.nanmedian(b.sp.values[-30:])), 3) if len(b) and np.isfinite(b.sp.values[-30:]).any() else None),
                      history_note=f"history to {H['through']} ({len(H['days'])} days)" + (f" · added {', '.join(added)}" if added else ''),
                      day_note=base_card(None if P is None else P['A'])['day_note'] + ' · v1.05: ' + ('First sell today: FULL size (Cushing stocks rose in the last EIA report and oil is down over 5 days)' if fsf else
-                                   'First sell today: 1/3 size (' + ('Cushing build' if finfo['cushing_build'] else 'Cushing draw' if finfo['cushing_build'] is False else 'Cushing data missing')
+                                   'First sell today: 1/3 size (' + ('Cushing data stale - newest EIA report over 8 days old' if finfo.get('cushing_stale') else 'Cushing build' if finfo['cushing_build'] else 'Cushing draw' if finfo['cushing_build'] is False else 'Cushing data missing')
                                    + ', 5-day move ' + ('down' if finfo['down5'] else 'up') + ')') + (f" · EIA week {finfo['cushing_week']}: {finfo['cushing_change']:+,.0f}k bbl" if finfo['cushing_week'] else ''))
     json.dump(old, open(PORTAL, 'w'), indent=1)
-    print(f'WTI paper: {now} broker | trades today {len(rows)} | bars {len(b)} | history to {H["through"]} | added {added}')
+    print(f'WTI paper: {now} broker | trades today {len(rows)} | bars {len(b)} (empty chunks {SKIPPED}) | history to {H["through"]} | added {added}')
 
 def fail(e):
     """Keep the last good WTI card and say what failed."""

@@ -47,8 +47,10 @@ def engine_first(m, day):
 def eod_minutes(day):
     return 22 * 60 + 50 if pd.Timestamp(day).dayofweek == 4 else 23 * 60
 
-def build_base(m, out, eng=None):
-    """m: minute bars (index = broker time, columns o h l c), weekdays, sorted. Same layout as the research base (build_base_n.py)."""
+def build_base(m, out, eng=None, open_last=False):
+    """m: minute bars (index = broker time, columns o h l c), weekdays, sorted. Same layout as the research base (build_base_n.py).
+    open_last (22 Oct fix): the last day is still running - until a bar at/after its close time exists, its latest closed bar is not
+    the day-end bar (EODX = entry check only; the research EOD in base.npz is unchanged)."""
     t = m.index.values.astype('datetime64[ns]'); O, H, L, C = (m[c].values.astype(float) for c in 'ohlc')
     tt = pd.DatetimeIndex(t); day = tt.normalize(); hr = tt.hour.values; mi = tt.minute.values
     dcode, duniq = pd.factorize(day)
@@ -66,7 +68,9 @@ def build_base(m, out, eng=None):
     if eng and eng[0]:                                   # today's engine trade (the full version only)
         lad.iloc[-1, 0] = eng[0]; lad.iloc[-1, 1] = eng[1]
     lad.to_pickle(os.path.join(out, 'lad.pkl'))
-    return dict(O=O, H=H, L=L, C=C, A=A, EOD=EOD, t=tt, dcode=dcode, hm=hr * 60 + mi)
+    EODX = EOD.copy()
+    if open_last and len(t) and not (hr[EOD[-1]] * 60 + mi[EOD[-1]] >= eod_minutes(tt[-1])): EODX[dcode == dcode[-1]] = len(t)
+    return dict(O=O, H=H, L=L, C=C, A=A, EOD=EOD, EODX=EODX, t=tt, dcode=dcode, hm=hr * 60 + mi)
 
 def _purge():
     for n in MODS: sys.modules.pop(n, None)
@@ -120,7 +124,7 @@ def day_events(B, names, funcs_a, funcs_b, k_today):
         for (k, j, px, d) in f():
             if int(k) != k_today: continue
             j = int(j); d = -int(d) if rev else int(d); px = float(px)
-            if j >= B['EOD'][j]: continue                        # no entry in the day-end minute
+            if j >= B['EODX'][j]: continue                       # no entry in the day-end minute (22 Oct: a real one, at/after the close time)
             if filled(j, px, d, B): out.append((j, oi, nm, d, px))
     return out
 
@@ -259,7 +263,7 @@ def run_day(m, day, now=None, S=None, exits=None, sp=1.8):
     S = S or SET
     eng = engine_first(m, day) if S.get('engine') else None
     with tempfile.TemporaryDirectory() as td:
-        B = build_base(m, td, eng)
+        B = build_base(m, td, eng, open_last=now is not None and now < day + pd.Timedelta(minutes=eod_minutes(day)))
         k_today = int(B['dcode'][-1])
         if not np.isfinite(B['A'][-1]): return []
         names = S['core'] + S['fill']

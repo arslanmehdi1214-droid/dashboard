@@ -32,6 +32,9 @@ PART = 0.25                               # v1.04: part closed at that level (v1
 LOCK_PEAK, LOCK_FLOOR = 2.0, 1.0          # day up +2R -> close all if it falls back to +1R; no more trades that day
 LAST_ENTRY, LATE_FIRST, CLOSE_HM = 16 * 60 + 30, 19 * 60, 20 * 60      # broker minutes
 MIN_SP = 0.02
+FIX_SP = 0.04                             # 23 Oct fix: ONE fixed spread (4 cents = the MT4 test's spread 4 and Capital.com's usual) for entry,
+                                          # stop, part level and P/L. Capital.com re-sends a different ask for the same finished minute, so the
+                                          # live spread made shown stops / part levels change after the fact.
 FAM_NAME = {'settle': "Yesterday's settlement", 'open+-0.5': 'Open ± ½ range', 'open+-0.7': 'Open ± 0.7 range', 'open+-1.0': 'Open ± 1 range',
             'yday': "Yesterday's high/low", 'lastweek': "Last week's high/low", 'round1': 'Whole dollar'}
 
@@ -94,9 +97,7 @@ def run_day(P, t, O, H, L, C, now=None, spread=None, final=False):
             while j < 4 and r > EDG[j]: j += 1
             EV.append((m, fi, d, px + (d * SLP[j] if SLIP else 0.0), nm, lv))
     EV.sort(key=lambda r: (r[0], r[1]))
-    def SPm(m):
-        x = None if spread is None else spread[m]
-        return max(MIN_SP, float(x)) if x is not None and np.isfinite(x) else MIN_SP
+    def SPm(m): return FIX_SP              # 23 Oct: fixed spread; the `spread` argument is accepted for old callers but no longer used
     bym = {}
     for ev in EV: bym.setdefault(ev[0], []).append(ev)
     legs = []; banked = 0.0; peak = 0.0; off = False; ddir = 0; lastm = -1; lastd = 0; off_i = None

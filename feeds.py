@@ -15,6 +15,7 @@ class Capital:
         self.base = 'https://demo-api-capital.backend-capital.com' if os.environ.get('CAPITAL_DEMO', '1') == '1' else 'https://api-capital.backend-capital.com'
         self.key = os.environ['CAPITAL_API_KEY']; self.ident = os.environ['CAPITAL_IDENTIFIER']; self.pw = os.environ['CAPITAL_API_PASSWORD']
         self.epic = os.environ.get('CAPITAL_EPIC', 'GOLD'); self.h = None
+        self.dropped = []   # (from_utc, to_utc, http status) windows of the LAST bars() call that came back 400/404 (fixpack 22 Oct)
     def login(self):
         r = requests.post(self.base + '/api/v1/session', headers={'X-CAP-API-KEY': self.key, 'Content-Type': 'application/json'},
                           json={'identifier': self.ident, 'password': self.pw, 'encryptedPassword': False}, timeout=20)
@@ -23,7 +24,7 @@ class Capital:
     def bars(self, resolution, start_utc, end_utc, step, epic=None):
         if self.h is None: self.login()
         epic = epic or self.epic
-        out = []; t0 = start_utc
+        out = []; t0 = start_utc; self.dropped = []
         while t0 < end_utc:
             t1 = min(end_utc, t0 + step)
             r = requests.get(f'{self.base}/api/v1/prices/{epic}', headers=self.h, timeout=20,
@@ -33,6 +34,8 @@ class Capital:
                     out.append((p['snapshotTimeUTC'], p['openPrice']['bid'], p['highPrice']['bid'], p['lowPrice']['bid'], p['closePrice']['bid']))
             elif r.status_code not in (400, 404):   # 400/404 = no prices in that window (weekend)
                 r.raise_for_status()
+            else:                                    # still skipped (same bars returned as before), but no longer silent:
+                self.dropped.append((t0, t1, r.status_code))   # callers can check self.dropped / their own bar coverage
             t0 = t1; time.sleep(0.15)
         if not out: return pd.DataFrame(columns=list('ohlc'), index=pd.DatetimeIndex([]), dtype=float)
         d = pd.DataFrame(out, columns=['t', 'o', 'h', 'l', 'c']).drop_duplicates('t')

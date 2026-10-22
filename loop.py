@@ -41,16 +41,25 @@ REPO, RUN_ID, TOKEN = os.environ.get('GITHUB_REPOSITORY'), os.environ.get('GITHU
 
 def git(*a): return subprocess.run(['git', *a], capture_output=True, text=True)
 def push():
-    git('add', 'sent.json', 'docs/*.json', 'docs/nq_min/*.npz')
-    git('add', 'docs/sv_min')                                              # silver minute files (separate: a missing folder never blocks the rest)
-    git('add', 'docs/sp_min')                                              # S&P minute files (22 Oct)
-    git('add', 'autotrade_state.json', 'autotrade_log.json')              # demo auto-trader memory (which demo positions are ours)
-    if git('diff', '--cached', '--quiet').returncode == 0: return 'nothing new'
-    git('commit', '-m', 'alerts state')
-    if git('push').returncode == 0: return 'pushed'
-    r = git('pull', '--rebase', '-X', 'theirs')
-    if r.returncode != 0: git('rebase', '--abort'); return 'pull failed: ' + r.stderr[-200:]
-    return 'pushed after pull' if git('push').returncode == 0 else 'push failed'
+    # one path per add: a path that matches nothing makes git add refuse the WHOLE list (22 Oct)
+    for p in ('sent.json', 'docs/*.json', 'docs/nq_min', 'docs/sv_min', 'docs/sp_min',   # Nasdaq / silver / S&P minute files
+              'autotrade_state.json', 'autotrade_log.json'):                             # demo auto-trader memory (which demo positions are ours)
+        git('add', p)
+    staged = git('diff', '--cached', '--quiet').returncode != 0
+    if staged: git('commit', '-m', 'alerts state')
+    ahead = git('rev-list', '--count', '@{u}..HEAD').stdout.strip()    # 22 Oct: a commit left over from a failed push is pushed again too
+    if not staged and ahead in ('', '0'): return 'nothing new'
+    r = git('push')
+    if r.returncode == 0: return 'pushed'
+    print('PUSH FAILED - pulling and trying once more:', r.stderr.strip()[-200:], flush=True)
+    p = git('pull', '--rebase', '-X', 'theirs')
+    if p.returncode != 0:
+        git('rebase', '--abort'); print('PULL FAILED:', p.stderr.strip()[-200:], flush=True)
+        return 'PUSH FAILED (pull failed) - kept locally, retried at the next save'
+    r = git('push')
+    if r.returncode == 0: return 'pushed after pull'
+    print('PUSH FAILED AGAIN after pull:', r.stderr.strip()[-200:], flush=True)
+    return 'PUSH FAILED - kept locally, retried at the next save'
 
 def next_job_waiting():
     """True when a newer run of this workflow is waiting to start (then this job hands over)."""

@@ -14,7 +14,7 @@ DEADLINE = time.time() + 240          # loop.py resets this every minute
 HERE = os.path.dirname(os.path.abspath(__file__))
 MIN = os.path.join(HERE, 'docs', 'sv_min'); JOUR = os.path.join(HERE, 'docs', 'journal_sv.json')
 PORTAL = os.path.join(HERE, 'docs', 'data.json'); INPUTS = os.path.join(HERE, 'docs', 'inputs.json')
-CAL = os.path.join(HERE, 'docs', 'calendar.json')
+CAL = os.path.join(HERE, 'docs', 'calendar.json'); STATE = os.path.join(HERE, 'docs', 'sv_state.json')   # data-check memory (22 Oct)
 EPIC = {'SILVER': os.environ.get('CAPITAL_EPIC_SV', 'SILVER'), 'GOLD': os.environ.get('CAPITAL_EPIC', 'GOLD')}
 SEARCH = {'SILVER': 'Silver', 'GOLD': 'Gold'}
 MIN_SPREAD = 0.05                     # his Capital.com quote 19 Oct 2026: 57.698 / 57.748
@@ -35,6 +35,58 @@ def dumpj(o, p, **kw):
     with open(tmp, 'w') as f: json.dump(o, f, **kw)
     os.replace(tmp, p)
 def dubai(t): return F.broker_to_dubai(pd.Timestamp(t)).strftime('%-I:%M %p').lower()
+
+# ---------------- data checks (22 Oct fix) ----------------
+# Finished days: saved only when reasonably complete (>= 85% of the usual minute count for that weekday in the stored history); otherwise
+# retried next run without moving on. A day is called a holiday (or a short day, saved as it is) only after 3 tries at least 30 min apart.
+# Today: newest closed bar older than 3 min, or a hole of more than 3 missing minutes (during market hours) = feed error
+# (the card keeps the last good update). A hole that is still there 5 min after it was first seen is taken as a hole in the source itself.
+FULL_SHARE, TRIES, TRY_GAP, LATE, HOLE_OK = 0.85, 3, pd.Timedelta(minutes=30), pd.Timedelta(minutes=3), pd.Timedelta(minutes=5)
+OPEN_HM = 75                          # market hours checked: 01:15 broker .. the day end (23:00, Fri 22:50)
+
+class FeedError(RuntimeError):
+    pass
+
+def load_state(): return loadj(STATE, {})
+def save_state(st): dumpj(st, STATE, indent=1)
+
+def usual_count(hist, d):
+    """usual number of minute bars of a stored day on d's weekday (median of the last 8 such days; else of the last 20 days)."""
+    if hist is None or not len(hist): return None
+    c = hist.groupby(hist.index.normalize()).size()
+    same = c[c.index.dayofweek == d.dayofweek].iloc[-8:]
+    if len(same) >= 2: return float(same.median())
+    return float(c.iloc[-20:].median()) if len(c) >= 3 else None
+
+def judge_day(st, key, n, usual, now):
+    """-> 'save' (complete), 'short' (still partial after 3 tries: saved as it is), 'holiday' (< 60 bars after 3 tries) or 'wait'."""
+    tries = st.setdefault('tries', {})
+    if n >= (60 if usual is None else max(60, FULL_SHARE * usual)):
+        tries.pop(key, None); return 'save'
+    t = tries.setdefault(key, [])
+    if not t or pd.Timestamp(now) - pd.Timestamp(t[-1]) >= TRY_GAP: t.append(str(now))
+    if len(t) < TRIES: return 'wait'
+    tries.pop(key, None)
+    return 'holiday' if n < 60 else 'short'
+
+def feed_check(b, now, eod, st, key):
+    """None if today's closed bars look complete, else the reason (market hours only)."""
+    hm = now.hour * 60 + now.minute
+    if now >= eod or hm < OPEN_HM: return None
+    if not len(b): return 'no price bars received for today'
+    age = now - (b.index[-1] + pd.Timedelta(minutes=1))
+    if age > LATE: return f'newest closed price bar ({dubai(b.index[-1])} Dubai) is {age.total_seconds() / 60:.0f} min old'
+    w = b.index                                          # holes anywhere today (a missing 900-minute chunk too), not only the last hour
+    gaps = [(a, c) for a, c in zip(w[:-1], w[1:]) if c - a - pd.Timedelta(minutes=1) > LATE]
+    st0 = now.normalize() + pd.Timedelta(minutes=OPEN_HM)
+    if w[0] > st0: gaps = [(st0, w[0])] + gaps             # first bar of the day missing
+    day = str(now.normalize().date()); seen = st.setdefault('holes', {}).setdefault(key, {})
+    for k in [k for k in seen if not k.startswith(day)]: seen.pop(k)
+    bad = []
+    for a, c in gaps:
+        k = str(a); seen.setdefault(k, str(now))
+        if now - pd.Timestamp(seen[k]) < HOLE_OK: bad.append(f'{dubai(a)}-{dubai(c)}')
+    return f'price bars missing between {", ".join(bad)} Dubai' if bad else None
 
 
 # ---------------- minute history (one file per market per month) ----------------
@@ -89,19 +141,25 @@ def minutes(feed, mk, start_b, end_b):
     d.index = F.utc_to_broker(pd.to_datetime(d.t)); d = d[d.index.dayofweek < 5]
     return d[['o', 'h', 'l', 'c', 'sp']].astype(float).sort_index()
 
-def catch_up(feed, mk, day, get):
-    """Add every finished weekday after the last stored day and before `day`."""
+def catch_up(feed, mk, day, get, now, st):
+    """Add every finished weekday after the last stored day and before `day`, only when complete (judge_day).
+    Returns (added, pending): pending = the day still being retried (nothing after it is added yet)."""
     os.makedirs(MIN, exist_ok=True)
     hist = load_hist(mk); added = []
     last = hist.index[-1].normalize() if len(hist) else day - pd.Timedelta(days=KEEP_DAYS + 8)     # first run: ~5 weeks back
+    hol = st.setdefault('holidays', {}).setdefault(mk, [])
     while last + pd.Timedelta(days=1) < day:
         nxt = last + pd.Timedelta(days=1)
-        if nxt.dayofweek < 5:
+        if nxt.dayofweek < 5 and str(nxt.date()) not in hol:
             b = get(feed, mk, nxt, nxt + pd.Timedelta(days=1)); b = b[(b.index >= nxt) & (b.index < nxt + pd.Timedelta(days=1))]
-            if len(b) >= 60: save_day(mk, b); added.append(f'{mk} {nxt.date()}')
-            else: added.append(f'{mk} {nxt.date()} (no prices - holiday)')
+            u = usual_count(hist, nxt); v = judge_day(st, f'{mk} {nxt.date()}', len(b), u, now)
+            if v in ('save', 'short'):
+                save_day(mk, b); hist = pd.concat([hist, b[['o', 'h', 'l', 'c']]]); added.append(f'{mk} {nxt.date()}' + (' (short day)' if v == 'short' else ''))
+            elif v == 'holiday': hol.append(str(nxt.date())); added.append(f'{mk} {nxt.date()} (no prices - holiday)')
+            else: return added, [f'{mk} {nxt.date()}: {len(b)} of ~{u or 60:.0f} minute bars so far - retrying']
         last = nxt
-    return added
+    hol[:] = [h for h in hol if h >= str((day - pd.Timedelta(days=90)).date())]
+    return added, []
 
 
 # ---------------- inputs ----------------
@@ -189,26 +247,17 @@ def base_card(A=None):
                 net_label='Net $/oz (v1.8 honest rules)')
 
 
-def main(feed=None, get=None, now=None, gsig=None):
-    """gsig: optional function (feed, day, now, gold_minutes) -> (times, dirs, note) for tests."""
-    now = now or F.broker_now(); day = now.normalize()
-    old = loadj(PORTAL, {}); mk = old.setdefault('markets', {})
-    if now.dayofweek >= 5:
-        J = loadj(JOUR, dict(start=None, days=[])); prev = mk.get('SILVER') or {}
-        mk['SILVER'] = dict({k: v for k, v in prev.items() if k not in ('status', 'note')}, **base_card(None), state='closed',
-                            message='Market closed for the weekend.', entries=[], journal=summary(J), jdays=jdays(J), feed_error=False)
-        dumpj(old, PORTAL, indent=1); print('Silver: weekend'); return
-    get = get or minutes; gsig = gsig or gold_signals
-    if feed is None:
-        if not os.environ.get('CAPITAL_API_KEY'): raise RuntimeError('Silver paper needs the Capital.com prices')
-        feed = F.get_feed()[0]                          # loop.py: shared Capital.com session + hourly cache
-    added = catch_up(feed, 'SILVER', day, get) + catch_up(feed, 'GOLD', day, get)
-    since = day - pd.Timedelta(days=int(KEEP_DAYS * 1.5))
-    hs, hg = load_hist('SILVER', since), load_hist('GOLD', since)
-    b = get(feed, 'SILVER', day, now); b = b[(b.index >= day) & (b.index + pd.Timedelta(minutes=1) <= now)]     # closed minute bars only
-    gb = get(feed, 'GOLD', day, now); gb = gb[(gb.index >= day) & (gb.index + pd.Timedelta(minutes=1) <= now)]
-    spread = float(np.nanmedian(b.sp.values)) if len(b) and np.isfinite(b.sp.values).any() else MIN_SPREAD
-    sp = max(MIN_SPREAD, spread)
+def frozen_X(S, fz):
+    """22 Oct fix: the day's trade as first shown (2-of-3 agreement frozen: late gold inputs can no longer move or flip it)."""
+    t = np.datetime64(pd.Timestamp(fz['t']), 'm'); j = int(np.searchsorted(S.T, t, side='right')) - 1
+    if j < 0 or S.T[j].astype('datetime64[D]') != t.astype('datetime64[D]'): return pd.DataFrame()
+    return pd.DataFrame([dict(t=pd.Timestamp(fz['t']), j=j, dir=int(fz['dir']), src=int(fz['src']), via=fz['via'], px=float(fz['px']),
+                              A=float(fz['A']), w=int(fz['w']), corr=fz.get('corr'))])
+
+def compute(feed, day, now, b, gb, hs, hg, gsig, jd, sp):
+    """One broker day. b / gb: the day's closed silver / gold minute bars; hs / hg: stored history (days before `day` used);
+    jd: the journal day so far (holds the frozen trade). Returns dict(rows, X, S, gt, gnote, DB, sv, eod)."""
+    eod = day + pd.Timedelta(minutes=(22 * 60 + 50) if day.dayofweek == 4 else 23 * 60)
     sv = pd.concat([hs[hs.index < day], b[['o', 'h', 'l', 'c']]]); gd = pd.concat([hg[hg.index < day], gb[['o', 'h', 'l', 'c']]])
     # day table: Capital.com hourly bars (460 days) built into broker days, + today so far from the minutes
     sh1 = feed.h1(days=460, epic=EPIC['SILVER']); sh1 = sh1[sh1.index < day]; g = sh1.groupby(sh1.index.normalize())
@@ -223,22 +272,84 @@ def main(feed=None, get=None, now=None, gsig=None):
     gA = E.gold_A(gdb)
     S = E.Span(sv.index.values, sv.o.values, sv.h.values, sv.l.values, sv.c.values, gd.index.values, gd.c.values, gA, DT)
     S.from_day = np.datetime64(day.date(), 'D')
+    if now < eod: S.open_day(S.from_day)                                      # 22 Oct fix: the latest bar is not the day end yet
     gt, gdir, gnote = gsig(feed, day, now, gb[['o', 'h', 'l', 'c']]) if len(gb) else ([], [], 'no gold minutes yet')
-    X = E.signals(S, gt, gdir, news_times(day), honest=True)
-    if len(X): X = X[pd.DatetimeIndex(X.t).normalize() == day]
+    X = frozen_X(S, jd['frozen']) if jd.get('frozen') else pd.DataFrame()
+    if not jd.get('frozen'):
+        X = E.signals(S, gt, gdir, news_times(day), honest=True)
+        if len(X): X = X[pd.DatetimeIndex(X.t).normalize() == day].iloc[:1]
     now_j = len(S.T) - 1 if len(b) else None
-    eod = day + pd.Timedelta(minutes=(22 * 60 + 50) if day.dayofweek == 4 else 23 * 60)
     rows = []
     for _, x in X.iterrows():
         m = E.manage(S, int(x.j), int(x.dir), float(x.px), float(x.A), upto=now_j)
         if m['status'] == 'open' and now >= eod and now_j is not None:            # day over without a close-time bar
             m = dict(m, status='day end', exit=float(S.C[now_j]), exit_j=now_j)
         rows.append(row(S, x, m, sp, now_j, eod, now))
+    return dict(rows=rows, X=X, S=S, gt=gt, gnote=gnote, DB=DB, sv=sv, eod=eod)
+
+def freeze(jd, X):
+    """remember the first shown trade of the day (22 Oct fix)."""
+    if jd.get('frozen') or not len(X): return
+    x = X.iloc[0]
+    jd['frozen'] = dict(t=str(pd.Timestamp(x.t)), dir=int(x.dir), src=int(x.src), via=str(x.via), px=float(x.px), A=float(x.A), w=int(x.w),
+                        corr=None if x['corr'] is None or x['corr'] != x['corr'] else float(x['corr']))
+
+def finish_old_days(J, feed, day, hs, hg, gsig, st):
+    """22 Oct fix: a journal day left non-final (the desk stopped before its close) is re-run on its stored full day and closed."""
+    done = []
+    for jd in J.get('days', []):
+        if jd.get('final') or jd.get('rules') != RULES or jd['date'] >= str(day.date()): continue
+        d = pd.Timestamp(jd['date']); nd = d + pd.Timedelta(days=1)
+        if jd['date'] in st.get('holidays', {}).get('SILVER', []): jd['final'] = True; done.append(jd['date']); continue
+        b = hs[(hs.index >= d) & (hs.index < nd)]; gb = hg[(hg.index >= d) & (hg.index < nd)]
+        if not len(b) or d < day - pd.Timedelta(days=10): continue            # not stored yet (catch-up retries) / too old to redo
+        sp = max([MIN_SPREAD] + [float(t.get('spread') or 0) for t in jd.get('trades', [])])
+        r = compute(feed, d, nd, b, gb, hs, hg, gsig, jd, sp); freeze(jd, r['X'])
+        jd.update(trades=r['rows'], side=(r['rows'][0]['side'] if r['rows'] else None), final=True, finished_late=True); done.append(jd['date'])
+    return done
+
+
+def main(feed=None, get=None, now=None, gsig=None):
+    """gsig: optional function (feed, day, now, gold_minutes) -> (times, dirs, note) for tests."""
+    global DEADLINE; DEADLINE = time.time() + 75     # 22 Oct fix: own 75 s time budget per market (no shared window)
+    now = now or F.broker_now(); day = now.normalize()
+    old = loadj(PORTAL, {}); mk = old.setdefault('markets', {})
+    if now.dayofweek >= 5:
+        J = loadj(JOUR, dict(start=None, days=[])); prev = mk.get('SILVER') or {}
+        mk['SILVER'] = dict({k: v for k, v in prev.items() if k not in ('status', 'note')}, **base_card(None), state='closed',
+                            message='Market closed for the weekend.', entries=[], journal=summary(J), jdays=jdays(J), feed_error=False)
+        dumpj(old, PORTAL, indent=1); print('Silver: weekend'); return
+    get = get or minutes; gsig = gsig or gold_signals
+    if feed is None:
+        if not os.environ.get('CAPITAL_API_KEY'): raise RuntimeError('Silver paper needs the Capital.com prices')
+        feed = F.get_feed()[0]                          # loop.py: shared Capital.com session + hourly cache
+    st = load_state()
+    a1, p1 = catch_up(feed, 'SILVER', day, get, now, st); a2, p2 = catch_up(feed, 'GOLD', day, get, now, st); added = a1 + a2
+    save_state(st)
+    if p1 or p2: raise FeedError('minute history not complete yet (' + '; '.join(p1 + p2) + ')')
+    since = day - pd.Timedelta(days=int(KEEP_DAYS * 1.5))
+    hs, hg = load_hist('SILVER', since), load_hist('GOLD', since)
     J = loadj(JOUR, dict(start=None, days=[]))
+    fin = finish_old_days(J, feed, day, hs, hg, gsig, st)
+    if fin: J['summary'] = summary(J, day); dumpj(J, JOUR, indent=1)
+    b = get(feed, 'SILVER', day, now); b = b[(b.index >= day) & (b.index + pd.Timedelta(minutes=1) <= now)]     # closed minute bars only
+    gb = get(feed, 'GOLD', day, now); gb = gb[(gb.index >= day) & (gb.index + pd.Timedelta(minutes=1) <= now)]
+    eod = day + pd.Timedelta(minutes=(22 * 60 + 50) if day.dayofweek == 4 else 23 * 60)
+    bad = feed_check(b, now, eod, st, 'SILVER'); bad = bad and 'silver: ' + bad
+    if not bad: bad = feed_check(gb, now, eod, st, 'GOLD'); bad = bad and 'gold: ' + bad
+    save_state(st)
+    if bad: raise FeedError(bad)
+    spread = float(np.nanmedian(b.sp.values)) if len(b) and np.isfinite(b.sp.values).any() else MIN_SPREAD
+    sp = max(MIN_SPREAD, spread)
+    jd = next((d for d in J['days'] if d['date'] == str(day.date())), None) or {}
+    if not len(b) and (jd.get('frozen') or jd.get('trades')): raise FeedError('no silver price bars for a day that already has a trade')
+    r = compute(feed, day, now, b, gb, hs, hg, gsig, jd, sp)
+    rows, X, S, gt, gnote, DB, sv = r['rows'], r['X'], r['S'], r['gt'], r['gnote'], r['DB'], r['sv']
+    freeze(jd, X)
     if J.get('start') is None: J['start'] = str(day.date())
     J['days'] = sorted([d for d in J['days'] if d['date'] != str(day.date())] +
-                       [dict(date=str(day.date()), rules=RULES, label=day.strftime('%a %d %b'), side=(rows[0]['side'] if rows else None), trades=rows,
-                             final=bool(now >= eod))], key=lambda d: d['date'])
+                       [dict({k: v for k, v in jd.items() if k == 'frozen'}, date=str(day.date()), rules=RULES, label=day.strftime('%a %d %b'),
+                             side=(rows[0]['side'] if rows else None), trades=rows, final=bool(now >= eod))], key=lambda d: d['date'])
     J['summary'] = summary(J, day); dumpj(J, JOUR, indent=1)
     last = float(b.c.iloc[-1]) if len(b) else None; first = float(b.o.iloc[0]) if len(b) else None
     spark = []
@@ -255,9 +366,10 @@ def main(feed=None, get=None, now=None, gsig=None):
     A = float(S.A[-1]) if len(S.A) and np.isfinite(S.A[-1]) else None
     mk['SILVER'] = dict(base_card(A), state=state, message=msg, price=last, change=(None if last is None or first is None else round(last - first, 3)),
                         entries=rows, spark=spark, journal=J['summary'], jdays=jdays(J), feed_error=False, epic=EPIC['SILVER'], close_at=dubai(eod),
-                        gold_signals_today=len(gt), history_note=f"minutes from {sv.index[0].date()} ({sv.index.normalize().nunique()} days) · {DB.index.size} daily bars from {DB.index[0].date()}" + (f" · added {', '.join(added)}" if added else ''))
+                        gold_signals_today=len(gt), history_note=f"minutes from {sv.index[0].date()} ({sv.index.normalize().nunique()} days) · {DB.index.size} daily bars from {DB.index[0].date()}"
+                        + (f" · added {', '.join(added)}" if added else '') + (f" · finished {', '.join(fin)}" if fin else ''))
     dumpj(old, PORTAL, indent=1)
-    print(f'Silver paper: {now} broker | bars {len(b)} gold {len(gb)} | gold signals {len(gt)} | trades {len(rows)} | added {added}')
+    print(f'Silver paper: {now} broker | bars {len(b)} gold {len(gb)} | gold signals {len(gt)} | trades {len(rows)} | added {added} | finished {fin}')
 
 def fail(e):
     old = loadj(PORTAL, {}); mk = old.setdefault('markets', {}); c = mk.get('SILVER') or {}

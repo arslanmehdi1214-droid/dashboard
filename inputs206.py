@@ -5,6 +5,7 @@ low attention  : Wikipedia "Gold" daily views, z = (log v - 28-day median) / 28-
 dollar-driven  : 20-day correlation of gold open-to-open changes vs a synthetic dollar (EURUSD -0.576, USDJPY 0.136, GBPUSD -0.119)
                  taken from the broker's 00:00 hourly bar close, below -0.6 = yes (known from 1:00 broker)
 List values used by the engine: +1 = 'B', -1 = 'S', 0 = flat, 9 = not known.
+attn: 1 = low attention, 0 = not low, 9 = Wikipedia not loaded (retried by run.py every 30 min).
 """
 import math, statistics, datetime as dt, requests
 
@@ -70,8 +71,8 @@ def daily_inputs(G):
     try:
         a, z = attention(G); out.update(attn=0 if a is None else a, attn_z=z)
         if a is None: out['notes'].append('attention data too short')
-    except Exception as e:
-        out.update(attn=0); out['notes'].append(f'attention not loaded ({type(e).__name__})')
+    except Exception as e:   # fixpack 22 Oct: 9 = not known (was 0 = 'not low', never retried); run.py retries it every 30 min.
+        out.update(attn=9); out['notes'].append(f'attention not loaded ({type(e).__name__})')   # engines test attn == 1, so 9 acts like 0
     return out
 
 

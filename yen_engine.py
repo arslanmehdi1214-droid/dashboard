@@ -16,6 +16,11 @@ TAG = ['J13', 'L3', 'M8', 'N3', 'M1a', 'J21', 'M1b', 'L1', 'U5', 'L7', 'Q5']
 NAME = ['Heikin-Ashi 7am', 'Week-so-far break', 'Inside-week break', 'Inside-day break', 'Quiet 5-day break', 'Squeeze 4pm',
         'Quiet 2-day break', 'EMA10 break', 'Last-week break', 'Morning pullback', 'Hourly squeeze 3pm']
 PT = 0.001; MIN_SPREAD = 0.01                        # 1 pip = the MT4 test spread; the paper P/L never uses less
+FIX_SPREAD = 0.010                                   # 22 Oct fix: ONE fixed spread (1.0 pip = the MT4 v1.05 test) for entry, stop, half level and P/L.
+                                                     # Capital.com re-sends a different ask for the same finished minute, so the live spread made
+                                                     # shown stops / half flags change after the fact. MT4 tests use a fixed spread too (10 points).
+EOD_GRACE = 600                                      # 23 Oct fix: with no bar at/after the close yet, book the day-end close at the last close only
+                                                     # this many seconds after the close time (was: at once -> 17:59 close, then 18:00 open a minute later)
 QUIET = {2, 3, 4, 5, 6, 10}                          # EA signals 3,4,5,6,7,11 (inside-week / inside-day / quiet 5-day / squeeze 4pm / quiet 2-day / hourly squeeze)
 Q_STOP, Q_HALF, O_STOP, O_HALF = 0.25, 0.50, 0.75, 0.10   # stop = x 14-day range; half at + x risk (risk = stop distance incl. spread)
 PART, LOCK_PK, LOCK_FL, HA_W = 0.5, 2.0, 1.0, 1 / 3      # half part; day lock peak / floor in R; Heikin-Ashi 7am size
@@ -98,7 +103,7 @@ class Yen:
         return sum(self.dH[nD - q] - self.dL[nD - q] for q in range(1, 15)) / 14 if nD >= 14 else 0.
 
     def run_day(self, day, T, O_, H_, L_, C_, now=None, spread=None):
-        """One broker day. T..C_ = raw closed minute bars (any bars before `day` are only a look-back for the 2h / 6h ranges).
+        """`spread` is accepted for old callers but ignored: every level and P/L uses FIX_SPREAD (23 Oct fix). One broker day. T..C_ = raw closed minute bars (any bars before `day` are only a look-back for the 2h / 6h ranges).
         Returns the day's trades (entry, stop, exit or open, pips, right-way-first). Changes no history (the object can be reused)."""
         T = np.asarray(T, np.int64); O_, H_, L_, C_ = (np.asarray(x, float) for x in (O_, H_, L_, C_))
         sel = np.flatnonzero((T >= day) & (T < day + 86400))
@@ -233,10 +238,8 @@ class Yen:
         ct = [j for j in w if isclose(int(T[j]))]; e_close = ct[0] if ct else None
         hm = FRI_CLOSE_HHMM if dow(day) == 5 else CLOSE_HHMM
         eod_t = day + (hm // 100) * 3600 + (hm % 100) * 60
-        day_over = now is not None and now >= eod_t
-        def SP(j):
-            if spread is None: return MIN_SPREAD
-            v = float(spread[j]); return max(MIN_SPREAD, v) if np.isfinite(v) else MIN_SPREAD
+        day_over = now is not None and now >= eod_t + EOD_GRACE      # 23 Oct: until then, open trades wait for the close bar's open (row shows 'close_now')
+        def SP(j): return FIX_SPREAD          # 23 Oct: fixed spread (the `spread` argument is no longer used for levels or P/L - see FIX_SPREAD)
         byi = {}
         for tr in TR: byi.setdefault(tr['i'], []).append(tr)
         legs = []; banked = 0.; peak = 0.; off = False; ddir = 0; nflip = 0
@@ -294,7 +297,7 @@ class Yen:
             sp = SP(e_close)
             for l in legs:
                 if l['on']: shut(l, O_[e_close] if l['d'] > 0 else O_[e_close] + sp, e_close, 'eod')
-        elif day_over and w:                 # day ended before the close minute (holiday / no data)
+        elif day_over and w:                 # no bar at/after the close EOD_GRACE after the close time (holiday / no data): last close
             sp = SP(w[-1])
             for l in legs:
                 if l['on']: shut(l, C_[w[-1]] if l['d'] > 0 else C_[w[-1]] + sp, w[-1], 'eod')

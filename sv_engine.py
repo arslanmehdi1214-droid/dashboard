@@ -118,6 +118,7 @@ class Span:
         eod_t = day.astype('datetime64[m]') + np.where(dow == 4, 22 * 60 + 50, 23 * 60).astype('timedelta64[m]')
         E = np.searchsorted(self.T, eod_t); dlast = (self.ends - 1)[self.dc]; self.EOD = np.minimum(E, dlast)
         self.isct = np.where(dow == 4, self.hm >= 2250, self.hm >= 2300)
+        self.EODE = self.EOD.copy()             # day-end bar for the 'no entry in the day-end minute' checks (see open_day)
         gt = gt.astype('datetime64[m]'); gi = np.searchsorted(gt, self.T, side='right') - 1
         self.gok = (gi >= 0) & ((self.T - gt[np.maximum(gi, 0)]) <= np.timedelta64(2, 'm'))
         self.gC = np.where(self.gok, gc[np.maximum(gi, 0)], np.nan)
@@ -126,6 +127,12 @@ class Span:
         same = gt[np.maximum(gi, 0)] == self.T
         self.gC_exact = np.where((gi >= 0) & same, gc[np.maximum(gi, 0)], np.nan)   # for the 5-min correlation (research aligned_x)
         self.DT = DT
+
+    def open_day(self, d):
+        """22 Oct fix: day d (datetime64[D]) is still running. Until a bar at/after its close time exists, its latest closed bar is NOT
+        the day-end bar, so a signal on it is not dropped (it used to show one minute late). Research/full days are unchanged."""
+        k = np.where(self.day == np.datetime64(d, 'D'))[0]
+        if len(k) and not self.isct[self.EOD[k[-1]]]: self.EODE[k] = len(self.T)
 
 
 def voters_G(S, gsig_t, gsig_d):
@@ -136,7 +143,7 @@ def voters_G(S, gsig_t, gsig_d):
     ok = (j < len(S.T)) & (np.abs(S.T[jj] - tt) <= np.timedelta64(2, 'm'))
     j = j[ok] + 1; d = d[ok]
     ok2 = (j < len(S.T)); j, d = j[ok2], d[ok2]
-    ok3 = (j < S.EOD[j]) & np.isfinite(S.A[j]) & (S.A[j] > 0); j, d = j[ok3], d[ok3]
+    ok3 = (j < S.EODE[j]) & np.isfinite(S.A[j]) & (S.A[j] > 0); j, d = j[ok3], d[ok3]
     key = j * 3 + d; _, u = np.unique(key, return_index=True); u = np.sort(u)
     return j[u], d[u]
 
@@ -144,7 +151,7 @@ def voters_G(S, gsig_t, gsig_d):
 def catchup(S, L_, thr, mask=None):
     """gold out-moved silver over the last L_ bars -> next minute (index based, same day, gold within 2 min). All trigger minutes."""
     idx = np.where((S.hm >= 115) & (S.hm <= 2200) & (mask if mask is not None else True))[0]
-    idx = idx[(idx + 1 < S.EOD[idx]) & S.gok[idx]]
+    idx = idx[(idx + 1 < S.EODE[idx]) & S.gok[idx]]
     q = idx - L_; ok = (q >= 0) & S.gok[np.maximum(q, 0)] & (S.dc[np.maximum(q, 0)] == S.dc[idx]); P = idx[ok]; Q = q[ok]
     gap = (S.gC[P] - S.gC[Q]) / S.gA[P] - (S.C[P] - S.C[Q]) / S.A[P]
     c = (np.abs(gap) >= thr) & np.isfinite(gap)
@@ -181,7 +188,7 @@ def voters_CP(S):
                 if hu: j, sd = m, 1; break
                 if hd: j, sd = m, -1; break
             if sd == 0: continue
-            if (55 <= S.hm[j] < 115) or not (j < S.EOD[j]) or not (np.isfinite(S.A[j]) and S.A[j] > 0): continue
+            if (55 <= S.hm[j] < 115) or not (j < S.EODE[j]) or not (np.isfinite(S.A[j]) and S.A[j] > 0): continue
             px = max(up, S.O[j]) if sd > 0 else min(dn, S.O[j])
             if best is None or j < best[0]: best = (j, sd, px)            # earliest; ties keep the lower member number
         if best: out.append(best)
@@ -224,7 +231,7 @@ def signals(S, gsig_t, gsig_d, news_t, honest=True):
         k0 = ev[i][0]; day = []
         while i < len(ev) and ev[i][0] == k0: day.append((ev[i][1], ev[i][2], ev[i][3])); i += 1
         r = agree(day)
-        if r and r[0] < S.EOD[r[0]] and not (55 <= S.hm[r[0]] < 115): U1[S.dc[r[0]]] = r
+        if r and r[0] < S.EODE[r[0]] and not (55 <= S.hm[r[0]] < 115): U1[S.dc[r[0]]] = r
     # U4 post-news catch-up
     post = np.zeros(len(S.T), bool)
     for r0 in np.unique(np.searchsorted(S.T, np.asarray(news_t, dtype='datetime64[m]'))):
@@ -263,7 +270,7 @@ def manage(S, j, d, px, A, upto=None):
             if S.H[m] >= stop: return dict(status='stop' if not part else 'trail', exit=float(stop), exit_j=m, half=part, half_j=half_t, stop=stop, stop0=stop0, tgt=tgt)
             if not part and S.L[m] <= tgt: part = True; half_t = m; stop = min(stop, px)
             if part: best = min(best, S.L[m]); stop = min(stop, best + TRAIL * A)
-    if upto is None or upto >= e:
+    if upto is None or (upto >= e and S.isct[e]):          # 22 Oct fix: live, the latest bar is the day end only at/after the close time
         return dict(status='day end', exit=float(S.C[e]), exit_j=e, half=part, half_j=half_t, stop=stop, stop0=stop0, tgt=tgt)
     return dict(status='open', exit=None, exit_j=None, half=part, half_j=half_t, stop=stop, stop0=stop0, tgt=tgt)
 

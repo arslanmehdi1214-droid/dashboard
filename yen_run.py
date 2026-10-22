@@ -40,7 +40,8 @@ def minutes(feed, start_b, end_b):
     """Capital.com USDJPY minute bars between two broker times: index broker time, Bid o/h/l/c + spread (ask close - bid close)."""
     if feed.h is None: feed.login()
     to_utc = lambda b: (pd.Timestamp(b) - pd.Timedelta(hours=7)).tz_localize(F.NY, ambiguous=False, nonexistent='shift_forward').tz_convert('UTC').tz_localize(None)
-    t0, end = to_utc(start_b), to_utc(end_b); out = []
+    global SKIPPED
+    t0, end = to_utc(start_b), to_utc(end_b); out = []; SKIPPED = 0
     while t0 < end:
         if time.time() > DEADLINE: raise TimeoutError('USDJPY time budget used up (4 min) - next run continues')
         t1 = min(end, t0 + pd.Timedelta(minutes=900))
@@ -53,24 +54,49 @@ def minutes(feed, start_b, end_b):
                             np.nan if ask is None else ask - p['closePrice']['bid']))
         elif r.status_code not in (400, 404):
             r.raise_for_status()
+        else: SKIPPED += 1                    # 400/404 = no prices in that chunk (weekend - or a Capital.com hiccup): counted for the log
         t0 = t1; time.sleep(0.15)
     if not out: return pd.DataFrame(columns=['o', 'h', 'l', 'c', 'sp'], index=pd.DatetimeIndex([]), dtype=float)
     d = pd.DataFrame(out, columns=['t', 'o', 'h', 'l', 'c', 'sp']).drop_duplicates('t')
     d.index = F.utc_to_broker(pd.to_datetime(d.t)); return d[['o', 'h', 'l', 'c', 'sp']].astype(float).sort_index()
 
+SKIPPED = 0                           # chunks the last minutes() call got no prices for (400/404)
+
 def arrays(b):
     return b.index.values.astype('datetime64[s]').astype(np.int64), b.o.values, b.h.values, b.l.values, b.c.values
 
+# 23 Oct fix: a finished day is saved only when it is reasonably complete; otherwise the history does not advance and the next run retries
+EXP_MIN = 1373                        # window minutes 01:05-23:57 on a full weekday (his MT4 data 2025-26: median 1,373 every weekday)
+COMPLETE = 0.85                       # a day counts as complete at >= 85% of that weekday's usual minute count
+TRIES, TRY_SECS = 3, 1800             # an empty / short download is accepted (holiday / short day) only after 3 tries spread over >= 30 min
+STALE_SECS, GAP_MIN, LOOK_MIN = 180, 3, 60   # today: newest closed minute older than 3 min, or > 3 missing minutes in the last 60 = feed error
+
+def usual_minutes(H, wd):
+    """Usual window-minute count for weekday `wd` (0 = Monday): median of the last 10 complete days stored, else EXP_MIN."""
+    v = [n for d, n in sorted((H.get('nmin') or {}).items()) if pd.Timestamp(d).dayofweek == wd][-10:]
+    return float(np.median(v)) if len(v) >= 3 else float(EXP_MIN)
+
+def tried_enough(H, key):
+    """Counts one more try for day `key`; True once there were >= TRIES tries spread over >= TRY_SECS."""
+    t = H.setdefault('tries', {}).setdefault(key, [0, time.time()]); t[0] += 1
+    return t[0] >= TRIES and time.time() - t[1] >= TRY_SECS
+
 def catch_up(feed, H, day):
-    """Add every finished broker day after H['through'] and before `day` to the history. Uses Capital.com minutes; if a weekday has
-    fewer than 10 hours of window minutes, uses Capital.com hourly bars for that day instead (hours 01-23) when they cover more."""
-    last = pd.Timestamp(H['through']); added = []
+    """Add every finished broker day after H['through'] and before `day` to the history, from Capital.com minutes - but only when the
+    day has >= 85% of its usual window minutes. A short or empty download does NOT advance the history: the next run retries. After
+    3 tries over >= 30 min the day is taken as it is: from Capital.com hourly bars if they cover more hours, else the minutes
+    (short day), or - with no prices at all - as a holiday. Returns (added, waiting) - waiting = why the history is not up to date yet."""
+    last = pd.Timestamp(H['through']); added = []; H.setdefault('nmin', {})
     while last + pd.Timedelta(days=1) < day:
-        nxt = last + pd.Timedelta(days=1)
+        nxt = last + pd.Timedelta(days=1); key = str(nxt.date())
         if nxt.dayofweek < 5:
             b = minutes(feed, nxt, nxt + pd.Timedelta(days=1)); b = b[(b.index >= nxt) & (b.index < nxt + pd.Timedelta(days=1))]
             dd, hh = Y.history(*arrays(b)); how = 'minutes'
-            if sum(Y.inwin(x) for x in arrays(b)[0]) < 600:
+            nwin = int(sum(Y.inwin(x) for x in arrays(b)[0])); usual = usual_minutes(H, nxt.dayofweek)
+            if nwin >= COMPLETE * usual: H['nmin'][key] = nwin
+            elif not tried_enough(H, key):
+                return added, f"{key}: {nwin} of ~{usual:.0f} minutes so far - retrying (try {H['tries'][key][0]} of {TRIES})"
+            else:
                 h1 = feed.bars('HOUR', *(pd.Timestamp(x) for x in ((nxt - pd.Timedelta(hours=7)).tz_localize(F.NY).tz_convert('UTC').tz_localize(None),
                                                                      (nxt + pd.Timedelta(hours=17)).tz_localize(F.NY).tz_convert('UTC').tz_localize(None))),
                                pd.Timedelta(hours=30), EPIC)
@@ -78,16 +104,44 @@ def catch_up(feed, H, day):
                 if len(h1) > len(hh):
                     hh = [(secs(t), float(r.o), float(r.h), float(r.l), float(r.c)) for t, r in h1.iterrows()]
                     dd = [(secs(nxt), hh[0][1], max(x[2] for x in hh), min(x[3] for x in hh), hh[-1][4])]; how = 'hourly bars'
+                elif dd: how = f'short day, {nwin} minutes'
             if dd:
-                H['days'].append([str(nxt.date()), *dd[0][1:]]); H['hours'] += [[str(ts(x[0]))[:16], *x[1:]] for x in hh]
-                added.append(str(nxt.date()) + ('' if how == 'minutes' else ' (from hourly bars)'))
+                H['days'].append([key, *dd[0][1:]]); H['hours'] += [[str(ts(x[0]))[:16], *x[1:]] for x in hh]
+                added.append(key + ('' if how == 'minutes' else f' ({how})'))
             else:
-                added.append(str(nxt.date()) + ' (no prices - holiday)')
-        last = nxt; H['through'] = str(last.date())
+                added.append(key + f' (no prices after {TRIES} tries over {TRY_SECS // 60} min - holiday)')
+            H.get('tries', {}).pop(key, None)
+        last = nxt; H['through'] = key
     H['days'] = H['days'][-Y.KEEP_DAYS:]; H['hours'] = H['hours'][-Y.KEEP_HOURS:]
-    return added
+    H['nmin'] = dict(sorted(H['nmin'].items())[-40:])
+    return added, None
+
+def feed_health(b, now, day):
+    """Today's minutes good enough to trade on? (ok, why). Checked only inside the window (01:05-23:57 broker, Mon-Fri):
+    newest closed minute older than 3 min, > 3 missing minutes in the last 60, or < 85% of today's window minutes so far = not ok."""
+    n = secs(now); d0 = secs(day)
+    if not (Y.inwin(n) and Y.inwin(n - 240) and n - 240 >= d0): return True, ''
+    T = arrays(b)[0]; tw = np.array([x for x in T if x >= d0 and Y.inwin(int(x))], np.int64)
+    if not len(tw): return False, 'no USDJPY prices yet today (market closed?)'
+    age = n - (int(tw[-1]) + 60)
+    if age > STALE_SECS: return False, f'newest closed minute is {age // 60} min old'
+    x = tw[tw >= n - LOOK_MIN * 60 - 60]
+    if len(x) > 1 and np.diff(x).max() > (GAP_MIN + 1) * 60:
+        return False, f'{int(np.diff(x).max()) // 60 - 1} minutes missing in the last {LOOK_MIN} min'
+    want = (int(tw[-1]) - (d0 + 65 * 60)) // 60 + 1
+    if want >= 30 and len(tw) < COMPLETE * want: return False, f'only {len(tw)} of {want} minutes today'
+    return True, ''
+
+def hold(why):
+    """Keep the last good USDJPY card, with feed_error=True so the auto-trader leaves USDJPY alone this minute; journal untouched."""
+    old = loadj(PORTAL, {}); mk = old.setdefault('markets', {}); c = mk.get('USDJPY') or {}
+    c.update(base_card()); c.setdefault('entries', []); c.setdefault('state', 'waiting'); c['feed_error'] = True
+    c['message'] = (f"USDJPY prices not complete at {F.broker_to_dubai(F.broker_now()).strftime('%-I:%M %p').lower()} Dubai ({why}) "
+                    "— shows the last good update; checks again next minute.")
+    mk['USDJPY'] = c; json.dump(old, open(PORTAL, 'w'), indent=1); print('USDJPY held:', why)
 
 def main():
+    global DEADLINE; DEADLINE = time.time() + 75                       # 22 Oct: own time budget per market (set when this market starts)
     now = F.broker_now(); day = now.normalize(); set_rules(day)
     H = loadj(HIST, None)
     if H is None: raise RuntimeError('docs/usdjpy_hist.json missing')
@@ -99,13 +153,16 @@ def main():
         json.dump(old, open(PORTAL, 'w'), indent=1); print('USDJPY: weekend'); return
     if not os.environ.get('CAPITAL_API_KEY'): raise RuntimeError('USDJPY paper needs the Capital.com prices')
     feed = F.Capital()
-    added = catch_up(feed, H, day)
-    json.dump(H, open(HIST, 'w'), separators=(',', ':'))
+    try: added, wait = catch_up(feed, H, day)
+    finally: json.dump(H, open(HIST, 'w'), separators=(',', ':'))     # retry counts are kept even if the run stops half way
+    if wait: return hold('history not complete: ' + wait)
     b = minutes(feed, day - pd.Timedelta(hours=8), now); b = b[b.index + pd.Timedelta(minutes=1) <= now]      # closed minute bars only
+    ok, why = feed_health(b, now, day)
+    if not ok: return hold(why)
     T, O, Hh, L, C = arrays(b)
     eng = Y.Yen([[secs(d[0]), *d[1:]] for d in H['days']], [[secs(x[0]), *x[1:]] for x in H['hours']])
     d0, n0 = secs(day), secs(now)
-    trades = eng.run_day(d0, T, O, Hh, L, C, now=n0, spread=b.sp.values) if len(b) else []
+    trades = eng.run_day(d0, T, O, Hh, L, C, now=n0) if len(b) else []          # 22 Oct: fixed 1.0-pip spread inside the engine (MT4 v1.05 test)
     hm = Y.FRI_CLOSE_HHMM if now.dayofweek == 4 else Y.CLOSE_HHMM
     eod = day + pd.Timedelta(hours=hm // 100, minutes=hm % 100)      # day-end close (6 pm broker since 2026-10-04)
     rows = [row(t, now >= eod) for t in trades]
@@ -137,9 +194,10 @@ def main():
         spark = [[F.broker_to_dubai(t).strftime('%-I:%M %p').lower(), round(float(r.c), 3), round(float(r.o), 3), round(float(r.h), 3), round(float(r.l), 3)] for t, r in g5.iterrows()]
     mk['USDJPY'] = dict(base_card(), state=state, message=msg, price=last, change_pips=(None if last is None or first is None else round((last - first) * 100, 1)),
                         atr_pips=round(eng.atr() * 100, 1), entries=rows, spark=spark, journal=J['summary'], jdays=jdays(J), feed_error=False,
+                        live_spread_pips=(round(float(np.nanmedian(tod.sp.values[-30:])) * 100, 1) if len(tod) and np.isfinite(tod.sp.values[-30:]).any() else None),
                         history_note=f"history to {H['through']} ({len(H['days'])} days)" + (f" · added {', '.join(added)}" if added else ''))
     json.dump(old, open(PORTAL, 'w'), indent=1)
-    print(f'USDJPY paper: {now} broker | trades today {len(rows)} | bars {len(b)} | history to {H["through"]} | added {added}')
+    print(f'USDJPY paper: {now} broker | trades today {len(rows)} | bars {len(b)} (empty chunks {SKIPPED}) | history to {H["through"]} | added {added}')
 
 def base_card():
     if RULES != 'v1.03':
@@ -152,7 +210,7 @@ def base_card():
     return dict(code='USDJPY', name='USD/JPY', symbol='USD/JPY', live=False, paper=True, status='Paper', version=RULES, lots=LOTS,
                 stats=BACKTEST, pass_bar=PASS, day_note=note,
                 what_note=f'This page tracks whether live USD/JPY signals do as well as the {RULES} backtest. Decision after about 3 months.',
-                cost_note="Pips are for the whole trade (⅓-size trades count one third), after Capital.com's spread (at least 1 pip). $ = at $100 risk per full-size trade, like the MT4 test.",
+                cost_note="Pips are for the whole trade (⅓-size trades count one third), after a fixed 1.0-pip spread (as in the MT4 test; fixed so shown levels never change). $ = at $100 risk per full-size trade, like the MT4 test.",
                 net_label=f'Net R / $ at $100 risk ({RULES} sizes)')
 
 def row(t, day_over):

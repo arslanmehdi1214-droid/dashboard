@@ -45,18 +45,20 @@ def daily_bars(h1, day):
     g = d.groupby(d.index.normalize())
     return pd.DataFrame({'o': g.o.first(), 'h': g.h.max(), 'l': g.l.min(), 'c': g.c.last()})
 
-def regime_today(feed, h1, day, now):
-    """1 / 0 / None and the correlation; needs the broker's 00:00 hourly FX bars (closed at 1:00 broker)."""
-    if now < day + pd.Timedelta(hours=1): return None, None
+def regime_today(feed, h1, day, now, with_err=False):
+    """1 / 0 / None and the correlation; needs the broker's 00:00 hourly FX bars (closed at 1:00 broker).
+    with_err=True adds a third value: True = the fetch FAILED (value not known yet), False = known (None = too little data -> 0)."""
+    if now < day + pd.Timedelta(hours=1): return (None, None, False) if with_err else (None, None)
     try:
         fx = {}
         for p in I.W:
             b = feed.h1(days=45, epic=p); b = b[b.index.hour == 0]
             fx[p] = {t.date(): float(c) for t, c in zip(b.index.normalize(), b.c)}
         g = h1[h1.index <= now]; opens = g.groupby(g.index.normalize()).o.first()
-        return I.dollar_regime([(t.date(), float(o)) for t, o in opens.items()], fx)
+        r = I.dollar_regime([(t.date(), float(o)) for t, o in opens.items()], fx)
+        return (r[0], r[1], False) if with_err else r
     except Exception as e:
-        print('regime not computed:', type(e).__name__, e); return None, None
+        print('regime not computed:', type(e).__name__, e); return (None, None, True) if with_err else (None, None)
 
 RY_FILE = os.path.join(HERE, 'docs', 'realyield.json')   # v2.15: US 10-yr real yield (Treasury daily real yield curve = FRED DFII10)
 RY_URL = 'https://home.treasury.gov/resource-center/data-chart-center/interest-rates/daily-treasury-rates.csv/{y}/all?type=daily_treasury_real_yield_curve&field_tdr_date_value={y}&page&_format=csv'
@@ -66,7 +68,8 @@ def realyield(day):
     import time
     R = loadj(RY_FILE, dict(rows=[], last_try=0)); need = (day - pd.Timedelta(days=2)).normalize()
     have = pd.Timestamp(R['rows'][-1][0]) if R['rows'] else pd.Timestamp('2000-01-01')
-    if have < need - pd.Timedelta(days=4) or (have < need and time.time() - R.get('last_try', 0) > 3600):
+    stale = have < need - pd.Timedelta(days=4)          # fixpack 22 Oct: was re-fetched EVERY minute while > 4 days old (2 calls, 15 s
+    if have < need and time.time() - R.get('last_try', 0) > (1800 if stale else 3600):   # timeouts); now at most every 30 min
         R['last_try'] = time.time(); rows = {r[0]: r[1] for r in R['rows']}
         for y in sorted({need.year - 1, need.year}):
             try:
@@ -98,20 +101,143 @@ def fmt(e):
     return str(e)
 
 STATUS = {'open': 'open', 'half': 'open', 'stop hit': 'stopped', 'stop at entry': 'be', 'day end': 'eod', 'reversed': 'reversed', 'day lock': 'lock'}
-def row(g, k=0):
-    """One v2.10 trade (desk209 leg) -> page/journal row. price = his fill (Ask for buys, Bid for sells)."""
+def row(g, k=0, late=False):
+    """One v2.10 trade (desk209 leg) -> page/journal row. price = his fill (Ask for buys, Bid for sells).
+    late=True (fixpack 22 Oct): the desk could not show this trade in time (inputs or data arrived after its entry minute) -
+    while it runs its status is 'late', never 'open', so the demo auto-trader never enters it; it is kept on paper only."""
     st = STATUS.get(g['status'], g['status']); half = g.get('half_t') is not None
     nxt = None
-    if st == 'open':
+    if st == 'open' and late:
+        st = 'late'; nxt = (f"LATE - do not enter: the desk could only show this signal after its time (inputs / prices arrived late). "
+                            f"Paper only · stop {g['stop']:.2f} or the day-end close")
+    elif st == 'open':
         nxt = (f"Half banked at {g['half_px']:.2f} · stop is at entry {g['entry']:.2f} · hold the rest to the stop or the day-end close"
                if half else (f"Close HALF at {g['half_px']:.2f}, then move the stop to entry {g['entry']:.2f} · stop now {g['stop']:.2f}" if g.get('half_px') is not None
                else f"Hold to the stop {g['stop']:.2f} or the day-end close · no half-close" + (f" · size x{g.get('size_x', 1):g}" if g.get('size_x', 1) != 1 else "")))
     return dict(time=dubai(g['t']), side='BUY' if g['dir'] == 1 else 'SELL', tag=g['tag'], price=g['entry'], stop=g['stop'],
                 stop0=g['stop0'], half_px=g['half_px'], half=half, half_time=(dubai(g['half_t']) if half else None), size=SIZE,
                 status=st, first=(k == 0), exit=g['exit'], exit_time=(dubai(g['exit_t']) if g['exit_t'] is not None else None),
-                pnl=(None if g['pnl_oz'] is None else round(g['pnl_oz'] * g.get('size_x', 1.0), 2)), pnl_oz=g['pnl_oz'], size_x=g.get('size_x', 1.0), rwf=None, next=nxt)
+                pnl=(None if g['pnl_oz'] is None else round(g['pnl_oz'] * g.get('size_x', 1.0), 2)), pnl_oz=g['pnl_oz'], size_x=g.get('size_x', 1.0), rwf=None, next=nxt, late=bool(late))
 def act_rows(acts):
     return [dict(time=dubai(a['t']), kind=a['kind'], side=a['side'], text=a['text']) for a in acts]
+
+# ---------------- fixpack 22 Oct: inputs gate, shown-row freeze, late rows, data checks ----------------
+REQ = ('d1', 'd5', 'vix', 'tnx')                    # required daily inputs: no new gold row while one of these is unknown (9)
+NAMES = dict(d1='dollar 1-day', d5='dollar 5-day', vix='VIX 5-day', tnx='US 10y 5-day', attn='low attention (Wikipedia)', regime='dollar-driven')
+WORDS = dict(d1='dollar_1d', d5='dollar_5d', vix='vix_5d', tnx='tnx_5d', attn='attn_z')
+LATE_MIN = 5                                        # a row first shown more than 5 min after its entry minute = LATE (= autotrade MAX_AGE_MIN)
+SHOWN = os.path.join(HERE, 'docs', 'gold_shown.json')   # rows the desk has shown today: {day: {time|side|tag: frozen row}}
+
+def mm_of(m1): return dict(t=m1.index.values.astype('datetime64[m]'), o=m1.o.values, h=m1.h.values, l=m1.l.values, c=m1.c.values)
+def rkey(t, d, tag): return f"{dubai(t)}|{'BUY' if d > 0 else 'SELL'}|{tag}"     # same parts as autotrade.key_of (time, side, tag)
+
+def load_inputs(day, now, old):
+    """Today's daily inputs. Fetched once; while one is unknown (9: dollar / VIX / US10y / attention) it is re-tried every 30 min,
+    and a value already known is NEVER replaced by a re-try (no flip-flop of known inputs during the day)."""
+    unknown = lambda x: [k for k in REQ + ('attn',) if x.get(k, 9) == 9]
+    if old is not None and not (unknown(old) and now - pd.Timestamp(old.get('fetched', '2000-01-01')) > pd.Timedelta(minutes=30)):
+        return old
+    new = I.daily_inputs(day.date()); new['fetched'] = str(now)
+    if old is not None:
+        for k in REQ + ('attn',):
+            if old.get(k, 9) != 9: new[k] = old[k]; new[WORDS[k]] = old.get(WORDS[k])
+        for k in ('regime', 'corr', 'ready_at', 'waiting_since', 'missing'):
+            if k in old: new[k] = old[k]
+    return new
+
+def fingerprint(res):
+    legs, acts, skipped, _ = res
+    return ([(str(g['t']), g['dir'], g['tag'], g['status'], g['exit']) for g in legs], [(str(x['t']), x['dir']) for x in skipped])
+
+def frozen_leg(s, mm, eod, now, acts):
+    """A row the desk already showed but today's re-run no longer gives (or gives with another entry / stop): kept with its SHOWN
+    entry and stop, closed by its own stop (entry minute after the fill, like desk209), a day lock / reversal in today's actions,
+    or the day-end close."""
+    T = mm['t']; O, H, L, C = (np.asarray(mm[k], float) for k in ('o', 'h', 'l', 'c')); SP = DK.SP
+    d = s['dir']; t0 = np.datetime64(pd.Timestamp(s['t']), 'm'); stop = s['stop']; e64 = np.datetime64(eod, 'm')
+    g = dict(t=t0, dir=d, tag=s['tag'], entry=s['entry'], stop=stop, stop0=s['stop0'], half_px=None, half_t=None, status='open',
+             exit=None, exit_t=None, pnl_oz=None, size_x=s['size_x'], frozen=True)
+    def close(px, t, why): g.update(exit=round(px, 2), exit_t=t, status=why, pnl_oz=round(d * (px - s['entry']), 2))
+    ends = {}
+    for a in acts:
+        if a['kind'] == 'LOCK' or (a['kind'] == 'REVERSE' and (1 if a['side'] == 'BUY' else -1) != d):
+            ends.setdefault(np.datetime64(pd.Timestamp(a['t']), 'm'), (a['price'], 'day lock' if a['kind'] == 'LOCK' else 'reversed'))
+    for j in range(int(np.searchsorted(T, t0, side='left')), len(T)):
+        if T[j] >= e64: break
+        if T[j] == t0:
+            at_open = abs(s.get('p0', np.nan) - O[j]) < 1e-9; up = C[j] >= O[j]
+            hit = ((L[j] if (at_open or not up) else C[j]) <= stop) if d > 0 else ((H[j] if (at_open or up) else C[j]) + SP >= stop)
+            px = stop
+        else:
+            hit = (L[j] <= stop) if d > 0 else (H[j] + SP >= stop); px = min(stop, O[j]) if d > 0 else max(stop, O[j] + SP)
+        if hit: close(px, T[j], 'stop hit'); break
+        if T[j] in ends and ends[T[j]][0] is not None: close(ends[T[j]][0], T[j], ends[T[j]][1]); break
+    if g['exit'] is None and np.datetime64(now, 'm') >= e64 and len(T):
+        k = min(max(int(np.searchsorted(T, e64, side='left')) - 1, 0), len(T) - 1); close(C[k] if d > 0 else C[k] + SP, e64, 'day end')
+    return g
+
+def publish(legs, acts, S, mm, now, eod, open_ok, ready):
+    """desk209 legs -> page/journal rows, so that a row the desk has SHOWN never vanishes and never changes entry / stop / size later
+    in the day (S = today's shown rows, updated here), no NEW row appears while a required input is missing (open_ok False), and a
+    new row is LATE (status 'late', not 'open') when its entry minute is before the inputs became complete (ready) or more than
+    LATE_MIN minutes before now. Also returns the actions that belong to published rows (late OPEN / ADD marked)."""
+    out, used, pub, late_li = [], set(), set(), set()
+    for g in legs:
+        k = rkey(g['t'], g['dir'], g['tag']); s = S.get(k)
+        if s is not None:
+            if abs(s['entry'] - g['entry']) < 0.011 and abs(s['stop0'] - g['stop0']) < 0.011:
+                g['size_x'] = s['size_x']; used.add(k); pub.add(g['li']); out.append((g, s['late']))
+                if s['late']: late_li.add(g['li'])
+            continue                                   # re-run changed a shown row: the shown one is kept (frozen) below
+        if not open_ok: continue                       # inputs missing: no new rows
+        tb = pd.Timestamp(g['t'])
+        late = bool((ready is not None and tb < ready) or now - tb > pd.Timedelta(minutes=LATE_MIN))
+        S[k] = dict(t=str(tb), dir=int(g['dir']), tag=g['tag'], p0=float(g.get('p0', g['entry'])), entry=g['entry'], stop0=g['stop0'],
+                    stop=g['stop'], size_x=g.get('size_x', 1.0), shown_at=str(now), late=late)
+        used.add(k); pub.add(g['li']); out.append((g, late))
+        if late: late_li.add(g['li'])
+    for k, s in S.items():
+        if k not in used: out.append((frozen_leg(s, mm, eod, now, acts), s['late']))
+    out.sort(key=lambda x: pd.Timestamp(x[0]['t']))
+    rows = [row(g, i, late) for i, (g, late) in enumerate(out)]
+    keep = []
+    for a in acts:
+        li = a.get('li')
+        if li is None:
+            if open_ok or (pub and a['kind'] in ('LOCK', 'CLOSE_ALL', 'REVERSE')): keep.append(a)
+        elif li in pub:
+            keep.append(dict(a, text='LATE - do not enter (paper only): ' + a['text']) if (li in late_li and a['kind'] in ('OPEN', 'ADD')) else a)
+    return rows, keep
+
+def feed_problems(feed, m1, h1, day, now):
+    """Partial or stale minute data (weekdays, 1:30-23:58 broker). [] = fine. Flags: first bar late while the hourly feed has
+    earlier bars today / a gap over 3 min in today's bars that is recent (ended < 15 min ago) or comes with a price window the
+    feed refused (400/404 = the old silent drop) / newest closed bar over 2 min old. An older hole with no refused window survived
+    15 re-fetches: that is the broker's own history (gold M1 2025-26: holes > 3 min on 26 of 429 days, mostly ~2 am) - not flagged,
+    else one such hole would block the desk for the whole day."""
+    if now.dayofweek >= 5 or now < day + pd.Timedelta(minutes=90) or now >= day + pd.Timedelta(hours=23, minutes=58): return []
+    hb = h1[(h1.index >= day) & (h1.index <= now)]
+    if not len(m1): return ['no minute bars yet today'] if len(hb) else []        # no hourly bars either: market shut (holiday)
+    p = []; first = m1.index[0]; dropped = list(getattr(feed, 'dropped', None) or [])
+    if first > day + pd.Timedelta(minutes=90) and len(hb) and hb.index[0] < first.floor('h'):
+        p.append(f"first minute bar only at {first:%H:%M} broker")
+    ix = m1.index.to_series(); dif = ix.diff()
+    for t, gp in dif[dif > pd.Timedelta(minutes=3)].items():
+        if dropped or now - t < pd.Timedelta(minutes=15):
+            p.append(f"{int(gp.total_seconds() // 60)} min gap in minute bars before {t:%H:%M} broker")
+    age = now - (m1.index[-1] + pd.Timedelta(minutes=1))
+    if age > pd.Timedelta(minutes=2): p.append(f"newest closed minute bar is {age.total_seconds() / 60:.0f} min old")
+    if p and dropped: p.append(f"{len(dropped)} price window(s) refused by the feed")
+    return p
+
+def data_problem(now, probs):
+    """Keep the last good gold card, flag feed_error (the auto-trader then changes nothing) and say why. No re-run, no journal write."""
+    old = loadj(PORTAL, {}); g = (old.get('markets') or {}).get('GOLD')
+    print('GOLD data problem:', probs)
+    if g is not None:
+        g['message'] = (f"Price data incomplete at {dubai(now)} Dubai ({'; '.join(probs)}) - the page shows the last good update; "
+                        f"it retries every minute."); g['feed_error'] = True
+        dumpj(old, PORTAL, indent=1)
 
 def compute(h1, m1, day, now, inp):
     """The EA's trades for broker day `day` as of `now` (same steps for today and for a missed day)."""
@@ -152,12 +278,19 @@ def finish_missed_days(feed, h1, now):
             m1 = feed.m1_today(day); m1 = m1[m1.index < day + pd.Timedelta(days=1)]
             if not len(m1) or m1.index.max() < day + pd.Timedelta(hours=22):          # minutes do not reach the day end: try later
                 print('missed day', d['date'], 'not caught up: minute bars end', (m1.index.max() if len(m1) else None)); continue
+            probs = feed_problems(feed, m1, h1, day, min(m1.index.max() + pd.Timedelta(minutes=1), day + pd.Timedelta(hours=23, minutes=57)))
+            if probs: print('missed day', d['date'], 'not caught up: minute data incomplete', probs); continue   # final = never rewritten
             if inp.get('regime') is None:
                 reg, corr = regime_today(feed, h1, day, day + pd.Timedelta(hours=23))
                 if reg is not None: inp.update(regime=reg, corr=corr)
             was_open = any(t.get('status') in ('open', 'close_now') for t in d.get('trades', []))
-            legs, acts, skipped, _ = compute(h1, m1, day, day + pd.Timedelta(hours=23, minutes=59), inp)
-            rows = [row(g, k) for k, g in enumerate(legs)]
+            end = day + pd.Timedelta(hours=23, minutes=59)
+            legs, acts, skipped, _ = compute(h1, m1, day, end, inp)
+            SH = loadj(SHOWN, {})
+            if d['date'] in SH:                          # rows the desk showed live stay as shown; rows it never showed are LATE
+                rows, _ = publish(legs, acts, dict(SH[d['date']]), mm_of(m1), end, eod_of(day), True,
+                                  pd.Timestamp(inp['ready_at']) if inp.get('ready_at') else None)
+            else: rows = [row(g, k) for k, g in enumerate(legs)]
         except Exception as e:
             print('missed day', d['date'], 'not caught up:', type(e).__name__, e); continue
         d.update(side=(rows[0]['side'] if rows else None), trades=rows, skipped=len(skipped), final=True, caught_up=str(now))
@@ -203,21 +336,34 @@ def main():
     h1 = feed.h1(days=460)
     try: finish_missed_days(feed, h1, now)
     except Exception as e: print('catch-up skipped:', type(e).__name__, e)
-    m1 = feed.m1_today(day); m1 = m1[m1.index + pd.Timedelta(minutes=1) <= now]          # closed minute bars only
-    # daily outside values (cached per broker day; retried every 30 minutes if something was missing)
-    cache = loadj(INPUTS, {}); key = str(day.date()); inp = cache.get(key)
-    retry = inp is not None and any(inp.get(k) == 9 for k in ('d1', 'd5', 'vix', 'tnx')) and \
-        (now - pd.Timestamp(inp.get('fetched', '2000-01-01'))) > pd.Timedelta(minutes=30)
-    if inp is None or retry:
-        inp = I.daily_inputs(day.date()); inp['fetched'] = str(now)
+    closed = lambda d: d[d.index + pd.Timedelta(minutes=1) <= now]                      # closed minute bars only
+    m1 = closed(feed.m1_today(day))
+    probs = feed_problems(feed, m1, h1, day, now)
+    if probs:                                            # fixpack 22 Oct: one immediate re-fetch, then flag feed_error (no silent re-run)
+        m1 = closed(feed.m1_today(day)); probs = feed_problems(feed, m1, h1, day, now)
+    if probs and not test: data_problem(now, probs); return
+    # daily outside values (cached per broker day; a missing one re-tried every 30 minutes; known values never replaced)
+    cache = loadj(INPUTS, {}); key = str(day.date()); inp = load_inputs(day, now, cache.get(key))
+    reg_err = False
     if inp.get('regime') is None:
-        reg, corr = regime_today(feed, h1, day, now)
+        reg, corr, reg_err = regime_today(feed, h1, day, now, with_err=True)
         if reg is not None: inp.update(regime=reg, corr=corr)
+    reg = inp.get('regime')
+    res = compute(h1, m1, day, now, inp); taken, acts, skipped, D = res          # taken = desk209 legs
+    # fixpack 22 Oct INPUTS GATE: no new gold row while a required input is unknown. Attention / dollar-driven (when their fetch
+    # failed) only hold the desk when the other value would change today's trades so far.
+    missing = [NAMES[k] for k in REQ if inp.get(k, 9) == 9]
+    for k, unknown in (('attn', inp.get('attn') == 9), ('regime', reg_err)):
+        if unknown and fingerprint(compute(h1, m1, day, now, dict(inp, **{k: 1}))) != fingerprint(res): missing.append(NAMES[k])
+    if missing: inp.setdefault('waiting_since', str(now)); inp['missing'] = missing
+    elif inp.get('waiting_since'):                       # inputs complete again: rows before this moment can only be LATE
+        inp['ready_at'] = str(now); inp.pop('waiting_since'); inp.pop('missing', None)
     cache = {k: v for k, v in cache.items() if k >= str((day - pd.Timedelta(days=10)).date())}; cache[key] = inp
     dumpj(cache, INPUTS, indent=1)
-    reg = inp.get('regime')
-    taken, acts, skipped, D = compute(h1, m1, day, now, inp)      # taken = v2.10 trades (desk209 legs)
     eod = eod_of(day)                                   # day-end close (22:50 broker on Fridays and in US winter time)
+    SH = loadj(SHOWN, {}); S = SH.get(key, {})
+    rows, acts = publish(taken, acts, S, mm_of(m1), now, eod, not missing, pd.Timestamp(inp['ready_at']) if inp.get('ready_at') else None)
+    SH = {k: v for k, v in SH.items() if k >= str((day - pd.Timedelta(days=5)).date())}; SH[key] = S; dumpj(SH, SHOWN, indent=0)
     # ---- actions: shown on the page only; a NEW action is recorded in sent.json so loop.py pushes the page at once
     state = loadj(STATE, {}); sent = set(state.get(key, []))
     for a in acts:
@@ -232,18 +378,19 @@ def main():
              f"dollar-driven corr {inp.get('corr')} | input notes {inp.get('notes')}")
     state = {k2: v for k2, v in state.items() if k2 >= str((day - pd.Timedelta(days=5)).date())}; state[key] = sorted(sent)
     dumpj(state, STATE, indent=0)
-    write_pages(now, day, m1, taken, skipped, inp, reg, src, eod, D.atr(0), acts)
-    print(f'{now} broker | {src} | trades today {len(taken)} | skipped {len(skipped)} | inputs {inp}')
+    write_pages(now, day, m1, rows, skipped, inp, reg, src, eod, D.atr(0), acts, missing)
+    print(f'{now} broker | {src} | trades today {len(rows)} | skipped {len(skipped)} | missing {missing} | inputs {inp}')
 
-def write_pages(now, day, m1, taken, skipped, inp, reg, src, eod, datr, acts=()):
-    rows = [row(g, k) for k, g in enumerate(taken)]
+def write_pages(now, day, m1, rows, skipped, inp, reg, src, eod, datr, acts=(), missing=()):
+    """rows = published rows (run.publish: frozen once shown, LATE when shown too late, none while inputs are missing)."""
     if now >= eod: rows = [dict(r, status='close_now') if r['status'] == 'open' else r for r in rows]
     # page only: after the close, trades the desk booked at the day-end price are still open in his account until he closes them
     page_rows = [dict(r, status='close_now') if (now >= eod and r['status'] == 'eod') else r for r in rows]
-    # ---- journal (one record per broker day, replaced on every run of that day)
+    # ---- journal (one record per broker day, replaced on every run of that day UNTIL it is final - fixpack 22 Oct: a final day is never overwritten)
     J = loadj(JOURNAL, dict(start=str(day.date()), days=[]))
-    days = [d for d in J['days'] if d['date'] != str(day.date())]
-    if now.dayofweek < 5:
+    was_final = any(d['date'] == str(day.date()) and d.get('final') for d in J['days'])
+    days = J['days'] if was_final else [d for d in J['days'] if d['date'] != str(day.date())]
+    if now.dayofweek < 5 and not was_final:
         days.append(dict(date=str(day.date()), label=day.strftime('%a %d %b'), side=(rows[0]['side'] if rows else None),
                          trades=rows, skipped=len(skipped), final=bool(now >= eod)))
     J['days'] = sorted(days, key=lambda d: d['date'])
@@ -253,16 +400,20 @@ def write_pages(now, day, m1, taken, skipped, inp, reg, src, eod, datr, acts=())
     old = loadj(PORTAL, {}); others = {k: v for k, v in (old.get('markets') or {}).items() if k != 'GOLD'}
     V211 = np.datetime64(day.date(), 'D') >= DK.V211_FROM               # v2.11 rules (no half-close) from the switch day
     V215 = np.datetime64(day.date(), 'D') >= DK.V215_FROM               # v2.15 rules from their switch day
-    last_sig = now >= day + pd.Timedelta(hours=19)
+    last_sig = now >= day + pd.Timedelta(hours=E.S['Signal_Last_Hour'])
+    sig_end = dubai(day + pd.Timedelta(hours=E.S['Signal_Last_Hour']))          # 8:00 pm Dubai in US summer time, 9:00 pm in US winter
+    wait = (f" Inputs missing - waiting ({', '.join(missing)} not loaded yet, re-tried every 30 min): no NEW gold trade until they "
+            f"load; signals before then will show as LATE (do not enter).") if missing else ''
     if now.dayofweek >= 5: state, msg = 'closed', 'Market closed for the weekend'
+    elif missing and not rows and not last_sig: state, msg = 'waiting', wait.strip()
     elif rows:
         side = rows[0]['side']; state = side.lower()
         msg = (f"{side} day — up to 2 {side} trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at {dubai(eod)} Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R." if V215 else
                f"{side} day — up to 2 {side} trades. Each runs to its stop or the day-end close at {dubai(eod)} Dubai (no half-close)." if V211 else
-               f"{side} day — up to 2 {side} trades. Close HALF at the ½ level, then move the stop to entry; the rest runs to its stop or the day-end close at {dubai(eod)} Dubai.")
+               f"{side} day — up to 2 {side} trades. Close HALF at the ½ level, then move the stop to entry; the rest runs to its stop or the day-end close at {dubai(eod)} Dubai.") + wait
     elif skipped and not last_sig: state, msg = 'blocked', 'The first signal was skipped by the dollar filter — watching for the next one.'
-    elif last_sig: state, msg = 'none', 'No trade today — no signal (new signals stop at 8 pm Dubai).'
-    else: state, msg = 'waiting', 'Waiting for the first signal (signals can come until 8 pm Dubai).'
+    elif last_sig: state, msg = 'none', f'No trade today — no signal (new signals stop at {sig_end} Dubai).' + wait
+    else: state, msg = 'waiting', f'Waiting for the first signal (signals can come until {sig_end} Dubai).'
     spark = []
     if len(m1):
         g5 = m1[['o', 'h', 'l', 'c']].resample('5min').agg({'o': 'first', 'h': 'max', 'l': 'min', 'c': 'last'}).dropna()   # 5-min candles for the page: [time, close, open, high, low]
@@ -280,7 +431,7 @@ def write_pages(now, day, m1, taken, skipped, inp, reg, src, eod, datr, acts=())
                 change=(None if last is None or first is None else round(last - first, 2)), size=SIZE, datr=round(datr, 2),
                 open_now=sum(r['status'] in ('open', 'close_now') for r in page_rows), entries=page_rows, spark=spark, history=hist,
                 inputs=dict(dollar_1d=inp.get('dollar_1d'), dollar_5d=inp.get('dollar_5d'), vix_5d=inp.get('vix_5d'), tnx_5d=inp.get('tnx_5d'),
-                            dollar_driven=(None if reg is None else bool(reg)), corr=inp.get('corr'), low_attention=bool(inp.get('attn', 0)),
+                            dollar_driven=(None if reg is None else bool(reg)), corr=inp.get('corr'), low_attention=(None if inp.get('attn') == 9 else bool(inp.get('attn', 0))), missing=list(missing),
                             notes=inp.get('notes', [])),
                 stats=(BACKTEST if V215 else BACKTEST_V211 if V211 else BACKTEST_V210), journal=J['summary'])
     data = dict(updated=F.broker_to_dubai(now).strftime('%a %d %b · %-I:%M %p').replace('AM', 'am').replace('PM', 'pm'),

@@ -81,10 +81,11 @@ def nasdaq_events(b, picks):
             E.append((p, int(s), 'Nasdaq signal copied'))
     return E
 
-def legs_of_day(b, A, pH, pL, picks, day):
-    """The day's ladder: list of dict(j, dir, src, name, leg)."""
+def legs_of_day(b, A, pH, pL, picks, day, day_done=True):
+    """The day's ladder: list of dict(j, dir, src, name, leg). day_done=False (live, 22 Oct fix): until a bar at/after the close time
+    exists, the latest closed bar is not the day-end bar (a signal on it is no longer held back a minute). Full days: unchanged."""
     hm = (b.index.hour * 60 + b.index.minute).values; n = len(b)
-    eodm = eod_minutes(day); eod_i = _first_bar(hm, eodm); eod_i = n - 1 if eod_i < 0 else eod_i
+    eodm = eod_minutes(day); eod_i = _first_bar(hm, eodm); eod_i = (n - 1 if day_done else n) if eod_i < 0 else eod_i
     ev = [(j, s, 1, nm) for j, s, nm in book_events(b, A, pH, pL)] + [(j, s, 0, nm) for j, s, nm in nasdaq_events(b, picks)]
     ev.sort(key=lambda x: (x[0], x[1], x[2]))
     out = []; side = 0
@@ -99,7 +100,7 @@ def manage(b, legs, A, day, sp=COST, now_done=True):
     O, H, L, C = (b[c].values.astype(float) for c in 'ohlc'); hm = (b.index.hour * 60 + b.index.minute).values; n = len(O)
     eodm = eod_minutes(day); out = []
     for g in legs:
-        j, s = g['j'], g['dir']; en = O[j]; sd = SM * A; stp = en - s * sd; st = 'open'; ex = None; ext = None
+        j, s = g['j'], g['dir']; en = float(g.get('entry', O[j])); sd = float(g.get('sd', SM * A)); stp = en - s * sd; st = 'open'; ex = None; ext = None   # frozen legs keep entry/stop
         for m in range(j, n):
             if m > j and hm[m] >= X_MIN: st, ex, ext = 'eod', O[m], m; break
             if hm[m] >= eodm and m > j: st, ex, ext = 'eod', O[m], m; break
@@ -107,7 +108,7 @@ def manage(b, legs, A, day, sp=COST, now_done=True):
             if s < 0 and H[m] >= stp: st, ex, ext = 'stopped', stp, m; break
         if st == 'open' and now_done and n: st, ex, ext = 'eod', C[n - 1], n - 1
         pts = None if ex is None else s * (ex - en) - sp
-        out.append(dict(g, t=b.index[j], entry=float(en), stop=float(stp), stop0=float(stp), sd=float(sd), A=float(A), status=st,
+        out.append(dict(g, t=g.get('t', b.index[j]), entry=float(en), stop=float(stp), stop0=float(stp), sd=float(sd), A=float(g.get('A', A)), status=st,
                         exit=None if ex is None else float(ex), exit_t=None if ext is None else b.index[ext], pts=pts,
                         r=None if pts is None else pts / sd, r_now=(s * (C[n - 1] - en) - sp) / sd if n else None))
     return out
@@ -116,5 +117,5 @@ def run_day(hist, today, day, picks, sp=COST, day_over=False):
     """hist: bars before `day` (>= 15 days); today: today's CLOSED bars; picks: Nasdaq desk picks of `day`. Returns managed legs."""
     A, pH, pL = day_ctx(hist, day)
     if not np.isfinite(A) or not len(today): return []
-    legs = legs_of_day(today, A, pH, pL, picks, day)
+    legs = legs_of_day(today, A, pH, pL, picks, day, day_done=day_over)
     return manage(today, legs, A, day, sp, now_done=day_over)
