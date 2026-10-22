@@ -304,8 +304,10 @@ async function pullLive(){try{
  if(WORKER_URL){const j=await (await fetch(WORKER_URL,{cache:'no-store'})).json();MK.forEach(m=>{const q=j.prices&&j.prices[m.ep];if(q&&q.mid!=null)LIVE[m.c]={p:q.mid,t:Date.now(),src:'Capital.com'}})}
  else{const j=await (await fetch('https://api.gold-api.com/price/XAU',{cache:'no-store'})).json();if(j.price)LIVE.GOLD={p:j.price,t:Date.now(),src:'gold-api.com'}}
  render();applySel()}catch(e){}}
+/* size weight like weight() in autotrade.py: '1/3' (OIL), 'third' (US100, USDJPY) = one third, a number = itself, else full */
+const szW=s=>typeof s==='number'?s:['third','1/3','⅓'].includes(String(s??'').toLowerCase())?1/3:1;
 function calc(o){const {m,x,e}=o,s=e.side==='BUY'?1:-1,px=done(e)?(e.exit??+x.price):nowPx(m,x),sd=Math.abs(e.price-(e.stop0??e.stop))||1,run=s*(px-e.price),pq=e.part??0.5,mv=e.half?pq*s*(e.half_px-e.price)+(1-pq)*run:run;
- const k=m.c==='SILVER'?(+e.size||1):m.c==='GOLD'?(+e.size_x||1):1;return {px,mv,R:mv/sd,pl:k*usd(m,mv,px),risk:k*usd(m,sd,px)}}
+ const k=m.c==='SILVER'?(+e.size||1):m.c==='GOLD'?(+e.size_x||1):szW(e.size);return {px,mv,R:mv/sd,pl:k*usd(m,mv,px),risk:k*usd(m,sd,px)}}
 const dirOf=x=>{const s=(x?.state||'').toUpperCase();return s.includes('BUY')?'BUY':s.includes('SELL')?'SELL':'NONE'};
 /* sessions in each city's own clock, shown in Dubai time */
 const SES=[{n:'Sydney',tz:'Australia/Sydney',o:7,c:16},{n:'Tokyo',tz:'Asia/Tokyo',o:9,c:18},{n:'London',tz:'Europe/London',o:8,c:17},{n:'New York',tz:'America/New_York',o:8,c:17}];
@@ -523,7 +525,7 @@ const HMK=[
   tag:t=>(t.name||'')+(t.size>1?' · size '+t.size:''),info:t=>`in ${f(t.price,3)} · stop ${f(t.stop0??t.stop,3)} · ½ at ${f(t.half_px,3)}${t.half?' ✓':''}${t.exit!=null?` · out ${f(t.exit,3)}`:''}`}];
 let HJ={},HC=null,HV='today',HM=null,HALL=false;
 const bkey=()=>{const n=new Date(new Date().toLocaleString('en-US',{timeZone:'America/New_York'}));n.setHours(n.getHours()+7);return n.getFullYear()+'-'+String(n.getMonth()+1).padStart(2,'0')+'-'+String(n.getDate()).padStart(2,'0')};
-const HST={stopped:'stop hit',be:'part banked, rest out at entry',trail:'part banked, rest out on the trailing stop',eod:'closed at day end',close_now:'close now (day end)',reversed:'reversed',target:'target hit (whole trade)',open:'open'};
+const HST={late:'signal came late - not taken',stopped:'stop hit',be:'part banked, rest out at entry',trail:'part banked, rest out on the trailing stop',eod:'closed at day end',close_now:'close now (day end)',reversed:'reversed',target:'target hit (whole trade)',open:'open'};
 const hmk=()=>HMK.find(m=>m.c===SEL);
 const tU=(m,t)=>{const v=m.usd(t);return v==null||isNaN(v)?null:v};
 function dPnl(m,d){const p=d.trades.map(t=>tU(m,t)).filter(v=>v!=null);return p.length?p.reduce((a,v)=>a+v,0):null}
