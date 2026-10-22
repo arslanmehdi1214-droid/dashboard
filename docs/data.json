@@ -1,5 +1,5 @@
 {
- "updated": "Thu 22 Oct \u00b7 7:18 pm",
+ "updated": "Thu 22 Oct \u00b7 7:19 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -74,9 +74,9 @@
    "feed_error": false,
    "state": "sell",
    "message": "SELL day \u2014 up to 2 SELL trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:00 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 4057.31,
+   "price": 4058.73,
    "close_at": "12:00 am",
-   "change": -84.58,
+   "change": -83.16,
    "size": 0.1,
    "datr": 66.97,
    "open_now": 0,
@@ -1578,9 +1578,9 @@
     ],
     [
      "7:15 pm",
-     4057.31,
+     4058.73,
      4054.85,
-     4058.64,
+     4060.79,
      4053.7
     ]
    ],
@@ -1814,8 +1814,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 55.24,
-   "change": -2.65,
+   "price": 55.273,
+   "change": -2.617,
    "entries": [],
    "spark": [
     [
@@ -3269,9 +3269,9 @@
     ],
     [
      "7:15 pm",
-     55.24,
+     55.273,
      55.126,
-     55.249,
+     55.315,
      55.1
     ]
    ],
@@ -3358,8 +3358,8 @@
    "net_label": "Net R / $ at $100 risk (v1.03 sizes)",
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Each trade closes half at its \u00bd level, then the rest's stop moves to the entry; everything closes at the 7:00 pm Dubai close.",
-   "price": 157.136,
-   "change_pips": -95.2,
+   "price": 157.157,
+   "change_pips": -93.1,
    "atr_pips": 76.6,
    "entries": [
     {
@@ -4924,9 +4924,9 @@
     ],
     [
      "7:15 pm",
-     157.136,
+     157.157,
      157.114,
-     157.147,
+     157.159,
      157.107
     ]
    ],
@@ -5722,8 +5722,8 @@
    "net_label": "Net $ per barrel (v1.05)",
    "state": "buy",
    "message": "PAPER BUY day \u2014 later signals today are BUY only. Close 25% at the part level, then move the stop to entry; everything closes at 9:00 pm Dubai. No new trades after 5:30 pm (one late first trade allowed).",
-   "price": 97.733,
-   "change": 0.29,
+   "price": 97.823,
+   "change": 0.38,
    "entries": [
     {
      "time": "11:44 am",
@@ -7200,7 +7200,7 @@
     ],
     [
      "7:15 pm",
-     97.73,
+     97.82,
      98.19,
      98.27,
      97.66
@@ -7748,8 +7748,8 @@
    "net_label": "Net points (v1.00 rules)",
    "state": "buy",
    "message": "PAPER BUY day: 1 trade today (1 running). Only BUY signals count today (max 3). Each trade keeps its stop, no half-close; everything closes at 11:30 pm Dubai (3:30 pm New York). (1 late Nasdaq pick(s) ignored.)",
-   "price": 7660.5,
-   "change": -95.8,
+   "price": 7659.8,
+   "change": -96.5,
    "entries": [
     {
      "time": "5:40 pm",
@@ -7772,7 +7772,7 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": -38.5,
+     "live": -39.2,
      "spread": 0.8
     }
    ],
@@ -9305,9 +9305,9 @@
     ],
     [
      "7:15 pm",
-     7660.5,
+     7659.8,
      7651.8,
-     7660.8,
+     7662.3,
      7650.8
     ]
    ],
@@ -9367,7 +9367,7 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": -38.5,
+       "live": -39.2,
        "spread": 0.8
       }
      ],
@@ -9410,8 +9410,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "sell",
    "message": "1 paper trade today (1 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 12:00 am Dubai close. At most 2 trades a day.",
-   "price": 29115.8,
-   "change": -686.8,
+   "price": 29113.2,
+   "change": -689.4,
    "entries": [
     {
      "time": "12:03 pm",
@@ -9436,7 +9436,7 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": 49.4,
+     "live": 50.1,
      "rwf": 1,
      "spread": 1.8,
      "spread_live": 1.8
@@ -10971,9 +10971,9 @@
     ],
     [
      "7:15 pm",
-     29115.8,
+     29113.2,
      29063.1,
-     29118.1,
+     29128.2,
      29057.2
     ]
    ],
@@ -11022,7 +11022,7 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": 49.4,
+       "live": 50.1,
        "rwf": 1,
        "spread": 1.8,
        "spread_live": 1.8
