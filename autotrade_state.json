@@ -1,5 +1,5 @@
 {
- "open_positions": 5,
+ "open_positions": 4,
  "risk_usd": 13.614703880190607,
  "trades": {
   "GOLD|2026-10-20|1:06 pm|BUY|FILL range fade": {
@@ -355,9 +355,10 @@
     "tp": 157.637
    },
    "rest": {
+    "closed_by": "Capital.com stop/target",
     "id": "00000000-6d19-def5-0495-7fc60004511e",
     "level": 157.711,
-    "open": true,
+    "open": false,
     "size": 1800.0,
     "tp": null
    },
