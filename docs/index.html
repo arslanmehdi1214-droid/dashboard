@@ -187,7 +187,7 @@ td{padding:9px 4px;border-bottom:1px solid var(--line)}td.r{text-align:right}
 @media(max-width:860px){.row{grid-template-columns:auto 1fr auto;gap:8px 10px}.row .nb,.row .mini{display:none}.row .btn{display:none}}
 .st .tm b.at{color:var(--mute);font-size:17px}.st .tm b.soon{color:var(--amber)}
 .nchips{display:inline-flex;gap:4px;margin-left:6px;vertical-align:1px}.nc{font:700 9.5px Inter;font-style:normal;letter-spacing:.6px;padding:1px 6px;border-radius:4px}
-.nc.Gold{background:rgba(226,194,122,.18);color:var(--gold)}.nc.Oil{background:rgba(143,160,255,.18);color:#a9b6ff}.nc.USDJPY{background:rgba(255,197,107,.15);color:var(--amber)}.nc.Nasdaq{background:rgba(155,231,196,.14);color:var(--live)}.nc.Silver{background:rgba(200,206,214,.16);color:#d5dbe3}
+.nc.Gold{background:rgba(226,194,122,.18);color:var(--gold)}.nc.Oil{background:rgba(143,160,255,.18);color:#a9b6ff}.nc.USDJPY{background:rgba(255,197,107,.15);color:var(--amber)}.nc.Nasdaq{background:rgba(155,231,196,.14);color:var(--live)}.nc.SP{background:rgba(120,200,255,.14);color:#8fd0ff}.nc.Silver{background:rgba(200,206,214,.16);color:#d5dbe3}
 .oh{display:flex;align-items:center;gap:12px;margin-bottom:12px}.oh h3{margin:0}
 .sty{margin-left:auto;display:flex;gap:6px;align-items:center;font:500 11.5px Inter;color:var(--dim)}
 .sty button{background:var(--panel);border:1px solid var(--line);color:var(--mute);border-radius:7px;padding:4px 9px;font:600 11.5px Inter;cursor:pointer}.sty button.on{border-color:var(--gold);color:var(--ink)}
@@ -248,7 +248,7 @@ td{padding:9px 4px;border-bottom:1px solid var(--line)}td.r{text-align:right}
   <div class="hist" id="histbox"></div>
  </section>
  <aside class="rail rr pane p-nw">
-  <h3>Events · our 5 markets</h3><div id="cal"></div>
+  <h3>Events · our markets</h3><div id="cal"></div>
   <h3 style="margin-top:22px">News <span class="lv2" id="nstat"></span></h3><div id="news"></div>
   <div class="src" id="src_note">News: Walter Bloomberg + FinancialJuice (Telegram, live) · checked every 10 seconds</div>
  </aside>
@@ -262,6 +262,7 @@ const MK=[{c:'GOLD',ep:'GOLD',n:'Gold',tag:'Gold',tv:'CAPITALCOM:XAUUSD',dp:2,lo
  {c:'USDJPY',ep:'USDJPY',n:'USD/JPY',tag:'USD/JPY',tv:'CAPITALCOM:USDJPY',dp:3,lot:1000,lotL:'$1,000'},
  {c:'OIL',ep:'OIL_CRUDE',n:'Oil',tag:'Oil',tv:'CAPITALCOM:USOIL',dp:2,lot:10,lotL:'10 bbl'},
  {c:'US100',ep:'US100',n:'Nasdaq 100',tag:'Nasdaq',tv:'CAPITALCOM:US100',dp:1,lot:0.1,lotL:'$0.10/pt'},
+ {c:'US500',ep:'US500',n:'S&P 500',tag:'S&P',tv:'CAPITALCOM:US500',dp:1,lot:0.1,lotL:'$0.10/pt'},
  {c:'SILVER',ep:'SILVER',n:'Silver',tag:'Silver',tv:'CAPITALCOM:SILVER',dp:3,lot:50,lotL:'50 oz'}];
 const CAP=25000,AED=3.6725,TZ={timeZone:'Asia/Dubai'};
 const t12=d=>d.toLocaleTimeString('en-US',{...TZ,hour:'numeric',minute:'2-digit'}).toLowerCase();
@@ -276,7 +277,7 @@ const hm=ms=>{const m=Math.max(0,Math.floor(ms/6e4));return m<60?m+'m':Math.floo
 /* calendar: our markets only, same-time releases grouped */
 const OILW=/crude|oil|opec|eia|petroleum|natural gas/i;
 function hits(e){const m=new Set(),c=e.country,t=e.title||'';if(/natural gas/i.test(t))return [];if(/crude|oil|opec|petroleum/i.test(t))return ['Oil'];
- if(c==='USD'){['Gold','Silver','USD/JPY','Nasdaq'].forEach(x=>m.add(x));if(OILW.test(t)||/CPI|Non-Farm|FOMC|Federal Funds|Fed Chair|PPI|Retail Sales|GDP/i.test(t))m.add('Oil')}
+ if(c==='USD'){['Gold','Silver','USD/JPY','Nasdaq','S&P'].forEach(x=>m.add(x));if(OILW.test(t)||/CPI|Non-Farm|FOMC|Federal Funds|Fed Chair|PPI|Retail Sales|GDP/i.test(t))m.add('Oil')}
  if(c==='JPY')m.add('USD/JPY');if(c==='CNY'){m.add('Gold');m.add('Silver');m.add('Oil')}if(OILW.test(t))m.add('Oil');return [...m]}
 const G=[],T=[],OPENEV=new Set();
 function buildG(){G.length=0;CAL.filter(e=>e.impact==='High'||e.impact==='Medium'||(e.impact==='Low'&&OILW.test(e.title||''))||(e.country==='USD'&&OILW.test(e.title||''))).forEach(e=>{const mk=hits(e);if(!mk.length)return;
@@ -436,7 +437,7 @@ function render(){
   const det=`<div class="evd">${g.items.map(i=>`<div><svg viewBox="0 0 15 12" class="fold ${i.impact}"><path d="M0 1.5A1.5 1.5 0 0 1 1.5 0H5l1.6 1.8h6.9A1.5 1.5 0 0 1 15 3.3v7.2a1.5 1.5 0 0 1-1.5 1.5h-12A1.5 1.5 0 0 1 0 10.5z"/></svg><b>${i.title}</b> <span class="dim">${i.impact} impact · forecast ${i.forecast||'—'} · previous ${i.previous||'—'}</span></div>`).join('')}<div class="dim">${t12(g.t)} Dubai · ${dday(g.t)} · moves: ${g.mk.join(', ')}</div><a href="${ffu}" target="_blank" rel="noopener">Open on Forex Factory ↗</a></div>`;
   return hd+`<div class="ev ${OPENEV.has(g.date+g.country)?'open':''}" data-mk="${g.mk.join('|')}" data-k="${g.date+g.country}" onclick="if(!event.target.closest('a')){this.classList.toggle('open');OPENEV[this.classList.contains('open')?'add':'delete'](this.dataset.k)}"><div class="t">${t12(g.t)}${m<864e5?`<span class="cd" data-cd="${+g.t}">in ${hms(m)}</span>`:''}</div>
    <div><div class="h"><svg viewBox="0 0 15 12" class="fold ${g.impact}"><path d="M0 1.5A1.5 1.5 0 0 1 1.5 0H5l1.6 1.8h6.9A1.5 1.5 0 0 1 15 3.3v7.2a1.5 1.5 0 0 1-1.5 1.5h-12A1.5 1.5 0 0 1 0 10.5z"/></svg>${g.country} ${l.title}${g.items.length>1?` <span class="dim">+${g.items.length-1}</span>`:''}</div>
-   <div class="x"><span class="nchips" style="margin-left:0">${g.mk.map(x=>`<em class="nc ${x.replace('/','')}">${x}</em>`).join('')}</span>${fc}</div>${evOut(g)}${det}</div></div>`}).join('')||'<div class="dim">No more big events this week</div>';
+   <div class="x"><span class="nchips" style="margin-left:0">${g.mk.map(x=>`<em class="nc ${x.replace(/[^A-Za-z]/g,'')}">${x}</em>`).join('')}</span>${fc}</div>${evOut(g)}${det}</div></div>`}).join('')||'<div class="dim">No more big events this week</div>';
 }
 function tvw(el,kind,cfg){const w=document.createElement('div');w.className='tradingview-widget-container';
  const i=document.createElement('div');i.className='tradingview-widget-container__widget';w.appendChild(i);
@@ -450,7 +451,7 @@ const JUNK=/^[‘'"“]|\b(I|my|me)\b.*\?|\bretire|\bmortgage|\bwedding|\bmy (wi
 const NJ=/\b(yen|BOJ|Bank of Japan|Japan|Japanese|Ueda|Takaichi|dollar|Fed|FOMC|Powell|Warsh|rates?|rate cuts?|CPI|inflation|PPI|jobs report|payrolls?|Treasury|Treasuries|yields?|tariffs?)\b/i;
 const NQ=/\b(Nasdaq|stocks?|equities|S&P|tech|chips?|semiconductors?|AI|Nvidia|Apple|Microsoft|Alphabet|Amazon|Meta|Tesla|TSMC|earnings|Fed|FOMC|Powell|Warsh|rates?|rate cuts?|CPI|inflation|yields?|tariffs?)\b/i;
 const NS=/\b(silver|precious metals?|bullion|gold|solar|industrial metals?|Fed|FOMC|Powell|Warsh|rate cuts?|CPI|inflation|PPI|payrolls?|dollar|yields?|tariffs?|China)\b/i;
-const mkOf=t=>JUNK.test(t)?[]:[NG.test(t)?'Gold':null,NS.test(t)?'Silver':null,NJ.test(t)?'USD/JPY':null,NO.test(t)?'Oil':null,NQ.test(t)?'Nasdaq':null].filter(Boolean);
+const mkOf=t=>JUNK.test(t)?[]:[NG.test(t)?'Gold':null,NS.test(t)?'Silver':null,NJ.test(t)?'USD/JPY':null,NO.test(t)?'Oil':null,NQ.test(t)?'Nasdaq':null,NQ.test(t)?'S&P':null].filter(Boolean);
 const HOT={test:t=>mkOf(t).length>0};
 /* NEWS ENGINE (19 Oct 2026). Fastest free source = Telegram channels Walter Bloomberg + FinancialJuice through our Worker (/news, ~8 s fresh),
    checked every 10 s; MarketWatch stays as the fallback. Each headline: folder (impact), markets it moves, expected direction with its
@@ -467,7 +468,7 @@ const RWHY={inf:['Hotter inflation than forecast → Fed stays tight, dollar and
  grow:['Stronger US data than forecast → dollar and yields up','Weaker US data than forecast → dollar and yields down'],
  claims:['More jobless claims than forecast → weaker jobs market, dollar down','Fewer jobless claims than forecast → firmer jobs market, dollar up']};
 const rKind=ev=>/CPI|PPI|Earnings/.test(ev)?'inf':/Claims/.test(ev)?'claims':'grow';
-const NMK={'Gold':'Gold','Silver':'Silver','USD/JPY':'USD/JPY','Oil':'Oil','Nasdaq':'Nasdaq'};
+const NMK={'Gold':'Gold','Silver':'Silver','USD/JPY':'USD/JPY','Oil':'Oil','Nasdaq':'Nasdaq','S&P':'S&P'};
 const numv=x=>{const m=/^(-?[\d.,]+)\s*([KMBT%]?)/i.exec((x||'').trim());if(!m)return null;return parseFloat(m[1].replace(/,/g,''))*({K:1e3,M:1e6,B:1e9,T:1e12}[m[2].toUpperCase()]||1)};
 function classify(text){const U=text.toUpperCase(),out={imp:null,why:'',mk:[],kind:''},bang=/\u2757/.test(text);  // ❗ = FinancialJuice 'important' (moves ~1.4x larger, Apr-Sep 2026)
  if(/\bACTUAL\b/.test(U)){
@@ -481,7 +482,7 @@ function classify(text){const U=text.toUpperCase(),out={imp:null,why:'',mk:[],ki
  const mk=mkOf(text);if(mk.length||bang){out.imp=bang?'High':'Low';out.mk=mk.map(x=>({mk:x,dir:0}))}
  return out}
 const fold=imp=>`<svg viewBox="0 0 15 12" class="fold ${imp}"><path d="M0 1.5A1.5 1.5 0 0 1 1.5 0H5l1.6 1.8h6.9A1.5 1.5 0 0 1 15 3.3v7.2a1.5 1.5 0 0 1-1.5 1.5h-12A1.5 1.5 0 0 1 0 10.5z"/></svg>`;
-const chip=x=>`<em class="nc ${x.mk.replace('/','')}">${x.mk}${x.dir>0?' ▲':x.dir<0?' ▼':''}</em>`;
+const chip=x=>`<em class="nc ${x.mk.replace(/[^A-Za-z]/g,'')}">${x.mk}${x.dir>0?' ▲':x.dir<0?' ▼':''}</em>`;
 const OPENN=new Set();let NEWS=[],seenNews=new Set(),firstNews=true,newsSrc='';
 const sim=(a,b)=>{const A=new Set(a.toLowerCase().match(/[a-z]{4,}/g)||[]),B=new Set(b.toLowerCase().match(/[a-z]{4,}/g)||[]);let i=0;A.forEach(w=>{if(B.has(w))i++});return i/Math.max(1,Math.min(A.size,B.size))};
 async function loadNews(){const now=new Date();let items=null;
@@ -489,7 +490,7 @@ async function loadNews(){const now=new Date();let items=null;
  if(!items){try{const rs=await Promise.all(NF.map(u=>fetch(u,{cache:'no-store'}).then(r=>r.text())));items=[];
   rs.forEach(x=>{const d=new DOMParser().parseFromString(x,'text/xml');d.querySelectorAll('item').forEach(it=>{const t=it.querySelector('title')?.textContent||'',l=it.querySelector('link')?.textContent||'',p=new Date(it.querySelector('pubDate')?.textContent||0);if(t)items.push({id:l||t,t,l,p,src:'MarketWatch'})})});newsSrc='MarketWatch (fallback)'}catch(e){nstat.textContent='· news feed unreachable, retrying';return}}
  items.sort((a,b)=>b.p-a.p);const kept=[];
- for(const n of items){n.c=classify(n.t);const d=kept.find(k=>Math.abs(k.p-n.p)<5*6e4&&sim(k.t,n.t)>=0.6);if(d){if(n.c.imp==='High'&&d.c.imp!=='High')d.c.imp='High';continue}if(n.c.imp)kept.push(n);if(kept.length>=14)break}
+ for(const n of items){n.c=classify(n.t);const d=kept.find(k=>Math.abs(k.p-n.p)<5*6e4&&sim(k.t,n.t)>=0.6);if(d){if(n.c.imp==='High'&&d.c.imp!=='High')d.c.imp='High';continue}if(n.c.imp==='High'||n.c.imp==='Medium')kept.push(n);if(kept.length>=14)break}   // 22 Oct (his ask): red + orange only, no yellow
  const fresh=kept.filter(n=>!firstNews&&!seenNews.has(n.id));
  const red=fresh.find(n=>n.c.imp==='High');if(red){beep(2);notify('NEWS: '+red.t.slice(0,120))}
  kept.forEach(n=>seenNews.add(n.id));firstNews=false;NEWS=kept;renderNews();nstat.textContent='· checked '+t12(now)}
@@ -500,7 +501,7 @@ function renderNews(){const now=new Date();
    <div class="nmeta"><span class="nchips">${c.mk.map(chip).join('')}</span>${c.why?`<span class="why">${c.why}</span>`:''}</div>
    <div class="nd">${n.t}<br>${lean?`<b>History:</b> ${lean}<br>`:'<span class="dim">No reliable up/down lean in history for this type of headline.</span><br>'}<span class="dim">${n.src} · ${t12(n.p)} Dubai</span> · <a href="${n.l}" target="_blank" rel="noopener">Open source ↗</a></div></div>`}).join('')||'<div class="dim">No market-moving headlines right now</div>';
  news.querySelectorAll('.nw').forEach(el=>el.onclick=e=>{if(e.target.closest('a'))return;const id=el.dataset.id;OPENN.has(id)?OPENN.delete(id):OPENN.add(id);el.classList.toggle('open')});
- src_note.textContent=`News: ${newsSrc} · checked every 10 seconds · ▲▼ only on US data releases (direction held 55-89% of the time on 2020-26, years the rule never saw); red = data release or marked important, orange = Fed / tariffs / war / oil / BoJ topic, yellow = other`}
+ src_note.textContent=`News: ${newsSrc} · checked every 10 seconds · ▲▼ only on US data releases (direction held 55-89% of the time on 2020-26, years the rule never saw); red = data release or marked important, orange = Fed / tariffs / war / oil / BoJ topic (yellow headlines are hidden)`}
 loadNews();setInterval(loadNews,10000);
 function setT(){mtabs.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.t===document.body.dataset.tab))}
 mtabs.querySelectorAll('button').forEach(b=>b.onclick=()=>{document.body.dataset.tab=b.dataset.t;setT();scrollTo(0,0)});setT();
@@ -516,6 +517,8 @@ const HMK=[
   tag:t=>t.name+(t.size?' · size '+t.size:''),info:t=>`in ${f(t.price,2)} · stop ${f(t.stop,2)}${t.exit!=null?` · out ${f(t.exit,2)}`:''}`},
  {c:'US100',n:'Nasdaq',file:'journal_nq.json',usd:t=>t.res==null?null:t.res*0.1,
   tag:t=>(t.name||'').split(':')[0],info:t=>`in ${f(t.price,1)} · stop ${f(t.stop,1)}${t.exit!=null?` · out ${f(t.exit,1)}`:''}${t.res!=null?` · ${sg(t.res,1)} pts`:''}`},
+ {c:'US500',n:'S&P 500',file:'journal_sp.json',usd:t=>t.res==null?null:t.res*0.1,
+  tag:t=>(t.src||'')+(t.leg?' · leg '+t.leg:''),info:t=>`in ${f(t.price,1)} · stop ${f(t.stop,1)}${t.exit!=null?` · out ${f(t.exit,1)}`:''}${t.res!=null?` · ${sg(t.res,1)} pts`:''}`},
  {c:'SILVER',n:'Silver',file:'journal_sv.json',usd:t=>{const r=t.res_sized??t.res;return r==null?null:r*50},
   tag:t=>(t.name||'')+(t.size>1?' · size '+t.size:''),info:t=>`in ${f(t.price,3)} · stop ${f(t.stop0??t.stop,3)} · ½ at ${f(t.half_px,3)}${t.half?' ✓':''}${t.exit!=null?` · out ${f(t.exit,3)}`:''}`}];
 let HJ={},HC=null,HV='today',HM=null,HALL=false;
@@ -548,7 +551,7 @@ function renderHist(){const m=hmk();if(!m){histbox.innerHTML='';HC=null;return}i
  else if(HV==='today'){const td=days.find(d=>d.date===TK);h+=td?dayRow(td,true):`<div class="dim">No ${m.n} trade yet today${(M[m.c]&&M[m.c].message)?' · '+M[m.c].message:''}</div>`}
  else{const past=days.filter(d=>d.date!==TK);h+=past.length?past.slice(0,HALL?past.length:5).map(d=>dayRow(d,false)).join('')+(past.length>5?`<button class="hmore" data-more>${HALL?'Show last 5 days':'Show all '+past.length+' days'}</button>`:''):'<div class="dim">No earlier trades yet</div>'}
  h+=TOT;
- const lot={GOLD:'1 oz',USDJPY:'1,000 units',OIL:'10 bbl for a full-size trade (1/3-size trades count one third)',US100:'0.10 per point (0.37 AED)',SILVER:'50 oz for a size-1 trade (size-2 trades count double)'}[m.c];
+ const lot={GOLD:'1 oz',USDJPY:'1,000 units',OIL:'10 bbl for a full-size trade (1/3-size trades count one third)',US100:'0.10 per point (0.37 AED)',US500:'0.10 per point (0.37 AED)',SILVER:'50 oz for a size-1 trade (size-2 trades count double)'}[m.c];
  h+=`<div class="hnote">${m.n} only · source: ${m.n} desk journal (${m.file}), live since ${JN.summary&&JN.summary.since||JN.start}. Each trade at 0.01 lot = ${lot}, after the spread.${m.split?' Days before '+new Date(m.split+'T12:00:00Z').toLocaleDateString('en-GB',{day:'numeric',month:'short',timeZone:'UTC'})+' used the earlier rules (totals kept separate).':''}</div>`;
  histbox.innerHTML=h;bindHist()}
 function bindHist(){
@@ -594,7 +597,7 @@ function renderDemo(){
   return `<div class="dpos"><div class="l1"><span><b class="${p.direction==='BUY'?'pos':'neg'}">${p.direction}</b> ${m.n} <span class="dim">${f(p.size,Number.isInteger(+p.size)?0:2)}</span></span><span class="pl ${(+p.upl||0)>=0?'pos':'neg'}">${sg(pA)} AED</span></div>
    <div class="l2"><span>in ${f(p.level,m.dp)} · stop ${p.stop!=null?f(p.stop,m.dp):'—'}${p.profit!=null?' · target '+f(p.profit,m.dp):''}</span></div><div class="l2"><span>${who}</span></div></div>`}).join('');
  const nc=(DEMO.closed_today||[]).length;
- acc.innerHTML=head+`<div class="big ${tot>=0?'pos':'neg'}">${sg(tA)} AED</div><div class="sub" style="font-family:var(--mono)">closed ${sg(rA)} AED + open ${sg(uA)} AED</div>
+ acc.innerHTML=head+`<div class="big ${tot>=0?'pos':'neg'}">${sg(tA)} AED</div><div class="sub">Today = closed today <b style="font-family:var(--mono)">${sg(rA)}</b> + open now <b style="font-family:var(--mono)">${sg(uA)}</b> AED<br><span class="dim">Capital.com's P&amp;L shows the open part only (${sg(uA)} AED)</span></div>
   <svg class="eq" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><line x1="0" x2="${w}" y1="${Y(0)}" y2="${Y(0)}" stroke="var(--line)" vector-effect="non-scaling-stroke"/>${ep?`<path d="${ep}" fill="none" stroke="${col}" stroke-width="1.6" vector-effect="non-scaling-stroke"/>`:''}</svg>
   <div class="kv">Balance<b>AED ${f(bA,0)}</b></div>
   <div class="kv">Equity now<b>AED ${f(eA,0)}</b></div>
