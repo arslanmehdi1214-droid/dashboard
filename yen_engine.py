@@ -1,4 +1,5 @@
-"""USDJPY_DAYTRADE v1.04 rules (the MT4 EA, 11 signals) as a PAPER engine for the portal - same logic as the EA, line by line.
+"""USDJPY_DAYTRADE v1.05 rules (v1.04 + at most ONE flip a day that closes open trades; MT4 run 22 Oct passed)
+= v1.04 rules (the MT4 EA, 11 signals) as a PAPER engine for the portal - same logic as the EA, line by line.
 v1.04 (MT4 run 22 Oct passed): (a) the Heikin-Ashi 7am trade closes WHOLE at a tiny target = 0.03 x its risk (status 'target');
 (b) BREAKOUT FLIP: a quiet signal (3,4,5,6,7,11) against the day's side closes today's open trades at its price (status 'reversed')
 and switches the day to the new side.
@@ -20,6 +21,7 @@ Q_STOP, Q_HALF, O_STOP, O_HALF = 0.25, 0.50, 0.75, 0.10   # stop = x 14-day rang
 PART, LOCK_PK, LOCK_FL, HA_W = 0.5, 2.0, 1.0, 1 / 3      # half part; day lock peak / floor in R; Heikin-Ashi 7am size
 HA_TARGET = 0.03                                     # v1.04: Heikin-Ashi 7am closes the whole trade at + this x risk (0 = v1.03 half-close)
 FLIP = True                                          # v1.04: a quiet signal against the day's side closes open trades and switches the side
+FLIP_MAX = 1                                         # v1.05: at most this many flips a day that close open trades (0 = no limit = v1.04)
 RISK_USD = 100.0                                     # v1.03 set file Risk_Dollars=100: a full-size stop = $100 (the MT4 backtest's size)
 KEEP_DAYS, KEEP_HOURS = 300, 600                      # history kept in the cache (enough for the 120-day rank, EMA30, 200-hour rank)
 
@@ -141,15 +143,13 @@ class Yen:
             if S['hBars'] == 0: S.update(hKey=hk, hO=O_[i], hH=H_[i], hL=L_[i])
             else: S['hH'] = max(S['hH'], H_[i]); S['hL'] = min(S['hL'], L_[i])
             S['hC'] = C_[i]; S['hBars'] += 1
-        def Fire(s, d, lv, i, px, opentick):
-            flip = False
-            if S['dayDir'] != 0 and d != S['dayDir']:
-                if not (FLIP and s in QUIET): return
-                S['dayDir'] = d; flip = True                                   # v1.04 breakout flip
-            for (fm, fd, fl, fo) in fills:
-                if fm == i and fd == d and ((lv > 0 and abs(fl - lv) < PT / 2) or (fo and opentick)): return
-            TR.append(dict(i=i, s=s, dir=d, px=float(px), atr=S['dayATR'], first=S['dayDir'] == 0, flip=flip))
-            if S['dayDir'] == 0: S['dayDir'] = d
+        def Fire(s, d, lv, i, px, opentick):          # v1.04+: the day's side (ladder / flip) is decided in _manage, trade by trade (= MT4 + Python port)
+            if not FLIP and S['dayDir'] != 0 and d != S['dayDir']: return                 # v1.03 days: ladder here, exactly as before
+            if not FLIP:                                # v1.04+: same-minute duplicates are dropped in _manage (one trade per minute), after the ladder, like the EA
+                for (fm, fd, fl, fo) in fills:
+                    if fm == i and fd == d and ((lv > 0 and abs(fl - lv) < PT / 2) or (fo and opentick)): return
+            TR.append(dict(i=i, s=s, dir=d, px=float(px), atr=S['dayATR'], first=S['dayDir'] == 0))
+            if not FLIP and S['dayDir'] == 0: S['dayDir'] = d
             fills.append((i, d, lv, opentick))
         def HourEvents(i):
             t = int(T[i]); h = hour(t); k = len(dDate); wd = dow(t); cw = weekof(S['curDate'])
@@ -239,7 +239,7 @@ class Yen:
             v = float(spread[j]); return max(MIN_SPREAD, v) if np.isfinite(v) else MIN_SPREAD
         byi = {}
         for tr in TR: byi.setdefault(tr['i'], []).append(tr)
-        legs = []; banked = 0.; peak = 0.; off = False
+        legs = []; banked = 0.; peak = 0.; off = False; ddir = 0; nflip = 0
         def mark(l, bid, sp):            # value of a leg in R (sized) at this Bid
             rem = 1 - PART if l['half'] else 1.0; px = bid if l['d'] > 0 else bid + sp
             return l['w'] * (l['bank'] + rem * l['d'] * (px - l['e']) / l['sd'])
@@ -253,10 +253,15 @@ class Yen:
             took = False
             for tr in byi.get(j, []):
                 if off: continue
-                if tr.get('flip'):                         # v1.04: close every open trade at the flipping signal's price, then take it
-                    fsp = SP(j)
-                    for l in legs:
-                        if l['on']: shut(l, tr['px'] if l['d'] > 0 else tr['px'] + fsp, j, 'reversed')
+                if FLIP and ddir != 0 and tr['dir'] != ddir:         # ladder: later trades only the day's side ...
+                    if not (FLIP and tr['s'] in QUIET): continue
+                    if any(l['on'] for l in legs):         # ... v1.04 flip: a quiet signal closes the open trades at its price and switches the side
+                        if FLIP_MAX > 0 and nflip >= FLIP_MAX: continue          # v1.05: at most FLIP_MAX such flips a day
+                        fsp = SP(j)
+                        for l in legs:
+                            if l['on']: shut(l, tr['px'] if l['d'] > 0 else tr['px'] + fsp, j, 'reversed')
+                        nflip += 1
+                    ddir = tr['dir']
                 if took: continue
                 s, d, px = tr['s'], tr['dir'], tr['px']; q = s in QUIET
                 sd = (Q_STOP if q else O_STOP) * tr['atr']
@@ -266,7 +271,8 @@ class Yen:
                 if tgt: k = HA_TARGET
                 legs.append(dict(tr=tr, w=(HA_W if s == 0 else 1.0), d=d, px=px, e=e, sl=sl, sl0=sl, sd=sd, sp=sp,
                                  hp=(e + d * k * abs(e - sl)) if k > 0 else None, half=False, half_t=None, bank=0., j=j, on=True,
-                                 r=None, ex=None, ext=None, status='open', tgt=tgt))
+                                 r=None, ex=None, ext=None, status='open', tgt=tgt, first=(ddir == 0)))
+                if ddir == 0: ddir = d
                 took = True
             sp = SP(j)
             for l in legs:
@@ -315,7 +321,7 @@ class Yen:
                             stop=round(l['sl'], 3), stop0=round(l['sl0'], 3), stop_pips=round(abs(l['e'] - l['sl0']) * 100, 1),
                             half_px=None if l['hp'] is None else round(l['hp'], 3), half=bool(l['half']),
                             half_t=None if l['half_t'] is None else int(T[l['half_t']]), size='third' if l['w'] < 1 else 'full', w=l['w'], part=1.0 if l['tgt'] else PART,
-                            quiet=tr['s'] in QUIET, first=bool(tr['first']), spread_pips=round(l['sp'] * 100, 1), status=l['status'],
+                            quiet=tr['s'] in QUIET, first=bool(l['first'] if FLIP else tr['first']), spread_pips=round(l['sp'] * 100, 1), status=l['status'],
                             exit=None if l['ex'] is None else round(float(l['ex']), 3), exit_t=None if l['ext'] is None else int(T[l['ext']]),
                             r=None if l['r'] is None else round(l['r'], 4), r_now=None if r_now is None else round(r_now, 4),
                             pips=None if pips is None else round(pips, 1), rwf=rwf, atr=round(tr['atr'], 3), locked_day=off))
