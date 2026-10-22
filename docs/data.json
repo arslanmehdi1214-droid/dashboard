@@ -1,5 +1,5 @@
 {
- "updated": "Thu 22 Oct \u00b7 11:11 am",
+ "updated": "Thu 22 Oct \u00b7 11:22 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -74,9 +74,9 @@
    "feed_error": false,
    "state": "sell",
    "message": "SELL day \u2014 up to 2 SELL trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:00 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 4095.16,
+   "price": 4096.85,
    "close_at": "12:00 am",
-   "change": -46.73,
+   "change": -45.04,
    "size": 0.1,
    "datr": 66.97,
    "open_now": 0,
@@ -897,10 +897,24 @@
     ],
     [
      "11:10 am",
-     4095.16,
+     4098.71,
      4097.87,
-     4097.87,
-     4094.82
+     4100.48,
+     4092.91
+    ],
+    [
+     "11:15 am",
+     4097.43,
+     4098.62,
+     4100.85,
+     4096.91
+    ],
+    [
+     "11:20 am",
+     4096.85,
+     4097.42,
+     4098.38,
+     4095.63
     ]
    ],
    "history": [
@@ -1132,8 +1146,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 56.03,
-   "change": -1.86,
+   "price": 56.067,
+   "change": -1.823,
    "entries": [],
    "spark": [
     [
@@ -1908,10 +1922,24 @@
     ],
     [
      "11:10 am",
-     56.03,
+     56.082,
      56.075,
-     56.079,
-     56.025
+     56.1,
+     55.971
+    ],
+    [
+     "11:15 am",
+     56.06,
+     56.083,
+     56.13,
+     56.057
+    ],
+    [
+     "11:20 am",
+     56.067,
+     56.061,
+     56.077,
+     56.033
     ]
    ],
    "journal": {
@@ -1997,8 +2025,8 @@
    "net_label": "Net R / $ at $100 risk (v1.03 sizes)",
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Each trade closes half at its \u00bd level, then the rest's stop moves to the entry; everything closes at the 7:00 pm Dubai close.",
-   "price": 156.907,
-   "change_pips": -118.1,
+   "price": 157.091,
+   "change_pips": -99.7,
    "atr_pips": 76.6,
    "entries": [
     {
@@ -2025,7 +2053,7 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": 0.886,
+     "r_now": 0.7295,
      "rwf": 1,
      "spread": 1.2
     },
@@ -2053,7 +2081,7 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": 2.6479,
+     "r_now": 2.1782,
      "rwf": 1,
      "spread": 1.2
     },
@@ -2093,11 +2121,11 @@
      "price": 157.543,
      "entry": 157.543,
      "stop": 157.543,
-     "stop0": 158.137,
-     "stop_pips": 59.4,
-     "half_px": 157.484,
+     "stop0": 158.128,
+     "stop_pips": 58.5,
+     "half_px": 157.485,
      "half": true,
-     "half_time": "9:44 am",
+     "half_time": "9:45 am",
      "size": "full",
      "quiet": false,
      "first": false,
@@ -2109,9 +2137,9 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": 0.5926,
+     "r_now": 0.4353,
      "rwf": 1,
-     "spread": 1.9
+     "spread": 1.0
     }
    ],
    "spark": [
@@ -2880,10 +2908,24 @@
     ],
     [
      "11:10 am",
-     156.907,
+     156.921,
      156.944,
      156.958,
-     156.907
+     156.82
+    ],
+    [
+     "11:15 am",
+     157.067,
+     156.922,
+     157.116,
+     156.919
+    ],
+    [
+     "11:20 am",
+     157.091,
+     157.066,
+     157.115,
+     157.037
     ]
    ],
    "journal": {
@@ -2936,7 +2978,7 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": 0.886,
+       "r_now": 0.7295,
        "rwf": 1,
        "spread": 1.2
       },
@@ -2964,7 +3006,7 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": 2.6479,
+       "r_now": 2.1782,
        "rwf": 1,
        "spread": 1.2
       },
@@ -3004,11 +3046,11 @@
        "price": 157.543,
        "entry": 157.543,
        "stop": 157.543,
-       "stop0": 158.137,
-       "stop_pips": 59.4,
-       "half_px": 157.484,
+       "stop0": 158.128,
+       "stop_pips": 58.5,
+       "half_px": 157.485,
        "half": true,
-       "half_time": "9:44 am",
+       "half_time": "9:45 am",
        "size": "full",
        "quiet": false,
        "first": false,
@@ -3020,9 +3062,9 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": 0.5926,
+       "r_now": 0.4353,
        "rwf": 1,
-       "spread": 1.9
+       "spread": 1.0
       }
      ],
      "atr_pips": 76.6,
@@ -3673,8 +3715,8 @@
    "net_label": "Net $ per barrel (v1.05)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 99.073,
-   "change": 1.63,
+   "price": 99.303,
+   "change": 1.86,
    "entries": [],
    "spark": [
     [
@@ -4449,10 +4491,24 @@
     ],
     [
      "11:10 am",
-     99.07,
+     99.21,
      99.03,
-     99.12,
+     99.23,
      99.01
+    ],
+    [
+     "11:15 am",
+     99.26,
+     99.2,
+     99.33,
+     99.18
+    ],
+    [
+     "11:20 am",
+     99.3,
+     99.26,
+     99.39,
+     99.25
     ]
    ],
    "journal": {
@@ -4979,8 +5035,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 29305.5,
-   "change": -497.1,
+   "price": 29328.7,
+   "change": -473.9,
    "entries": [],
    "spark": [
     [
@@ -5832,10 +5888,24 @@
     ],
     [
      "11:10 am",
-     29305.5,
+     29319.7,
      29309.4,
-     29312.0,
+     29325.7,
      29293.0
+    ],
+    [
+     "11:15 am",
+     29326.3,
+     29320.8,
+     29329.9,
+     29305.7
+    ],
+    [
+     "11:20 am",
+     29328.7,
+     29326.2,
+     29329.4,
+     29314.5
     ]
    ],
    "journal": {
