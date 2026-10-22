@@ -1,5 +1,5 @@
 {
- "updated": "Fri 23 Oct \u00b7 1:00 am",
+ "updated": "Fri 23 Oct \u00b7 1:11 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -327,7 +327,7 @@
    "epic": "SILVER",
    "close_at": "11:50 pm",
    "gold_signals_today": 0,
-   "history_note": "minutes from 2026-09-10 (31 days) \u00b7 326 daily bars from 2025-07-21 \u00b7 added SILVER 2026-10-22, GOLD 2026-10-22"
+   "history_note": "minutes from 2026-09-10 (31 days) \u00b7 326 daily bars from 2025-07-21"
   },
   "USDJPY": {
    "code": "USDJPY",
@@ -358,7 +358,7 @@
    "net_label": "Net R / $ at $100 risk (v1.05 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": null,
+   "price": 156.751,
    "change_pips": null,
    "atr_pips": 78.8,
    "entries": [],
@@ -1125,8 +1125,8 @@
     }
    ],
    "feed_error": false,
-   "live_spread_pips": null,
-   "history_note": "history to 2026-10-22 (300 days) \u00b7 added 2026-10-22"
+   "live_spread_pips": 6.0,
+   "history_note": "history to 2026-10-22 (300 days)"
   },
   "DE40": {
    "code": "DE40",
@@ -1688,7 +1688,7 @@
    "feed_error": false,
    "epic": "OIL_CRUDE",
    "live_spread": null,
-   "history_note": "history to 2026-10-22 (60 days) \u00b7 added 2026-10-22"
+   "history_note": "history to 2026-10-22 (60 days)"
   },
   "US500": {
    "code": "US500",
@@ -1720,10 +1720,25 @@
    "net_label": "Net points (v1.00 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal (from 5:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep).",
-   "price": null,
-   "change": null,
+   "price": 7662.2,
+   "change": 1.6,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "1:05 am",
+     7662.4,
+     7660.6,
+     7662.4,
+     7660.6
+    ],
+    [
+     "1:10 am",
+     7662.2,
+     7662.5,
+     7662.5,
+     7662.0
+    ]
+   ],
    "journal": {
     "since": "22 Oct 2026",
     "weekdays": 2,
@@ -1801,7 +1816,7 @@
    "picks_stale": false,
    "epic": "US500",
    "close_at": "11:30 pm",
-   "history_note": "history to 2026-10-22 (21 days) \u00b7 added 2026-10-22"
+   "history_note": "history to 2026-10-22 (21 days)"
   },
   "US100": {
    "code": "US100",
@@ -1833,10 +1848,25 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": null,
-   "change": null,
+   "price": 28920.4,
+   "change": 12.2,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "1:05 am",
+     28917.5,
+     28908.2,
+     28917.9,
+     28903.9
+    ],
+    [
+     "1:10 am",
+     28920.4,
+     28917.7,
+     28920.4,
+     28917.6
+    ]
+   ],
    "journal": {
     "since": "19 Oct 2026",
     "weekdays": 5,
@@ -2221,7 +2251,7 @@
    "feed_error": false,
    "epic": "US100",
    "close_at": "11:50 pm",
-   "history_note": "history to 2026-10-22 (361 days) \u00b7 added 2026-10-22"
+   "history_note": "history to 2026-10-22 (361 days)"
   }
  }
 }
