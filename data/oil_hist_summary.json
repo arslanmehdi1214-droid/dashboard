@@ -1,0 +1,23 @@
+{
+ "epic": "OIL_CRUDE",
+ "rows": 979636,
+ "first": "2024-01-01T23:05:00",
+ "last": "2026-10-22T13:46:00",
+ "requests": 1549,
+ "keys": [
+  "closePrice",
+  "highPrice",
+  "lastTradedVolume",
+  "lowPrice",
+  "openPrice",
+  "snapshotTime",
+  "snapshotTimeUTC"
+ ],
+ "vol_nonzero": 979636,
+ "first_err": [
+  404,
+  "{\"errorCode\":\"error.prices.not-found\"}",
+  "2026-10-17T21:46:00"
+ ],
+ "made_utc": "2026-10-22T13:46:00"
+}
