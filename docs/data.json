@@ -1,5 +1,5 @@
 {
- "updated": "Thu 22 Oct \u00b7 8:03 am",
+ "updated": "Thu 22 Oct \u00b7 8:14 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -32,9 +32,9 @@
    "feed_error": false,
    "state": "sell",
    "message": "SELL day \u2014 up to 2 SELL trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:00 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 4092.24,
+   "price": 4090.98,
    "close_at": "12:00 am",
-   "change": -49.65,
+   "change": -50.91,
    "size": 0.1,
    "datr": 66.97,
    "open_now": 2,
@@ -589,10 +589,24 @@
     ],
     [
      "8:00 am",
-     4092.24,
+     4089.63,
      4092.05,
      4093.13,
-     4091.51
+     4089.2
+    ],
+    [
+     "8:05 am",
+     4091.53,
+     4089.65,
+     4092.09,
+     4089.19
+    ],
+    [
+     "8:10 am",
+     4090.98,
+     4091.54,
+     4091.76,
+     4089.24
     ]
    ],
    "history": [
@@ -824,8 +838,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 56.368,
-   "change": -1.522,
+   "price": 56.392,
+   "change": -1.498,
    "entries": [],
    "spark": [
     [
@@ -1334,10 +1348,24 @@
     ],
     [
      "8:00 am",
-     56.368,
+     56.333,
      56.328,
      56.387,
      56.325
+    ],
+    [
+     "8:05 am",
+     56.413,
+     56.334,
+     56.419,
+     56.333
+    ],
+    [
+     "8:10 am",
+     56.392,
+     56.412,
+     56.413,
+     56.372
     ]
    ],
    "journal": {
@@ -1423,8 +1451,8 @@
    "net_label": "Net R / $ at $100 risk (v1.03 sizes)",
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Each trade closes half at its \u00bd level, then the rest's stop moves to the entry; everything closes at the 7:00 pm Dubai close.",
-   "price": 157.733,
-   "change_pips": -35.5,
+   "price": 157.633,
+   "change_pips": -45.5,
    "atr_pips": 76.6,
    "entries": [
     {
@@ -1451,7 +1479,7 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": 0.1693,
+     "r_now": 0.2563,
      "rwf": 1,
      "spread": 1.2
     },
@@ -1479,7 +1507,7 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": 0.4979,
+     "r_now": 0.7588,
      "rwf": 1,
      "spread": 1.2
     },
@@ -2012,10 +2040,24 @@
     ],
     [
      "8:00 am",
-     157.733,
+     157.709,
      157.695,
      157.754,
      157.694
+    ],
+    [
+     "8:05 am",
+     157.731,
+     157.708,
+     157.732,
+     157.661
+    ],
+    [
+     "8:10 am",
+     157.633,
+     157.732,
+     157.732,
+     157.624
     ]
    ],
    "journal": {
@@ -2068,7 +2110,7 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": 0.1693,
+       "r_now": 0.2563,
        "rwf": 1,
        "spread": 1.2
       },
@@ -2096,7 +2138,7 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": 0.4979,
+       "r_now": 0.7588,
        "rwf": 1,
        "spread": 1.2
       },
@@ -2777,8 +2819,8 @@
    "net_label": "Net $ per barrel (v1.05)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 98.193,
-   "change": 0.75,
+   "price": 98.223,
+   "change": 0.78,
    "entries": [],
    "spark": [
     [
@@ -3287,10 +3329,24 @@
     ],
     [
      "8:00 am",
-     98.19,
+     98.23,
      98.26,
      98.26,
      98.19
+    ],
+    [
+     "8:05 am",
+     98.23,
+     98.24,
+     98.24,
+     98.19
+    ],
+    [
+     "8:10 am",
+     98.22,
+     98.22,
+     98.22,
+     98.16
     ]
    ],
    "journal": {
@@ -3817,8 +3873,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 29446.4,
-   "change": -356.2,
+   "price": 29439.9,
+   "change": -362.7,
    "entries": [],
    "spark": [
     [
@@ -4404,10 +4460,24 @@
     ],
     [
      "8:00 am",
-     29446.4,
+     29439.2,
      29453.8,
      29456.0,
-     29442.2
+     29434.5
+    ],
+    [
+     "8:05 am",
+     29452.0,
+     29438.0,
+     29452.5,
+     29436.4
+    ],
+    [
+     "8:10 am",
+     29439.9,
+     29451.9,
+     29452.5,
+     29434.7
     ]
    ],
    "journal": {
