@@ -1,5 +1,5 @@
 {
- "updated": "Fri 23 Oct \u00b7 12:54 am",
+ "updated": "Fri 23 Oct \u00b7 12:59 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -74,9 +74,9 @@
    "feed_error": false,
    "state": "sell",
    "message": "SELL day \u2014 up to 2 SELL trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:00 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 4022.81,
+   "price": 4024.32,
    "close_at": "12:00 am",
-   "change": -119.08,
+   "change": -117.57,
    "size": 0.1,
    "datr": 66.97,
    "open_now": 0,
@@ -2047,10 +2047,17 @@
     ],
     [
      "12:50 am",
-     4022.81,
+     4023.42,
      4022.59,
-     4023.37,
+     4023.49,
      4021.93
+    ],
+    [
+     "12:55 am",
+     4024.32,
+     4023.44,
+     4025.51,
+     4023.35
     ]
    ],
    "history": [
@@ -2283,8 +2290,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "none",
    "message": "No paper trade today (no 2-of-3 agreement).",
-   "price": 54.553,
-   "change": -3.337,
+   "price": 54.546,
+   "change": -3.344,
    "entries": [],
    "spark": [
     [
@@ -4207,10 +4214,17 @@
     ],
     [
      "12:50 am",
-     54.553,
+     54.565,
      54.52,
-     54.559,
+     54.565,
      54.491
+    ],
+    [
+     "12:55 am",
+     54.546,
+     54.566,
+     54.583,
+     54.546
     ]
    ],
    "journal": {
@@ -4296,8 +4310,8 @@
    "net_label": "Net R / $ at $100 risk (v1.03 sizes)",
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Each trade closes half at its \u00bd level, then the rest's stop moves to the entry; everything closes at the 7:00 pm Dubai close.",
-   "price": 156.798,
-   "change_pips": -129.0,
+   "price": 156.755,
+   "change_pips": -133.3,
    "atr_pips": 76.6,
    "entries": [
     {
@@ -6331,10 +6345,17 @@
     ],
     [
      "12:50 am",
-     156.798,
+     156.773,
      156.809,
      156.813,
-     156.796
+     156.772
+    ],
+    [
+     "12:55 am",
+     156.761,
+     156.772,
+     156.772,
+     156.746
     ]
    ],
    "journal": {
@@ -7129,8 +7150,8 @@
    "net_label": "Net $ per barrel (v1.05)",
    "state": "buy",
    "message": "PAPER BUY day \u2014 later signals today are BUY only. Close 25% at the part level, then move the stop to entry; everything closes at 9:00 pm Dubai. No new trades after 5:30 pm (one late first trade allowed).",
-   "price": 98.873,
-   "change": 1.43,
+   "price": 98.768,
+   "change": 1.33,
    "entries": [
     {
      "time": "11:44 am",
@@ -9080,6 +9101,13 @@
      98.83,
      98.88,
      98.79
+    ],
+    [
+     "12:55 am",
+     98.77,
+     98.86,
+     98.87,
+     98.76
     ]
    ],
    "journal": {
@@ -9591,7 +9619,7 @@
    ],
    "feed_error": false,
    "epic": "OIL_CRUDE",
-   "live_spread": 0.04,
+   "live_spread": 0.035,
    "history_note": "history to 2026-10-21 (60 days)"
   },
   "US500": {
@@ -9624,8 +9652,8 @@
    "net_label": "Net points (v1.00 rules)",
    "state": "buy",
    "message": "PAPER BUY day: 1 trade today (0 running). Only BUY signals count today (max 3). Each trade keeps its stop, no half-close; everything closes at 11:30 pm Dubai (3:30 pm New York). (1 late Nasdaq pick(s) ignored.)",
-   "price": 7661.2,
-   "change": -95.1,
+   "price": 7662.7,
+   "change": -93.6,
    "entries": [
     {
      "time": "5:40 pm",
@@ -11650,10 +11678,17 @@
     ],
     [
      "12:50 am",
-     7661.2,
+     7661.0,
      7661.2,
      7662.0,
      7660.0
+    ],
+    [
+     "12:55 am",
+     7662.7,
+     7661.2,
+     7663.0,
+     7660.7
     ]
    ],
    "journal": {
@@ -11755,8 +11790,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "sell",
    "message": "1 paper trade today (0 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 12:00 am Dubai close. At most 2 trades a day.",
-   "price": 28911.4,
-   "change": -891.2,
+   "price": 28912.9,
+   "change": -889.7,
    "entries": [
     {
      "time": "12:03 pm",
@@ -13785,10 +13820,17 @@
     ],
     [
      "12:50 am",
-     28911.4,
+     28909.4,
      28901.4,
      28917.1,
      28895.6
+    ],
+    [
+     "12:55 am",
+     28912.9,
+     28909.6,
+     28918.4,
+     28907.6
     ]
    ],
    "journal": {
