@@ -1,5 +1,5 @@
 {
- "open_positions": 4,
+ "open_positions": 5,
  "risk_usd": 13.614703880190607,
  "trades": {
   "GOLD|2026-10-20|1:06 pm|BUY|FILL range fade": {
@@ -43,6 +43,23 @@
    "side": "BUY",
    "state": "closed",
    "stop": 4090.06
+  },
+  "GOLD|2026-10-22|7:15 am|SELL|G2 calm3ys": {
+   "desk_price": 4104.73,
+   "market": "GOLD",
+   "opened_at": "Thu 22 Oct 7:16 AM",
+   "rest": {
+    "id": "00000000-6d19-f1ed-0495-7fc60004511e",
+    "level": 4102.04,
+    "open": true,
+    "size": 0.9,
+    "tp": null
+   },
+   "risk_aed": 112.31,
+   "risk_usd": 30.63,
+   "side": "SELL",
+   "state": "open",
+   "stop": 4138.71
   },
   "OIL|2026-10-20|10:00 am|BUY|Open \u00b1 \u00bd range": {
    "at": "Tue 20 Oct 3:24 PM",
