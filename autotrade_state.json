@@ -1,6 +1,16 @@
 {
+ "balance": 1109.91,
+ "balance_ccy": "AED",
+ "day": {
+  "date": "2026-10-22",
+  "pl": 0.0,
+  "start_balance": 1109.91,
+  "start_equity": 1183.8200000000002,
+  "stopped": false
+ },
  "open_positions": 5,
- "risk_usd": 13.614703880190607,
+ "open_risk_aed": 16.53,
+ "risk_usd": 8.168822328114365,
  "trades": {
   "GOLD|2026-10-20|1:06 pm|BUY|FILL range fade": {
    "at": "Tue 20 Oct 3:24 PM",
@@ -437,5 +447,6 @@
    "state": "open",
    "stop": 157.543
   }
- }
+ },
+ "untracked_seen": {}
 }
