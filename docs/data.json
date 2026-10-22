@@ -1,5 +1,5 @@
 {
- "updated": "Thu 22 Oct \u00b7 9:37 am",
+ "updated": "Thu 22 Oct \u00b7 9:39 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -32,15 +32,21 @@
      "kind": "HOLD",
      "side": "SELL",
      "text": "HOLD - new SELL signal (N6 bigrange) but 2 trades are already open and not all are up 1.25x their stop: do nothing"
+    },
+    {
+     "time": "9:38 am",
+     "kind": "HOLD",
+     "side": "SELL",
+     "text": "HOLD - new SELL signal (G12 q3r3s3) but 2 trades are already open and not all are up 1.25x their stop: do nothing"
     }
    ],
    "actions_day": "2026-10-22",
    "feed_error": false,
    "state": "sell",
    "message": "SELL day \u2014 up to 2 SELL trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:00 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 4088.41,
+   "price": 4079.79,
    "close_at": "12:00 am",
-   "change": -53.48,
+   "change": -62.1,
    "size": 0.1,
    "datr": 66.97,
    "open_now": 2,
@@ -728,10 +734,10 @@
     ],
     [
      "9:35 am",
-     4088.41,
+     4079.79,
      4084.9,
-     4088.77,
-     4084.83
+     4089.04,
+     4077.34
     ]
    ],
    "history": [
@@ -963,8 +969,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 56.224,
-   "change": -1.666,
+   "price": 56.03,
+   "change": -1.86,
    "entries": [],
    "spark": [
     [
@@ -1606,10 +1612,10 @@
     ],
     [
      "9:35 am",
-     56.224,
+     56.03,
      56.188,
      56.274,
-     56.172
+     56.012
     ]
    ],
    "journal": {
@@ -1663,7 +1669,7 @@
    "feed_error": false,
    "epic": "SILVER",
    "close_at": "12:00 am",
-   "gold_signals_today": 4,
+   "gold_signals_today": 5,
    "history_note": "minutes from 2026-09-10 (31 days) \u00b7 326 daily bars from 2025-07-21"
   },
   "USDJPY": {
@@ -1695,8 +1701,8 @@
    "net_label": "Net R / $ at $100 risk (v1.03 sizes)",
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Each trade closes half at its \u00bd level, then the rest's stop moves to the entry; everything closes at the 7:00 pm Dubai close.",
-   "price": 157.56,
-   "change_pips": -52.8,
+   "price": 157.558,
+   "change_pips": -53.0,
    "atr_pips": 76.6,
    "entries": [
     {
@@ -1723,7 +1729,7 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": 0.3198,
+     "r_now": 0.3215,
      "rwf": 1,
      "spread": 1.2
     },
@@ -1751,7 +1757,7 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": 0.9493,
+     "r_now": 0.9545,
      "rwf": 1,
      "spread": 1.2
     },
@@ -2417,9 +2423,9 @@
     ],
     [
      "9:35 am",
-     157.56,
+     157.558,
      157.559,
-     157.565,
+     157.571,
      157.545
     ]
    ],
@@ -2473,7 +2479,7 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": 0.3198,
+       "r_now": 0.3215,
        "rwf": 1,
        "spread": 1.2
       },
@@ -2501,7 +2507,7 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": 0.9493,
+       "r_now": 0.9545,
        "rwf": 1,
        "spread": 1.2
       },
@@ -3182,8 +3188,8 @@
    "net_label": "Net $ per barrel (v1.05)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 98.653,
-   "change": 1.21,
+   "price": 98.713,
+   "change": 1.27,
    "entries": [],
    "spark": [
     [
@@ -3825,7 +3831,7 @@
     ],
     [
      "9:35 am",
-     98.65,
+     98.71,
      98.71,
      98.75,
      98.63
@@ -4355,8 +4361,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 29384.5,
-   "change": -418.1,
+   "price": 29379.9,
+   "change": -422.7,
    "entries": [],
    "spark": [
     [
@@ -5075,7 +5081,7 @@
     ],
     [
      "9:35 am",
-     29384.5,
+     29379.9,
      29384.5,
      29391.0,
      29374.5
