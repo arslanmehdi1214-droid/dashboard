@@ -490,21 +490,31 @@
    "range_usd": 3.88,
    "traded": true,
    "final": true
+  },
+  {
+   "date": "2026-10-23",
+   "rules": "v1.05",
+   "label": "Fri 23 Oct",
+   "side": null,
+   "trades": [],
+   "range_usd": 3.68,
+   "traded": true,
+   "final": false
   }
  ],
  "summary": {
   "since": "20 Oct 2026",
-  "weekdays": 3,
+  "weekdays": 4,
   "trades": 8,
   "decided": 8,
   "direction": 25.0,
-  "days": 100.0,
-  "perday": 2.67,
+  "days": 75.0,
+  "perday": 2.0,
   "closed": 8,
   "win": 75.0,
   "pf": 0.04,
   "net": -2.39,
   "rules": "v1.05",
-  "green": 33.3
+  "green": 25.0
  }
 }
