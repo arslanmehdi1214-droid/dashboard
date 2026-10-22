@@ -348,11 +348,13 @@ let STY='2',seenA=null,flashA={};
 let liveFired={};
 function actsLive(){const m=MK.find(m=>m.c==='GOLD'),x=M.GOLD,l=m&&liveOf(m);if(!x||!l){actlive.innerHTML='';return}const out=[];
  (x.entries||[]).forEach(e=>{if(done(e)||e.half_px==null)return;const s=e.side==='BUY'?1:-1,p=l.p;
-  if(!e.half&&s*(p-e.half_px)>=0)out.push({k:'H'+e.time,t:`LIVE: price ${f(p,2)} reached the ${e.part!=null?'part-close':'½'} level of your ${e.side} from ${e.time} — CLOSE ${e.part!=null?Math.round(e.part*100)+'%':'HALF'} now, then move the stop to ${f(e.price,2)} (entry)`});
+  if(!e.half&&s*(p-e.half_px)>=0&&e.part>=0.999)out.push({k:'H'+e.time,t:`LIVE: price ${f(p,2)} reached the target of your ${e.side} from ${e.time} — CLOSE the WHOLE trade now`});
+  else if(!e.half&&s*(p-e.half_px)>=0)out.push({k:'H'+e.time,t:`LIVE: price ${f(p,2)} reached the ${e.part!=null?'part-close':'½'} level of your ${e.side} from ${e.time} — CLOSE ${e.part!=null?Math.round(e.part*100)+'%':'HALF'} now, then move the stop to ${f(e.price,2)} (entry)`});
   else if(s*(e.stop-p)>=0)out.push({k:'S'+e.time+e.stop,t:`LIVE: price ${f(p,2)} is at the stop ${f(e.stop,2)} of your ${e.side} from ${e.time} — check it is closed`})});
  out.forEach(o=>{if(!liveFired[o.k]){liveFired[o.k]=1;beep(3);notify('Gold: '+o.t)}});
  actlive.innerHTML=out.map(o=>'⚡ '+o.t).join('<br>')}
 function nextStep(o){const {m,e}=o,dp=m.dp;if(e.next)return e.next;
+ if(e.half_px!=null&&!e.half&&e.part>=0.999)return `Close the WHOLE trade at ${f(e.half_px,dp)} (target) · stop now ${f(e.stop,dp)}`;
  if(e.half_px!=null&&!e.half)return `Close ${e.part!=null?Math.round(e.part*100)+'%':'half'} at ${f(e.half_px,dp)}, then move the stop to entry ${f(e.price,dp)} · stop now ${f(e.stop,dp)}`;
  if(e.half)return `Part banked · stop at ${f(e.stop,dp)}${Math.abs(e.stop-e.price)>1e-9?' (trailing)':' (entry)'} · hold the rest to the stop or the day-end close`;
  return `Hold · stop ${f(e.stop,dp)} · closes at the day end`}
@@ -518,7 +520,7 @@ const HMK=[
   tag:t=>(t.name||'')+(t.size>1?' · size '+t.size:''),info:t=>`in ${f(t.price,3)} · stop ${f(t.stop0??t.stop,3)} · ½ at ${f(t.half_px,3)}${t.half?' ✓':''}${t.exit!=null?` · out ${f(t.exit,3)}`:''}`}];
 let HJ={},HC=null,HV='today',HM=null,HALL=false;
 const bkey=()=>{const n=new Date(new Date().toLocaleString('en-US',{timeZone:'America/New_York'}));n.setHours(n.getHours()+7);return n.getFullYear()+'-'+String(n.getMonth()+1).padStart(2,'0')+'-'+String(n.getDate()).padStart(2,'0')};
-const HST={stopped:'stop hit',be:'part banked, rest out at entry',trail:'part banked, rest out on the trailing stop',eod:'closed at day end',close_now:'close now (day end)',reversed:'reversed',open:'open'};
+const HST={stopped:'stop hit',be:'part banked, rest out at entry',trail:'part banked, rest out on the trailing stop',eod:'closed at day end',close_now:'close now (day end)',reversed:'reversed',target:'target hit (whole trade)',open:'open'};
 const hmk=()=>HMK.find(m=>m.c===SEL);
 const tU=(m,t)=>{const v=m.usd(t);return v==null||isNaN(v)?null:v};
 function dPnl(m,d){const p=d.trades.map(t=>tU(m,t)).filter(v=>v!=null);return p.length?p.reduce((a,v)=>a+v,0):null}
@@ -583,7 +585,7 @@ function renderDemo(){
  const head='<h3>Today · Capital.com demo account</h3>';
  if(!DEMO){acc.innerHTML=head+`<div class="sub">${DEMO_ERR?'Not connected: '+DEMO_ERR:'Connecting…'}</div><div class="dnote">The desk's auto-trader places every desk trade on this demo account.</div>`;return}
  const a=DEMO.account||{},cur=a.currency||'USD',up=+a.upl||0,rl=+DEMO.realized_today||0,tot=up+rl;
- const [tA,tU]=demoMoney(tot,cur),[bA,bU]=demoMoney(a.balance,cur),[eA,eU]=demoMoney((+a.balance||0)+up,cur),[rA,rU]=demoMoney(rl,cur),[uA,uU]=demoMoney(up,cur);
+ const [tA,tU]=demoMoney(tot,cur),[bA,bU]=demoMoney((+a.balance||0)-up,cur),[eA,eU]=demoMoney(+a.balance||0,cur),[rA,rU]=demoMoney(rl,cur),[uA,uU]=demoMoney(up,cur);
  const ev=[0].concat(DEMO_SER.map(x=>x[1])),w=300,h=56,lo=Math.min(0,...ev),hi=Math.max(0,...ev),r=hi-lo||1,Y=v=>(3+(h-6)*(1-(v-lo)/r)).toFixed(1);
  const ep=ev.length>1?ev.map((v,i)=>(i?'L':'M')+(i/(ev.length-1)*w).toFixed(1)+','+Y(v)).join(''):'',col=tot>=0?'var(--buy)':'var(--sell)';
  const P=(DEMO.positions||[]).slice().sort((x,y)=>(x.opened||'')<(y.opened||'')?-1:1);
