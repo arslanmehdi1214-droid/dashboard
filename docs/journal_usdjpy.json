@@ -636,7 +636,7 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": 0.3816,
+     "r_now": 0.445,
      "rwf": 1,
      "spread": 1.2
     },
@@ -664,7 +664,7 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": 1.1345,
+     "r_now": 1.325,
      "rwf": 1,
      "spread": 1.2
     },
@@ -693,7 +693,7 @@
      "r_sized": 0.051,
      "usd_risk": 5.1,
      "r_now": 0.051,
-     "rwf": null,
+     "rwf": 1,
      "spread": 1.2
     },
     {
@@ -703,12 +703,12 @@
      "name": "Last-week break",
      "price": 157.543,
      "entry": 157.543,
-     "stop": 158.137,
+     "stop": 157.543,
      "stop0": 158.137,
      "stop_pips": 59.4,
      "half_px": 157.484,
-     "half": false,
-     "half_time": null,
+     "half": true,
+     "half_time": "9:44 am",
      "size": "full",
      "quiet": false,
      "first": false,
@@ -720,7 +720,7 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": 0.0731,
+     "r_now": 0.1517,
      "rwf": null,
      "spread": 1.9
     }
@@ -733,7 +733,7 @@
   "since": "19 Oct 2026",
   "weekdays": 4,
   "trades": 11,
-  "decided": 8,
+  "decided": 9,
   "direction": 100.0,
   "days": 100.0,
   "perday": 2.75,
