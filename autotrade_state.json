@@ -1,5 +1,5 @@
 {
- "open_positions": 3,
+ "open_positions": 5,
  "risk_usd": 13.614703880190607,
  "trades": {
   "GOLD|2026-10-20|1:06 pm|BUY|FILL range fade": {
@@ -195,6 +195,30 @@
    "side": "SELL",
    "state": "closed",
    "stop": 29736.5
+  },
+  "US100|2026-10-22|12:03 pm|SELL|REV J4 day open \u00b11.0ATR first touch from 4am fade": {
+   "desk_price": 29280.2,
+   "market": "US100",
+   "opened_at": "Thu 22 Oct 12:05 PM",
+   "part": {
+    "id": "00000000-6d7e-afae-0495-7fc60004511e",
+    "level": 29296.8,
+    "open": true,
+    "size": 0.005,
+    "tp": 29214.0
+   },
+   "rest": {
+    "id": "00000000-6d7e-afc4-0495-7fc60004511e",
+    "level": 29297.3,
+    "open": true,
+    "size": 0.029,
+    "tp": null
+   },
+   "risk_aed": 16.53,
+   "risk_usd": 4.54,
+   "side": "SELL",
+   "state": "open",
+   "stop": 29412.6
   },
   "USDJPY|2026-10-20|10:01 am|SELL|EMA10 break": {
    "at": "Tue 20 Oct 3:24 PM",
