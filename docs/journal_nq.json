@@ -340,22 +340,22 @@
      "half": true,
      "half_time": "6:26 pm",
      "size": "third",
-     "status": "open",
+     "status": "eod",
      "part": 0.15,
      "trail_pts": 235.1,
-     "exit": null,
-     "exit_time": null,
-     "res": null,
-     "res_sized": null,
+     "exit": 28967.0,
+     "exit_time": "11:59 pm",
+     "res": 92.0,
+     "res_sized": 92.0,
      "r": null,
      "r_sized": null,
-     "live": 95.4,
+     "live": null,
      "rwf": 1,
      "spread": 1.8,
      "spread_live": 1.8
     }
    ],
-   "final": false
+   "final": true
   }
  ],
  "summary": {
@@ -366,11 +366,11 @@
   "direction": 60.0,
   "days": 100.0,
   "perday": 1.25,
-  "closed": 4,
-  "win": 75.0,
-  "pf": 2.93,
-  "net": 87.7,
+  "closed": 5,
+  "win": 80.0,
+  "pf": 4.95,
+  "net": 179.7,
   "rules": "v1.02",
-  "green": 50.0
+  "green": 75.0
  }
 }
