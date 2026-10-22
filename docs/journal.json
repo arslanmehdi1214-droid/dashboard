@@ -464,15 +464,15 @@
      "half": false,
      "half_time": null,
      "size": 0.1,
-     "status": "open",
+     "status": "lock",
      "first": true,
-     "exit": null,
-     "exit_time": null,
-     "pnl": null,
-     "pnl_oz": null,
+     "exit": 4095.04,
+     "exit_time": "10:08 am",
+     "pnl": 21.8,
+     "pnl_oz": 9.69,
      "size_x": 2.25,
      "rwf": null,
-     "next": "Hold to the stop 4138.71 or the day-end close \u00b7 no half-close \u00b7 size x2.25"
+     "next": null
     },
     {
      "time": "7:37 am",
@@ -485,15 +485,15 @@
      "half": false,
      "half_time": null,
      "size": 0.1,
-     "status": "open",
+     "status": "lock",
      "first": false,
-     "exit": null,
-     "exit_time": null,
-     "pnl": null,
-     "pnl_oz": null,
+     "exit": 4095.04,
+     "exit_time": "10:08 am",
+     "pnl": -7.13,
+     "pnl_oz": -3.17,
      "size_x": 2.25,
      "rwf": null,
-     "next": "Hold to the stop 4125.85 or the day-end close \u00b7 no half-close \u00b7 size x2.25"
+     "next": null
     }
    ],
    "skipped": 0,
@@ -507,8 +507,8 @@
   "decided": 16,
   "days": 92.9,
   "perday": 1.71,
-  "avg_pnl": -8.0,
-  "closed": 22,
-  "total_pnl_01": -17.61
+  "avg_pnl": -6.72,
+  "closed": 24,
+  "total_pnl_01": -16.14
  }
 }
