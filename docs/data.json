@@ -1,5 +1,5 @@
 {
- "updated": "Thu 22 Oct \u00b7 7:01 am",
+ "updated": "Thu 22 Oct \u00b7 7:04 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -13,9 +13,9 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 8 pm Dubai).",
-   "price": 4113.69,
+   "price": 4111.97,
    "close_at": "12:00 am",
-   "change": -28.2,
+   "change": -29.92,
    "size": 0.1,
    "datr": 66.97,
    "open_now": 0,
@@ -443,10 +443,10 @@
     ],
     [
      "7:00 am",
-     4113.69,
+     4111.97,
      4116.07,
      4116.07,
-     4113.51
+     4111.61
     ]
    ],
    "history": [
@@ -678,8 +678,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 56.736,
-   "change": -1.154,
+   "price": 56.625,
+   "change": -1.265,
    "entries": [],
    "spark": [
     [
@@ -1104,10 +1104,10 @@
     ],
     [
      "7:00 am",
-     56.736,
+     56.625,
      56.772,
      56.772,
-     56.73
+     56.625
     ]
    ],
    "journal": {
@@ -1193,8 +1193,8 @@
    "net_label": "Net R / $ at $100 risk (v1.03 sizes)",
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Each trade closes half at its \u00bd level, then the rest's stop moves to the entry; everything closes at the 7:00 pm Dubai close.",
-   "price": 157.868,
-   "change_pips": -22.0,
+   "price": 157.81,
+   "change_pips": -27.8,
    "atr_pips": 76.6,
    "entries": [
     {
@@ -1204,12 +1204,12 @@
      "name": "Heikin-Ashi 7am",
      "price": 157.881,
      "entry": 157.881,
-     "stop": 158.468,
+     "stop": 157.881,
      "stop0": 158.468,
      "stop_pips": 58.7,
      "half_px": 157.822,
-     "half": false,
-     "half_time": null,
+     "half": true,
+     "half_time": "7:03 am",
      "size": "third",
      "quiet": false,
      "first": true,
@@ -1221,7 +1221,35 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": 0.0017,
+     "r_now": 0.1024,
+     "rwf": null,
+     "spread": 1.2
+    },
+    {
+     "time": "7:03 am",
+     "side": "SELL",
+     "sig": "N3",
+     "name": "Inside-day break",
+     "price": 157.834,
+     "entry": 157.834,
+     "stop": 158.038,
+     "stop0": 158.038,
+     "stop_pips": 20.4,
+     "half_px": 157.732,
+     "half": false,
+     "half_time": null,
+     "size": "full",
+     "quiet": true,
+     "first": false,
+     "status": "open",
+     "exit": null,
+     "exit_time": null,
+     "pips": null,
+     "usd": null,
+     "r": null,
+     "r_sized": null,
+     "usd_risk": null,
+     "r_now": 0.0626,
      "rwf": null,
      "spread": 1.2
     }
@@ -1642,20 +1670,20 @@
     ],
     [
      "7:00 am",
-     157.868,
+     157.81,
      157.881,
      157.881,
-     157.859
+     157.799
     ]
    ],
    "journal": {
     "since": "19 Oct 2026",
     "weekdays": 4,
-    "trades": 8,
+    "trades": 9,
     "decided": 6,
     "direction": 100.0,
     "days": 100.0,
-    "perday": 2.0,
+    "perday": 2.25,
     "closed": 7,
     "win": 100.0,
     "pf": null,
@@ -1681,12 +1709,12 @@
        "name": "Heikin-Ashi 7am",
        "price": 157.881,
        "entry": 157.881,
-       "stop": 158.468,
+       "stop": 157.881,
        "stop0": 158.468,
        "stop_pips": 58.7,
        "half_px": 157.822,
-       "half": false,
-       "half_time": null,
+       "half": true,
+       "half_time": "7:03 am",
        "size": "third",
        "quiet": false,
        "first": true,
@@ -1698,7 +1726,35 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": 0.0017,
+       "r_now": 0.1024,
+       "rwf": null,
+       "spread": 1.2
+      },
+      {
+       "time": "7:03 am",
+       "side": "SELL",
+       "sig": "N3",
+       "name": "Inside-day break",
+       "price": 157.834,
+       "entry": 157.834,
+       "stop": 158.038,
+       "stop0": 158.038,
+       "stop_pips": 20.4,
+       "half_px": 157.732,
+       "half": false,
+       "half_time": null,
+       "size": "full",
+       "quiet": true,
+       "first": false,
+       "status": "open",
+       "exit": null,
+       "exit_time": null,
+       "pips": null,
+       "usd": null,
+       "r": null,
+       "r_sized": null,
+       "usd_risk": null,
+       "r_now": 0.0626,
        "rwf": null,
        "spread": 1.2
       }
@@ -2351,8 +2407,8 @@
    "net_label": "Net $ per barrel (v1.05)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 98.123,
-   "change": 0.68,
+   "price": 98.18,
+   "change": 0.74,
    "entries": [],
    "spark": [
     [
@@ -2777,9 +2833,9 @@
     ],
     [
      "7:00 am",
-     98.12,
+     98.18,
      98.11,
-     98.14,
+     98.2,
      98.09
     ]
    ],
@@ -3307,8 +3363,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 29500.1,
-   "change": -302.5,
+   "price": 29485.1,
+   "change": -317.5,
    "entries": [],
    "spark": [
     [
@@ -3810,10 +3866,10 @@
     ],
     [
      "7:00 am",
-     29500.1,
+     29485.1,
      29502.7,
-     29503.1,
-     29495.1
+     29505.6,
+     29478.2
     ]
    ],
    "journal": {
