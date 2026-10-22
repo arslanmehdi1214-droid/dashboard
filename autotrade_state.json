@@ -8,8 +8,8 @@
   "start_equity": 1082.4,
   "stopped": false
  },
- "open_positions": 0,
- "open_risk_aed": 0,
+ "open_positions": 2,
+ "open_risk_aed": 29.58,
  "risk_usd": 8.168822328114365,
  "trades": {
   "GOLD|2026-10-20|1:06 pm|BUY|FILL range fade": {
@@ -471,6 +471,32 @@
    "side": "SELL",
    "state": "closed",
    "stop": 157.543
+  },
+  "USDJPY|2026-10-23|2:33 am|SELL|Week-so-far break": {
+   "desk_price": 156.684,
+   "market": "USDJPY",
+   "opened_at": "Fri 23 Oct 2:35 AM",
+   "part": {
+    "id": "00000000-6dbe-8f52-0495-7fc60004511e",
+    "level": 156.646,
+    "open": true,
+    "size": 1000.0,
+    "tp": 156.624
+   },
+   "part_x": 0.5,
+   "px_adj": 0.0,
+   "rest": {
+    "id": "00000000-6dbe-8f61-0495-7fc60004511e",
+    "level": 156.646,
+    "open": true,
+    "size": 1100.0,
+    "tp": null
+   },
+   "risk_aed": 29.58,
+   "risk_usd": 8.17,
+   "side": "SELL",
+   "state": "open",
+   "stop": 157.285
   }
  },
  "untracked_seen": {}

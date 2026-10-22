@@ -1,5 +1,5 @@
 {
- "updated": "Fri 23 Oct \u00b7 2:25 am",
+ "updated": "Fri 23 Oct \u00b7 2:34 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -13,9 +13,9 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 8:00 pm Dubai).",
-   "price": 4029.49,
+   "price": 4030.12,
    "close_at": "11:50 pm",
-   "change": 3.47,
+   "change": 4.1,
    "size": 0.1,
    "datr": 68.67,
    "open_now": 0,
@@ -55,6 +55,20 @@
      4029.38,
      4030.64,
      4028.14
+    ],
+    [
+     "2:25 am",
+     4030.28,
+     4029.51,
+     4030.28,
+     4028.31
+    ],
+    [
+     "2:30 am",
+     4030.12,
+     4030.27,
+     4031.1,
+     4028.07
     ]
    ],
    "history": [
@@ -299,8 +313,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 54.63,
-   "change": 0.073,
+   "price": 54.568,
+   "change": 0.011,
    "entries": [],
    "spark": [
     [
@@ -337,6 +351,20 @@
      54.626,
      54.635,
      54.576
+    ],
+    [
+     "2:25 am",
+     54.614,
+     54.629,
+     54.631,
+     54.606
+    ],
+    [
+     "2:30 am",
+     54.568,
+     54.613,
+     54.617,
+     54.558
     ]
    ],
    "journal": {
@@ -428,12 +456,42 @@
    "what_note": "This page tracks whether live USD/JPY signals do as well as the v1.05 backtest. Decision after about 3 months.",
    "cost_note": "Pips are for the whole trade (\u2153-size trades count one third), after a fixed 1.0-pip spread (as in the MT4 test; fixed so shown levels never change). $ = at $100 risk per full-size trade, like the MT4 test.",
    "net_label": "Net R / $ at $100 risk (v1.05 sizes)",
-   "state": "waiting",
-   "message": "Waiting for the first signal.",
-   "price": 156.747,
-   "change_pips": -4.7,
+   "state": "sell",
+   "message": "PAPER SELL day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 3:00 pm Dubai close.",
+   "price": 156.66,
+   "change_pips": -13.4,
    "atr_pips": 78.8,
-   "entries": [],
+   "entries": [
+    {
+     "time": "2:33 am",
+     "side": "SELL",
+     "sig": "L3",
+     "name": "Week-so-far break",
+     "price": 156.684,
+     "entry": 156.684,
+     "stop": 157.285,
+     "stop0": 157.285,
+     "stop_pips": 60.1,
+     "half_px": 156.624,
+     "half": false,
+     "part": 0.5,
+     "half_time": null,
+     "size": "full",
+     "quiet": false,
+     "first": true,
+     "status": "open",
+     "exit": null,
+     "exit_time": null,
+     "pips": null,
+     "usd": null,
+     "r": null,
+     "r_sized": null,
+     "usd_risk": null,
+     "r_now": 0.0237,
+     "rwf": null,
+     "spread": 1.0
+    }
+   ],
    "spark": [
     [
      "2:05 am",
@@ -462,16 +520,30 @@
      156.714,
      156.748,
      156.71
+    ],
+    [
+     "2:25 am",
+     156.733,
+     156.746,
+     156.746,
+     156.727
+    ],
+    [
+     "2:30 am",
+     156.66,
+     156.734,
+     156.735,
+     156.659
     ]
    ],
    "journal": {
     "since": "23 Oct 2026",
     "weekdays": 1,
-    "trades": 0,
+    "trades": 1,
     "decided": 0,
     "direction": null,
-    "days": 0.0,
-    "perday": 0.0,
+    "days": 100.0,
+    "perday": 1.0,
     "closed": 0,
     "win": null,
     "pf": null,
@@ -488,8 +560,38 @@
      "date": "2026-10-23",
      "rules": "v1.05",
      "label": "Fri 23 Oct",
-     "side": null,
-     "trades": [],
+     "side": "SELL",
+     "trades": [
+      {
+       "time": "2:33 am",
+       "side": "SELL",
+       "sig": "L3",
+       "name": "Week-so-far break",
+       "price": 156.684,
+       "entry": 156.684,
+       "stop": 157.285,
+       "stop0": 157.285,
+       "stop_pips": 60.1,
+       "half_px": 156.624,
+       "half": false,
+       "part": 0.5,
+       "half_time": null,
+       "size": "full",
+       "quiet": false,
+       "first": true,
+       "status": "open",
+       "exit": null,
+       "exit_time": null,
+       "pips": null,
+       "usd": null,
+       "r": null,
+       "r_sized": null,
+       "usd_risk": null,
+       "r_now": 0.0237,
+       "rwf": null,
+       "spread": 1.0
+      }
+     ],
      "atr_pips": 78.8,
      "final": false
     },
@@ -1226,7 +1328,7 @@
     }
    ],
    "feed_error": false,
-   "live_spread_pips": 1.4,
+   "live_spread_pips": 1.2,
    "history_note": "history to 2026-10-22 (300 days)"
   },
   "DE40": {
@@ -1265,8 +1367,8 @@
    "net_label": "Net $ per barrel (v1.05)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 98.653,
-   "change": -0.07,
+   "price": 98.593,
+   "change": -0.13,
    "entries": [],
    "spark": [
     [
@@ -1303,6 +1405,20 @@
      98.64,
      98.68,
      98.62
+    ],
+    [
+     "2:25 am",
+     98.64,
+     98.66,
+     98.69,
+     98.64
+    ],
+    [
+     "2:30 am",
+     98.59,
+     98.64,
+     98.65,
+     98.59
     ]
    ],
    "journal": {
@@ -1857,8 +1973,8 @@
    "net_label": "Net points (v1.00 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal (from 5:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep).",
-   "price": 7674.9,
-   "change": 14.3,
+   "price": 7671.4,
+   "change": 10.8,
    "entries": [],
    "spark": [
     [
@@ -1972,6 +2088,20 @@
      7669.9,
      7675.7,
      7669.9
+    ],
+    [
+     "2:25 am",
+     7673.5,
+     7675.0,
+     7675.0,
+     7672.5
+    ],
+    [
+     "2:30 am",
+     7671.4,
+     7673.2,
+     7673.4,
+     7669.9
     ]
    ],
    "journal": {
@@ -2083,8 +2213,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 28988.9,
-   "change": 80.7,
+   "price": 28948.0,
+   "change": 39.8,
    "entries": [],
    "spark": [
     [
@@ -2198,6 +2328,20 @@
      28950.9,
      28993.2,
      28950.5
+    ],
+    [
+     "2:25 am",
+     28964.7,
+     28988.7,
+     28989.9,
+     28962.1
+    ],
+    [
+     "2:30 am",
+     28948.0,
+     28964.9,
+     28964.9,
+     28935.2
     ]
    ],
    "journal": {
