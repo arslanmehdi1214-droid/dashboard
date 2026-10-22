@@ -469,22 +469,22 @@
      "side": "BUY",
      "name": "Open \u00b1 \u00bd range",
      "price": 99.49,
-     "stop": 99.53,
+     "stop": 95.61,
      "stop0": 95.61,
-     "half_px": 99.73,
-     "half": true,
+     "half_px": 99.79,
+     "half": false,
      "part": 0.25,
      "late": false,
      "stop_usd": 3.88,
      "size": "1/3",
      "first": true,
-     "status": "be",
-     "exit": 99.53,
-     "exit_time": "12:00 pm",
-     "res": 0.049,
-     "res_sized": 0.016,
+     "status": "open",
+     "exit": null,
+     "exit_time": null,
+     "res": null,
+     "res_sized": null,
      "rwf": null,
-     "spread": 0.04
+     "spread": 0.095
     }
    ],
    "range_usd": 3.88,
@@ -500,11 +500,11 @@
   "direction": 28.6,
   "days": 100.0,
   "perday": 2.67,
-  "closed": 8,
-  "win": 75.0,
-  "pf": 0.04,
-  "net": -2.39,
+  "closed": 7,
+  "win": 71.4,
+  "pf": 0.03,
+  "net": -2.41,
   "rules": "v1.05",
-  "green": 33.3
+  "green": 0.0
  }
 }
