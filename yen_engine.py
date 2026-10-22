@@ -1,4 +1,7 @@
-"""USDJPY_DAYTRADE v1.03 rules (the MT4 EA, 11 signals) as a PAPER engine for the portal - same logic as the EA, line by line.
+"""USDJPY_DAYTRADE v1.04 rules (the MT4 EA, 11 signals) as a PAPER engine for the portal - same logic as the EA, line by line.
+v1.04 (MT4 run 22 Oct passed): (a) the Heikin-Ashi 7am trade closes WHOLE at a tiny target = 0.03 x its risk (status 'target');
+(b) BREAKOUT FLIP: a quiet signal (3,4,5,6,7,11) against the day's side closes today's open trades at its price (status 'reversed')
+and switches the day to the new side.
 v1.03 exits: quiet signals stop 0.25 x range, close half at +0.5 x risk; other signals stop 0.75 x range, half at +0.10 x risk;
 after the half the rest closes at the entry price; day lock +2R / +1R; one trade per minute; Heikin-Ashi 7am at 1/3 size;
 close 18:00 broker, Fridays 14:00.
@@ -15,6 +18,8 @@ PT = 0.001; MIN_SPREAD = 0.01                        # 1 pip = the MT4 test spre
 QUIET = {2, 3, 4, 5, 6, 10}                          # EA signals 3,4,5,6,7,11 (inside-week / inside-day / quiet 5-day / squeeze 4pm / quiet 2-day / hourly squeeze)
 Q_STOP, Q_HALF, O_STOP, O_HALF = 0.25, 0.50, 0.75, 0.10   # stop = x 14-day range; half at + x risk (risk = stop distance incl. spread)
 PART, LOCK_PK, LOCK_FL, HA_W = 0.5, 2.0, 1.0, 1 / 3      # half part; day lock peak / floor in R; Heikin-Ashi 7am size
+HA_TARGET = 0.03                                     # v1.04: Heikin-Ashi 7am closes the whole trade at + this x risk (0 = v1.03 half-close)
+FLIP = True                                          # v1.04: a quiet signal against the day's side closes open trades and switches the side
 RISK_USD = 100.0                                     # v1.03 set file Risk_Dollars=100: a full-size stop = $100 (the MT4 backtest's size)
 KEEP_DAYS, KEEP_HOURS = 300, 600                      # history kept in the cache (enough for the 120-day rank, EMA30, 200-hour rank)
 
@@ -137,10 +142,13 @@ class Yen:
             else: S['hH'] = max(S['hH'], H_[i]); S['hL'] = min(S['hL'], L_[i])
             S['hC'] = C_[i]; S['hBars'] += 1
         def Fire(s, d, lv, i, px, opentick):
-            if S['dayDir'] != 0 and d != S['dayDir']: return
+            flip = False
+            if S['dayDir'] != 0 and d != S['dayDir']:
+                if not (FLIP and s in QUIET): return
+                S['dayDir'] = d; flip = True                                   # v1.04 breakout flip
             for (fm, fd, fl, fo) in fills:
                 if fm == i and fd == d and ((lv > 0 and abs(fl - lv) < PT / 2) or (fo and opentick)): return
-            TR.append(dict(i=i, s=s, dir=d, px=float(px), atr=S['dayATR'], first=S['dayDir'] == 0))
+            TR.append(dict(i=i, s=s, dir=d, px=float(px), atr=S['dayATR'], first=S['dayDir'] == 0, flip=flip))
             if S['dayDir'] == 0: S['dayDir'] = d
             fills.append((i, d, lv, opentick))
         def HourEvents(i):
@@ -245,14 +253,20 @@ class Yen:
             took = False
             for tr in byi.get(j, []):
                 if off: continue
+                if tr.get('flip'):                         # v1.04: close every open trade at the flipping signal's price, then take it
+                    fsp = SP(j)
+                    for l in legs:
+                        if l['on']: shut(l, tr['px'] if l['d'] > 0 else tr['px'] + fsp, j, 'reversed')
                 if took: continue
                 s, d, px = tr['s'], tr['dir'], tr['px']; q = s in QUIET
                 sd = (Q_STOP if q else O_STOP) * tr['atr']
                 if not sd > 0: continue
                 sp = SP(j); e = px + sp if d > 0 else px; sl = px - sd if d > 0 else px + sp + sd; k = Q_HALF if q else O_HALF
+                tgt = (s == 0 and HA_TARGET > 0)
+                if tgt: k = HA_TARGET
                 legs.append(dict(tr=tr, w=(HA_W if s == 0 else 1.0), d=d, px=px, e=e, sl=sl, sl0=sl, sd=sd, sp=sp,
                                  hp=(e + d * k * abs(e - sl)) if k > 0 else None, half=False, half_t=None, bank=0., j=j, on=True,
-                                 r=None, ex=None, ext=None, status='open'))
+                                 r=None, ex=None, ext=None, status='open', tgt=tgt))
                 took = True
             sp = SP(j)
             for l in legs:
@@ -262,6 +276,7 @@ class Yen:
                     px = min(l['sl'], O_[j]) if d > 0 else max(l['sl'], O_[j] + sp)
                     shut(l, px, j, 'be' if l['half'] else 'stopped'); continue
                 if not l['half'] and l['hp'] is not None and ((d > 0 and H_[j] >= l['hp']) or (d < 0 and L_[j] + sp <= l['hp'])):
+                    if l['tgt']: shut(l, l['hp'], j, 'target'); continue          # v1.04: Heikin-Ashi whole trade at the tiny target
                     l['bank'] = PART * d * (l['hp'] - l['e']) / l['sd']; l['half'] = True; l['half_t'] = j
                     l['sl'] = max(l['sl'], l['e']) if d > 0 else min(l['sl'], l['e'])
             tot = banked + sum(mark(l, C_[j], sp) for l in legs if l['on']); peak = max(peak, tot)
@@ -299,7 +314,7 @@ class Yen:
             out.append(dict(t=int(T[i]), sig=TAG[tr['s']], name=NAME[tr['s']], dir=d, px=round(px, 3), entry=round(l['e'], 3),
                             stop=round(l['sl'], 3), stop0=round(l['sl0'], 3), stop_pips=round(abs(l['e'] - l['sl0']) * 100, 1),
                             half_px=None if l['hp'] is None else round(l['hp'], 3), half=bool(l['half']),
-                            half_t=None if l['half_t'] is None else int(T[l['half_t']]), size='third' if l['w'] < 1 else 'full', w=l['w'],
+                            half_t=None if l['half_t'] is None else int(T[l['half_t']]), size='third' if l['w'] < 1 else 'full', w=l['w'], part=1.0 if l['tgt'] else PART,
                             quiet=tr['s'] in QUIET, first=bool(tr['first']), spread_pips=round(l['sp'] * 100, 1), status=l['status'],
                             exit=None if l['ex'] is None else round(float(l['ex']), 3), exit_t=None if l['ext'] is None else int(T[l['ext']]),
                             r=None if l['r'] is None else round(l['r'], 4), r_now=None if r_now is None else round(r_now, 4),

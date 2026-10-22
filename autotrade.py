@@ -1,4 +1,4 @@
-"""DEMO AUTO-TRADER (20 Oct 2026). Copies the Signal Desk's trades onto the Capital.com DEMO account, every minute, inside loop.py.
+"""DEMO AUTO-TRADER (20 Oct 2026; 22 Oct: part = 1.0 -> one position with the take-profit). Copies the Signal Desk's trades onto the Capital.com DEMO account, every minute, inside loop.py.
 
 How it works (one pass per minute, right after the desk engines ran):
   * reads docs/data.json (the desk's own trades for today, all markets)
@@ -235,10 +235,13 @@ def run_once(api=None, portal=PORTAL, now=None):
             usd_per_unit = (dist / px if cfg['quote'] == 'JPY' else dist) * rules['contract']
             size = RISK_USD * weight(code, e) / usd_per_unit
             part = float(e.get('part', 0.5)) if (SPLIT and e.get('half_px') is not None and not e.get('half')) else 0.0
-            p_size = rnd_size(size * part, rules) if part > 0 else 0.0
-            r_size = rnd_size(size - p_size, rules)
-            if p_size < rules['min'] or r_size < rules['min']:          # too small to split: one position, part handled by the stop move
-                p_size = 0.0; r_size = max(rnd_size(size, rules), rules['min'])
+            if part >= 0.999:                                            # 22 Oct (yen v1.04 HA 7am): whole trade closes at the target -> ONE position with the take-profit
+                p_size = max(rnd_size(size, rules), rules['min']); r_size = 0.0
+            else:
+                p_size = rnd_size(size * part, rules) if part > 0 else 0.0
+                r_size = rnd_size(size - p_size, rules)
+                if p_size < rules['min'] or r_size < rules['min']:      # too small to split: one position, part handled by the stop move
+                    p_size = 0.0; r_size = max(rnd_size(size, rules), rules['min'])
             side = 'BUY' if e['side'] == 'BUY' else 'SELL'; stop = rnd_px(e['stop'], rules); tp = rnd_px(e.get('half_px'), rules)
             real_aed = round((p_size + r_size) * usd_per_unit * AED_PER_USD, 2)      # what the first stop really costs after lot rounding / minimum size
             T[k] = dict(market=code, state='open', side=side, stop=float(e['stop']), desk_price=px, opened_at=stamp, risk_usd=round(RISK_USD * weight(code, e), 2), risk_aed=real_aed)

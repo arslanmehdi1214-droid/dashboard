@@ -1,6 +1,6 @@
 """USDJPY PAPER signals for the page (no phone alerts, no real money). Called by run.py after gold, every 5 minutes.
-Replays today's Capital.com USDJPY minutes through the USDJPY_DAYTRADE v1.03 rules (yen_engine.py; checked trade by trade against
-his MT4 v1.03 run 2020-2026) and keeps a paper journal, judged after ~3 months (pass = green days >= 60% and profit factor >= 1.10).
+Replays today's Capital.com USDJPY minutes through the USDJPY_DAYTRADE rules (yen_engine.py; v1.04 from broker day 2026-10-23,
+checked trade by trade against his MT4 v1.04 run 22 Oct; v1.03 before) and keeps a paper journal, judged after ~3 months (pass = green days >= 60% and profit factor >= 1.10).
 Journal days are tagged with the rules they ran; the record counts only the current rules (v1.01 days 5-16 Oct 2026 stay but are not mixed in).
 Files: docs/usdjpy_hist.json (the EA's finished daily + hourly bars; seeded from his MT4 data to 2026-09-25, then extended with
 Capital.com minutes), docs/journal_usdjpy.json (every paper trade), docs/data.json -> markets.USDJPY (the page)."""
@@ -13,9 +13,19 @@ HIST = os.path.join(HERE, 'docs', 'usdjpy_hist.json'); JOUR = os.path.join(HERE,
 PORTAL = os.path.join(HERE, 'docs', 'data.json')
 EPIC = os.environ.get('CAPITAL_EPIC_USDJPY', 'USDJPY'); LOTS = 0.10
 PASS = dict(green=60.0, pf=1.10, months=3)
-RULES = 'v1.03'
-BACKTEST = dict(direction='—', days='68.7% green / 99.5% traded', perday='1.86', win='78.2%', pf='1.38', net='+$13,048 at $100 risk per trade',
-                source='MT4 backtest v1.03 2020-01-02 to 2026-06-12, 3,132 trades')
+V104_FROM = '2026-10-23'                 # broker day v1.04 starts (HA 7am tiny target + breakout flip); earlier days = v1.03
+RULES = 'v1.04'
+BT103 = dict(direction='—', days='68.7% green / 99.5% traded', perday='1.86', win='78.2%', pf='1.38', net='+$13,048 at $100 risk per trade',
+             source='MT4 backtest v1.03 2020-01-02 to 2026-06-12, 3,132 trades')
+BT104 = dict(direction='—', days='70.2% green / 99.5% traded', perday='2.18', win='79.0%', pf='1.41', net='+$18,414 at $100 risk per trade',
+             source='MT4 backtest v1.04 (his run 22 Oct) 2020-01-02 to 2026-06-12, 3,673 trades')
+BACKTEST = BT104
+def set_rules(day):
+    """v1.04 from V104_FROM, v1.03 before (engine switches + card labels)."""
+    global RULES, BACKTEST
+    new = str(pd.Timestamp(day).date()) >= V104_FROM
+    Y.HA_TARGET = 0.03 if new else 0.0; Y.FLIP = new
+    RULES = 'v1.04' if new else 'v1.03'; BACKTEST = BT104 if new else BT103
 
 def loadj(p, d):
     try: return json.load(open(p))
@@ -76,7 +86,7 @@ def catch_up(feed, H, day):
     return added
 
 def main():
-    now = F.broker_now(); day = now.normalize()
+    now = F.broker_now(); day = now.normalize(); set_rules(day)
     H = loadj(HIST, None)
     if H is None: raise RuntimeError('docs/usdjpy_hist.json missing')
     old = loadj(PORTAL, {}); mk = old.setdefault('markets', {})
@@ -111,8 +121,12 @@ def main():
     sig_end = min(day + pd.Timedelta(hours=19), eod); last_sig = now >= sig_end
     if rows:
         side = rows[0]['side']; state = side.lower()
-        msg = (f"PAPER {side} day — later signals today are {side} only. Each trade closes half at its ½ level, then the rest's stop moves to the entry; "
-               f"everything closes at the {dubai(secs(eod))} Dubai close." + (" Day lock hit: no more trades today." if locked else ''))
+        side = rows[-1]['side'] if RULES == 'v1.04' else side
+        msg = ((f"PAPER {side} day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the ½ level, then the rest's stop "
+                f"moves to the entry. A quiet breakout the other way closes open trades and switches the side. Everything closes at the {dubai(secs(eod))} Dubai close.")
+               if RULES == 'v1.04' else
+               (f"PAPER {side} day — later signals today are {side} only. Each trade closes half at its ½ level, then the rest's stop moves to the entry; "
+                f"everything closes at the {dubai(secs(eod))} Dubai close.")) + (" Day lock hit: no more trades today." if locked else '')
     elif last_sig: state, msg = 'none', f"No paper trade today (new signals stop at {dubai(secs(sig_end))} Dubai)."
     else: state, msg = 'waiting', 'Waiting for the first signal.'
     spark = []
@@ -126,28 +140,32 @@ def main():
     print(f'USDJPY paper: {now} broker | trades today {len(rows)} | bars {len(b)} | history to {H["through"]} | added {added}')
 
 def base_card():
-    note = ('stop: quiet signals ¼ of the 14-day range, others ¾ · close half at +0.5 x risk (quiet) / +0.1 x risk (others), then the rest closes at the entry · '
+    if RULES == 'v1.04':
+        note = ('stop: quiet signals ¼ of the 14-day range, others ¾ · Heikin-Ashi 7am (⅓ size) closes WHOLE at +0.03 x risk · others close half at +0.5 x risk (quiet) / '
+                '+0.1 x risk, then the rest closes at the entry · a quiet breakout against the day closes open trades and switches the side · '
+                'day lock: once the day reaches +2R, close all at +1R, no more trades · one trade per minute · close 6:00 pm broker (Fridays 2:00 pm)')
+    else: note = ('stop: quiet signals ¼ of the 14-day range, others ¾ · close half at +0.5 x risk (quiet) / +0.1 x risk (others), then the rest closes at the entry · '
             'day lock: once the day reaches +2R, close all at +1R, no more trades · one trade per minute · Heikin-Ashi 7am at ⅓ size · '
             'close 6:00 pm broker (Fridays 2:00 pm)')
     return dict(code='USDJPY', name='USD/JPY', symbol='USD/JPY', live=False, paper=True, status='Paper', version=RULES, lots=LOTS,
                 stats=BACKTEST, pass_bar=PASS, day_note=note,
-                what_note='This page tracks whether live USD/JPY signals do as well as the v1.03 backtest. Decision after about 3 months.',
+                what_note=f'This page tracks whether live USD/JPY signals do as well as the {RULES} backtest. Decision after about 3 months.',
                 cost_note="Pips are for the whole trade (⅓-size trades count one third), after Capital.com's spread (at least 1 pip). $ = at $100 risk per full-size trade, like the MT4 test.",
-                net_label='Net R / $ at $100 risk (v1.03 sizes)')
+                net_label=f'Net R / $ at $100 risk ({RULES} sizes)')
 
 def row(t, day_over):
     st = t['status']
     if st == 'open' and day_over: st = 'close_now'
     rs = None if t['r'] is None else round(t['r'] * t['w'], 3)
     return dict(time=dubai(t['t']), side='BUY' if t['dir'] == 1 else 'SELL', sig=t['sig'], name=t['name'], price=t['px'], entry=t['entry'],
-                stop=t['stop'], stop0=t['stop0'], stop_pips=t['stop_pips'], half_px=t['half_px'], half=t['half'],
+                stop=t['stop'], stop0=t['stop0'], stop_pips=t['stop_pips'], half_px=t['half_px'], half=t['half'], part=t.get('part', 0.5),
                 half_time=None if t['half_t'] is None else dubai(t['half_t']), size=t['size'], quiet=t['quiet'], first=t['first'], status=st,
                 exit=t['exit'], exit_time=None if t['exit_t'] is None else dubai(t['exit_t']), pips=t['pips'],
                 usd=None if t['pips'] is None else round(t['pips'] * LOTS * 1000 / t['px'], 2), r=t['r'], r_sized=rs,
                 usd_risk=None if rs is None else round(rs * Y.RISK_USD, 2), r_now=t['r_now'], rwf=t['rwf'], spread=t['spread_pips'])
 
 def summary(J, day=None):
-    """Paper record of the CURRENT rules only (v1.03 days); the older v1.01 days stay in the journal but are not mixed in."""
+    """Paper record of the CURRENT rules only; days of older rules (v1.01, v1.03) stay in the journal but are not mixed in."""
     D3 = [d for d in J.get('days', []) if d.get('rules') == RULES]
     if not D3: return dict(since=None, trades=0, rules=RULES)
     J = dict(start=D3[0]['date'], days=D3)
