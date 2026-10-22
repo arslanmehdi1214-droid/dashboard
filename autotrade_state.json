@@ -1,15 +1,15 @@
 {
- "balance": 1083.02,
+ "balance": 1082.89,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-10-23",
-  "pl": 0.7,
+  "pl": 0.49,
   "start_balance": 1082.4,
   "start_equity": 1082.4,
   "stopped": false
  },
- "open_positions": 1,
- "open_risk_aed": 0.0,
+ "open_positions": 0,
+ "open_risk_aed": 0,
  "risk_usd": 8.168822328114365,
  "trades": {
   "GOLD|2026-10-20|1:06 pm|BUY|FILL range fade": {
@@ -487,16 +487,17 @@
    "part_x": 0.5,
    "px_adj": 0.0,
    "rest": {
+    "closed_by": "Capital.com stop/target",
     "id": "00000000-6dbe-8f61-0495-7fc60004511e",
     "level": 156.646,
-    "open": true,
+    "open": false,
     "size": 1100.0,
     "tp": null
    },
    "risk_aed": 29.58,
    "risk_usd": 8.17,
    "side": "SELL",
-   "state": "open",
+   "state": "closed",
    "stop": 156.684
   }
  },
