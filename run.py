@@ -331,6 +331,15 @@ def safe_main():
             import nq_run; nq_run.fail(e)
         except Exception:
             traceback.print_exc()
+    try:                                    # S&P 500 paper page (22 Oct, version A; copies the Nasdaq picks written just above)
+        import sp_run
+        sp_run.main()
+    except Exception as e:
+        traceback.print_exc()
+        try:
+            import sp_run; sp_run.fail(e)
+        except Exception:
+            traceback.print_exc()
     try:                                    # Silver paper page (v1.8 honest rules; a silver failure never touches the other cards)
         import sv_run
         sv_run.main()

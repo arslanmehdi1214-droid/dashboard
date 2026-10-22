@@ -200,7 +200,11 @@ def main(feed=None, get=None, now=None):
 
 def variant(V, allm, b, day, now, eod, spread, last, first, spark, hist, added):
     J = loadj(V['jour'], dict(start=None, days=[]))
+    N.LAST_PICKS.clear()
     trades = N.run_day(allm, day, now, S=V['S'], exits=RULES, sp=max(MIN_SPREAD, spread or 0.0)) if len(b) else []
+    if V['code'] == 'US100':                             # 22 Oct: the day's Nasdaq picks for the S&P page (it copies them in US hours)
+        dumpj(dict(day=str(day.date()), picks=N.LAST_PICKS.get('picks', []) if N.LAST_PICKS.get('day') == str(day.date()) else [],
+                   at=str(now)), os.path.join(HERE, 'docs', 'nq_picks.json'), indent=1)
     rows = [row(t, b, now, eod, spread) for t in trades]
     if J.get('start') is None: J['start'] = str(day.date())
     A = trades[0]['A'] if trades else None

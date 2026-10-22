@@ -43,6 +43,7 @@ def git(*a): return subprocess.run(['git', *a], capture_output=True, text=True)
 def push():
     git('add', 'sent.json', 'docs/*.json', 'docs/nq_min/*.npz')
     git('add', 'docs/sv_min')                                              # silver minute files (separate: a missing folder never blocks the rest)
+    git('add', 'docs/sp_min')                                              # S&P minute files (22 Oct)
     git('add', 'autotrade_state.json', 'autotrade_log.json')              # demo auto-trader memory (which demo positions are ours)
     if git('diff', '--cached', '--quiet').returncode == 0: return 'nothing new'
     git('commit', '-m', 'alerts state')
@@ -78,6 +79,8 @@ def main():
     except Exception: nq_run = None
     try: import sv_run                                                     # same for the silver paper page
     except Exception: sv_run = None
+    try: import sp_run                                                     # same for the S&P paper page (22 Oct)
+    except Exception: sp_run = None
     try: import autotrade                                                  # demo auto-trader: copies the desk's trades to the Capital.com DEMO account
     except Exception as e: autotrade = None; print('autotrade not loaded:', type(e).__name__, e)
     while True:
@@ -86,6 +89,7 @@ def main():
         if wti_run is not None and hasattr(wti_run, 'DEADLINE'): wti_run.DEADLINE = time.time() + 90
         if nq_run is not None and hasattr(nq_run, 'DEADLINE'): nq_run.DEADLINE = time.time() + 90
         if sv_run is not None and hasattr(sv_run, 'DEADLINE'): sv_run.DEADLINE = time.time() + 90
+        if sp_run is not None and hasattr(sp_run, 'DEADLINE'): sp_run.DEADLINE = time.time() + 90
         R.safe_main(); n += 1
         at_before = open('autotrade_state.json').read() if os.path.exists('autotrade_state.json') else ''
         if autotrade is not None:

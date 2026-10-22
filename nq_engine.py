@@ -23,6 +23,7 @@ V101 = dict(buy_stop=0.5, sell_stop=0.25, sell_w=1/3, k=0.5, part=0.25, lock_pk=
 V102 = dict(buy_stop=0.4, sell_stop=0.25, sell_w=1/3, k=0.5, part_buy=0.25, part_sell=0.15, trail=0.45, last=22 * 60, fri_last=20 * 60, lock_pk=3.0, lock_fl=1.5)
 ENG_SET = dict(U2_Step=100.0, N2_Step=200.0, G3_Step=40.0, Spread=0.6)   # same settings as the research replay (replay_n.py raw 100 200 40)
 NEUTRAL = dict(d5=0, d1=0, vix=0, tnx=0, regime=lambda t: 0, attn=0)
+LAST_PICKS = {}                                   # 22 Oct: the day's picks (before the exits) for the S&P page (sp_run copies them)
 
 def engine_first(m, day):
     """Gold v2.06 signal engine replayed on today's Nasdaq minutes (outside inputs neutral, as in the research):
@@ -269,6 +270,7 @@ def run_day(m, day, now=None, S=None, exits=None, sp=1.8):
     nc = len(S['core'])
     c = first_trade([e for e in ev if e[1] < nc]); f = first_trade([e for e in ev if e[1] >= nc])
     picks = ([c] if c else []) + ([f] if f and (c is None or f[0] < c[0]) else [])
+    LAST_PICKS.clear(); LAST_PICKS.update(day=str(day.date()), picks=[(str(B['t'][j]), int(d)) for (j, oi, nm, d, px) in sorted(picks)])
     trades = []
     if exits in ('v1.01', 'v1.02'):
         legs = manage_v101(B, sorted(picks), len(B['O']) - 1, sp) if exits == 'v1.01' else manage_v102(B, sorted(picks), len(B['O']) - 1, sp)

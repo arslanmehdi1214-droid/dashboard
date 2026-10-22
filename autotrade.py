@@ -1,4 +1,4 @@
-"""DEMO AUTO-TRADER (20 Oct 2026; 22 Oct: part = 1.0 -> one position with the take-profit). Copies the Signal Desk's trades onto the Capital.com DEMO account, every minute, inside loop.py.
+"""DEMO AUTO-TRADER (20 Oct 2026; 22 Oct: part = 1.0 -> one position with the take-profit; stop-to-entry uses each position's real fill; US500 added). Copies the Signal Desk's trades onto the Capital.com DEMO account, every minute, inside loop.py.
 
 How it works (one pass per minute, right after the desk engines ran):
   * reads docs/data.json (the desk's own trades for today, all markets)
@@ -41,6 +41,7 @@ MARKETS = {                   # desk code -> Capital.com epic, quote currency
     'OIL': dict(epic='OIL_CRUDE', quote='USD'),
     'US100': dict(epic='US100', quote='USD'),
     'SILVER': dict(epic='SILVER', quote='USD'),
+    'US500': dict(epic='US500', quote='USD'),        # 22 Oct: S&P 500 paper (version A, no part close -> one position per leg)
 }
 DUBAI = dt.timezone(dt.timedelta(hours=4))
 
@@ -194,7 +195,8 @@ def run_once(api=None, portal=PORTAL, now=None):
                 want = e.get('stop')
                 if want is not None:   # 21 Oct: ignore tiny desk stop wobbles (yen stop flipped 0.6 pip every minute as the entry-bar spread was re-read)
                     cur = float(tr.get('stop', want)); rd = abs(float(e.get('price') or want) - float(e.get('stop0') or want))
-                    if abs(float(want) - cur) > max(1e-9, 0.05 * rd): moves.append((k, tr, float(want)))
+                    be = abs(float(want) - float(e.get('entry') if e.get('entry') is not None else (e.get('price') or want))) <= 0.02 * max(rd, 1e-9)
+                    if abs(float(want) - cur) > max(1e-9, 0.05 * rd): moves.append((k, tr, float(want), be))
         # trades we still hold from an EARLIER desk day (the day-end close was missed): close them
         # ... or whose desk row has vanished for 3 minutes in a row (the desk re-drew its day): close them too
         for k, tr in T.items():
@@ -215,16 +217,18 @@ def run_once(api=None, portal=PORTAL, now=None):
                     note(tr['market'], f'close {role}', f'{k} ({why}) {"" if ok else msg}', ok)
             if not any((T[k].get(r) or {}).get('open') for r in ('part', 'rest')): T[k]['state'] = 'closed'
         # 3) stop moves
-        for k, tr, want in moves:
+        for k, tr, want, be in moves:
             if T[k].get('state') != 'open': continue
             rules = api.market_rules(MARKETS[tr['market']]['epic']); s = rnd_px(want, rules); ok_all = True
             for role in ('part', 'rest'):
                 d = T[k].get(role)
                 if d and d.get('open'):
-                    ok, msg = api.set_stop(d['id'], s, d.get('tp'))
+                    s_d = rnd_px(d['level'], rules) if (be and d.get('level') is not None) else s   # 22 Oct: stop to entry = this position's REAL fill, not the desk price
+                    ok, msg = api.set_stop(d['id'], s_d, d.get('tp'))
+                    if not ok and s_d != s: ok, msg = api.set_stop(d['id'], s, d.get('tp')); s_d = s     # real-fill level refused: use the desk level
                     ok_all &= ok
-                    if not ok: note(tr['market'], f'move stop {role} FAILED', f'{k} to {s}: {msg}', False)
-            if ok_all: T[k]['stop'] = want; note(tr['market'], 'stop moved', f'{k} to {s}')
+                    if not ok: note(tr['market'], f'move stop {role} FAILED', f'{k} to {s_d}: {msg}', False)
+            if ok_all: T[k]['stop'] = want; note(tr['market'], 'stop moved', f'{k} to {s}' + (' (stop to entry: each position at its own fill price)' if be else ''))
         # 4) opens
         n_open = sum(1 for tr in T.values() for r in ('part', 'rest') if (tr.get(r) or {}).get('open'))
         for code, cfg, e, k in opens[:MAX_NEW_PER_PASS]:
