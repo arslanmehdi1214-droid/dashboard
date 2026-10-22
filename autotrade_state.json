@@ -1,14 +1,14 @@
 {
- "balance": 1091.14,
+ "balance": 1093.91,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-10-22",
-  "pl": -23.08,
+  "pl": -17.54,
   "start_balance": 1109.91,
   "start_equity": 1183.8200000000002,
   "stopped": false
  },
- "open_positions": 4,
+ "open_positions": 1,
  "open_risk_aed": 28.17,
  "risk_usd": 8.168822328114365,
  "trades": {
@@ -380,16 +380,17 @@
     "tp": 157.822
    },
    "rest": {
+    "closed_by": "desk: eod",
     "id": "00000000-6d19-d200-0495-7fc60004511e",
     "level": 157.868,
-    "open": true,
+    "open": false,
     "size": 600.0,
     "tp": null
    },
    "risk_aed": 16.39,
    "risk_usd": 4.54,
    "side": "SELL",
-   "state": "open",
+   "state": "closed",
    "stop": 157.881
   },
   "USDJPY|2026-10-22|7:03 am|SELL|Inside-day break": {
@@ -405,16 +406,17 @@
     "tp": 157.732
    },
    "rest": {
+    "closed_by": "desk: eod",
     "id": "00000000-6d19-d6ea-0495-7fc60004511e",
     "level": 157.806,
-    "open": true,
+    "open": false,
     "size": 5300.0,
     "tp": null
    },
    "risk_aed": 49.84,
    "risk_usd": 13.61,
    "side": "SELL",
-   "state": "open",
+   "state": "closed",
    "stop": 157.834
   },
   "USDJPY|2026-10-22|7:09 am|SELL|Week-so-far break": {
@@ -456,16 +458,17 @@
     "tp": 157.485
    },
    "rest": {
+    "closed_by": "desk: eod",
     "id": "00000000-6d1a-d7a6-0495-7fc60004511e",
     "level": 157.553,
-    "open": true,
+    "open": false,
     "size": 1800.0,
     "tp": null
    },
    "risk_aed": 49.09,
    "risk_usd": 13.61,
    "side": "SELL",
-   "state": "open",
+   "state": "closed",
    "stop": 157.543
   }
  },
