@@ -1,5 +1,5 @@
 {
- "updated": "Thu 22 Oct \u00b7 7:04 am",
+ "updated": "Thu 22 Oct \u00b7 7:10 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -13,9 +13,9 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 8 pm Dubai).",
-   "price": 4111.97,
+   "price": 4113.35,
    "close_at": "12:00 am",
-   "change": -29.92,
+   "change": -28.54,
    "size": 0.1,
    "datr": 66.97,
    "open_now": 0,
@@ -443,10 +443,17 @@
     ],
     [
      "7:00 am",
-     4111.97,
+     4110.24,
      4116.07,
      4116.07,
-     4111.61
+     4109.77
+    ],
+    [
+     "7:05 am",
+     4113.35,
+     4110.25,
+     4115.27,
+     4109.57
     ]
    ],
    "history": [
@@ -678,8 +685,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 56.625,
-   "change": -1.265,
+   "price": 56.649,
+   "change": -1.241,
    "entries": [],
    "spark": [
     [
@@ -1104,10 +1111,17 @@
     ],
     [
      "7:00 am",
-     56.625,
+     56.59,
      56.772,
      56.772,
-     56.625
+     56.548
+    ],
+    [
+     "7:05 am",
+     56.649,
+     56.592,
+     56.73,
+     56.559
     ]
    ],
    "journal": {
@@ -1193,8 +1207,8 @@
    "net_label": "Net R / $ at $100 risk (v1.03 sizes)",
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Each trade closes half at its \u00bd level, then the rest's stop moves to the entry; everything closes at the 7:00 pm Dubai close.",
-   "price": 157.81,
-   "change_pips": -27.8,
+   "price": 157.69,
+   "change_pips": -39.8,
    "atr_pips": 76.6,
    "entries": [
     {
@@ -1221,7 +1235,7 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": 0.1024,
+     "r_now": 0.2067,
      "rwf": null,
      "spread": 1.2
     },
@@ -1232,12 +1246,12 @@
      "name": "Inside-day break",
      "price": 157.834,
      "entry": 157.834,
-     "stop": 158.038,
+     "stop": 157.834,
      "stop0": 158.038,
      "stop_pips": 20.4,
      "half_px": 157.732,
-     "half": false,
-     "half_time": null,
+     "half": true,
+     "half_time": "7:09 am",
      "size": "full",
      "quiet": true,
      "first": false,
@@ -1249,7 +1263,35 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": 0.0626,
+     "r_now": 0.6101,
+     "rwf": null,
+     "spread": 1.2
+    },
+    {
+     "time": "7:09 am",
+     "side": "SELL",
+     "sig": "L3",
+     "name": "Week-so-far break",
+     "price": 157.696,
+     "entry": 157.696,
+     "stop": 158.283,
+     "stop0": 158.283,
+     "stop_pips": 58.7,
+     "half_px": 157.637,
+     "half": false,
+     "half_time": null,
+     "size": "full",
+     "quiet": false,
+     "first": false,
+     "status": "open",
+     "exit": null,
+     "exit_time": null,
+     "pips": null,
+     "usd": null,
+     "r": null,
+     "r_sized": null,
+     "usd_risk": null,
+     "r_now": -0.0104,
      "rwf": null,
      "spread": 1.2
     }
@@ -1670,20 +1712,27 @@
     ],
     [
      "7:00 am",
-     157.81,
+     157.802,
      157.881,
      157.881,
-     157.799
+     157.792
+    ],
+    [
+     "7:05 am",
+     157.69,
+     157.804,
+     157.818,
+     157.686
     ]
    ],
    "journal": {
     "since": "19 Oct 2026",
     "weekdays": 4,
-    "trades": 9,
+    "trades": 10,
     "decided": 6,
     "direction": 100.0,
     "days": 100.0,
-    "perday": 2.25,
+    "perday": 2.5,
     "closed": 7,
     "win": 100.0,
     "pf": null,
@@ -1726,7 +1775,7 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": 0.1024,
+       "r_now": 0.2067,
        "rwf": null,
        "spread": 1.2
       },
@@ -1737,12 +1786,12 @@
        "name": "Inside-day break",
        "price": 157.834,
        "entry": 157.834,
-       "stop": 158.038,
+       "stop": 157.834,
        "stop0": 158.038,
        "stop_pips": 20.4,
        "half_px": 157.732,
-       "half": false,
-       "half_time": null,
+       "half": true,
+       "half_time": "7:09 am",
        "size": "full",
        "quiet": true,
        "first": false,
@@ -1754,7 +1803,35 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": 0.0626,
+       "r_now": 0.6101,
+       "rwf": null,
+       "spread": 1.2
+      },
+      {
+       "time": "7:09 am",
+       "side": "SELL",
+       "sig": "L3",
+       "name": "Week-so-far break",
+       "price": 157.696,
+       "entry": 157.696,
+       "stop": 158.283,
+       "stop0": 158.283,
+       "stop_pips": 58.7,
+       "half_px": 157.637,
+       "half": false,
+       "half_time": null,
+       "size": "full",
+       "quiet": false,
+       "first": false,
+       "status": "open",
+       "exit": null,
+       "exit_time": null,
+       "pips": null,
+       "usd": null,
+       "r": null,
+       "r_sized": null,
+       "usd_risk": null,
+       "r_now": -0.0104,
        "rwf": null,
        "spread": 1.2
       }
@@ -2407,8 +2484,8 @@
    "net_label": "Net $ per barrel (v1.05)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 98.18,
-   "change": 0.74,
+   "price": 98.148,
+   "change": 0.7,
    "entries": [],
    "spark": [
     [
@@ -2833,10 +2910,17 @@
     ],
     [
      "7:00 am",
-     98.18,
-     98.11,
      98.2,
+     98.11,
+     98.22,
      98.09
+    ],
+    [
+     "7:05 am",
+     98.15,
+     98.2,
+     98.2,
+     98.14
     ]
    ],
    "journal": {
@@ -3363,8 +3447,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 29485.1,
-   "change": -317.5,
+   "price": 29486.9,
+   "change": -315.7,
    "entries": [],
    "spark": [
     [
@@ -3866,10 +3950,17 @@
     ],
     [
      "7:00 am",
-     29485.1,
+     29478.9,
      29502.7,
      29505.6,
-     29478.2
+     29477.4
+    ],
+    [
+     "7:05 am",
+     29486.9,
+     29479.2,
+     29499.2,
+     29474.6
     ]
    ],
    "journal": {
