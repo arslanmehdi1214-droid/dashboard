@@ -1,6 +1,13 @@
 name: oil-hist-oneoff
 on:
   workflow_dispatch:
+    inputs:
+      epic:
+        description: 'Capital.com epic (OIL_CRUDE, USDCNH, ...)'
+        default: 'OIL_CRUDE'
+      search:
+        description: 'market search word for the log'
+        default: 'CNH'
 permissions:
   contents: write
 concurrency: oil-hist
@@ -17,18 +24,20 @@ jobs:
           python-version: '3.11'
           cache: 'pip'
       - run: pip install -r requirements.txt
-      - name: Download Capital.com oil minute history (read-only)
+      - name: Download Capital.com minute history (read-only)
         env:
           CAPITAL_API_KEY: ${{ secrets.CAPITAL_API_KEY }}
           CAPITAL_IDENTIFIER: ${{ secrets.CAPITAL_IDENTIFIER }}
           CAPITAL_API_PASSWORD: ${{ secrets.CAPITAL_API_PASSWORD }}
           CAPITAL_DEMO: '1'
-          HIST_EPIC: OIL_CRUDE
+          HIST_EPIC: ${{ inputs.epic }}
+          HIST_SEARCH: ${{ inputs.search }}
           HIST_YEARS: '3'
+          HIST_BUDGET_MIN: '50'
         run: python oil_hist.py
       - name: Save the file
         if: always()
         run: |
           git config user.name gold-bot; git config user.email gold-bot@users.noreply.github.com
-          git add data/oil_hist_min.csv.gz data/oil_hist_summary.json 2>/dev/null || true
-          git diff --cached --quiet || (git commit -m "oil minute history (one-off)" && (git push || (git pull --rebase -X theirs && git push)))
+          for f in data/*_hist_min.csv.gz data/*_hist_summary.json; do git add "$f" 2>/dev/null || true; done
+          git diff --cached --quiet || (git commit -m "minute history ${{ inputs.epic }} (one-off)" && (git push || (git pull --rebase -X theirs && git push)))
