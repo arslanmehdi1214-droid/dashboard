@@ -1,9 +1,9 @@
 {
- "balance": 1084.72,
+ "balance": 1085.01,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-10-23",
-  "pl": 3.68,
+  "pl": 4.26,
   "start_balance": 1082.4,
   "start_equity": 1082.4,
   "stopped": false
@@ -182,6 +182,12 @@
   },
   "OIL|2026-10-23|6:01 am|BUY|Open \u00b1 0.7 range": {
    "at": "Fri 23 Oct 6:02 AM",
+   "market": "OIL",
+   "state": "not entered",
+   "why": "real risk 13.51 AED after lot rounding > 1.3x target 10.0 AED"
+  },
+  "OIL|2026-10-23|8:45 am|BUY|Yesterday's high/low": {
+   "at": "Fri 23 Oct 8:46 AM",
    "market": "OIL",
    "state": "not entered",
    "why": "real risk 13.51 AED after lot rounding > 1.3x target 10.0 AED"
