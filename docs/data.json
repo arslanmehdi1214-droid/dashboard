@@ -1,5 +1,5 @@
 {
- "updated": "Fri 23 Oct \u00b7 5:54 am",
+ "updated": "Fri 23 Oct \u00b7 6:02 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -13,9 +13,9 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 8:00 pm Dubai).",
-   "price": 4002.56,
+   "price": 3988.29,
    "close_at": "11:50 pm",
-   "change": -23.46,
+   "change": -37.73,
    "size": 0.1,
    "datr": 68.67,
    "open_now": 0,
@@ -345,10 +345,24 @@
     ],
     [
      "5:50 am",
-     4002.56,
+     4000.87,
      4012.3,
      4012.3,
-     4001.76
+     4000.4
+    ],
+    [
+     "5:55 am",
+     3991.74,
+     4000.84,
+     4001.55,
+     3990.93
+    ],
+    [
+     "6:00 am",
+     3988.29,
+     3991.89,
+     3991.97,
+     3986.49
     ]
    ],
    "history": [
@@ -593,8 +607,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 53.938,
-   "change": -0.619,
+   "price": 53.485,
+   "change": -1.072,
    "entries": [],
    "spark": [
     [
@@ -921,10 +935,24 @@
     ],
     [
      "5:50 am",
-     53.938,
+     53.83,
      54.201,
      54.201,
-     53.933
+     53.83
+    ],
+    [
+     "5:55 am",
+     53.545,
+     53.831,
+     53.842,
+     53.504
+    ],
+    [
+     "6:00 am",
+     53.485,
+     53.543,
+     53.569,
+     53.423
     ]
    ],
    "journal": {
@@ -1018,8 +1046,8 @@
    "net_label": "Net R / $ at $100 risk (v1.05 sizes)",
    "state": "sell",
    "message": "PAPER SELL day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 3:00 pm Dubai close.",
-   "price": 156.769,
-   "change_pips": -2.5,
+   "price": 156.878,
+   "change_pips": 8.4,
    "atr_pips": 78.8,
    "entries": [
     {
@@ -1370,10 +1398,24 @@
     ],
     [
      "5:50 am",
-     156.769,
+     156.78,
      156.679,
      156.8,
      156.678
+    ],
+    [
+     "5:55 am",
+     156.82,
+     156.779,
+     156.842,
+     156.765
+    ],
+    [
+     "6:00 am",
+     156.878,
+     156.819,
+     156.887,
+     156.818
     ]
    ],
    "journal": {
@@ -2168,7 +2210,7 @@
     }
    ],
    "feed_error": false,
-   "live_spread_pips": 1.2,
+   "live_spread_pips": 2.2,
    "history_note": "history to 2026-10-22 (300 days)"
   },
   "DE40": {
@@ -2207,23 +2249,45 @@
    "net_label": "Net $ per barrel (v1.05)",
    "state": "buy",
    "message": "PAPER BUY day \u2014 later signals today are BUY only. Close 25% at the part level, then move the stop to entry; everything closes at 9:00 pm Dubai. No new trades after 5:30 pm (one late first trade allowed).",
-   "price": 99.943,
-   "change": 1.22,
+   "price": 100.508,
+   "change": 1.78,
    "entries": [
     {
      "time": "5:53 am",
      "side": "BUY",
      "name": "Open \u00b1 \u00bd range",
      "price": 99.97,
-     "stop": 96.29,
+     "stop": 100.01,
      "stop0": 96.29,
      "half_px": 100.19,
-     "half": false,
+     "half": true,
      "part": 0.25,
      "late": false,
      "stop_usd": 3.68,
      "size": "1/3",
      "first": true,
+     "status": "open",
+     "exit": null,
+     "exit_time": null,
+     "res": null,
+     "res_sized": null,
+     "rwf": null,
+     "spread": 0.04
+    },
+    {
+     "time": "6:01 am",
+     "side": "BUY",
+     "name": "Open \u00b1 0.7 range",
+     "price": 100.46,
+     "stop": 96.78,
+     "stop0": 96.78,
+     "half_px": 100.68,
+     "half": false,
+     "part": 0.25,
+     "late": false,
+     "stop_usd": 3.68,
+     "size": "1/3",
+     "first": false,
      "status": "open",
      "exit": null,
      "exit_time": null,
@@ -2558,20 +2622,34 @@
     ],
     [
      "5:50 am",
-     99.94,
+     99.95,
      99.69,
      99.98,
      99.69
+    ],
+    [
+     "5:55 am",
+     99.98,
+     99.95,
+     100.18,
+     99.95
+    ],
+    [
+     "6:00 am",
+     100.51,
+     99.98,
+     100.58,
+     99.98
     ]
    ],
    "journal": {
     "since": "20 Oct 2026",
     "weekdays": 4,
-    "trades": 9,
+    "trades": 10,
     "decided": 8,
     "direction": 25.0,
     "days": 100.0,
-    "perday": 2.25,
+    "perday": 2.5,
     "closed": 8,
     "win": 75.0,
     "pf": 0.04,
@@ -2591,15 +2669,37 @@
        "side": "BUY",
        "name": "Open \u00b1 \u00bd range",
        "price": 99.97,
-       "stop": 96.29,
+       "stop": 100.01,
        "stop0": 96.29,
        "half_px": 100.19,
-       "half": false,
+       "half": true,
        "part": 0.25,
        "late": false,
        "stop_usd": 3.68,
        "size": "1/3",
        "first": true,
+       "status": "open",
+       "exit": null,
+       "exit_time": null,
+       "res": null,
+       "res_sized": null,
+       "rwf": null,
+       "spread": 0.04
+      },
+      {
+       "time": "6:01 am",
+       "side": "BUY",
+       "name": "Open \u00b1 0.7 range",
+       "price": 100.46,
+       "stop": 96.78,
+       "stop0": 96.78,
+       "half_px": 100.68,
+       "half": false,
+       "part": 0.25,
+       "late": false,
+       "stop_usd": 3.68,
+       "size": "1/3",
+       "first": false,
        "status": "open",
        "exit": null,
        "exit_time": null,
@@ -3139,8 +3239,8 @@
    "net_label": "Net points (v1.00 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal (from 5:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep).",
-   "price": 7655.2,
-   "change": -5.4,
+   "price": 7650.7,
+   "change": -9.9,
    "entries": [],
    "spark": [
     [
@@ -3544,10 +3644,24 @@
     ],
     [
      "5:50 am",
-     7655.2,
+     7655.4,
      7661.4,
      7661.5,
      7655.0
+    ],
+    [
+     "5:55 am",
+     7653.7,
+     7655.5,
+     7655.7,
+     7651.7
+    ],
+    [
+     "6:00 am",
+     7650.7,
+     7654.7,
+     7654.9,
+     7649.9
     ]
    ],
    "journal": {
@@ -3659,8 +3773,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 28965.5,
-   "change": 57.3,
+   "price": 28929.7,
+   "change": 21.5,
    "entries": [],
    "spark": [
     [
@@ -4064,10 +4178,24 @@
     ],
     [
      "5:50 am",
-     28965.5,
+     28967.2,
      29006.6,
      29006.6,
      28964.0
+    ],
+    [
+     "5:55 am",
+     28951.6,
+     28967.5,
+     28968.0,
+     28933.4
+    ],
+    [
+     "6:00 am",
+     28929.7,
+     28951.7,
+     28959.1,
+     28921.1
     ]
    ],
    "journal": {
