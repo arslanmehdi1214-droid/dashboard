@@ -187,7 +187,7 @@ td{padding:9px 4px;border-bottom:1px solid var(--line)}td.r{text-align:right}
 @media(max-width:860px){.row{grid-template-columns:auto 1fr auto;gap:8px 10px}.row .nb,.row .mini{display:none}.row .btn{display:none}}
 .st .tm b.at{color:var(--mute);font-size:17px}.st .tm b.soon{color:var(--amber)}
 .nchips{display:inline-flex;gap:4px;margin-left:6px;vertical-align:1px}.nc{font:700 9.5px Inter;font-style:normal;letter-spacing:.6px;padding:1px 6px;border-radius:4px}
-.nc.Gold{background:rgba(226,194,122,.18);color:var(--gold)}.nc.Oil{background:rgba(143,160,255,.18);color:#a9b6ff}.nc.USDJPY{background:rgba(255,197,107,.15);color:var(--amber)}.nc.Nasdaq{background:rgba(155,231,196,.14);color:var(--live)}.nc.SP{background:rgba(120,200,255,.14);color:#8fd0ff}.nc.Silver{background:rgba(200,206,214,.16);color:#d5dbe3}
+.nc.Gold{background:rgba(226,194,122,.18);color:var(--gold)}.nc.Oil{background:rgba(143,160,255,.18);color:#a9b6ff}.nc.USDJPY{background:rgba(255,197,107,.15);color:var(--amber)}.nc.Nasdaq{background:rgba(155,231,196,.14);color:var(--live)}.nc.SP{background:rgba(120,200,255,.14);color:#8fd0ff}.nc.Silver{background:rgba(200,206,214,.16);color:#d5dbe3}.nc.GBPUSD{background:rgba(214,160,255,.15);color:#dcb4ff}
 .oh{display:flex;align-items:center;gap:12px;margin-bottom:12px}.oh h3{margin:0}
 .sty{margin-left:auto;display:flex;gap:6px;align-items:center;font:500 11.5px Inter;color:var(--dim)}
 .sty button{background:var(--panel);border:1px solid var(--line);color:var(--mute);border-radius:7px;padding:4px 9px;font:600 11.5px Inter;cursor:pointer}.sty button.on{border-color:var(--gold);color:var(--ink)}
@@ -263,7 +263,8 @@ const MK=[{c:'GOLD',ep:'GOLD',n:'Gold',tag:'Gold',tv:'CAPITALCOM:XAUUSD',dp:2,lo
  {c:'OIL',ep:'OIL_CRUDE',n:'Oil',tag:'Oil',tv:'CAPITALCOM:USOIL',dp:2,lot:10,lotL:'10 bbl'},
  {c:'US100',ep:'US100',n:'Nasdaq 100',tag:'Nasdaq',tv:'CAPITALCOM:US100',dp:1,lot:0.1,lotL:'$0.10/pt'},
  {c:'US500',ep:'US500',n:'S&P 500',tag:'S&P',tv:'CAPITALCOM:US500',dp:1,lot:0.1,lotL:'$0.10/pt'},
- {c:'SILVER',ep:'SILVER',n:'Silver',tag:'Silver',tv:'CAPITALCOM:SILVER',dp:3,lot:50,lotL:'50 oz'}];
+ {c:'SILVER',ep:'SILVER',n:'Silver',tag:'Silver',tv:'CAPITALCOM:SILVER',dp:3,lot:50,lotL:'50 oz'},
+ {c:'GBPUSD',ep:'GBPUSD',n:'GBP/USD',tag:'GBP/USD',tv:'CAPITALCOM:GBPUSD',dp:5,lot:1000,lotL:'1,000 units'}];
 const CAP=25000,AED=3.6725,TZ={timeZone:'Asia/Dubai'};
 const t12=d=>d.toLocaleTimeString('en-US',{...TZ,hour:'numeric',minute:'2-digit'}).toLowerCase();
 const dday=d=>d.toLocaleDateString('en-US',{...TZ,weekday:'short',day:'numeric',month:'short'});
@@ -277,8 +278,8 @@ const hm=ms=>{const m=Math.max(0,Math.floor(ms/6e4));return m<60?m+'m':Math.floo
 /* calendar: our markets only, same-time releases grouped */
 const OILW=/crude|oil|opec|eia|petroleum|natural gas/i;
 function hits(e){const m=new Set(),c=e.country,t=e.title||'';if(/natural gas/i.test(t))return [];if(/crude|oil|opec|petroleum/i.test(t))return ['Oil'];
- if(c==='USD'){['Gold','Silver','USD/JPY','Nasdaq','S&P'].forEach(x=>m.add(x));if(OILW.test(t)||/CPI|Non-Farm|FOMC|Federal Funds|Fed Chair|PPI|Retail Sales|GDP/i.test(t))m.add('Oil')}
- if(c==='JPY')m.add('USD/JPY');if(c==='CNY'){m.add('Gold');m.add('Silver');m.add('Oil')}if(OILW.test(t))m.add('Oil');return [...m]}
+ if(c==='USD'){['Gold','Silver','USD/JPY','Nasdaq','S&P','GBP/USD'].forEach(x=>m.add(x));if(OILW.test(t)||/CPI|Non-Farm|FOMC|Federal Funds|Fed Chair|PPI|Retail Sales|GDP/i.test(t))m.add('Oil')}
+ if(c==='JPY')m.add('USD/JPY');if(c==='GBP')m.add('GBP/USD');if(c==='CNY'){m.add('Gold');m.add('Silver');m.add('Oil')}if(OILW.test(t))m.add('Oil');return [...m]}
 const G=[],T=[],OPENEV=new Set();
 function buildG(){G.length=0;CAL.filter(e=>e.impact==='High'||e.impact==='Medium'||(e.impact==='Low'&&OILW.test(e.title||''))||(e.country==='USD'&&OILW.test(e.title||''))).forEach(e=>{const mk=hits(e);if(!mk.length)return;
  const g=G.find(g=>g.date===e.date&&g.country===e.country);
@@ -389,7 +390,7 @@ function ticket(c){const {o,px}=c,{m,x,e,i}=o,dp=demoOf(m,e),ep=dp?dp.level:e.pr
   <span class="side">${e.side==='BUY'?'▲':'▼'} ${e.side}</span>
   <div class="who"><a target="_blank" rel="noopener" href="https://www.tradingview.com/chart/?symbol=${m.tv}"><b>${m.n}</b></a> <span class="tag ${x.live?'live':''}">${x.live?'LIVE':'PAPER'}</span><small>${e.time} · risk AED ${f(dp&&dp.risk!=null?dp.risk:c.risk*AED,0)} · ${dp?'size '+f(dp.size,Number.isInteger(dp.size)?0:2):'not on the demo account'}</small></div>
   <div class="lad"><div class="ln2"></div><div class="zl" style="left:${Math.min(pp(st0),pp(ep))}%;width:${Math.abs(pp(ep)-pp(st0))}%"></div><div class="zw" style="left:${Math.min(pp(ep),pp(tgt))}%;width:${Math.abs(pp(tgt)-pp(ep))}%"></div>
-   <span class="lb l">${f(st0,m.dp)}</span>${e.half_px!=null?`<span class="lb h" style="left:${pp(e.half_px)}%">${e.part!=null?(e.half?Math.round(e.part*100)+'% banked':'close '+Math.round(e.part*100)+'% at'):(e.half?'½ banked':'½ at')} ${f(e.half_px,m.dp)}</span>`:''}<span class="lb c" style="left:${pp(ep)}%">${f(ep,m.dp)}</span><span class="lb r">${f(tgt,m.dp)}</span>
+   <span class="lb l">${f(st0,m.dp)}</span>${e.half_px!=null?`<span class="lb h" style="left:${pp(e.half_px)}%;transform:translateX(${pp(e.half_px)>80?-100:pp(e.half_px)<20?0:-50}%)">${e.part>=0.999?(e.half?'target hit':'target'):e.part!=null?(e.half?Math.round(e.part*100)+'% banked':'close '+Math.round(e.part*100)+'% at'):(e.half?'½ banked':'½ at')} ${f(e.half_px,m.dp)}</span>`:''}<span class="lb c" style="left:${pp(ep)}%">${f(ep,m.dp)}</span><span class="lb r">${f(tgt,m.dp)}</span>
    <div class="nowm" style="left:${pp(px)}%"><span>${f(px,m.dp)}<i class="dot ${lv?'on':''}"></i></span><i></i></div></div>
   <div class="pl"><b class="${plA>=0?'pos':'neg'}">${sg(plA)} AED</b><small>${R<=-1?'<em class="hit">PAST STOP</em> ':''}${sg(R)}R</small></div>
  </div>`}
@@ -453,7 +454,8 @@ const JUNK=/^[‘'"“]|\b(I|my|me)\b.*\?|\bretire|\bmortgage|\bwedding|\bmy (wi
 const NJ=/\b(yen|BOJ|Bank of Japan|Japan|Japanese|Ueda|Takaichi|dollar|Fed|FOMC|Powell|Warsh|rates?|rate cuts?|CPI|inflation|PPI|jobs report|payrolls?|Treasury|Treasuries|yields?|tariffs?)\b/i;
 const NQ=/\b(Nasdaq|stocks?|equities|S&P|tech|chips?|semiconductors?|AI|Nvidia|Apple|Microsoft|Alphabet|Amazon|Meta|Tesla|TSMC|earnings|Fed|FOMC|Powell|Warsh|rates?|rate cuts?|CPI|inflation|yields?|tariffs?)\b/i;
 const NS=/\b(silver|precious metals?|bullion|gold|solar|industrial metals?|Fed|FOMC|Powell|Warsh|rate cuts?|CPI|inflation|PPI|payrolls?|dollar|yields?|tariffs?|China)\b/i;
-const mkOf=t=>JUNK.test(t)?[]:[NG.test(t)?'Gold':null,NS.test(t)?'Silver':null,NJ.test(t)?'USD/JPY':null,NO.test(t)?'Oil':null,NQ.test(t)?'Nasdaq':null,NQ.test(t)?'S&P':null].filter(Boolean);
+const NP=/\b(pound|sterling|cable|GBP|BoE|BOE|Bank of England|Bailey|U\.?K\.?|Britain|British|gilts?|Reeves|Starmer|Fed|FOMC|Powell|Warsh|dollar|rate cuts?|CPI|inflation|payrolls?|tariffs?)\b/i;
+const mkOf=t=>JUNK.test(t)?[]:[NG.test(t)?'Gold':null,NS.test(t)?'Silver':null,NJ.test(t)?'USD/JPY':null,NO.test(t)?'Oil':null,NQ.test(t)?'Nasdaq':null,NQ.test(t)?'S&P':null,NP.test(t)?'GBP/USD':null].filter(Boolean);
 const HOT={test:t=>mkOf(t).length>0};
 /* NEWS ENGINE (19 Oct 2026). Fastest free source = Telegram channels Walter Bloomberg + FinancialJuice through our Worker (/news, ~8 s fresh),
    checked every 10 s; MarketWatch stays as the fallback. Each headline: folder (impact), markets it moves, expected direction with its
@@ -470,7 +472,7 @@ const RWHY={inf:['Hotter inflation than forecast → Fed stays tight, dollar and
  grow:['Stronger US data than forecast → dollar and yields up','Weaker US data than forecast → dollar and yields down'],
  claims:['More jobless claims than forecast → weaker jobs market, dollar down','Fewer jobless claims than forecast → firmer jobs market, dollar up']};
 const rKind=ev=>/CPI|PPI|Earnings/.test(ev)?'inf':/Claims/.test(ev)?'claims':'grow';
-const NMK={'Gold':'Gold','Silver':'Silver','USD/JPY':'USD/JPY','Oil':'Oil','Nasdaq':'Nasdaq','S&P':'S&P'};
+const NMK={'Gold':'Gold','Silver':'Silver','USD/JPY':'USD/JPY','Oil':'Oil','Nasdaq':'Nasdaq','S&P':'S&P','GBP/USD':'GBP/USD'};
 const numv=x=>{const m=/^(-?[\d.,]+)\s*([KMBT%]?)/i.exec((x||'').trim());if(!m)return null;return parseFloat(m[1].replace(/,/g,''))*({K:1e3,M:1e6,B:1e9,T:1e12}[m[2].toUpperCase()]||1)};
 function classify(text){const U=text.toUpperCase(),out={imp:null,why:'',mk:[],kind:''},bang=/\u2757/.test(text);  // ❗ = FinancialJuice 'important' (moves ~1.4x larger, Apr-Sep 2026)
  if(/\bACTUAL\b/.test(U)){
@@ -522,7 +524,9 @@ const HMK=[
  {c:'US500',n:'S&P 500',file:'journal_sp.json',usd:t=>t.res==null?null:t.res*0.1,
   tag:t=>(t.src||'')+(t.leg?' · leg '+t.leg:''),info:t=>`in ${f(t.price,1)} · stop ${f(t.stop,1)}${t.exit!=null?` · out ${f(t.exit,1)}`:''}${t.res!=null?` · ${sg(t.res,1)} pts`:''}`},
  {c:'SILVER',n:'Silver',file:'journal_sv.json',usd:t=>{const r=t.res_sized??t.res;return r==null?null:r*50},
-  tag:t=>(t.name||'')+(t.size>1?' · size '+t.size:''),info:t=>`in ${f(t.price,3)} · stop ${f(t.stop0??t.stop,3)} · ½ at ${f(t.half_px,3)}${t.half?' ✓':''}${t.exit!=null?` · out ${f(t.exit,3)}`:''}`}];
+  tag:t=>(t.name||'')+(t.size>1?' · size '+t.size:''),info:t=>`in ${f(t.price,3)} · stop ${f(t.stop0??t.stop,3)} · ½ at ${f(t.half_px,3)}${t.half?' ✓':''}${t.exit!=null?` · out ${f(t.exit,3)}`:''}`},
+ {c:'GBPUSD',n:'GBP/USD',file:'journal_gbp.json',usd:t=>t.pips==null?null:t.pips*0.1,
+  tag:t=>t.name||'',info:t=>`in ${f(t.price,5)} · stop ${f(t.stop,5)} · target ${f(t.half_px,5)}${t.half?' ✓':''}${t.exit!=null?` · out ${f(t.exit,5)}`:''}${t.pips!=null?` · ${sg(t.pips,1)} pips`:''}`}];
 let HJ={},HC=null,HV='today',HM=null,HALL=false;
 const bkey=()=>{const n=new Date(new Date().toLocaleString('en-US',{timeZone:'America/New_York'}));n.setHours(n.getHours()+7);return n.getFullYear()+'-'+String(n.getMonth()+1).padStart(2,'0')+'-'+String(n.getDate()).padStart(2,'0')};
 const HST={late:'signal came late - not taken',stopped:'stop hit',be:'part banked, rest out at entry',trail:'part banked, rest out on the trailing stop',eod:'closed at day end',close_now:'close now (day end)',reversed:'reversed',target:'target hit (whole trade)',open:'open'};
@@ -553,7 +557,7 @@ function renderHist(){const m=hmk();if(!m){histbox.innerHTML='';HC=null;return}i
  else if(HV==='today'){const td=days.find(d=>d.date===TK);h+=td?dayRow(td,true):`<div class="dim">No ${m.n} trade yet today${(M[m.c]&&M[m.c].message)?' · '+M[m.c].message:''}</div>`}
  else{const past=days.filter(d=>d.date!==TK);h+=past.length?past.slice(0,HALL?past.length:5).map(d=>dayRow(d,false)).join('')+(past.length>5?`<button class="hmore" data-more>${HALL?'Show last 5 days':'Show all '+past.length+' days'}</button>`:''):'<div class="dim">No earlier trades yet</div>'}
  h+=TOT;
- const lot={GOLD:'1 oz',USDJPY:'1,000 units',OIL:'10 bbl for a full-size trade (1/3-size trades count one third)',US100:'0.10 per point (0.37 AED)',US500:'0.10 per point (0.37 AED)',SILVER:'50 oz for a size-1 trade (size-2 trades count double)'}[m.c];
+ const lot={GOLD:'1 oz',USDJPY:'1,000 units',OIL:'10 bbl for a full-size trade (1/3-size trades count one third)',US100:'0.10 per point (0.37 AED)',US500:'0.10 per point (0.37 AED)',SILVER:'50 oz for a size-1 trade (size-2 trades count double)',GBPUSD:'1,000 units (0.10 $ = 0.37 AED per pip)'}[m.c];
  h+=`<div class="hnote">${m.n} only · source: ${m.n} desk journal (${m.file}), live since ${JN.summary&&JN.summary.since||JN.start}. Each trade at 0.01 lot = ${lot}, after the spread.${m.split?' Days before '+new Date(m.split+'T12:00:00Z').toLocaleDateString('en-GB',{day:'numeric',month:'short',timeZone:'UTC'})+' used the earlier rules (totals kept separate).':''}</div>`;
  histbox.innerHTML=h;bindHist()}
 function bindHist(){
