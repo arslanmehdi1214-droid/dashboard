@@ -1,5 +1,5 @@
 {
- "updated": "Fri 23 Oct \u00b7 2:57 pm",
+ "updated": "Fri 23 Oct \u00b7 2:58 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -26,9 +26,9 @@
    "feed_error": false,
    "state": "sell",
    "message": "SELL day \u2014 up to 2 SELL trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 11:50 pm Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 4022.27,
+   "price": 4022.4,
    "close_at": "11:50 pm",
-   "change": -3.75,
+   "change": -3.62,
    "size": 0.1,
    "datr": 68.67,
    "open_now": 2,
@@ -1166,9 +1166,9 @@
     ],
     [
      "2:55 pm",
-     4022.27,
+     4022.4,
      4022.05,
-     4022.47,
+     4023.73,
      4019.95
     ]
    ],
@@ -1414,8 +1414,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 53.897,
-   "change": -0.66,
+   "price": 53.88,
+   "change": -0.677,
    "entries": [],
    "spark": [
     [
@@ -2505,9 +2505,9 @@
     ],
     [
      "2:55 pm",
-     53.897,
+     53.88,
      53.893,
-     53.903,
+     53.917,
      53.85
     ]
    ],
@@ -3749,7 +3749,7 @@
      156.785,
      156.782,
      156.797,
-     156.781
+     156.772
     ]
    ],
    "journal": {
@@ -4612,8 +4612,8 @@
    "net_label": "Net $ per barrel (v1.05)",
    "state": "buy",
    "message": "PAPER BUY day \u2014 later signals today are BUY only. Close 25% at the part level, then move the stop to entry; everything closes at 9:00 pm Dubai. No new trades after 5:30 pm (one late first trade allowed).",
-   "price": 100.748,
-   "change": 2.03,
+   "price": 100.803,
+   "change": 2.08,
    "entries": [
     {
      "time": "5:53 am",
@@ -5770,7 +5770,7 @@
     ],
     [
      "2:55 pm",
-     100.75,
+     100.8,
      100.74,
      100.81,
      100.72
@@ -6395,8 +6395,8 @@
    "net_label": "Net points (v1.00 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal (from 5:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep).",
-   "price": 7642.1,
-   "change": -18.5,
+   "price": 7641.3,
+   "change": -19.3,
    "entries": [],
    "spark": [
     [
@@ -7563,9 +7563,9 @@
     ],
     [
      "2:55 pm",
+     7641.3,
      7642.1,
-     7642.1,
-     7642.1,
+     7642.8,
      7641.1
     ]
    ],
@@ -7678,8 +7678,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 28930.5,
-   "change": 22.3,
+   "price": 28925.9,
+   "change": 17.7,
    "entries": [],
    "spark": [
     [
@@ -8846,9 +8846,9 @@
     ],
     [
      "2:55 pm",
-     28930.5,
+     28925.9,
      28927.4,
-     28931.1,
+     28935.2,
      28921.2
     ]
    ],
