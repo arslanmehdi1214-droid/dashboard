@@ -1,0 +1,23 @@
+{
+ "epic": "CNHHKD",
+ "rows": 1036523,
+ "first": "2024-01-01T22:05:00",
+ "last": "2026-10-23T17:43:00",
+ "requests": 1551,
+ "keys": [
+  "closePrice",
+  "highPrice",
+  "lastTradedVolume",
+  "lowPrice",
+  "openPrice",
+  "snapshotTime",
+  "snapshotTimeUTC"
+ ],
+ "vol_nonzero": 1036523,
+ "first_err": [
+  404,
+  "{\"errorCode\":\"error.prices.not-found\"}",
+  "2026-10-17T17:43:00"
+ ],
+ "made_utc": "2026-10-23T17:43:00"
+}
