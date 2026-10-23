@@ -1,15 +1,15 @@
 {
- "balance": 1072.58,
+ "balance": 1068.78,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-10-23",
-  "pl": -20.49,
+  "pl": -28.09,
   "start_balance": 1082.4,
   "start_equity": 1082.4,
   "stopped": false
  },
- "open_positions": 3,
- "open_risk_aed": 140.22,
+ "open_positions": 5,
+ "open_risk_aed": 169.49,
  "risk_usd": 8.168822328114365,
  "trades": {
   "GOLD|2026-10-20|1:06 pm|BUY|FILL range fade": {
@@ -327,6 +327,32 @@
    "side": "SELL",
    "state": "closed",
    "stop": 29412.6
+  },
+  "US100|2026-10-23|6:00 pm|BUY|REV H2 round $200 touch then close back -> reverse, from 4pm": {
+   "desk_price": 28966.2,
+   "market": "US100",
+   "opened_at": "Fri 23 Oct 6:01 PM",
+   "part": {
+    "id": "00000000-6dc3-0efc-0495-7fc60004511e",
+    "level": 28994.4,
+    "open": true,
+    "size": 0.009,
+    "tp": 29079.6
+   },
+   "part_x": 0.25,
+   "px_adj": 0.0,
+   "rest": {
+    "id": "00000000-6dc3-0f0b-0495-7fc60004511e",
+    "level": 28991.3,
+    "open": true,
+    "size": 0.027,
+    "tp": null
+   },
+   "risk_aed": 29.27,
+   "risk_usd": 8.17,
+   "side": "BUY",
+   "state": "open",
+   "stop": 28744.8
   },
   "US500|2026-10-22|5:40 pm|BUY|S&P 9:40 am New York opening move": {
    "desk_price": 7698.2,
