@@ -1,4 +1,6 @@
-"""WTI_DAYTRADE v1.05 rules (= v1.04 + the day's FIRST trade, if a SELL, is FULL size when P['first_sell_full'] is set: last EIA Cushing report = build AND yesterday's close < close 5 trading days earlier; his MT4 run 20 Oct 2026)
+"""WTI_DAYTRADE v1.06 rules (= v1.05 + P['expiry_first_only']: on the WTI option-expiry day only the day's FIRST trade; + P['hold_sells']: production rose in the last
+EIA report AND yesterday's close < its 50-day average -> that day's SELLS keep the whole trade: no part-close, no stop to entry; his MT4 run 23 Oct 2026)
+v1.05 rules (= v1.04 + the day's FIRST trade, if a SELL, is FULL size when P['first_sell_full'] is set: last EIA Cushing report = build AND yesterday's close < close 5 trading days earlier; his MT4 run 20 Oct 2026)
 (v1.04 = v1.03 + part-close 25% instead of 50%) as a PAPER engine for the Signal Desk - same logic as the EA / its line-by-line Python port
 (wti_ea_port.py: 4,300 of 4,300 MT4 trades 2020-2026 same minute and direction). Prices are Bid; broker clock = New York + 7 h.
 History = finished broker days: [date 'YYYY-MM-DD', open, high, low, close, settle] where settle = open of the first bar 21:30-21:35.
@@ -118,6 +120,7 @@ def run_day(P, t, O, H, L, C, now=None, spread=None, final=False):
         for (mm, fi, d, px, nm, lv) in bym.get(m, []):
             if off: continue
             if hm[m] >= LAST_ENTRY and not (len(legs) == 0 and hm[m] < LATE_FIRST): continue
+            if P.get('expiry_first_only') and len(legs) > 0: continue                 # v1.06: option-expiry day = only the first trade
             if ddir != 0 and d != ddir: continue
             if m == lastm and d == lastd: continue
             sd = (BUY_STOP if d > 0 else SELL_STOP) * A; sp = SPm(m)
@@ -128,8 +131,9 @@ def run_day(P, t, O, H, L, C, now=None, spread=None, final=False):
             stop_b = px - sd if d > 0 else px + sd                          # stop in BID terms (sell stop = ask + sd)
             rk = sd + sp; k = BUY_HALF if d > 0 else SELL_HALF
             hp = e + d * k * rk                                             # half level in the order's own price (buy: bid, sell: ask)
+            nohalf = bool(d < 0 and P.get('hold_sells'))                    # v1.06: supply day -> sells keep the whole trade (no part, no stop move)
             legs.append(dict(i=m, t=t[m], dir=d, px=float(px), level=float(lv), fam=nm, name=FAM_NAME[nm], sd=sd, sp=sp, e=e, w=w,
-                             stop0=float(stop_b), stop=float(stop_b), half_px=float(hp if d > 0 else hp - sp), half=False, bank=0.0, q=1.0,
+                             stop0=float(stop_b), stop=float(stop_b), half_px=(None if nohalf else float(hp if d > 0 else hp - sp)), half=False, bank=0.0, q=1.0,
                              on=True, exit=None, exit_i=None, why=None, late=bool(hm[m] >= LAST_ENTRY), first=(len(legs) == 0)))
             if ddir == 0: ddir = d
             lastm, lastd = m, d
@@ -139,7 +143,7 @@ def run_day(P, t, O, H, L, C, now=None, spread=None, final=False):
             if (d > 0 and L[m] <= g['stop']) or (d < 0 and H[m] >= g['stop']):
                 b = min(g['stop'], O[m]) if d > 0 else max(g['stop'], O[m])
                 close_leg(g, b, m, 'be' if g['half'] else 'stopped'); continue
-            if not g['half'] and ((d > 0 and H[m] >= g['half_px']) or (d < 0 and L[m] <= g['half_px'])):
+            if not g['half'] and g['half_px'] is not None and ((d > 0 and H[m] >= g['half_px']) or (d < 0 and L[m] <= g['half_px'])):
                 g['bank'] += PART * d * ((g['half_px'] if d > 0 else g['half_px'] + g['sp']) - g['e']) / g['sd']; g['q'] = 1.0 - PART; g['half'] = True
                 g['half_t'] = t[m]; g['stop'] = float(g['e'] if d > 0 else g['e'] - g['sp'])      # rest's stop = entry price (bid terms)
         tot = banked + sum(mark(g, C[m]) for g in legs if g['on']); peak = max(peak, tot)
@@ -161,7 +165,7 @@ def run_day(P, t, O, H, L, C, now=None, spread=None, final=False):
             if dn >= tg: rwf = 0; decided = True; break
         res = None if g['on'] else round(g['bank'] * g['sd'], 4)          # $ per barrel for a FULL-size trade, spread included
         out.append(dict(i=m, t=t[m], dir=d, px=px, level=g['level'], fam=g['fam'], name=g['name'], stop=g['stop'], stop0=g['stop0'],
-                        half_px=g['half_px'], half=g['half'], part=PART, first=g['first'], late=g['late'], size='full' if g['w'] == 1.0 else '1/3',
+                        half_px=g['half_px'], half=g['half'], part=(None if g['half_px'] is None else PART), first=g['first'], late=g['late'], size='full' if g['w'] == 1.0 else '1/3',
                         status=('open' if g['on'] else g['why']), exit=g['exit'], exit_t=(None if g['exit_i'] is None else t[g['exit_i']]),
                         res=res, R=(None if g['on'] else round(g['bank'], 4)), rwf=rwf, rwf_final=decided or has_close or final, A=A, spread=g['sp']))
     return out
