@@ -43,7 +43,8 @@ def git(*a): return subprocess.run(['git', *a], capture_output=True, text=True)
 def push():
     # one path per add: a path that matches nothing makes git add refuse the WHOLE list (22 Oct)
     for p in ('sent.json', 'docs/*.json', 'docs/nq_min', 'docs/sv_min', 'docs/sp_min',   # Nasdaq / silver / S&P minute files
-              'autotrade_state.json', 'autotrade_log.json'):                             # demo auto-trader memory (which demo positions are ours)
+              'autotrade_state.json', 'autotrade_log.json',                              # demo auto-trader memory (which demo positions are ours)
+              'data/sentiment'):                                                         # Capital.com client sentiment, 1 row/market/minute (23 Oct)
         git('add', p)
     staged = git('diff', '--cached', '--quiet').returncode != 0
     if staged: git('commit', '-m', 'alerts state')
@@ -92,6 +93,8 @@ def main():
     except Exception: sp_run = None
     try: import autotrade                                                  # demo auto-trader: copies the desk's trades to the Capital.com DEMO account
     except Exception as e: autotrade = None; print('autotrade not loaded:', type(e).__name__, e)
+    try: import sentiment                                                  # read-only client-sentiment recorder (23 Oct)
+    except Exception as e: sentiment = None; print('sentiment not loaded:', type(e).__name__, e)
     while True:
         before = open(R.STATE).read() if os.path.exists(R.STATE) else ''
         if yen_run is not None and hasattr(yen_run, 'DEADLINE'): yen_run.DEADLINE = time.time() + 90
@@ -104,6 +107,9 @@ def main():
         if autotrade is not None:
             try: autotrade.run_once()
             except Exception as e: print('autotrade error:', type(e).__name__, e)
+        if sentiment is not None:
+            try: sm = sentiment.record(); (n % 30 == 1) and print(sm)
+            except Exception as e: print('sentiment error:', type(e).__name__, e)
         at_changed = (open('autotrade_state.json').read() if os.path.exists('autotrade_state.json') else '') != at_before
         if feed_error(): _SHARED[0] = None; _H1.clear()                   # fresh session + full history next minute
         alerted = (open(R.STATE).read() if os.path.exists(R.STATE) else '') != before
