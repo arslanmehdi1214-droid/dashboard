@@ -527,6 +527,28 @@
      "rwf": null,
      "next": "Hold to the stop 4054.93 or the day-end close \u00b7 no half-close \u00b7 size x2.25",
      "late": false
+    },
+    {
+     "time": "11:00 am",
+     "side": "SELL",
+     "tag": "N12 squeeze",
+     "price": 4012.65,
+     "stop": 4047.49,
+     "stop0": 4047.49,
+     "half_px": null,
+     "half": false,
+     "half_time": null,
+     "size": 0.1,
+     "status": "open",
+     "first": false,
+     "exit": null,
+     "exit_time": null,
+     "pnl": null,
+     "pnl_oz": null,
+     "size_x": 1.5,
+     "rwf": null,
+     "next": "Hold to the stop 4047.49 or the day-end close \u00b7 no half-close \u00b7 size x1.5",
+     "late": false
     }
    ],
    "skipped": 0,
@@ -535,11 +557,11 @@
  ],
  "summary": {
   "since": "03 Oct 2026",
-  "trades": 25,
+  "trades": 26,
   "direction": 37.5,
   "decided": 16,
   "days": 93.3,
-  "perday": 1.67,
+  "perday": 1.73,
   "avg_pnl": -6.72,
   "closed": 24,
   "total_pnl_01": -16.14
