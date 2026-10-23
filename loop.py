@@ -1,5 +1,5 @@
 """Keeps one GitHub job checking the signals EVERY MINUTE (GitHub only starts scheduled jobs every ~20 minutes, often later).
-Each minute: run.safe_main() (gold v2.06 + USDJPY paper + WTI paper + Nasdaq paper + silver paper, unchanged rules). Telegram alerts go out the same minute; the page data
+Each minute: run.safe_main() (gold v2.06 + USDJPY paper + WTI paper + Nasdaq paper + silver paper + GBP/USD paper, unchanged rules). Telegram alerts go out the same minute; the page data
 is pushed every 10 minutes, and at once after any alert. The job hands over to the next scheduled job as soon as that one is
 waiting, stops after LOOP_MINUTES, and does one pass only when the market is closed for the weekend.
 Prices: one Capital.com session is shared and re-made after any feed error; the 460-day hourly history is fetched in full every
@@ -91,6 +91,8 @@ def main():
     except Exception: sv_run = None
     try: import sp_run                                                     # same for the S&P paper page (22 Oct)
     except Exception: sp_run = None
+    try: import gbp_run                                                    # same for the GBP/USD paper page (24 Oct)
+    except Exception: gbp_run = None
     try: import autotrade                                                  # demo auto-trader: copies the desk's trades to the Capital.com DEMO account
     except Exception as e: autotrade = None; print('autotrade not loaded:', type(e).__name__, e)
     try: import sentiment                                                  # read-only client-sentiment recorder (23 Oct)
@@ -102,6 +104,7 @@ def main():
         if nq_run is not None and hasattr(nq_run, 'DEADLINE'): nq_run.DEADLINE = time.time() + 90
         if sv_run is not None and hasattr(sv_run, 'DEADLINE'): sv_run.DEADLINE = time.time() + 90
         if sp_run is not None and hasattr(sp_run, 'DEADLINE'): sp_run.DEADLINE = time.time() + 90
+        if gbp_run is not None and hasattr(gbp_run, 'DEADLINE'): gbp_run.DEADLINE = time.time() + 90
         R.safe_main(); n += 1
         at_before = open('autotrade_state.json').read() if os.path.exists('autotrade_state.json') else ''
         if autotrade is not None:

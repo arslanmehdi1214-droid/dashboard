@@ -500,6 +500,15 @@ def safe_main():
             import sv_run; sv_run.fail(e)
         except Exception:
             traceback.print_exc()
+    try:                                    # GBP/USD paper page (GBP_CROWD v1.02, 24 Oct; manual - the auto-trader does not copy it)
+        import gbp_run
+        gbp_run.main()
+    except Exception as e:
+        traceback.print_exc()
+        try:
+            import gbp_run; gbp_run.fail(e)
+        except Exception:
+            traceback.print_exc()
 
 if __name__ == '__main__':
     safe_main()
