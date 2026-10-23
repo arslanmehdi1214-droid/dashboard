@@ -1,5 +1,5 @@
 {
- "updated": "Fri 23 Oct \u00b7 5:48 am",
+ "updated": "Fri 23 Oct \u00b7 5:54 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -13,9 +13,9 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 8:00 pm Dubai).",
-   "price": 4014.74,
+   "price": 4002.56,
    "close_at": "11:50 pm",
-   "change": -11.28,
+   "change": -23.46,
    "size": 0.1,
    "datr": 68.67,
    "open_now": 0,
@@ -338,10 +338,17 @@
     ],
     [
      "5:45 am",
-     4014.74,
+     4012.29,
      4010.57,
      4015.36,
      4009.84
+    ],
+    [
+     "5:50 am",
+     4002.56,
+     4012.3,
+     4012.3,
+     4001.76
     ]
    ],
    "history": [
@@ -586,8 +593,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 54.265,
-   "change": -0.292,
+   "price": 53.938,
+   "change": -0.619,
    "entries": [],
    "spark": [
     [
@@ -907,10 +914,17 @@
     ],
     [
      "5:45 am",
-     54.265,
+     54.202,
      54.092,
      54.307,
      54.067
+    ],
+    [
+     "5:50 am",
+     53.938,
+     54.201,
+     54.201,
+     53.933
     ]
    ],
    "journal": {
@@ -1004,8 +1018,8 @@
    "net_label": "Net R / $ at $100 risk (v1.05 sizes)",
    "state": "sell",
    "message": "PAPER SELL day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 3:00 pm Dubai close.",
-   "price": 156.689,
-   "change_pips": -10.5,
+   "price": 156.769,
+   "change_pips": -2.5,
    "atr_pips": 78.8,
    "entries": [
     {
@@ -1349,10 +1363,17 @@
     ],
     [
      "5:45 am",
-     156.689,
+     156.68,
      156.691,
      156.74,
-     156.683
+     156.663
+    ],
+    [
+     "5:50 am",
+     156.769,
+     156.679,
+     156.8,
+     156.678
     ]
    ],
    "journal": {
@@ -2184,11 +2205,34 @@
    "what_note": "This page tracks whether live WTI signals do as well as the backtest. Decision after about 3 months.",
    "cost_note": "Results are $ per barrel (sizes: full or \u2153), from the signal price with the backtest's slip, after a fixed 4-cent spread (the MT4 test's spread and Capital.com's usual; fixed so shown levels never change).",
    "net_label": "Net $ per barrel (v1.05)",
-   "state": "waiting",
-   "message": "Waiting for the first signal.",
-   "price": 99.573,
-   "change": 0.85,
-   "entries": [],
+   "state": "buy",
+   "message": "PAPER BUY day \u2014 later signals today are BUY only. Close 25% at the part level, then move the stop to entry; everything closes at 9:00 pm Dubai. No new trades after 5:30 pm (one late first trade allowed).",
+   "price": 99.943,
+   "change": 1.22,
+   "entries": [
+    {
+     "time": "5:53 am",
+     "side": "BUY",
+     "name": "Open \u00b1 \u00bd range",
+     "price": 99.97,
+     "stop": 96.29,
+     "stop0": 96.29,
+     "half_px": 100.19,
+     "half": false,
+     "part": 0.25,
+     "late": false,
+     "stop_usd": 3.68,
+     "size": "1/3",
+     "first": true,
+     "status": "open",
+     "exit": null,
+     "exit_time": null,
+     "res": null,
+     "res_sized": null,
+     "rwf": null,
+     "spread": 0.04
+    }
+   ],
    "spark": [
     [
      "2:00 am",
@@ -2507,20 +2551,27 @@
     ],
     [
      "5:45 am",
-     99.57,
+     99.69,
      99.52,
-     99.61,
+     99.69,
      99.5
+    ],
+    [
+     "5:50 am",
+     99.94,
+     99.69,
+     99.98,
+     99.69
     ]
    ],
    "journal": {
     "since": "20 Oct 2026",
     "weekdays": 4,
-    "trades": 8,
+    "trades": 9,
     "decided": 8,
     "direction": 25.0,
-    "days": 75.0,
-    "perday": 2.0,
+    "days": 100.0,
+    "perday": 2.25,
     "closed": 8,
     "win": 75.0,
     "pf": 0.04,
@@ -2533,8 +2584,31 @@
      "date": "2026-10-23",
      "rules": "v1.05",
      "label": "Fri 23 Oct",
-     "side": null,
-     "trades": [],
+     "side": "BUY",
+     "trades": [
+      {
+       "time": "5:53 am",
+       "side": "BUY",
+       "name": "Open \u00b1 \u00bd range",
+       "price": 99.97,
+       "stop": 96.29,
+       "stop0": 96.29,
+       "half_px": 100.19,
+       "half": false,
+       "part": 0.25,
+       "late": false,
+       "stop_usd": 3.68,
+       "size": "1/3",
+       "first": true,
+       "status": "open",
+       "exit": null,
+       "exit_time": null,
+       "res": null,
+       "res_sized": null,
+       "rwf": null,
+       "spread": 0.04
+      }
+     ],
      "range_usd": 3.68,
      "traded": true,
      "final": false
@@ -3065,8 +3139,8 @@
    "net_label": "Net points (v1.00 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal (from 5:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep).",
-   "price": 7665.2,
-   "change": 4.6,
+   "price": 7655.2,
+   "change": -5.4,
    "entries": [],
    "spark": [
     [
@@ -3463,10 +3537,17 @@
     ],
     [
      "5:45 am",
-     7665.2,
+     7661.9,
      7662.7,
      7665.7,
-     7662.4
+     7660.7
+    ],
+    [
+     "5:50 am",
+     7655.2,
+     7661.4,
+     7661.5,
+     7655.0
     ]
    ],
    "journal": {
@@ -3578,8 +3659,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 29031.9,
-   "change": 123.7,
+   "price": 28965.5,
+   "change": 57.3,
    "entries": [],
    "spark": [
     [
@@ -3976,10 +4057,17 @@
     ],
     [
      "5:45 am",
-     29031.9,
+     29006.5,
      29023.2,
      29038.9,
-     29016.4
+     29002.6
+    ],
+    [
+     "5:50 am",
+     28965.5,
+     29006.6,
+     29006.6,
+     28964.0
     ]
    ],
    "journal": {
