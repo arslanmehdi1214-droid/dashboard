@@ -1,5 +1,5 @@
 {
- "updated": "Fri 23 Oct \u00b7 11:23 pm",
+ "updated": "Fri 23 Oct \u00b7 11:24 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -32,9 +32,9 @@
    "feed_error": false,
    "state": "sell",
    "message": "SELL day \u2014 up to 2 SELL trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 11:50 pm Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 3995.59,
+   "price": 3995.53,
    "close_at": "11:50 pm",
-   "change": -30.43,
+   "change": -30.49,
    "size": 0.1,
    "datr": 68.67,
    "open_now": 2,
@@ -1879,10 +1879,10 @@
     ],
     [
      "11:20 pm",
-     3995.59,
+     3995.53,
      3995.85,
      3996.33,
-     3995.41
+     3994.88
     ]
    ],
    "history": [
@@ -2127,8 +2127,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 53.96,
-   "change": -0.597,
+   "price": 53.964,
+   "change": -0.593,
    "entries": [],
    "spark": [
     [
@@ -3925,10 +3925,10 @@
     ],
     [
      "11:20 pm",
-     53.96,
+     53.964,
      53.969,
      53.974,
-     53.954
+     53.942
     ]
    ],
    "journal": {
@@ -4022,8 +4022,8 @@
    "net_label": "Net R / $ at $100 risk (v1.05 sizes)",
    "state": "sell",
    "message": "PAPER SELL day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 3:00 pm Dubai close.",
-   "price": 156.866,
-   "change_pips": 7.2,
+   "price": 156.869,
+   "change_pips": 7.5,
    "atr_pips": 78.8,
    "entries": [
     {
@@ -5873,7 +5873,7 @@
     ],
     [
      "11:20 pm",
-     156.866,
+     156.869,
      156.867,
      156.879,
      156.863
@@ -6739,8 +6739,8 @@
    "net_label": "Net $ per barrel (v1.05)",
    "state": "buy",
    "message": "PAPER BUY day \u2014 later signals today are BUY only. Close 25% at the part level, then move the stop to entry; everything closes at 9:00 pm Dubai. No new trades after 5:30 pm (one late first trade allowed).",
-   "price": 103.098,
-   "change": 4.38,
+   "price": 103.108,
+   "change": 4.39,
    "entries": [
     {
      "time": "5:53 am",
@@ -8648,7 +8648,7 @@
     ],
     [
      "11:20 pm",
-     103.1,
+     103.11,
      103.13,
      103.13,
      103.09
@@ -9317,8 +9317,8 @@
    "net_label": "Net points (v1.00 rules)",
    "state": "sell",
    "message": "PAPER SELL day: 1 trade today (1 running). Only SELL signals count today (max 3). Each trade keeps its stop, no half-close; everything closes at 11:30 pm Dubai (3:30 pm New York).",
-   "price": 7629.0,
-   "change": -31.6,
+   "price": 7628.3,
+   "change": -32.3,
    "entries": [
     {
      "time": "5:40 pm",
@@ -9341,7 +9341,7 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": -14.4,
+     "live": -13.7,
      "spread": 0.8
     }
    ],
@@ -11217,10 +11217,10 @@
     ],
     [
      "11:20 pm",
-     7629.0,
+     7628.3,
      7630.0,
      7631.5,
-     7628.5
+     7627.0
     ]
    ],
    "journal": {
@@ -11279,7 +11279,7 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": -14.4,
+       "live": -13.7,
        "spread": 0.8
       }
      ],
@@ -11368,9 +11368,9 @@
    "cost_note": "Results are index points for the whole trade at its v1.02 size (sells \u2153, the 25% / 15% part included), after a fixed 1.8-point spread (as in the MT4 test; entry, stop and part levels use it too). Capital.com's live spread is shown for reference only.",
    "net_label": "Net points (v1.02 rules)",
    "state": "buy",
-   "message": "1 paper trade today (1 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 11:50 pm Dubai close. At most 2 trades a day.",
-   "price": 28974.0,
-   "change": 65.8,
+   "message": "1 paper trade today (0 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 11:50 pm Dubai close. At most 2 trades a day.",
+   "price": 28971.5,
+   "change": 63.3,
    "entries": [
     {
      "time": "6:00 pm",
@@ -11386,16 +11386,16 @@
      "half": true,
      "half_time": "6:40 pm",
      "size": "full",
-     "status": "open",
+     "status": "be",
      "part": 0.25,
      "trail_pts": 249.1,
-     "exit": null,
-     "exit_time": null,
-     "res": null,
-     "res_sized": null,
-     "r": null,
-     "r_sized": null,
-     "live": 32.4,
+     "exit": 28968.0,
+     "exit_time": "11:23 pm",
+     "res": 27.9,
+     "res_sized": 27.9,
+     "r": 0.126,
+     "r_sized": 0.126,
+     "live": null,
      "rwf": 1,
      "spread": 1.8,
      "spread_live": 1.8
@@ -13273,10 +13273,10 @@
     ],
     [
      "11:20 pm",
-     28974.0,
+     28971.5,
      28979.2,
      28985.2,
-     28970.6
+     28967.0
     ]
    ],
    "journal": {
@@ -13287,12 +13287,12 @@
     "direction": 66.7,
     "days": 100.0,
     "perday": 1.2,
-    "closed": 5,
-    "win": 80.0,
-    "pf": 4.95,
-    "net": 179.7,
+    "closed": 6,
+    "win": 83.3,
+    "pf": 5.56,
+    "net": 207.6,
     "rules": "v1.02",
-    "green": 60.0
+    "green": 80.0
    },
    "jdays": [
     {
@@ -13315,16 +13315,16 @@
        "half": true,
        "half_time": "6:40 pm",
        "size": "full",
-       "status": "open",
+       "status": "be",
        "part": 0.25,
        "trail_pts": 249.1,
-       "exit": null,
-       "exit_time": null,
-       "res": null,
-       "res_sized": null,
-       "r": null,
-       "r_sized": null,
-       "live": 32.4,
+       "exit": 28968.0,
+       "exit_time": "11:23 pm",
+       "res": 27.9,
+       "res_sized": 27.9,
+       "r": 0.126,
+       "r_sized": 0.126,
+       "live": null,
        "rwf": 1,
        "spread": 1.8,
        "spread_live": 1.8
