@@ -36,8 +36,8 @@
    ],
    "actions_day": "2026-10-23",
    "feed_error": false,
-   "state": "sell",
-   "message": "SELL day \u2014 up to 2 SELL trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 11:50 pm Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
+   "state": "closed",
+   "message": "Market closed for the weekend",
    "price": 3996.01,
    "close_at": "11:50 pm",
    "change": -30.01,
@@ -2243,7 +2243,6 @@
    "symbol": "SILVER \u00b7 Capital.com Silver (spot)",
    "live": false,
    "paper": true,
-   "status": "Paper",
    "version": "v1.8h",
    "unit": "$/oz",
    "dp": 3,
@@ -2260,14 +2259,14 @@
     "months": 3,
     "band": "3-month net at 0.01 lot (50 oz) inside the backtest 5-95% band: -$87 .. +$227 (median +$8)"
    },
-   "day_note": "14-day range $2.01 \u00b7 ONE trade a day when 2 of 3 agree (gold signal, fast gold catch-up, compression break) \u00b7 stop \u00bd range \u00b7 close half at +1x risk, stop to entry, then trail \u00bd range \u00b7 2x size when gold and silver were loosely linked over 20 days \u00b7 close 11:00 pm broker (Fri 10:50 pm)",
+   "day_note": "14-day range \u2014 \u00b7 ONE trade a day when 2 of 3 agree (gold signal, fast gold catch-up, compression break) \u00b7 stop \u00bd range \u00b7 close half at +1x risk, stop to entry, then trail \u00bd range \u00b7 2x size when gold and silver were loosely linked over 20 days \u00b7 close 11:00 pm broker (Fri 10:50 pm)",
    "what_note": "Forward test of silver v1.8 (honest entries) on live Capital.com prices. Checked after about 3 months against the backtest band.",
    "cost_note": "Results are $ per oz for the whole trade (half banked at +1R included) after Capital.com's spread (at least $0.05); x size (1 or 2); page money at 0.01 lot = 50 oz.",
    "net_label": "Net $/oz (v1.8 honest rules)",
-   "state": "none",
-   "message": "No paper trade today (no 2-of-3 agreement).",
-   "price": 53.885,
-   "change": -0.672,
+   "state": "closed",
+   "message": "Market closed for the weekend.",
+   "price": 53.869,
+   "change": -0.688,
    "entries": [],
    "spark": [
     [
@@ -4197,7 +4196,7 @@
     ],
     [
      "12:55 am",
-     53.885,
+     53.869,
      53.898,
      53.906,
      53.859
@@ -4263,7 +4262,8 @@
    "epic": "SILVER",
    "close_at": "11:50 pm",
    "gold_signals_today": 3,
-   "history_note": "minutes from 2026-09-10 (32 days) \u00b7 327 daily bars from 2025-07-21"
+   "history_note": "minutes from 2026-09-10 (32 days) \u00b7 327 daily bars from 2025-07-21",
+   "status": "Paper"
   },
   "USDJPY": {
    "code": "USDJPY",
@@ -4292,71 +4292,12 @@
    "what_note": "This page tracks whether live USD/JPY signals do as well as the v1.05 backtest. Decision after about 3 months.",
    "cost_note": "Pips are for the whole trade (\u2153-size trades count one third), after a fixed 1.0-pip spread (as in the MT4 test; fixed so shown levels never change). $ = at $100 risk per full-size trade, like the MT4 test.",
    "net_label": "Net R / $ at $100 risk (v1.05 sizes)",
-   "state": "sell",
-   "message": "PAPER SELL day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 3:00 pm Dubai close.",
+   "state": "closed",
+   "message": "Market closed for the weekend.",
    "price": 156.816,
    "change_pips": 2.2,
    "atr_pips": 78.8,
-   "entries": [
-    {
-     "time": "2:33 am",
-     "side": "SELL",
-     "sig": "L3",
-     "name": "Week-so-far break",
-     "price": 156.684,
-     "entry": 156.684,
-     "stop": 156.684,
-     "stop0": 157.285,
-     "stop_pips": 60.1,
-     "half_px": 156.624,
-     "half": true,
-     "part": 0.5,
-     "half_time": "2:39 am",
-     "size": "full",
-     "quiet": false,
-     "first": true,
-     "status": "be",
-     "exit": 156.684,
-     "exit_time": "2:55 am",
-     "pips": 3.0,
-     "usd": 1.91,
-     "r": 0.0508,
-     "r_sized": 0.051,
-     "usd_risk": 5.1,
-     "r_now": 0.0508,
-     "rwf": 1,
-     "spread": 1.0
-    },
-    {
-     "time": "7:00 am",
-     "side": "SELL",
-     "sig": "U5",
-     "name": "Last-week break",
-     "price": 157.027,
-     "entry": 157.027,
-     "stop": 157.027,
-     "stop0": 157.628,
-     "stop_pips": 60.1,
-     "half_px": 156.967,
-     "half": true,
-     "part": 0.5,
-     "half_time": "7:02 am",
-     "size": "full",
-     "quiet": false,
-     "first": false,
-     "status": "be",
-     "exit": 157.027,
-     "exit_time": "9:00 am",
-     "pips": 3.0,
-     "usd": 1.91,
-     "r": 0.0508,
-     "r_sized": 0.051,
-     "usd_risk": 5.1,
-     "r_now": 0.0508,
-     "rwf": 1,
-     "spread": 1.0
-    }
-   ],
+   "entries": [],
    "spark": [
     [
      "2:05 am",
@@ -7105,7 +7046,7 @@
     }
    ],
    "feed_error": false,
-   "live_spread_pips": 1.4,
+   "live_spread_pips": 1.2,
    "history_note": "history to 2026-10-22 (300 days)"
   },
   "DE40": {
@@ -7120,7 +7061,6 @@
    "symbol": "WTI \u00b7 Capital.com US Crude",
    "live": false,
    "paper": true,
-   "status": "Paper",
    "version": "v1.05",
    "unit": "usd",
    "dp": 2,
@@ -7138,126 +7078,15 @@
     "pf": 1.1,
     "months": 3
    },
-   "day_note": "14-day range $3.68 \u00b7 stop: buys 1 range, sells \u00be range \u00b7 close 25% at +0.05 (buys) / +0.15 (sells) x risk, then stop to entry \u00b7 day lock +2R/+1R \u00b7 no new trades after 4:30 pm broker (one late first trade to 7:00 pm) \u00b7 close 8:00 pm broker = 9:00 pm Dubai, 10:00 pm in winter \u00b7 size: first trade and buys \u2153, later sells full while the day is in profit \u00b7 v1.05: First sell today: 1/3 size (Cushing build, 5-day move up) \u00b7 EIA week 2026-10-16: +987k bbl",
+   "day_note": "14-day range \u2014 \u00b7 stop: buys 1 range, sells \u00be range \u00b7 close 25% at +0.05 (buys) / +0.15 (sells) x risk, then stop to entry \u00b7 day lock +2R/+1R \u00b7 no new trades after 4:30 pm broker (one late first trade to 7:00 pm) \u00b7 close 8:00 pm broker = 9:00 pm Dubai, 10:00 pm in winter \u00b7 size: first trade and buys \u2153, later sells full while the day is in profit",
    "what_note": "This page tracks whether live WTI signals do as well as the backtest. Decision after about 3 months.",
    "cost_note": "Results are $ per barrel (sizes: full or \u2153), from the signal price with the backtest's slip, after a fixed 4-cent spread (the MT4 test's spread and Capital.com's usual; fixed so shown levels never change).",
    "net_label": "Net $ per barrel (v1.05)",
-   "state": "buy",
-   "message": "PAPER BUY day \u2014 later signals today are BUY only. Close 25% at the part level, then move the stop to entry; everything closes at 9:00 pm Dubai. No new trades after 5:30 pm (one late first trade allowed).",
-   "price": 102.998,
-   "change": 4.28,
-   "entries": [
-    {
-     "time": "5:53 am",
-     "side": "BUY",
-     "name": "Open \u00b1 \u00bd range",
-     "price": 99.97,
-     "stop": 100.01,
-     "stop0": 96.29,
-     "half_px": 100.19,
-     "half": true,
-     "part": 0.25,
-     "late": false,
-     "stop_usd": 3.68,
-     "size": "1/3",
-     "first": true,
-     "status": "be",
-     "exit": 100.01,
-     "exit_time": "6:07 am",
-     "res": 0.046,
-     "res_sized": 0.015,
-     "rwf": 1,
-     "spread": 0.04
-    },
-    {
-     "time": "6:01 am",
-     "side": "BUY",
-     "name": "Open \u00b1 0.7 range",
-     "price": 100.46,
-     "stop": 100.5,
-     "stop0": 96.78,
-     "half_px": 100.68,
-     "half": true,
-     "part": 0.25,
-     "late": false,
-     "stop_usd": 3.68,
-     "size": "1/3",
-     "first": false,
-     "status": "be",
-     "exit": 100.5,
-     "exit_time": "1:28 pm",
-     "res": 0.046,
-     "res_sized": 0.015,
-     "rwf": 1,
-     "spread": 0.04
-    },
-    {
-     "time": "8:45 am",
-     "side": "BUY",
-     "name": "Yesterday's high/low",
-     "price": 99.89,
-     "stop": 99.93,
-     "stop0": 96.21,
-     "half_px": 100.12,
-     "half": true,
-     "part": 0.25,
-     "late": false,
-     "stop_usd": 3.68,
-     "size": "1/3",
-     "first": false,
-     "status": "be",
-     "exit": 99.93,
-     "exit_time": "9:41 am",
-     "res": 0.046,
-     "res_sized": 0.015,
-     "rwf": 1,
-     "spread": 0.04
-    },
-    {
-     "time": "4:07 pm",
-     "side": "BUY",
-     "name": "Whole dollar",
-     "price": 101.02,
-     "stop": 101.06,
-     "stop0": 97.34,
-     "half_px": 101.25,
-     "half": true,
-     "part": 0.25,
-     "late": false,
-     "stop_usd": 3.68,
-     "size": "1/3",
-     "first": false,
-     "status": "eod",
-     "exit": 102.51,
-     "exit_time": "9:00 pm",
-     "res": 1.13,
-     "res_sized": 0.377,
-     "rwf": 1,
-     "spread": 0.04
-    },
-    {
-     "time": "4:08 pm",
-     "side": "BUY",
-     "name": "Open \u00b1 1 range",
-     "price": 101.19,
-     "stop": 101.23,
-     "stop0": 97.51,
-     "half_px": 101.42,
-     "half": true,
-     "part": 0.25,
-     "late": false,
-     "stop_usd": 3.68,
-     "size": "1/3",
-     "first": false,
-     "status": "be",
-     "exit": 101.23,
-     "exit_time": "5:18 pm",
-     "res": 0.046,
-     "res_sized": 0.015,
-     "rwf": 1,
-     "spread": 0.04
-    }
-   ],
+   "state": "closed",
+   "message": "Market closed for the weekend.",
+   "price": 103.048,
+   "change": 4.33,
+   "entries": [],
    "spark": [
     [
      "2:00 am",
@@ -9186,9 +9015,9 @@
     ],
     [
      "12:55 am",
-     103.0,
+     103.05,
      102.86,
-     103.04,
+     103.05,
      102.84
     ]
    ],
@@ -9823,7 +9652,8 @@
    "feed_error": false,
    "epic": "OIL_CRUDE",
    "live_spread": 0.04,
-   "history_note": "history to 2026-10-22 (60 days)"
+   "history_note": "history to 2026-10-22 (60 days)",
+   "status": "Paper"
   },
   "US500": {
    "code": "US500",
@@ -9831,7 +9661,6 @@
    "symbol": "US500 \u00b7 Capital.com US 500",
    "live": false,
    "paper": true,
-   "status": "Paper",
    "version": "v1.00",
    "unit": "pts",
    "dp": 1,
@@ -9849,40 +9678,15 @@
     "pf": 1.15,
     "months": 3
    },
-   "day_note": "14-day range 81 pts \u00b7 stop 0.75 x range (= 61 pts) \u00b7 no half-close \u00b7 the day's first signal sets BUY or SELL, later signals the same way add (max 3 trades) \u00b7 signals: Nasdaq desk signals copied in US hours + S&P 9:40 am New York move, yesterday high/low sweep, big move by 10 am New York \u00b7 close 10:30 pm broker = 11:30 pm Dubai (3:30 pm New York; 12:30 am Dubai in winter)",
+   "day_note": "14-day range \u2014 \u00b7 stop 0.75 x range \u00b7 no half-close \u00b7 the day's first signal sets BUY or SELL, later signals the same way add (max 3 trades) \u00b7 signals: Nasdaq desk signals copied in US hours + S&P 9:40 am New York move, yesterday high/low sweep, big move by 10 am New York \u00b7 close 10:30 pm broker = 11:30 pm Dubai (3:30 pm New York; 12:30 am Dubai in winter)",
    "what_note": "Tracks whether live S&P signals do as well as the v1.00 MT4 test. Decision after about 3 months.",
    "cost_note": "Results are index points per trade after 0.8 points of cost (Capital.com spread + slippage).",
    "net_label": "Net points (v1.00 rules)",
-   "state": "sell",
-   "message": "PAPER SELL day: 1 trade today (0 running). Only SELL signals count today (max 3). Each trade keeps its stop, no half-close; everything closes at 11:30 pm Dubai (3:30 pm New York).",
-   "price": 7635.0,
-   "change": -25.6,
-   "entries": [
-    {
-     "time": "5:40 pm",
-     "side": "SELL",
-     "name": "S&P 9:40 am New York opening move",
-     "src": "S&P",
-     "leg": 1,
-     "price": 7615.4,
-     "entry": 7615.4,
-     "stop": 7676.0,
-     "stop0": 7676.0,
-     "stop_pts": 60.6,
-     "half_px": null,
-     "half": false,
-     "size": "full",
-     "status": "eod",
-     "exit": 7628.7,
-     "exit_time": "11:30 pm",
-     "res": -14.1,
-     "res_sized": -14.1,
-     "r": -0.233,
-     "r_sized": -0.233,
-     "live": null,
-     "spread": 0.8
-    }
-   ],
+   "state": "closed",
+   "message": "Market closed for the weekend.",
+   "price": 7633.2,
+   "change": -27.4,
+   "entries": [],
    "spark": [
     [
      "1:05 am",
@@ -11888,10 +11692,10 @@
     ],
     [
      "12:55 am",
-     7635.0,
+     7633.2,
      7634.7,
      7635.5,
-     7633.7
+     7633.2
     ]
    ],
    "journal": {
@@ -12008,7 +11812,8 @@
    "picks_stale": false,
    "epic": "US500",
    "close_at": "11:30 pm",
-   "history_note": "history to 2026-10-22 (21 days)"
+   "history_note": "history to 2026-10-22 (21 days)",
+   "status": "Paper"
   },
   "US100": {
    "code": "US100",
@@ -12016,7 +11821,6 @@
    "symbol": "US100 \u00b7 Capital.com US Tech 100",
    "live": false,
    "paper": true,
-   "status": "Paper",
    "version": "2026.1",
    "unit": "pts",
    "dp": 1,
@@ -12034,44 +11838,15 @@
     "pf": 1.1,
     "months": 3
    },
-   "day_note": "14-day range 553 pts \u00b7 stop: buys 0.4 x range, sells \u00bc range \u00b7 sells \u2153 size \u00b7 at +0.5 x risk close 25% (buys) / 15% (sells), stop to entry, then trail the rest 0.45 x range (= 249 pts) behind its best price \u00b7 no new trades from 10:00 pm broker (Fri 8:00 pm) \u00b7 day lock +3R/+1.5R \u00b7 max 2 trades a day \u00b7 close 11:00 pm broker (Fri 10:50 pm) = 12:00 am Dubai, 1:00 am in winter",
+   "day_note": "14-day range \u2014 \u00b7 stop: buys 0.4 x range, sells \u00bc range \u00b7 sells \u2153 size \u00b7 at +0.5 x risk close 25% (buys) / 15% (sells), stop to entry, then trail the rest 0.45 x range behind its best price \u00b7 no new trades from 10:00 pm broker (Fri 8:00 pm) \u00b7 day lock +3R/+1.5R \u00b7 max 2 trades a day \u00b7 close 11:00 pm broker (Fri 10:50 pm) = 12:00 am Dubai, 1:00 am in winter",
    "what_note": "Tracks whether live Nasdaq signals do as well as the v1.02 backtest. Decision after about 3 months.",
    "cost_note": "Results are index points for the whole trade at its v1.02 size (sells \u2153, the 25% / 15% part included), after a fixed 1.8-point spread (as in the MT4 test; entry, stop and part levels use it too). Capital.com's live spread is shown for reference only.",
    "net_label": "Net points (v1.02 rules)",
-   "state": "buy",
-   "message": "1 paper trade today (0 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 11:50 pm Dubai close. At most 2 trades a day.",
-   "price": 29002.6,
-   "change": 94.4,
-   "entries": [
-    {
-     "time": "6:00 pm",
-     "side": "BUY",
-     "name": "REV H2 round $200 touch then close back -> reverse, from 4pm",
-     "role": "filler",
-     "price": 28966.2,
-     "entry": 28968.0,
-     "stop": 28968.0,
-     "stop0": 28744.8,
-     "stop_pts": 221.4,
-     "half_px": 29079.6,
-     "half": true,
-     "half_time": "6:40 pm",
-     "size": "full",
-     "status": "be",
-     "part": 0.25,
-     "trail_pts": 249.1,
-     "exit": 28968.0,
-     "exit_time": "11:23 pm",
-     "res": 27.9,
-     "res_sized": 27.9,
-     "r": 0.126,
-     "r_sized": 0.126,
-     "live": null,
-     "rwf": 1,
-     "spread": 1.8,
-     "spread_live": 1.8
-    }
-   ],
+   "state": "closed",
+   "message": "Market closed for the weekend.",
+   "price": 28996.8,
+   "change": 88.6,
+   "entries": [],
    "spark": [
     [
      "1:05 am",
@@ -14077,9 +13852,9 @@
     ],
     [
      "12:55 am",
-     29002.6,
+     28996.8,
      29002.1,
-     29002.6,
+     29003.1,
      28993.6
     ]
    ],
@@ -14496,7 +14271,2123 @@
    "feed_error": false,
    "epic": "US100",
    "close_at": "11:50 pm",
-   "history_note": "history to 2026-10-22 (361 days)"
+   "history_note": "history to 2026-10-22 (361 days)",
+   "status": "Paper"
+  },
+  "GBPUSD": {
+   "code": "GBPUSD",
+   "name": "GBP/USD",
+   "symbol": "GBPUSD \u00b7 Capital.com GBP/USD",
+   "live": false,
+   "paper": true,
+   "version": "v1.02",
+   "unit": "pips",
+   "dp": 5,
+   "stats": {
+    "direction": "\u2014",
+    "days": "82% of weekdays traded, max 1 a day",
+    "perday": "0.82",
+    "win": "9.8% hit target \u00b7 51.4% closed in profit",
+    "pf": "1.12",
+    "net": "+$8,652.74 at 0.10 lot (net/DD 4.14)",
+    "source": "MT4 test GBP_CROWD v1.02 (his run 3, 23 Oct, spread 1.8 pips), 2011-01..2026-06-19, 3,320 trades; max DD $2,090.54; worst day -$231.50; all 4 periods positive"
+   },
+   "pass_bar": {
+    "pf": 1.1,
+    "months": 3
+   },
+   "day_note": "This week: BUY days \u00b7 layer 2 (small traders crowded) \u00b7 CFTC report of Tue 20 Oct \u00b7 14-day range \u2014 \u00b7 stop 1.0 x range, target 1.0 x stop (close the whole trade there), no half-close \u00b7 one trade a day at 10:00 broker (11:00 am Dubai in summer, 12:00 pm in winter) \u00b7 everything closes at 23:45 broker (12:45 am Dubai in summer, 1:45 am in winter)",
+   "what_note": "Tracks whether live GBP/USD signals do as well as the v1.02 MT4 test. You place the trade by hand on the demo (the auto-trader leaves GBP/USD alone). Decision after about 3 months.",
+   "cost_note": "Results are pips per trade after the spread (at least 1.5 pips). 0.01 lot = 1,000 units = $0.10 per pip.",
+   "net_label": "Net pips (v1.02 rules)",
+   "state": "closed",
+   "message": "Market closed for the weekend. Next week: BUY days (CFTC report of 20 Oct).",
+   "price": 1.33689,
+   "change": -0.00239,
+   "entries": [],
+   "spark": [
+    [
+     "1:05 am",
+     1.33855,
+     1.33928,
+     1.33943,
+     1.33846
+    ],
+    [
+     "1:10 am",
+     1.33883,
+     1.33876,
+     1.33917,
+     1.33848
+    ],
+    [
+     "1:15 am",
+     1.33909,
+     1.3389,
+     1.33916,
+     1.33872
+    ],
+    [
+     "1:20 am",
+     1.33916,
+     1.33908,
+     1.33918,
+     1.33904
+    ],
+    [
+     "1:25 am",
+     1.33911,
+     1.33915,
+     1.33919,
+     1.33901
+    ],
+    [
+     "1:30 am",
+     1.33964,
+     1.33913,
+     1.33967,
+     1.33903
+    ],
+    [
+     "1:35 am",
+     1.33958,
+     1.33967,
+     1.33968,
+     1.33942
+    ],
+    [
+     "1:40 am",
+     1.33948,
+     1.33952,
+     1.3396,
+     1.33945
+    ],
+    [
+     "1:45 am",
+     1.33952,
+     1.33949,
+     1.33957,
+     1.33904
+    ],
+    [
+     "1:50 am",
+     1.33948,
+     1.3395,
+     1.3396,
+     1.33904
+    ],
+    [
+     "1:55 am",
+     1.33949,
+     1.33953,
+     1.33961,
+     1.33934
+    ],
+    [
+     "2:00 am",
+     1.33996,
+     1.33945,
+     1.34011,
+     1.33927
+    ],
+    [
+     "2:05 am",
+     1.34008,
+     1.33998,
+     1.34009,
+     1.33996
+    ],
+    [
+     "2:10 am",
+     1.34001,
+     1.34007,
+     1.34009,
+     1.33995
+    ],
+    [
+     "2:15 am",
+     1.34008,
+     1.34,
+     1.34009,
+     1.34
+    ],
+    [
+     "2:20 am",
+     1.34009,
+     1.34009,
+     1.34012,
+     1.34008
+    ],
+    [
+     "2:25 am",
+     1.34004,
+     1.34008,
+     1.3401,
+     1.33999
+    ],
+    [
+     "2:30 am",
+     1.3402,
+     1.34003,
+     1.34025,
+     1.34
+    ],
+    [
+     "2:35 am",
+     1.34024,
+     1.34019,
+     1.34028,
+     1.34017
+    ],
+    [
+     "2:40 am",
+     1.34024,
+     1.34025,
+     1.34028,
+     1.34019
+    ],
+    [
+     "2:45 am",
+     1.34018,
+     1.34025,
+     1.34028,
+     1.34017
+    ],
+    [
+     "2:50 am",
+     1.3401,
+     1.34017,
+     1.34019,
+     1.34009
+    ],
+    [
+     "2:55 am",
+     1.34004,
+     1.34013,
+     1.34016,
+     1.34001
+    ],
+    [
+     "3:00 am",
+     1.3403,
+     1.34005,
+     1.34039,
+     1.34002
+    ],
+    [
+     "3:05 am",
+     1.34036,
+     1.34029,
+     1.34038,
+     1.34028
+    ],
+    [
+     "3:10 am",
+     1.34027,
+     1.34037,
+     1.34037,
+     1.34025
+    ],
+    [
+     "3:15 am",
+     1.34019,
+     1.34026,
+     1.34027,
+     1.34008
+    ],
+    [
+     "3:20 am",
+     1.34009,
+     1.34021,
+     1.34026,
+     1.34007
+    ],
+    [
+     "3:25 am",
+     1.34018,
+     1.34008,
+     1.34018,
+     1.34007
+    ],
+    [
+     "3:30 am",
+     1.34019,
+     1.34019,
+     1.34031,
+     1.34018
+    ],
+    [
+     "3:35 am",
+     1.34025,
+     1.3402,
+     1.3404,
+     1.34019
+    ],
+    [
+     "3:40 am",
+     1.34021,
+     1.34026,
+     1.34028,
+     1.34014
+    ],
+    [
+     "3:45 am",
+     1.3401,
+     1.3402,
+     1.34035,
+     1.34007
+    ],
+    [
+     "3:50 am",
+     1.34019,
+     1.34009,
+     1.34025,
+     1.34002
+    ],
+    [
+     "3:55 am",
+     1.34028,
+     1.34018,
+     1.34038,
+     1.34018
+    ],
+    [
+     "4:00 am",
+     1.34029,
+     1.34029,
+     1.34038,
+     1.34017
+    ],
+    [
+     "4:05 am",
+     1.34037,
+     1.34028,
+     1.34048,
+     1.34019
+    ],
+    [
+     "4:10 am",
+     1.34044,
+     1.34036,
+     1.34054,
+     1.34035
+    ],
+    [
+     "4:15 am",
+     1.34027,
+     1.34043,
+     1.34043,
+     1.34019
+    ],
+    [
+     "4:20 am",
+     1.34039,
+     1.34028,
+     1.3404,
+     1.34016
+    ],
+    [
+     "4:25 am",
+     1.34038,
+     1.3404,
+     1.34046,
+     1.34027
+    ],
+    [
+     "4:30 am",
+     1.34057,
+     1.34039,
+     1.34057,
+     1.3403
+    ],
+    [
+     "4:35 am",
+     1.3406,
+     1.34059,
+     1.3407,
+     1.34051
+    ],
+    [
+     "4:40 am",
+     1.34056,
+     1.34059,
+     1.34059,
+     1.34046
+    ],
+    [
+     "4:45 am",
+     1.34038,
+     1.34057,
+     1.34066,
+     1.34038
+    ],
+    [
+     "4:50 am",
+     1.34035,
+     1.34039,
+     1.34047,
+     1.3403
+    ],
+    [
+     "4:55 am",
+     1.34018,
+     1.34036,
+     1.34041,
+     1.34015
+    ],
+    [
+     "5:00 am",
+     1.34037,
+     1.3402,
+     1.34037,
+     1.34009
+    ],
+    [
+     "5:05 am",
+     1.34038,
+     1.34036,
+     1.34045,
+     1.34019
+    ],
+    [
+     "5:10 am",
+     1.34024,
+     1.34037,
+     1.34039,
+     1.34008
+    ],
+    [
+     "5:15 am",
+     1.34037,
+     1.34023,
+     1.3405,
+     1.34015
+    ],
+    [
+     "5:20 am",
+     1.34025,
+     1.34036,
+     1.34044,
+     1.34023
+    ],
+    [
+     "5:25 am",
+     1.34018,
+     1.34024,
+     1.34039,
+     1.34018
+    ],
+    [
+     "5:30 am",
+     1.34015,
+     1.34019,
+     1.34034,
+     1.34015
+    ],
+    [
+     "5:35 am",
+     1.34026,
+     1.34016,
+     1.34038,
+     1.34016
+    ],
+    [
+     "5:40 am",
+     1.33997,
+     1.34027,
+     1.34028,
+     1.33995
+    ],
+    [
+     "5:45 am",
+     1.33995,
+     1.33996,
+     1.34007,
+     1.33993
+    ],
+    [
+     "5:50 am",
+     1.33958,
+     1.33996,
+     1.33996,
+     1.33946
+    ],
+    [
+     "5:55 am",
+     1.33937,
+     1.33957,
+     1.33965,
+     1.33926
+    ],
+    [
+     "6:00 am",
+     1.33928,
+     1.33936,
+     1.33936,
+     1.33909
+    ],
+    [
+     "6:05 am",
+     1.33945,
+     1.33929,
+     1.33947,
+     1.33918
+    ],
+    [
+     "6:10 am",
+     1.3394,
+     1.33946,
+     1.33955,
+     1.33934
+    ],
+    [
+     "6:15 am",
+     1.33948,
+     1.33941,
+     1.33951,
+     1.33938
+    ],
+    [
+     "6:20 am",
+     1.33957,
+     1.33947,
+     1.3396,
+     1.33944
+    ],
+    [
+     "6:25 am",
+     1.33946,
+     1.33958,
+     1.3396,
+     1.33945
+    ],
+    [
+     "6:30 am",
+     1.33948,
+     1.33945,
+     1.33956,
+     1.33937
+    ],
+    [
+     "6:35 am",
+     1.3396,
+     1.33947,
+     1.33974,
+     1.33947
+    ],
+    [
+     "6:40 am",
+     1.33957,
+     1.33961,
+     1.33965,
+     1.33951
+    ],
+    [
+     "6:45 am",
+     1.33977,
+     1.33958,
+     1.33978,
+     1.33955
+    ],
+    [
+     "6:50 am",
+     1.33967,
+     1.33976,
+     1.33985,
+     1.33964
+    ],
+    [
+     "6:55 am",
+     1.33934,
+     1.33966,
+     1.33966,
+     1.33932
+    ],
+    [
+     "7:00 am",
+     1.33945,
+     1.33935,
+     1.33947,
+     1.33927
+    ],
+    [
+     "7:05 am",
+     1.33949,
+     1.33943,
+     1.3395,
+     1.33937
+    ],
+    [
+     "7:10 am",
+     1.33943,
+     1.33948,
+     1.3395,
+     1.33939
+    ],
+    [
+     "7:15 am",
+     1.33946,
+     1.33942,
+     1.3395,
+     1.33936
+    ],
+    [
+     "7:20 am",
+     1.33948,
+     1.33947,
+     1.33948,
+     1.33937
+    ],
+    [
+     "7:25 am",
+     1.33953,
+     1.33947,
+     1.33957,
+     1.33944
+    ],
+    [
+     "7:30 am",
+     1.33947,
+     1.33952,
+     1.33966,
+     1.33944
+    ],
+    [
+     "7:35 am",
+     1.33947,
+     1.33946,
+     1.33956,
+     1.33941
+    ],
+    [
+     "7:40 am",
+     1.33951,
+     1.33948,
+     1.33957,
+     1.33946
+    ],
+    [
+     "7:45 am",
+     1.33954,
+     1.3395,
+     1.33956,
+     1.33945
+    ],
+    [
+     "7:50 am",
+     1.33958,
+     1.33955,
+     1.33966,
+     1.33954
+    ],
+    [
+     "7:55 am",
+     1.33968,
+     1.33957,
+     1.33971,
+     1.33952
+    ],
+    [
+     "8:00 am",
+     1.33934,
+     1.33967,
+     1.33967,
+     1.33927
+    ],
+    [
+     "8:05 am",
+     1.33937,
+     1.33935,
+     1.33939,
+     1.33927
+    ],
+    [
+     "8:10 am",
+     1.33928,
+     1.33936,
+     1.33944,
+     1.33926
+    ],
+    [
+     "8:15 am",
+     1.33928,
+     1.33929,
+     1.33936,
+     1.33926
+    ],
+    [
+     "8:20 am",
+     1.33925,
+     1.33927,
+     1.33927,
+     1.33917
+    ],
+    [
+     "8:25 am",
+     1.33922,
+     1.33926,
+     1.33926,
+     1.3392
+    ],
+    [
+     "8:30 am",
+     1.33919,
+     1.33921,
+     1.33927,
+     1.33913
+    ],
+    [
+     "8:35 am",
+     1.33924,
+     1.3392,
+     1.33926,
+     1.33914
+    ],
+    [
+     "8:40 am",
+     1.33904,
+     1.33923,
+     1.33927,
+     1.33897
+    ],
+    [
+     "8:45 am",
+     1.33896,
+     1.33903,
+     1.33906,
+     1.33888
+    ],
+    [
+     "8:50 am",
+     1.33889,
+     1.33895,
+     1.33897,
+     1.33887
+    ],
+    [
+     "8:55 am",
+     1.3388,
+     1.33888,
+     1.33896,
+     1.33879
+    ],
+    [
+     "9:00 am",
+     1.33878,
+     1.33879,
+     1.33885,
+     1.33864
+    ],
+    [
+     "9:05 am",
+     1.33877,
+     1.33877,
+     1.33885,
+     1.33867
+    ],
+    [
+     "9:10 am",
+     1.33885,
+     1.33878,
+     1.33888,
+     1.33874
+    ],
+    [
+     "9:15 am",
+     1.33885,
+     1.33886,
+     1.33898,
+     1.3388
+    ],
+    [
+     "9:20 am",
+     1.33888,
+     1.33886,
+     1.33896,
+     1.33877
+    ],
+    [
+     "9:25 am",
+     1.33866,
+     1.33889,
+     1.33889,
+     1.33866
+    ],
+    [
+     "9:30 am",
+     1.33877,
+     1.33867,
+     1.33888,
+     1.33865
+    ],
+    [
+     "9:35 am",
+     1.33898,
+     1.33876,
+     1.339,
+     1.33876
+    ],
+    [
+     "9:40 am",
+     1.3388,
+     1.33899,
+     1.33907,
+     1.3388
+    ],
+    [
+     "9:45 am",
+     1.33881,
+     1.33881,
+     1.33897,
+     1.33876
+    ],
+    [
+     "9:50 am",
+     1.3387,
+     1.33878,
+     1.33887,
+     1.33866
+    ],
+    [
+     "9:55 am",
+     1.33875,
+     1.33872,
+     1.3389,
+     1.33867
+    ],
+    [
+     "10:00 am",
+     1.33885,
+     1.3387,
+     1.33886,
+     1.3384
+    ],
+    [
+     "10:05 am",
+     1.33879,
+     1.33886,
+     1.3389,
+     1.33873
+    ],
+    [
+     "10:10 am",
+     1.33889,
+     1.33878,
+     1.33889,
+     1.33859
+    ],
+    [
+     "10:15 am",
+     1.33906,
+     1.3389,
+     1.33906,
+     1.33878
+    ],
+    [
+     "10:20 am",
+     1.33927,
+     1.33905,
+     1.33939,
+     1.33905
+    ],
+    [
+     "10:25 am",
+     1.33918,
+     1.33928,
+     1.33931,
+     1.33917
+    ],
+    [
+     "10:30 am",
+     1.339,
+     1.33917,
+     1.33918,
+     1.33888
+    ],
+    [
+     "10:35 am",
+     1.33891,
+     1.33899,
+     1.33907,
+     1.3388
+    ],
+    [
+     "10:40 am",
+     1.3388,
+     1.33892,
+     1.33901,
+     1.3388
+    ],
+    [
+     "10:45 am",
+     1.33893,
+     1.33879,
+     1.33902,
+     1.33866
+    ],
+    [
+     "10:50 am",
+     1.33877,
+     1.33892,
+     1.33892,
+     1.33857
+    ],
+    [
+     "10:55 am",
+     1.33819,
+     1.33876,
+     1.33877,
+     1.33804
+    ],
+    [
+     "11:00 am",
+     1.33773,
+     1.33821,
+     1.33834,
+     1.33773
+    ],
+    [
+     "11:05 am",
+     1.33797,
+     1.33772,
+     1.3381,
+     1.33761
+    ],
+    [
+     "11:10 am",
+     1.33788,
+     1.33798,
+     1.33805,
+     1.33784
+    ],
+    [
+     "11:15 am",
+     1.33732,
+     1.33776,
+     1.3378,
+     1.33723
+    ],
+    [
+     "11:20 am",
+     1.33703,
+     1.33731,
+     1.33735,
+     1.33701
+    ],
+    [
+     "11:25 am",
+     1.33728,
+     1.33702,
+     1.33738,
+     1.33701
+    ],
+    [
+     "11:30 am",
+     1.33746,
+     1.33729,
+     1.33755,
+     1.33724
+    ],
+    [
+     "11:35 am",
+     1.33764,
+     1.33745,
+     1.33771,
+     1.33739
+    ],
+    [
+     "11:40 am",
+     1.3374,
+     1.33763,
+     1.33777,
+     1.33739
+    ],
+    [
+     "11:45 am",
+     1.33737,
+     1.33741,
+     1.33741,
+     1.33714
+    ],
+    [
+     "11:50 am",
+     1.33771,
+     1.33736,
+     1.33775,
+     1.33732
+    ],
+    [
+     "11:55 am",
+     1.33756,
+     1.33772,
+     1.33785,
+     1.33745
+    ],
+    [
+     "12:00 pm",
+     1.33768,
+     1.33758,
+     1.33785,
+     1.33749
+    ],
+    [
+     "12:05 pm",
+     1.33787,
+     1.33767,
+     1.33788,
+     1.33758
+    ],
+    [
+     "12:10 pm",
+     1.33794,
+     1.33786,
+     1.33808,
+     1.33778
+    ],
+    [
+     "12:15 pm",
+     1.33797,
+     1.33795,
+     1.33829,
+     1.33795
+    ],
+    [
+     "12:20 pm",
+     1.33781,
+     1.33796,
+     1.33799,
+     1.33777
+    ],
+    [
+     "12:25 pm",
+     1.3382,
+     1.3378,
+     1.33832,
+     1.3378
+    ],
+    [
+     "12:30 pm",
+     1.33789,
+     1.33818,
+     1.33869,
+     1.33789
+    ],
+    [
+     "12:35 pm",
+     1.33814,
+     1.3379,
+     1.33815,
+     1.33754
+    ],
+    [
+     "12:40 pm",
+     1.33814,
+     1.33813,
+     1.33829,
+     1.33803
+    ],
+    [
+     "12:45 pm",
+     1.33796,
+     1.33815,
+     1.33818,
+     1.33784
+    ],
+    [
+     "12:50 pm",
+     1.33794,
+     1.33795,
+     1.33804,
+     1.33783
+    ],
+    [
+     "12:55 pm",
+     1.33754,
+     1.33793,
+     1.33803,
+     1.33754
+    ],
+    [
+     "1:00 pm",
+     1.33759,
+     1.33755,
+     1.33772,
+     1.33744
+    ],
+    [
+     "1:05 pm",
+     1.33766,
+     1.33761,
+     1.3378,
+     1.33756
+    ],
+    [
+     "1:10 pm",
+     1.33747,
+     1.33767,
+     1.33768,
+     1.33741
+    ],
+    [
+     "1:15 pm",
+     1.33747,
+     1.33748,
+     1.33757,
+     1.33733
+    ],
+    [
+     "1:20 pm",
+     1.33768,
+     1.33746,
+     1.33776,
+     1.33745
+    ],
+    [
+     "1:25 pm",
+     1.33778,
+     1.33769,
+     1.3379,
+     1.33767
+    ],
+    [
+     "1:30 pm",
+     1.33794,
+     1.33777,
+     1.33797,
+     1.33769
+    ],
+    [
+     "1:35 pm",
+     1.33812,
+     1.33795,
+     1.33815,
+     1.33793
+    ],
+    [
+     "1:40 pm",
+     1.33795,
+     1.33811,
+     1.3382,
+     1.33793
+    ],
+    [
+     "1:45 pm",
+     1.33795,
+     1.33793,
+     1.33817,
+     1.33787
+    ],
+    [
+     "1:50 pm",
+     1.33775,
+     1.33796,
+     1.33803,
+     1.33768
+    ],
+    [
+     "1:55 pm",
+     1.33794,
+     1.33776,
+     1.33803,
+     1.33776
+    ],
+    [
+     "2:00 pm",
+     1.33804,
+     1.33795,
+     1.33806,
+     1.33784
+    ],
+    [
+     "2:05 pm",
+     1.33782,
+     1.33803,
+     1.33814,
+     1.3378
+    ],
+    [
+     "2:10 pm",
+     1.33805,
+     1.33781,
+     1.33805,
+     1.33772
+    ],
+    [
+     "2:15 pm",
+     1.33803,
+     1.33804,
+     1.33846,
+     1.33795
+    ],
+    [
+     "2:20 pm",
+     1.33799,
+     1.33802,
+     1.33816,
+     1.33788
+    ],
+    [
+     "2:25 pm",
+     1.33796,
+     1.338,
+     1.33802,
+     1.33776
+    ],
+    [
+     "2:30 pm",
+     1.33754,
+     1.33795,
+     1.33797,
+     1.33753
+    ],
+    [
+     "2:35 pm",
+     1.33765,
+     1.33755,
+     1.33772,
+     1.33748
+    ],
+    [
+     "2:40 pm",
+     1.33778,
+     1.33764,
+     1.33784,
+     1.33758
+    ],
+    [
+     "2:45 pm",
+     1.33777,
+     1.33777,
+     1.33798,
+     1.33775
+    ],
+    [
+     "2:50 pm",
+     1.33749,
+     1.33776,
+     1.33776,
+     1.33746
+    ],
+    [
+     "2:55 pm",
+     1.33728,
+     1.33748,
+     1.33749,
+     1.33721
+    ],
+    [
+     "3:00 pm",
+     1.33749,
+     1.33729,
+     1.3375,
+     1.33724
+    ],
+    [
+     "3:05 pm",
+     1.33736,
+     1.33747,
+     1.33754,
+     1.33734
+    ],
+    [
+     "3:10 pm",
+     1.33725,
+     1.33737,
+     1.33747,
+     1.33724
+    ],
+    [
+     "3:15 pm",
+     1.33728,
+     1.33726,
+     1.33728,
+     1.33708
+    ],
+    [
+     "3:20 pm",
+     1.33754,
+     1.33729,
+     1.33759,
+     1.33726
+    ],
+    [
+     "3:25 pm",
+     1.33724,
+     1.33753,
+     1.33756,
+     1.3372
+    ],
+    [
+     "3:30 pm",
+     1.33728,
+     1.33725,
+     1.33749,
+     1.33715
+    ],
+    [
+     "3:35 pm",
+     1.33686,
+     1.33729,
+     1.33736,
+     1.33684
+    ],
+    [
+     "3:40 pm",
+     1.33707,
+     1.33685,
+     1.33729,
+     1.33684
+    ],
+    [
+     "3:45 pm",
+     1.33709,
+     1.33708,
+     1.33724,
+     1.33703
+    ],
+    [
+     "3:50 pm",
+     1.33682,
+     1.33711,
+     1.33719,
+     1.3367
+    ],
+    [
+     "3:55 pm",
+     1.33693,
+     1.33681,
+     1.33698,
+     1.33662
+    ],
+    [
+     "4:00 pm",
+     1.33663,
+     1.33694,
+     1.33696,
+     1.33642
+    ],
+    [
+     "4:05 pm",
+     1.33674,
+     1.33662,
+     1.33677,
+     1.33644
+    ],
+    [
+     "4:10 pm",
+     1.33662,
+     1.33675,
+     1.33684,
+     1.33652
+    ],
+    [
+     "4:15 pm",
+     1.33695,
+     1.33661,
+     1.33699,
+     1.33652
+    ],
+    [
+     "4:20 pm",
+     1.33721,
+     1.33694,
+     1.33729,
+     1.33682
+    ],
+    [
+     "4:25 pm",
+     1.33727,
+     1.33722,
+     1.33739,
+     1.33714
+    ],
+    [
+     "4:30 pm",
+     1.33737,
+     1.33728,
+     1.33747,
+     1.33706
+    ],
+    [
+     "4:35 pm",
+     1.33752,
+     1.33736,
+     1.33752,
+     1.33711
+    ],
+    [
+     "4:40 pm",
+     1.33748,
+     1.33751,
+     1.33754,
+     1.33725
+    ],
+    [
+     "4:45 pm",
+     1.33784,
+     1.33746,
+     1.33795,
+     1.3374
+    ],
+    [
+     "4:50 pm",
+     1.33863,
+     1.33783,
+     1.33878,
+     1.3378
+    ],
+    [
+     "4:55 pm",
+     1.33833,
+     1.33862,
+     1.33876,
+     1.33813
+    ],
+    [
+     "5:00 pm",
+     1.33787,
+     1.33832,
+     1.33839,
+     1.33787
+    ],
+    [
+     "5:05 pm",
+     1.33793,
+     1.33786,
+     1.33817,
+     1.33785
+    ],
+    [
+     "5:10 pm",
+     1.33772,
+     1.33792,
+     1.33816,
+     1.33767
+    ],
+    [
+     "5:15 pm",
+     1.33754,
+     1.33771,
+     1.33777,
+     1.33753
+    ],
+    [
+     "5:20 pm",
+     1.33764,
+     1.33755,
+     1.33773,
+     1.33738
+    ],
+    [
+     "5:25 pm",
+     1.33713,
+     1.33766,
+     1.33774,
+     1.3371
+    ],
+    [
+     "5:30 pm",
+     1.33748,
+     1.33712,
+     1.33757,
+     1.33709
+    ],
+    [
+     "5:35 pm",
+     1.33766,
+     1.33752,
+     1.33789,
+     1.3374
+    ],
+    [
+     "5:40 pm",
+     1.33696,
+     1.33767,
+     1.33774,
+     1.33688
+    ],
+    [
+     "5:45 pm",
+     1.33685,
+     1.33694,
+     1.33722,
+     1.3366
+    ],
+    [
+     "5:50 pm",
+     1.33748,
+     1.33686,
+     1.33775,
+     1.33684
+    ],
+    [
+     "5:55 pm",
+     1.33746,
+     1.33747,
+     1.33758,
+     1.33725
+    ],
+    [
+     "6:00 pm",
+     1.33722,
+     1.33745,
+     1.33768,
+     1.33718
+    ],
+    [
+     "6:05 pm",
+     1.33758,
+     1.33723,
+     1.33778,
+     1.33705
+    ],
+    [
+     "6:10 pm",
+     1.33739,
+     1.33757,
+     1.33764,
+     1.3372
+    ],
+    [
+     "6:15 pm",
+     1.33735,
+     1.3374,
+     1.33766,
+     1.33721
+    ],
+    [
+     "6:20 pm",
+     1.33776,
+     1.33734,
+     1.33803,
+     1.3373
+    ],
+    [
+     "6:25 pm",
+     1.3373,
+     1.33775,
+     1.33785,
+     1.33725
+    ],
+    [
+     "6:30 pm",
+     1.33759,
+     1.33729,
+     1.33768,
+     1.33715
+    ],
+    [
+     "6:35 pm",
+     1.3376,
+     1.33758,
+     1.33775,
+     1.33746
+    ],
+    [
+     "6:40 pm",
+     1.33785,
+     1.33761,
+     1.33786,
+     1.33735
+    ],
+    [
+     "6:45 pm",
+     1.33848,
+     1.33786,
+     1.33854,
+     1.33785
+    ],
+    [
+     "6:50 pm",
+     1.33848,
+     1.33847,
+     1.33865,
+     1.33819
+    ],
+    [
+     "6:55 pm",
+     1.33848,
+     1.33847,
+     1.33869,
+     1.33833
+    ],
+    [
+     "7:00 pm",
+     1.3382,
+     1.33853,
+     1.33873,
+     1.3382
+    ],
+    [
+     "7:05 pm",
+     1.33768,
+     1.33819,
+     1.33823,
+     1.33766
+    ],
+    [
+     "7:10 pm",
+     1.33794,
+     1.33769,
+     1.33816,
+     1.33755
+    ],
+    [
+     "7:15 pm",
+     1.33782,
+     1.33795,
+     1.33804,
+     1.33753
+    ],
+    [
+     "7:20 pm",
+     1.33775,
+     1.33781,
+     1.33806,
+     1.33774
+    ],
+    [
+     "7:25 pm",
+     1.33752,
+     1.33776,
+     1.33797,
+     1.33744
+    ],
+    [
+     "7:30 pm",
+     1.33734,
+     1.3375,
+     1.33765,
+     1.33733
+    ],
+    [
+     "7:35 pm",
+     1.33728,
+     1.33733,
+     1.33749,
+     1.33723
+    ],
+    [
+     "7:40 pm",
+     1.33753,
+     1.33729,
+     1.33755,
+     1.3372
+    ],
+    [
+     "7:45 pm",
+     1.33727,
+     1.33754,
+     1.33766,
+     1.33727
+    ],
+    [
+     "7:50 pm",
+     1.33729,
+     1.33728,
+     1.33755,
+     1.33717
+    ],
+    [
+     "7:55 pm",
+     1.33736,
+     1.33728,
+     1.33749,
+     1.33713
+    ],
+    [
+     "8:00 pm",
+     1.33735,
+     1.33735,
+     1.33753,
+     1.33723
+    ],
+    [
+     "8:05 pm",
+     1.33705,
+     1.33736,
+     1.33738,
+     1.33699
+    ],
+    [
+     "8:10 pm",
+     1.33694,
+     1.33706,
+     1.33714,
+     1.33674
+    ],
+    [
+     "8:15 pm",
+     1.33665,
+     1.33693,
+     1.33697,
+     1.33664
+    ],
+    [
+     "8:20 pm",
+     1.33665,
+     1.33664,
+     1.33675,
+     1.33644
+    ],
+    [
+     "8:25 pm",
+     1.33694,
+     1.33664,
+     1.33696,
+     1.33664
+    ],
+    [
+     "8:30 pm",
+     1.33702,
+     1.33695,
+     1.33706,
+     1.33679
+    ],
+    [
+     "8:35 pm",
+     1.33717,
+     1.33701,
+     1.33734,
+     1.33699
+    ],
+    [
+     "8:40 pm",
+     1.33734,
+     1.33718,
+     1.33742,
+     1.33717
+    ],
+    [
+     "8:45 pm",
+     1.33718,
+     1.33733,
+     1.33744,
+     1.33717
+    ],
+    [
+     "8:50 pm",
+     1.33707,
+     1.33719,
+     1.33728,
+     1.33704
+    ],
+    [
+     "8:55 pm",
+     1.3369,
+     1.33706,
+     1.33708,
+     1.33669
+    ],
+    [
+     "9:00 pm",
+     1.33657,
+     1.33689,
+     1.33689,
+     1.33657
+    ],
+    [
+     "9:05 pm",
+     1.33622,
+     1.33658,
+     1.33659,
+     1.33622
+    ],
+    [
+     "9:10 pm",
+     1.33624,
+     1.33623,
+     1.33639,
+     1.33622
+    ],
+    [
+     "9:15 pm",
+     1.33617,
+     1.33622,
+     1.33628,
+     1.33604
+    ],
+    [
+     "9:20 pm",
+     1.33636,
+     1.33616,
+     1.33637,
+     1.33605
+    ],
+    [
+     "9:25 pm",
+     1.33644,
+     1.33637,
+     1.33649,
+     1.33629
+    ],
+    [
+     "9:30 pm",
+     1.33637,
+     1.33645,
+     1.33652,
+     1.33633
+    ],
+    [
+     "9:35 pm",
+     1.33647,
+     1.33638,
+     1.33652,
+     1.33618
+    ],
+    [
+     "9:40 pm",
+     1.33626,
+     1.33646,
+     1.33647,
+     1.33619
+    ],
+    [
+     "9:45 pm",
+     1.33666,
+     1.33625,
+     1.33693,
+     1.33619
+    ],
+    [
+     "9:50 pm",
+     1.33686,
+     1.33668,
+     1.33697,
+     1.33667
+    ],
+    [
+     "9:55 pm",
+     1.33689,
+     1.33687,
+     1.33695,
+     1.33673
+    ],
+    [
+     "10:00 pm",
+     1.33688,
+     1.33688,
+     1.33699,
+     1.33676
+    ],
+    [
+     "10:05 pm",
+     1.33686,
+     1.33687,
+     1.33696,
+     1.33678
+    ],
+    [
+     "10:10 pm",
+     1.33688,
+     1.33685,
+     1.33688,
+     1.33668
+    ],
+    [
+     "10:15 pm",
+     1.33677,
+     1.33687,
+     1.33687,
+     1.33668
+    ],
+    [
+     "10:20 pm",
+     1.33696,
+     1.33678,
+     1.33697,
+     1.33677
+    ],
+    [
+     "10:25 pm",
+     1.33707,
+     1.33697,
+     1.33709,
+     1.33696
+    ],
+    [
+     "10:30 pm",
+     1.33708,
+     1.33706,
+     1.3371,
+     1.33698
+    ],
+    [
+     "10:35 pm",
+     1.33686,
+     1.33709,
+     1.33716,
+     1.33686
+    ],
+    [
+     "10:40 pm",
+     1.337,
+     1.33685,
+     1.33701,
+     1.33684
+    ],
+    [
+     "10:45 pm",
+     1.33709,
+     1.33701,
+     1.33717,
+     1.33688
+    ],
+    [
+     "10:50 pm",
+     1.33708,
+     1.33708,
+     1.33717,
+     1.33705
+    ],
+    [
+     "10:55 pm",
+     1.33708,
+     1.33707,
+     1.33717,
+     1.33704
+    ],
+    [
+     "11:00 pm",
+     1.33726,
+     1.33709,
+     1.33727,
+     1.33706
+    ],
+    [
+     "11:05 pm",
+     1.33718,
+     1.33727,
+     1.33728,
+     1.33714
+    ],
+    [
+     "11:10 pm",
+     1.33729,
+     1.33719,
+     1.33736,
+     1.33718
+    ],
+    [
+     "11:15 pm",
+     1.3372,
+     1.33728,
+     1.33731,
+     1.33717
+    ],
+    [
+     "11:20 pm",
+     1.33725,
+     1.33721,
+     1.33728,
+     1.33718
+    ],
+    [
+     "11:25 pm",
+     1.3372,
+     1.33726,
+     1.33728,
+     1.33715
+    ],
+    [
+     "11:30 pm",
+     1.33721,
+     1.33719,
+     1.33729,
+     1.33717
+    ],
+    [
+     "11:35 pm",
+     1.3373,
+     1.3372,
+     1.3373,
+     1.33717
+    ],
+    [
+     "11:40 pm",
+     1.3372,
+     1.33729,
+     1.33729,
+     1.33717
+    ],
+    [
+     "11:45 pm",
+     1.33718,
+     1.33719,
+     1.33721,
+     1.33711
+    ],
+    [
+     "11:50 pm",
+     1.33722,
+     1.33719,
+     1.33733,
+     1.33715
+    ],
+    [
+     "11:55 pm",
+     1.3372,
+     1.33721,
+     1.33729,
+     1.33712
+    ],
+    [
+     "12:00 am",
+     1.33717,
+     1.33718,
+     1.3372,
+     1.33708
+    ],
+    [
+     "12:05 am",
+     1.33708,
+     1.33718,
+     1.33728,
+     1.33707
+    ],
+    [
+     "12:10 am",
+     1.33698,
+     1.33709,
+     1.3371,
+     1.33698
+    ],
+    [
+     "12:15 am",
+     1.33681,
+     1.33699,
+     1.33699,
+     1.3368
+    ],
+    [
+     "12:20 am",
+     1.33698,
+     1.3368,
+     1.33698,
+     1.33679
+    ],
+    [
+     "12:25 am",
+     1.33686,
+     1.33699,
+     1.33699,
+     1.33685
+    ],
+    [
+     "12:30 am",
+     1.33665,
+     1.33685,
+     1.33689,
+     1.33665
+    ],
+    [
+     "12:35 am",
+     1.33635,
+     1.33664,
+     1.33664,
+     1.33635
+    ],
+    [
+     "12:40 am",
+     1.33635,
+     1.33636,
+     1.33637,
+     1.33614
+    ],
+    [
+     "12:45 am",
+     1.3367,
+     1.33631,
+     1.33671,
+     1.33625
+    ],
+    [
+     "12:50 am",
+     1.33686,
+     1.33671,
+     1.33706,
+     1.3367
+    ],
+    [
+     "12:55 am",
+     1.33689,
+     1.33687,
+     1.33741,
+     1.33624
+    ]
+   ],
+   "journal": {
+    "since": "23 Oct 2026",
+    "weekdays": 1,
+    "trades": 1,
+    "days": 100.0,
+    "perday": 1.0,
+    "closed": 1,
+    "win": 0.0,
+    "inprofit": 0.0,
+    "pf": 0.0,
+    "net": -20.5,
+    "rules": "v1.02",
+    "direction": null,
+    "green": 0.0
+   },
+   "jdays": [
+    {
+     "date": "2026-10-23",
+     "rules": "v1.02",
+     "label": "Fri 23 Oct",
+     "side": "BUY",
+     "trades": [
+      {
+       "time": "11:00 am",
+       "side": "BUY",
+       "name": "Layer 2 \u00b7 small traders crowded",
+       "layer": 2,
+       "price": 1.33821,
+       "entry": 1.33821,
+       "stop": 1.33062,
+       "stop0": 1.33062,
+       "stop_pips": 75.9,
+       "half_px": 1.3458,
+       "half": false,
+       "part": 1.0,
+       "size": "full",
+       "status": "eod",
+       "exit": 1.33631,
+       "exit_time": "12:45 am",
+       "pips": -20.5,
+       "res": -20.5,
+       "res_sized": -20.5,
+       "r": -0.27,
+       "live": null,
+       "spread": 1.5,
+       "next": null
+      }
+     ],
+     "final": true,
+     "code": 2,
+     "report": "2026-10-13",
+     "frozen": {
+      "code": 2,
+      "A": 0.007585714285714322
+     }
+    }
+   ],
+   "feed_error": false,
+   "epic": "GBPUSD",
+   "close_at": "12:45 am",
+   "open_at": "11:00 am",
+   "signal": "BUY",
+   "layer": 2,
+   "cftc_note": null,
+   "report": "2026-10-13",
+   "range_pips": 75.9,
+   "cftc": {
+    "levp": 0.135,
+    "nrp": 0.058,
+    "nrcp": 0.462
+   },
+   "status": "Paper"
   }
  }
 }

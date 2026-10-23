@@ -2,10 +2,10 @@
  "balance": 1140.04,
  "balance_ccy": "AED",
  "day": {
-  "date": "2026-10-23",
-  "pl": 57.64,
-  "start_balance": 1082.4,
-  "start_equity": 1082.4,
+  "date": "2026-10-24",
+  "pl": 0.0,
+  "start_balance": 1140.04,
+  "start_equity": 1140.04,
   "stopped": false
  },
  "open_positions": 0,
@@ -129,6 +129,18 @@
    "side": "SELL",
    "state": "closed",
    "stop": 4047.49
+  },
+  "GOLD|2026-10-24|10:00 am|SELL|T15 ttm": {
+   "at": "Sat 24 Oct 1:00 AM",
+   "market": "GOLD",
+   "state": "not entered",
+   "why": "desk trade seen 900 min after entry, status close_now"
+  },
+  "GOLD|2026-10-24|11:00 am|SELL|N12 squeeze": {
+   "at": "Sat 24 Oct 1:00 AM",
+   "market": "GOLD",
+   "state": "not entered",
+   "why": "desk trade seen 840 min after entry, status close_now"
   },
   "OIL|2026-10-20|10:00 am|BUY|Open \u00b1 \u00bd range": {
    "at": "Tue 20 Oct 3:24 PM",
