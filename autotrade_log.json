@@ -1342,5 +1342,19 @@
   "market": "US100",
   "ok": true,
   "t": "Fri 23 Oct 6:01 PM"
+ },
+ {
+  "action": "part closed on demo",
+  "detail": "US100|2026-10-23|6:00 pm|BUY|REV H2 round $200 touch then close back -> reverse, from 4pm",
+  "market": "US100",
+  "ok": true,
+  "t": "Fri 23 Oct 6:41 PM"
+ },
+ {
+  "action": "stop moved",
+  "detail": "US100|2026-10-23|6:00 pm|BUY|REV H2 round $200 touch then close back -> reverse, from 4pm to 28968.0 (stop to entry: each position at its own fill price)",
+  "market": "US100",
+  "ok": true,
+  "t": "Fri 23 Oct 6:41 PM"
  }
 ]
