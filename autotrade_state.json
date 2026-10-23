@@ -1,15 +1,15 @@
 {
- "balance": 1039.44,
+ "balance": 1043.65,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-10-23",
-  "pl": -86.85,
+  "pl": -78.39,
   "start_balance": 1082.4,
   "start_equity": 1082.4,
   "stopped": false
  },
- "open_positions": 4,
- "open_risk_aed": 124.8,
+ "open_positions": 3,
+ "open_risk_aed": 111.29,
  "risk_usd": 8.168822328114365,
  "trades": {
   "GOLD|2026-10-20|1:06 pm|BUY|FILL range fade": {
@@ -219,16 +219,17 @@
    "part_x": 0.25,
    "px_adj": 0.0,
    "rest": {
+    "closed_by": "Capital.com stop/target",
     "id": "00000000-6dc2-2579-0495-7fc60004511e",
     "level": 101.218,
-    "open": true,
+    "open": false,
     "size": 1.0,
     "tp": null
    },
    "risk_aed": 13.51,
    "risk_usd": 2.72,
    "side": "BUY",
-   "state": "open",
+   "state": "closed",
    "stop": 101.06
   },
   "OIL|2026-10-23|4:08 pm|BUY|Open \u00b1 1 range": {
@@ -248,7 +249,7 @@
    "risk_usd": 2.72,
    "side": "BUY",
    "state": "open",
-   "stop": 97.51
+   "stop": 101.23
   },
   "OIL|2026-10-23|5:53 am|BUY|Open \u00b1 \u00bd range": {
    "at": "Fri 23 Oct 5:54 AM",
