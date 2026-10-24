@@ -298,7 +298,8 @@ function evOut0(g){const L=g.items.filter(i=>REL[i.title]);if(!L.length)return g
  return L.slice(0,2).map(i=>{const r=Object.entries(REL[i.title]).filter(([mk,v])=>v.hit>=0.55).sort((a,b)=>b[1].hit-a[1].hit);if(!r.length)return `<div class="x dim">${i.title}: no reliable up/down history</div>`;
   const arr=(d)=>r.map(([mk,v])=>`<b>${mk}</b> <span class="${v.dir*d>0?'pos':'neg'}">${v.dir*d>0?'▲ up':'▼ down'}</span> <span class="dim">${Math.round(v.hit*100)}%</span>`).join(' · ');
   return `<div class="x evo">${L.length>1?'<span class="dim">'+i.title+':</span> ':''}If <b>higher</b> than forecast → first 15 min: ${arr(1)}<br>If <b>lower</b>: ${arr(-1)}<br><span class="dim">% = how often that held on 2020-26 (years the rule never saw). The number itself is a coin flip before release.</span></div>`}).join('')}
-function buildT(){T.length=0;MK.forEach(m=>{const x=M[m.c];if(x&&x.entries)x.entries.forEach((e,i)=>T.push({m,x,e,i:i+1}))})}
+function buildT(){T.length=0;const bk=bkey(),wkd=new Date(bk+'T12:00:00Z').getUTCDay();   /* 25 Oct: only TODAY's broker-day trades (none on Sat/Sun; a card still holding an older day is skipped) */
+ MK.forEach(m=>{const x=M[m.c];if(!x||!x.entries||wkd===0||wkd===6||(x.actions_day&&x.actions_day!==bk))return;x.entries.forEach((e,i)=>T.push({m,x,e,i:i+1}))})}
 const done=e=>e.status&&e.status!=='open';
 /* LIVE PRICES: the Cloudflare Worker (Capital.com, every few seconds). Until it exists, gold comes live from gold-api.com (free) and the rest use the desk price. */
 const WORKER_URL='https://desk-prices.arslanmehdi1214.workers.dev/';
