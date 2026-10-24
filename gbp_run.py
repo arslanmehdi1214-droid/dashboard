@@ -1,5 +1,7 @@
-"""GBP/USD PAPER signals for the page - GBP_CROWD v1.03 rules (gbp_engine.py; MT4-proven 24 Oct 2026, his run 4: 3,810 trades
-2011-01..2026-06, net $12,108.90 at 0.10 lot, max DD $2,090.54, net/DD 5.79, PF 1.14, all 4 periods positive, 95.3% of weekdays traded). One trade a day at most,
+"""GBP/USD PAPER signals for the page - GBP_CROWD v1.04 rules (gbp_engine.py; MT4-proven 24 Oct 2026, his run 5: 3,810 trades
+2011-01..2026-06, net $15,966.95 at 0.10 lot, max DD $1,636.34, net/DD 9.76, PF 1.21, profit days 54.3% of weekdays, losing years 3).
+v1.04 adds the busy/calm regime rules (gbp_engine.mode): regime from docs/gbp_daily.json (daily highs/lows: HistData seed to 30 Sep 2026 +
+Capital.com days on top, kept up to date here) and, on calm days, the 00:00 -> 10:00 GBP vs EUR gap (Capital.com minute opens). One trade a day at most,
 manual (the demo auto-trader does NOT copy GBP/USD - his choice B, 23 Oct). No phone alerts, no real money.
 Called by run.py every minute. Each run: (1) the weekly CFTC British Pound report (publicreporting.cftc.gov, free, no key) is re-read
 at most once an hour and cached in docs/cftc_gbp.json - the desk keeps working on the cached report if the CFTC site is down;
@@ -12,14 +14,14 @@ DEADLINE = time.time() + 240          # loop.py resets this every minute; the GB
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 JOUR = os.path.join(HERE, 'docs', 'journal_gbp.json'); PORTAL = os.path.join(HERE, 'docs', 'data.json')
-CFTC = os.path.join(HERE, 'docs', 'cftc_gbp.json'); CFTC_EUR = os.path.join(HERE, 'docs', 'cftc_eur.json')
+CFTC = os.path.join(HERE, 'docs', 'cftc_gbp.json'); CFTC_EUR = os.path.join(HERE, 'docs', 'cftc_eur.json'); HIST = os.path.join(HERE, 'docs', 'gbp_daily.json'); HIST_KEEP = 500          # days kept (regime needs 250 + 14)
 CFTC_URL = 'https://publicreporting.cftc.gov/resource/gpe5-46if.json'
 EPIC = os.environ.get('CAPITAL_EPIC_GBP', 'GBPUSD'); EPIC_EUR = os.environ.get('CAPITAL_EPIC_EUR', 'EURUSD')
-RULES = 'v1.03'
+RULES = 'v1.04'
 PASS = dict(pf=1.10, months=3)
-BACKTEST = dict(direction='—', days='95% of weekdays traded, max 1 a day · profit days 49%', perday='0.95', win='10.1% hit target · 51.6% closed in profit', pf='1.14',
-                net='+$12,108.90 at 0.10 lot (net/DD 5.79)',
-                source='MT4 test GBP_CROWD v1.03 (his run 4, 24 Oct, spread 1.8 pips), 2011-01..2026-06-19, 3,810 trades; max DD $2,090.54; all 4 periods positive')
+BACKTEST = dict(direction='—', days='95% of weekdays traded, max 1 a day · profit days 54%', perday='0.95', win='8.1% hit target · 57.3% closed in profit', pf='1.21',
+                net='+$15,966.95 at 0.10 lot (net/DD 9.76)',
+                source='MT4 test GBP_CROWD v1.04 (his run 5, 24 Oct, spread 1.8 pips), 2011-01..2026-06-19, 3,810 trades; max DD $1,636.34; losing years 3 (v1.03: 5)')
 
 class FeedError(RuntimeError):
     pass
@@ -100,12 +102,38 @@ def daily(feed, day):
     g10 = h[(h.index.hour == 10) & (h.index.minute == 0)].o; g10.index = g10.index.normalize()
     d['g10'] = g10.reindex(d.index); return d
 def eur10(feed, day):
-    """EUR/USD 10:00 broker hourly open per broker day of the last 45 days (before today)."""
+    """EUR/USD per broker day of the last 45 days (before today): e10 = 10:00 broker hourly open (layer 4), h / l = day high / low (v1.04 gap)."""
     h = prices(feed, 'HOUR', day - pd.Timedelta(days=45), day, pd.Timedelta(hours=900), epic=EPIC_EUR)
-    h = h[(h.index < day) & (h.index.hour == 10) & (h.index.minute == 0)]
-    s = h.o.copy(); s.index = s.index.normalize(); return s
+    h = h[h.index < day]
+    if not len(h): return pd.DataFrame(columns=['e10', 'h', 'l'])
+    d = h.groupby(h.index.normalize()).agg(h=('h', 'max'), l=('l', 'min'))
+    s = h[(h.index.hour == 10) & (h.index.minute == 0)].o; s.index = s.index.normalize(); d['e10'] = s.reindex(d.index); return d
+def eur_opens(feed, day):
+    """today's EUR/USD minute opens at 00:00 and 10:00 broker (first bar within 5 minutes, as the research). Returns (e0, e10)."""
+    out = []
+    for mins in (0, E.ENTRY_MIN):
+        t = day + pd.Timedelta(minutes=mins); b = prices(feed, 'MINUTE', t, t + pd.Timedelta(minutes=6), pd.Timedelta(minutes=900), epic=EPIC_EUR)
+        b = b[b.index >= t]; out.append(float(b.o.iloc[0]) if len(b) and b.index[0] - t <= pd.Timedelta(minutes=5) else np.nan)
+    return tuple(out)
+def first_open(b, t):
+    b = b[b.index >= t]; return float(b.o.iloc[0]) if len(b) and b.index[0] - t <= pd.Timedelta(minutes=5) else np.nan
+
+# ---------------- v1.04 daily history (regime) ----------------
+def hist_merge(key, fresh, day):
+    """docs/gbp_daily.json rows for `key` ('gbp' / 'eur') + the freshly fetched days (fresh wins) -> DataFrame h, l (days before today).
+    Saved back once a day so the file keeps growing with Capital.com days."""
+    H = loadj(HIST, {}); rows = {r[0]: r for r in H.get(key, [])}
+    if fresh is not None and len(fresh):
+        for t, r in fresh[['h', 'l']].dropna().iterrows():
+            if pd.Timestamp(t) < day: rows[str(pd.Timestamp(t).date())] = [str(pd.Timestamp(t).date()), round(float(r.h), 5), round(float(r.l), 5)]
+    R = sorted(rows.values())[-HIST_KEEP:]
+    if H.get(key + '_saved') != str(day.date()) and fresh is not None and len(fresh):
+        H[key] = R; H[key + '_saved'] = str(day.date()); dumpj(H, HIST)
+    d = pd.DataFrame([r[1:] for r in R], index=pd.to_datetime([r[0] for r in R]), columns=['h', 'l'], dtype=float)
+    return d[d.index < day]
 def eg_now(dd, e10):
     """layer 4 side for today from the trading days before today (days that have both 10:00 prices)."""
+    if isinstance(e10, pd.DataFrame): e10 = e10['e10']
     v = (e10.reindex(dd.index) / dd['g10']).dropna() if 'g10' in dd else pd.Series(dtype=float)
     return E.eg_side(v.values)
 
@@ -124,10 +152,17 @@ def row(t, now_px, cost):
     live = None if st != 'open' or now_px is None else round((s * (now_px - t['entry']) - cost) * 1e4, 1)
     nxt = None
     if st == 'open':
-        nxt = (f"Hold · stop {t['stop']:.5f} · target {t['target']:.5f} (close the WHOLE trade there) · no half-close, no stop move · "
-               f"closes at {dubai(t['t'].normalize() + pd.Timedelta(minutes=E.CLOSE_MIN))} Dubai")
+        cl = f"closes at {dubai(t['t'].normalize() + pd.Timedelta(minutes=E.CLOSE_MIN))} Dubai"
+        if t.get('lock') and t.get('locked'):
+            nxt = f"Hold · stop MOVED to {t['stop']:.5f} (entry + 5 pips, locked) · target {t['target']:.5f} (close the WHOLE trade there) · {cl}"
+        elif t.get('lock'):
+            nxt = (f"Hold · stop {t['stop']:.5f} · target {t['target']:.5f} · when price reaches {t['lock_px']:.5f}, MOVE THE STOP to {t['lock_stop']:.5f} "
+                   f"(entry + 5 pips) · no half-close · {cl}")
+        else:
+            nxt = f"Hold · stop {t['stop']:.5f} · target {t['target']:.5f} (close the WHOLE trade there) · no half-close, no stop move · {cl}"
     return dict(time=dubai(t['t']), side='BUY' if s == 1 else 'SELL', name=E.LAYER_NAME[t['layer']], layer=t['layer'],
-                price=round(t['entry'], dp), entry=round(t['entry'], dp), stop=round(t['stop'], dp), stop0=round(t['stop'], dp), stop_pips=round(t['sd'] * 1e4, 1),
+                price=round(t['entry'], dp), entry=round(t['entry'], dp), stop=round(t['stop'], dp), stop0=round(t.get('stop0', t['stop']), dp), stop_pips=round(t['sd'] * 1e4, 1),
+                mode=t.get('mode', 'normal'), lock_px=None if not t.get('lock') else round(t['lock_px'], dp), locked=bool(t.get('locked')),
                 half_px=round(t['target'], dp), half=(st == 'target'), part=1.0, size='full', status=st,
                 exit=None if t['exit'] is None else round(t['exit'], dp), exit_time=None if t['exit_t'] is None else dubai(t['exit_t']),
                 pips=None if t['pips'] is None else round(t['pips'], 1), res=None if t['pips'] is None else round(t['pips'], 1),
@@ -149,21 +184,24 @@ def summary(J, day=None):
 
 def jdays(J): return J.get('days', [])[-30:][::-1]
 
-def base_card(A=None, rep=None, code=0):
+def base_card(A=None, rep=None, code=0, md=None, pct=None):
     rp = '—' if rep is None else pd.Timestamp(rep).strftime('%a %d %b')
     lay = {0: 'no layer on', 1: 'layer 1 (hedge funds crowded)', 2: 'layer 2 (small traders crowded)', 3: 'layer 3 (small traders jumped in)',
            4: 'layer 4 (pound stretched vs euro)', 5: 'layer 5 (euro hedge funds trend)'}[abs(code)]
     note = (f"Today: {'BUY' if code > 0 else 'SELL' if code < 0 else 'NO TRADE'} · {lay} · CFTC report of {rp} · 14-day range "
-            + ('—' if A is None else f'{A * 1e4:.0f} pips') + ' · stop 1.0 x range, target 1.0 x stop (close the whole trade there), no half-close · '
-            'one trade a day at 10:00 broker (11:00 am Dubai in summer, 12:00 pm in winter) · everything closes at 23:45 broker '
-            '(12:45 am Dubai in summer, 1:45 am in winter)')
+            + ('—' if A is None else f'{A * 1e4:.0f} pips') + ('' if pct is None else f" · market {'BUSY' if md == 'busy' else 'CALM' if md in ('calm', 'calm_gap') else 'normal'} (range at {100 * pct:.0f}% of its last 250 days)")
+            + (' · BUSY rules: stop 1.25 x range, target 1.5 x stop · ' if md == 'busy' else
+               ' · CALM rules: stop 1.0 x range, target 1.0 x stop, move the stop to entry + 5 pips once +0.35 x stop in profit; side set at 10:00 against any big overnight GBP-vs-EUR gap · ' if md in ('calm', 'calm_gap') else
+               ' · stop 1.0 x range, target 1.0 x stop (close the whole trade there), no half-close · ')
+            + 'one trade a day at 10:00 broker (11:00 am Dubai in summer, 12:00 pm in winter) · everything closes at 23:45 broker '
+            + '(12:45 am Dubai in summer, 1:45 am in winter)')
     return dict(code='GBPUSD', name='GBP/USD', symbol='GBPUSD · Capital.com GBP/USD', live=False, paper=True, status='Paper', version=RULES,
                 unit='pips', dp=5, stats=BACKTEST, pass_bar=PASS, day_note=note,
-                what_note='Tracks whether live GBP/USD signals do as well as the v1.03 MT4 test. You place the trade by hand on the demo (the auto-trader leaves GBP/USD alone). Decision after about 3 months.',
+                what_note='Tracks whether live GBP/USD signals do as well as the v1.04 MT4 test. You place the trade by hand on the demo (the auto-trader leaves GBP/USD alone). Decision after about 3 months.',
                 cost_note='Results are pips per trade after the spread (at least 1.5 pips). 0.01 lot = 1,000 units = $0.10 per pip.',
-                net_label='Net pips (v1.03 rules)')
+                net_label='Net pips (v1.04 rules)')
 
-def main(feed=None, get=None, getd=None, cget=None, now=None, eget=None, cget_eur=None):
+def main(feed=None, get=None, getd=None, cget=None, now=None, eget=None, cget_eur=None, eoget=None):
     global DEADLINE; DEADLINE = time.time() + 75     # own 75 s time budget per market
     now = now or F.broker_now(); day = now.normalize()
     old = loadj(PORTAL, {}); mk = old.setdefault('markets', {})
@@ -194,29 +232,49 @@ def main(feed=None, get=None, getd=None, cget=None, now=None, eget=None, cget_eu
         _DAILY.update(day=str(day.date()), d=getd(feed, day))
     dd = _DAILY['d']; A = E.avg_range(dd, day)
     eg, egz = 0, np.nan
-    if gcode == 0:                                                        # layer 4 needs EUR/USD 10:00 prices (fetched once a day)
-        if _DAILY.get('eday') != str(day.date()):
-            try: _DAILY.update(eday=str(day.date()), e10=(eget or eur10)(feed, day))
-            except Exception as ex: _DAILY.update(eday=None, e10=None); cnote = (cnote + '; ' if cnote else '') + f'EUR/USD prices unavailable ({type(ex).__name__})'
-        if _DAILY.get('e10') is not None: eg, egz = eg_now(dd, _DAILY['e10'])
+    if _DAILY.get('eday') != str(day.date()):                             # EUR/USD daily table (layer 4 + v1.04 gap), fetched once a day
+        try: _DAILY.update(eday=str(day.date()), e10=(eget or eur10)(feed, day))
+        except Exception as ex: _DAILY.update(eday=None, e10=None); cnote = (cnote + '; ' if cnote else '') + f'EUR/USD prices unavailable ({type(ex).__name__})'
+    if gcode == 0 and _DAILY.get('e10') is not None: eg, egz = eg_now(dd, _DAILY['e10'])
     code = E.decide(gcode, eg, ecode)
+    pct = np.nan                                                          # v1.04 regime: own 14-day range vs its last 250 days
+    try:
+        gh = hist_merge('gbp', dd, day); pct = E.regime_pct(E.range_hist(gh, day).values)
+    except Exception as ex: cnote = (cnote + '; ' if cnote else '') + f'regime history unavailable ({type(ex).__name__}) - v1.03 shape today'
+    if not np.isfinite(pct): cnote = (cnote + '; ' if cnote else '') + 'regime history too short - v1.03 trade shape today'
+    ed = _DAILY.get('e10'); eA = np.nan
+    try:
+        eh = hist_merge('eur', ed if isinstance(ed, pd.DataFrame) else None, day); eA = E.avg_range(eh, day)
+    except Exception: pass
+    code0 = code
     b = get(feed, day, now); b = b[(b.index >= day) & (b.index + pd.Timedelta(minutes=1) <= now)]
     bad = feed_check(b, now)
     if bad: raise FeedError(bad)
     sp = float(np.nanmedian(b.sp.values)) if len(b) and np.isfinite(b.sp.values).any() else 0.0
     cost = max(E.COST, sp)
+    t_in = day + pd.Timedelta(minutes=E.ENTRY_MIN)
+    dv = np.nan
+    if abs(code) in (1, 2, 3) and np.isfinite(pct) and pct < E.CALM_Q and now >= t_in + pd.Timedelta(minutes=1):   # calm day: the gap needs 10:00 prices
+        if _DAILY.get('eoday') != str(day.date()) or not np.isfinite(_DAILY.get('eo', (np.nan, np.nan))[1]):
+            try: _DAILY.update(eoday=str(day.date()), eo=(eoget or eur_opens)(feed, day))
+            except Exception as ex: _DAILY.update(eoday=None, eo=(np.nan, np.nan)); cnote = (cnote + '; ' if cnote else '') + f'EUR/USD minute prices unavailable ({type(ex).__name__})'
+        e0, e10_ = _DAILY.get('eo', (np.nan, np.nan))
+        dv = E.gap_div(first_open(b, day), first_open(b, t_in), e0, e10_, A, eA)
+    code, kS, kT, lk, md = E.mode(code, pct, dv)
     jd = next((d for d in J['days'] if d['date'] == str(day.date())), None)
-    if jd and jd.get('trades') and jd.get('frozen'):                       # a trade already shown keeps its entry, stop and target
-        fz = jd['frozen']; code = int(fz['code']); A = float(fz['A'])
-    t = E.trade(b[['o', 'h', 'l', 'c']], day, code, A, now=now, cost=cost)
+    if jd and jd.get('trades') and jd.get('frozen'):                       # a trade already shown keeps its entry, stop, target and rules
+        fz = jd['frozen']; code = int(fz['code']); A = float(fz['A']); kS = float(fz.get('k', E.STOP_X)); kT = float(fz.get('t', E.TGT_X)); lk = bool(fz.get('lock', False)); md = fz.get('mode', 'normal')
+    t = E.trade(b[['o', 'h', 'l', 'c']], day, code, A, now=now, cost=cost, k=kS, tx=kT, lock=lk)
+    if t: t['mode'] = md
     last = float(b.c.iloc[-1]) if len(b) else None; first = float(b.o.iloc[0]) if len(b) else None
     rows = [row(t, last, cost)] if t else []
-    t_in = day + pd.Timedelta(minutes=E.ENTRY_MIN); t_out = day + pd.Timedelta(minutes=E.CLOSE_MIN)
+    t_out = day + pd.Timedelta(minutes=E.CLOSE_MIN)
     if J.get('start') is None: J['start'] = str(day.date())
     nd = dict(date=str(day.date()), rules=RULES, label=day.strftime('%a %d %b'), side=(rows[0]['side'] if rows else None), trades=rows,
               final=bool(t is None and now >= t_in + pd.Timedelta(minutes=E.ENTRY_LATE + 1)) or bool(t and t['status'] != 'open'),
-              code=int(code), report=None if rep is None else str(pd.Timestamp(rep).date()))
-    if t: nd['frozen'] = dict(code=int(code), A=float(A))
+              code=int(code), report=None if rep is None else str(pd.Timestamp(rep).date()), mode=md,
+              regime=None if not np.isfinite(pct) else round(pct, 3), gap=None if not np.isfinite(dv) else round(dv, 3), code_before_gap=int(code0))
+    if t: nd['frozen'] = dict(code=int(code), A=float(A), k=float(kS), t=float(kT), lock=bool(lk), mode=md)
     J['days'] = sorted([d for d in J['days'] if d['date'] != str(day.date())] + [nd], key=lambda d: d['date'])
     J['summary'] = summary(J, day); dumpj(J, JOUR, indent=1)
     spark = []
@@ -227,18 +285,28 @@ def main(feed=None, get=None, getd=None, cget=None, now=None, eget=None, cget_eu
     if rows:
         r0 = rows[0]; state = r0['side'].lower()
         st0 = r0['status']
-        if st0 == 'open': msg = (f"PAPER {r0['side']} at {r0['price']:.5f} ({r0['time']} Dubai). Stop {r0['stop']:.5f}, target {r0['half_px']:.5f} - "
-                                 f"close the WHOLE trade at the target; otherwise it closes at {dubai(t_out)} Dubai.")
+        if st0 == 'open':
+            msg = (f"PAPER {r0['side']} at {r0['price']:.5f} ({r0['time']} Dubai). Stop {r0['stop']:.5f}, target {r0['half_px']:.5f} - "
+                   f"close the WHOLE trade at the target; otherwise it closes at {dubai(t_out)} Dubai.")
+            if t.get('lock') and not t.get('locked'): msg += f" CALM day: when price reaches {t['lock_px']:.5f}, move the stop to {t['lock_stop']:.5f} (entry + 5 pips)."
+            elif t.get('locked'): msg += f" Stop now locked at {t['stop']:.5f} (entry + 5 pips) since {dubai(t['locked_t'])} Dubai."
+            if md == 'calm_gap' and np.sign(code) != np.sign(code0): msg += ' (Side switched at 10:00: GBP ran away from EUR overnight - trading the snap-back.)'
+            if md == 'busy': msg += ' BUSY day: wider stop (1.25 x range) and target 1.5 x stop.'
+        elif st0 == 'stopped' and t.get('locked'): msg = f"Locked stop hit at {r0['exit_time']} Dubai: {r0['pips']:+.1f} pips. Done for today."
         elif st0 == 'target': msg = f"Target hit at {r0['exit_time']} Dubai: {r0['pips']:+.1f} pips. Done for today."
         elif st0 == 'stopped': msg = f"Stop hit at {r0['exit_time']} Dubai: {r0['pips']:+.1f} pips. Done for today."
         elif st0 == 'eod': msg = f"Closed at the day end ({r0['exit_time']} Dubai): {r0['pips']:+.1f} pips."
         else: msg = f"Day ended without a {dubai(t_out)} price - closed at the last price: {r0['pips']:+.1f} pips."
     elif side is None: state, msg = 'none', 'No GBP/USD trade today: no layer is on (pound crowds, EUR/GBP stretch and euro funds all neutral).'
-    elif now < t_in: state, msg = 'waiting', f"Today is a {side} day ({E.LAYER_NAME[abs(code)].split(' · ')[1]}). The trade opens at {dubai(t_in)} Dubai (10:00 broker)."
+    elif now < t_in:
+        state, msg = 'waiting', f"Today is a {side} day ({E.LAYER_NAME[abs(code)].split(' · ')[1]}). The trade opens at {dubai(t_in)} Dubai (10:00 broker)."
+        if md in ('calm', 'calm_gap'): msg += ' CALM market: at 10:00 the side can switch if GBP runs away from EUR overnight; stop moves to entry + 5 pips once +0.35 x stop in profit.'
+        elif md == 'busy': msg += ' BUSY market: stop 1.25 x range, target 1.5 x stop.'
+
     elif not np.isfinite(A): state, msg = 'none', 'No trade: fewer than 14 days of price history for the average range.'
     else: state, msg = 'none', f'No trade today: no price bar between {dubai(t_in)} and {dubai(t_in + pd.Timedelta(minutes=E.ENTRY_LATE))} Dubai.'
     if cnote: msg += f' ({cnote}.)'
-    mk['GBPUSD'] = dict(base_card(A if np.isfinite(A) else None, rep, code), state=state, message=msg, price=last,
+    mk['GBPUSD'] = dict(base_card(A if np.isfinite(A) else None, rep, code, md, pct if np.isfinite(pct) else None), state=state, mode=md, regime=None if not np.isfinite(pct) else round(pct, 3), gap=None if not np.isfinite(dv) else round(dv, 3), message=msg, price=last,
                         change=(None if last is None or first is None else round(last - first, 5)), entries=rows, spark=spark, journal=J['summary'], jdays=jdays(J),
                         feed_error=False, epic=EPIC, close_at=dubai(t_out), open_at=dubai(t_in), signal=side, layer=abs(int(code)), cftc_note=cnote,
                         report=None if rep is None else str(pd.Timestamp(rep).date()), range_pips=None if not np.isfinite(A) else round(A * 1e4, 1),
