@@ -12,12 +12,19 @@ Broker clock = New York + 7 h (bid prices). One ladder per day:
           Same-minute events are taken in the research order (minute, side, source). No entries in the day-end minute or from 22:25 broker.
   EXIT    stop = 0.75 x the 14-day average daily range (high-low of the 14 previous broker days) from the entry; no half-close;
           everything closes at the open of the first bar at/after 22:30 broker (3:30 pm New York); if no such bar, at the day's last close.
+v1.04 (24 Oct 2026, his MT4 run SP500_DAYTRADE v1.04: net $16,896, net/DD 8.83, profit days 44.5%, both halves better than v1.00/v1.02):
+  DAY RULES  a 2nd/3rd leg is NOT opened (a) at/after 11:00 am New York (18:00 broker), or (b) when the day's legs taken so far are already
+             up >= 0.5 x stop (= $50 at $100 risk) after cost, counting closed + open legs at the entry price. The first leg is never blocked.
+  NIGHT LEG  on high-fear nights (last Cboe close before the broker day: VIX > VIX3M, or VIX in its 1-year top 10%, or VVIX in its 1-year
+             top 10%) BUY at 6:01 pm New York (01:01 broker), stop 2.0 x range, close at 10:00 am New York (17:00 broker). Not part of the ladder.
 Results: points per leg after a 0.8 pt cost (never less than Capital.com's live spread)."""
 import numpy as np, pandas as pd
 
 SM = 0.75; LEGS = 3; MOM_K = 0.05; SWEEP_X = 0.1; SWEEP_W = 30; K4_X = 0.8
 X_MIN = 22 * 60 + 30; LAST_MIN = X_MIN - 5; US_LO = 16 * 60 + 30; US_HI = 22 * 60; END_H = 19
 COST = 0.8
+LATE_MIN = 18 * 60; GREEN_R = 0.5                                     # v1.04 day rules (rows 17 / 16 of the EA)
+NIGHT_IN = 61; NIGHT_OUT = 17 * 60; NIGHT_SM = 2.0                    # v1.04 night leg
 
 def eod_minutes(day): return 22 * 60 + 50 if pd.Timestamp(day).dayofweek == 4 else 23 * 60
 
@@ -81,19 +88,61 @@ def nasdaq_events(b, picks):
             E.append((p, int(s), 'Nasdaq signal copied'))
     return E
 
-def legs_of_day(b, A, pH, pL, picks, day, day_done=True):
+def legs_of_day(b, A, pH, pL, picks, day, day_done=True, sp=COST, late_min=LATE_MIN, green_r=GREEN_R):
     """The day's ladder: list of dict(j, dir, src, name, leg). day_done=False (live, 22 Oct fix): until a bar at/after the close time
     exists, the latest closed bar is not the day-end bar (a signal on it is no longer held back a minute). Full days: unchanged."""
     hm = (b.index.hour * 60 + b.index.minute).values; n = len(b)
     eodm = eod_minutes(day); eod_i = _first_bar(hm, eodm); eod_i = (n - 1 if day_done else n) if eod_i < 0 else eod_i
+    O, H, L = (b[c].values.astype(float) for c in 'ohl'); sd = SM * A
     ev = [(j, s, 1, nm) for j, s, nm in book_events(b, A, pH, pL)] + [(j, s, 0, nm) for j, s, nm in nasdaq_events(b, picks)]
     ev.sort(key=lambda x: (x[0], x[1], x[2]))
     out = []; side = 0
     for j, s, src, nm in ev:
         if j >= eod_i or hm[j] >= LAST_MIN: continue
         if side == 0: side = s
-        if s == side and len(out) < LEGS: out.append(dict(j=j, dir=s, src=src, name=nm, leg=len(out) + 1))
+        if s != side or len(out) >= LEGS: continue
+        if out and late_min is not None and hm[j] >= late_min: continue          # v1.04 row 17: no 2nd/3rd leg from 11:00 am New York
+        if out and green_r is not None and day_green(O, H, L, out, j, sd, sp) >= green_r: continue   # v1.04 row 16: day already up >= 0.5 x stop
+        out.append(dict(j=j, dir=s, src=src, name=nm, leg=len(out) + 1))
     return out
+
+def day_green(O, H, L, legs, j, sd, sp):
+    """v1.04: the day's legs so far, in units of the stop after cost, at the open of bar j (closed legs at -1 if stopped, open at O[j])."""
+    tot = 0.0
+    for g in legs:
+        gj, gs = g['j'], g['dir']; en = float(g.get('entry', O[gj])); stp = en - gs * sd
+        hit = (L[gj:j] <= stp).any() if gs > 0 else (H[gj:j] >= stp).any()
+        tot += (-1.0 - sp / sd) if hit else (gs * (O[j] - en) - sp) / sd
+    return tot
+
+def stress_flag(V, day):
+    """V: DataFrame (index date) with vix, v3m, vvix closes. High-fear = last close BEFORE the broker day `day`: VIX > VIX3M,
+    or VIX 1-year pct > 0.9, or VVIX 1-year pct > 0.9 (252-day rank, >= 120 days). Returns (flag, detail dict)."""
+    V = V.sort_index(); V = V[~V.index.duplicated(keep='last')]
+    vp = V.vix.rolling(252, min_periods=120).rank(pct=True); vvp = V.vvix.rolling(252, min_periods=120).rank(pct=True)
+    k = int(V.index.searchsorted(pd.Timestamp(day).normalize(), side='left')) - 1
+    if k < 0: return False, {}
+    d = dict(date=str(V.index[k].date()), vix=float(V.vix.iloc[k]), vix3m=float(V.v3m.iloc[k]), vvix=float(V.vvix.iloc[k]),
+             vix_pct=float(vp.iloc[k]), vvix_pct=float(vvp.iloc[k]))
+    f = bool(d['vix'] > d['vix3m'] or d['vix_pct'] > 0.9 or d['vvix_pct'] > 0.9)
+    return f, d
+
+def night_leg(b, A, day, sp=COST, entry_min=NIGHT_IN, exit_min=NIGHT_OUT, now_done=False):
+    """v1.04 night leg (call only on high-fear days): BUY at the first bar at/after 01:01 broker (within 5 min), stop 2.0 x range,
+    exit at the open of the first bar at/after 17:00 broker. Returns [] or [managed leg dict] (same keys as manage, night=True)."""
+    if not len(b) or not np.isfinite(A): return []
+    O, H, L, C = (b[c].values.astype(float) for c in 'ohlc'); hm = (b.index.hour * 60 + b.index.minute).values; n = len(O)
+    j = _first_bar(hm, entry_min)
+    if j < 0 or hm[j] > entry_min + 5 or hm[j] >= exit_min: return []
+    en = O[j]; sd = NIGHT_SM * A; stp = en - sd; st = 'open'; ex = None; ext = None
+    for m in range(j, n):
+        if m > j and hm[m] >= exit_min: st, ex, ext = 'eod', O[m], m; break
+        if L[m] <= stp: st, ex, ext = 'stopped', stp, m; break
+    if st == 'open' and now_done: st, ex, ext = 'eod', C[n - 1], n - 1
+    pts = None if ex is None else (ex - en) - sp
+    return [dict(j=j, dir=1, src=1, name='Night long (high-fear night: VIX / VVIX)', leg=0, night=True, t=b.index[j], entry=float(en), stop=float(stp),
+                 stop0=float(stp), sd=float(sd), A=float(A), status=st, exit=None if ex is None else float(ex), exit_t=None if ext is None else b.index[ext],
+                 pts=pts, r=None if pts is None else pts / sd, r_now=((C[n - 1] - en) - sp) / sd if n else None)]
 
 def manage(b, legs, A, day, sp=COST, now_done=True):
     """Walk each leg through today's closed bars. status: open / stopped / eod. r = result in units of the stop after the cost."""
@@ -117,5 +166,5 @@ def run_day(hist, today, day, picks, sp=COST, day_over=False):
     """hist: bars before `day` (>= 15 days); today: today's CLOSED bars; picks: Nasdaq desk picks of `day`. Returns managed legs."""
     A, pH, pL = day_ctx(hist, day)
     if not np.isfinite(A) or not len(today): return []
-    legs = legs_of_day(today, A, pH, pL, picks, day, day_done=day_over)
+    legs = legs_of_day(today, A, pH, pL, picks, day, day_done=day_over, sp=sp)
     return manage(today, legs, A, day, sp, now_done=day_over)

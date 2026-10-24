@@ -15,9 +15,38 @@ PICK_LATE = pd.Timedelta(minutes=3)   # 22 Oct fix: a Nasdaq pick first seen mor
 EPIC = os.environ.get('CAPITAL_EPIC_SP', 'US500')
 MIN_SPREAD = S.COST                   # the paper result never uses less than 0.8 index points per leg (as in the MT4 test)
 PASS = dict(green=40.0, pf=1.15, months=3)
-RULES = 'v1.00'
-BACKTEST = dict(direction='—', days='43% profit days / 85% traded', perday='1.39', win='52.5%', pf='1.30', net='+$16,398 at $100 risk per leg',
-                source='MT4 test SP500_DAYTRADE v1.00 (his run 22 Oct, spread 0.8 pt), 2020-01-01..2026-09-30, 2,330 legs; worst day -$310; net/DD 6.23')
+RULES = 'v1.04'
+BACKTEST = dict(direction='—', days='44.5% profit days / 87% traded', perday='1.37', win='53.4%', pf='1.32', net='+$16,896 at $100 risk per leg',
+                source='MT4 test SP500_DAYTRADE v1.04 (his run 24 Oct, spread 0.8 pt), 2020-01-01..2026-09-30, 2,416 trades (2,135 day + 281 night); '
+                       'worst day -$315; net/DD 8.83; max DD $1,914')
+CBOE = os.path.join(HERE, 'docs', 'cboe_sp.json')          # v1.04: the day's high-fear flag (decided once per broker day)
+CBOE_URL = 'https://cdn.cboe.com/api/global/us_indices/daily_prices/{}_History.csv'
+CBOE_Q = 'https://cdn.cboe.com/api/global/delayed_quotes/quotes/_{}.json'
+
+def _cboe_series(sym, col):
+    import io
+    r = requests.get(CBOE_URL.format(sym), timeout=20); r.raise_for_status()
+    x = pd.read_csv(io.StringIO(r.text)); x['DATE'] = pd.to_datetime(x.DATE, format='%m/%d/%Y')
+    return x.set_index('DATE')[col if col in x.columns else x.columns[-1]].astype(float)
+
+def stress_today(day, now):
+    """v1.04 night-leg flag for broker day `day` (cached in docs/cboe_sp.json). The last close before the day must be the previous NY
+    weekday; if the Cboe file does not have it yet, today's delayed quote (the 4:15 pm close) is used for that date."""
+    c = loadj(CBOE, {})
+    if c.get('day') == str(day.date()) and 'stress' in c: return c['stress'], c
+    try:
+        V = pd.DataFrame(dict(vix=_cboe_series('VIX', 'CLOSE'), v3m=_cboe_series('VIX3M', 'CLOSE'), vvix=_cboe_series('VVIX', 'VVIX'))).dropna()
+        prev = (pd.Timestamp(day) - pd.offsets.BDay(1)).normalize(); added = False
+        if V.index.max() < prev:
+            q = {}
+            for sym, k in (('VIX', 'vix'), ('VIX3M', 'v3m'), ('VVIX', 'vvix')):
+                r = requests.get(CBOE_Q.format(sym), timeout=20); r.raise_for_status(); q[k] = float(r.json()['data']['current_price'])
+            V.loc[prev] = [q['vix'], q['v3m'], q['vvix']]; added = True
+        f, d = S.stress_flag(V, day)
+        c = dict(day=str(day.date()), stress=bool(f), detail=d, quote_used=added, at=str(now))
+        dumpj(c, CBOE, indent=1); return c['stress'], c
+    except Exception as e:
+        return None, dict(error=f'{type(e).__name__}: {str(e)[:100]}')
 
 def loadj(p, d):
     try: return json.load(open(p))
@@ -162,12 +191,12 @@ def seed(feed, day, get):
         if len(b) >= FULL_SHARE * med: save_day(b)
 
 def row(t, b, now, sp):
-    st = t['status']
+    st = t['status']; nite = bool(t.get('night'))
     res = None if t['pts'] is None else round(t['pts'], 1)
     live = None
     if st == 'open' and len(b):
         pxn = float(b.c.values[-1]); live = round(t['dir'] * (pxn - t['entry']) - sp, 1)
-    return dict(time=dubai(t['t']), side='BUY' if t['dir'] == 1 else 'SELL', name=t['name'], src='Nasdaq' if t['src'] == 0 else 'S&P', leg=t['leg'],
+    return dict(time=dubai(t['t']), side='BUY' if t['dir'] == 1 else 'SELL', name=t['name'], src='Night' if nite else ('Nasdaq' if t['src'] == 0 else 'S&P'), leg=t['leg'], night=nite,
                 price=round(t['entry'], 1), entry=round(t['entry'], 1), stop=round(t['stop'], 1), stop0=round(t['stop0'], 1), stop_pts=round(t['sd'], 1),
                 half_px=None, half=False, size='full', status=st,
                 exit=None if t['exit'] is None else round(t['exit'], 1), exit_time=None if t['exit_t'] is None else dubai(t['exit_t']),
@@ -190,14 +219,15 @@ def jdays(J): return J.get('days', [])[-30:][::-1]
 
 def base_card(A=None):
     note = ('14-day range ' + ('—' if A is None else f'{A:,.0f} pts') + ' · stop 0.75 x range' + ('' if A is None else f' (= {0.75 * A:,.0f} pts)') +
-            ' · no half-close · the day\'s first signal sets BUY or SELL, later signals the same way add (max 3 trades) · signals: Nasdaq desk signals '
-            'copied in US hours + S&P 9:40 am New York move, yesterday high/low sweep, big move by 10 am New York · close 10:30 pm broker = 11:30 pm Dubai '
-            '(3:30 pm New York; 12:30 am Dubai in winter)')
+            ' · no half-close · the day\'s first signal sets BUY or SELL, later signals the same way add (max 3 trades) · v1.04: no 2nd/3rd trade from '
+            '11:00 am New York or once the day is up half a stop · signals: Nasdaq desk signals copied in US hours + S&P 9:40 am New York move, yesterday '
+            'high/low sweep, big move by 10 am New York · close 3:30 pm New York · NIGHT trade on high-fear nights (VIX above VIX3M, or VIX / VVIX in '
+            'their 1-year top 10%): BUY 6:01 pm New York, stop 2 x range, close 10:00 am New York')
     return dict(code='US500', name='S&P 500', symbol='US500 · Capital.com US 500', live=False, paper=True, status='Paper', version=RULES,
                 unit='pts', dp=1, stats=BACKTEST, pass_bar=PASS, day_note=note,
-                what_note='Tracks whether live S&P signals do as well as the v1.00 MT4 test. Decision after about 3 months.',
+                what_note='Tracks whether live S&P signals do as well as the v1.04 MT4 test. Decision after about 3 months.',
                 cost_note='Results are index points per trade after 0.8 points of cost (Capital.com spread + slippage).',
-                net_label='Net points (v1.00 rules)')
+                net_label='Net points (v1.04 rules)')
 
 def picks_for(day, now, jd, record=True):
     """Today's Nasdaq desk picks [(nasdaq minute, side)] (22 Oct fix). Each pick's FIRST-SEEN time is kept in the journal day (picks_seen);
@@ -241,7 +271,7 @@ def legs_now(b, A, pH, pL, picks, day, day_done, jd):
 
 def freeze_legs(jd, trades):
     jd['legs_frozen'] = [dict(t=str(t['t']), dir=int(t['dir']), src=int(t['src']), name=t['name'], leg=int(t['leg']), entry=float(t['entry']), sd=float(t['sd']))
-                         for t in trades]
+                         for t in trades if not t.get('night')]          # v1.04: the night leg is rebuilt each run from the day's stress flag
 
 def compute(hist, b, day, now, picks, sp, jd):
     """One broker day: b = its closed bars (o h l c). Returns the managed legs (frozen ones kept)."""
@@ -252,8 +282,10 @@ def compute(hist, b, day, now, picks, sp, jd):
     A, pH, pL = S.day_ctx(hist[hist.index < day].iloc[-40 * 1500:], day)
     legs = legs_now(b[['o', 'h', 'l', 'c']], A, pH, pL, picks, day, bool(now >= eod), jd)
     trades = S.manage(b[['o', 'h', 'l', 'c']], legs, A, day, sp, now_done=bool(now >= eod))
-    for t in trades:                                     # past the 3:30 pm New York close but no bar there yet: close at the last price
-        if t['status'] == 'open' and now >= xt + pd.Timedelta(minutes=1) and len(b):
+    if jd.get('stress'): trades = S.night_leg(b[['o', 'h', 'l', 'c']], A, day, sp, now_done=bool(now >= eod)) + trades     # v1.04 night leg
+    for t in trades:                                     # past the close time but no bar there yet: close at the last price
+        xt_ = day + pd.Timedelta(minutes=S.NIGHT_OUT) if t.get('night') else xt
+        if t['status'] == 'open' and now >= xt_ + pd.Timedelta(minutes=1) and len(b):
             ex = float(b.c.values[-1]); t.update(status='eod', exit=ex, exit_t=b.index[-1], pts=t['dir'] * (ex - t['entry']) - sp)
             t['r'] = t['pts'] / t['sd']
     return trades
@@ -272,7 +304,8 @@ def finish_old_days(J, hist, day, st):
         sp = max([MIN_SPREAD] + [float(t.get('spread') or 0) for t in jd.get('trades', [])])
         trades = compute(hist, b, d, nd, picks, sp, jd); freeze_legs(jd, trades)
         rows = [row(t, b, nd, sp) for t in trades]
-        jd.update(trades=rows, side=(rows[0]['side'] if rows else None), final=True, finished_late=True); done.append(jd['date'])
+        dr = [r for r in rows if not r.get('night')]
+        jd.update(trades=rows, side=(dr[0]['side'] if dr else None), final=True, finished_late=True); done.append(jd['date'])
     return done
 
 def main(feed=None, get=None, now=None):
@@ -305,9 +338,13 @@ def main(feed=None, get=None, now=None):
     sp = max(MIN_SPREAD, spread or 0.0)
     jd = next((d for d in J['days'] if d['date'] == str(day.date())), None) or {}
     picks, pnote, pstale = picks_for(day, now, jd)
+    stress, cinfo = stress_today(day, now)               # v1.04: decided once per day; only a decision made by 01:06 broker can open the night leg
+    if 'stress' not in jd and stress is not None:
+        jd['stress'] = bool(stress) and (now.hour * 60 + now.minute <= S.NIGHT_IN + 5)
+        if stress and not jd['stress']: jd['stress_note'] = 'high-fear night, but the check ran after 6:06 pm New York - no night trade'
     trades = compute(hist, b, day, now, picks, sp, jd)
     freeze_legs(jd, trades)
-    rows = [row(t, b, now, sp) for t in trades]
+    rows = [row(t, b, now, sp) for t in trades]; drows = [r for r in rows if not r.get('night')]; nrow = [r for r in rows if r.get('night')]
     last = float(b.c.iloc[-1]) if len(b) else None; first = float(b.o.iloc[0]) if len(b) else None
     spark = []
     if len(b):
@@ -315,17 +352,27 @@ def main(feed=None, get=None, now=None):
         spark = [[F.broker_to_dubai(t).strftime('%-I:%M %p').lower(), round(float(r.c), 1), round(float(r.o), 1), round(float(r.h), 1), round(float(r.l), 1)] for t, r in g5.iterrows()]
     if J.get('start') is None: J['start'] = str(day.date())
     J['days'] = sorted([d for d in J['days'] if d['date'] != str(day.date())] +
-                       [dict({k: jd[k] for k in ('picks_seen', 'legs_frozen') if k in jd}, date=str(day.date()), rules=RULES, label=day.strftime('%a %d %b'),
-                             side=(rows[0]['side'] if rows else None), trades=rows, final=bool(now >= eod))], key=lambda d: d['date'])
+                       [dict({k: jd[k] for k in ('picks_seen', 'legs_frozen', 'stress', 'stress_note') if k in jd}, date=str(day.date()), rules=RULES,
+                             label=day.strftime('%a %d %b'), side=(drows[0]['side'] if drows else None), trades=rows, final=bool(now >= eod))],
+                      key=lambda d: d['date'])
     J['summary'] = summary(J, day); dumpj(J, JOUR, indent=1)
     A = trades[0]['A'] if trades else S.day_ctx(hist[hist.index < day].iloc[-40 * 1500:], day)[0]
-    if rows:
-        op = [r for r in rows if r['status'] == 'open']; state = rows[0]['side'].lower()
-        msg = (f"PAPER {rows[0]['side']} day: {len(rows)} trade{'s' if len(rows) > 1 else ''} today ({len(op)} running). Only {rows[0]['side']} signals count today "
-               f"(max 3). Each trade keeps its stop, no half-close; everything closes at {dubai(xt)} Dubai (3:30 pm New York).")
-    elif now >= xt: state, msg = 'none', 'No paper trade today.'
-    else: state, msg = 'waiting', (f'Waiting for the first signal (from {dubai(day + pd.Timedelta(minutes=16 * 60 + 40))} Dubai: 9:40 am New York move, '
+    if drows:
+        op = [r for r in drows if r['status'] == 'open']; state = drows[0]['side'].lower()
+        msg = (f"PAPER {drows[0]['side']} day: {len(drows)} trade{'s' if len(drows) > 1 else ''} today ({len(op)} running). Only {drows[0]['side']} signals count "
+               f"today (max 3; no 2nd/3rd trade from 11:00 am New York or once the day is up half a stop). Each trade keeps its stop, no half-close; everything "
+               f"closes at {dubai(xt)} Dubai (3:30 pm New York).")
+    elif now >= xt: state, msg = 'none', 'No paper day trade today.'
+    else: state, msg = 'waiting', (f'Waiting for the first day signal (from {dubai(day + pd.Timedelta(minutes=16 * 60 + 40))} Dubai: 9:40 am New York move, '
                                    'Nasdaq signals; earlier: yesterday high/low sweep).')
+    if nrow:                                             # v1.04 night leg
+        n_ = nrow[0]
+        msg = (f"NIGHT BUY (high-fear night) at {n_['time']} Dubai, stop {n_['stop']}, " +
+               (f"closes at {dubai(day + pd.Timedelta(minutes=S.NIGHT_OUT))} Dubai (10:00 am New York). " if n_['status'] == 'open' else f"closed ({n_['status']}). ") + msg)
+        if state in ('none', 'waiting') and n_['status'] == 'open': state = 'buy'
+    elif jd.get('stress_note'): msg += ' (' + jd['stress_note'] + '.)'
+    elif jd.get('stress') is False: msg += ' No night trade today (not a high-fear night).'
+    elif stress is None: msg += f" (Night-trade check: Cboe data not available - {cinfo.get('error', '')}.)"
     if pnote and now.hour * 60 + now.minute >= S.US_LO: msg += f' ({pnote}.)'
     mk['US500'] = dict(base_card(A if A == A else None), state=state, message=msg, price=last, change=(None if last is None or first is None else round(last - first, 1)),
                        entries=rows, spark=spark, journal=J['summary'], jdays=jdays(J), feed_error=False, picks_stale=pstale, epic=EPIC_NOW[0], close_at=dubai(xt),
