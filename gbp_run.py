@@ -1,9 +1,10 @@
-"""GBP/USD PAPER signals for the page - GBP_CROWD v1.02 rules (gbp_engine.py; MT4-proven 23 Oct 2026, his run 3: 3,320 trades
-2011-01..2026-06, net $8,652.74 at 0.10 lot, max DD $2,090.54, net/DD 4.14, PF 1.12, all 4 periods positive). One trade a day at most,
+"""GBP/USD PAPER signals for the page - GBP_CROWD v1.03 rules (gbp_engine.py; MT4-proven 24 Oct 2026, his run 4: 3,810 trades
+2011-01..2026-06, net $12,108.90 at 0.10 lot, max DD $2,090.54, net/DD 5.79, PF 1.14, all 4 periods positive, 95.3% of weekdays traded). One trade a day at most,
 manual (the demo auto-trader does NOT copy GBP/USD - his choice B, 23 Oct). No phone alerts, no real money.
 Called by run.py every minute. Each run: (1) the weekly CFTC British Pound report (publicreporting.cftc.gov, free, no key) is re-read
 at most once an hour and cached in docs/cftc_gbp.json - the desk keeps working on the cached report if the CFTC site is down;
-(2) the 14-day average range from Capital.com hourly bars; (3) today's Capital.com minute bars (bid + spread) -> gbp_engine.trade();
+(1b) v1.03: the weekly CFTC EURO FX report the same way (docs/cftc_eur.json); (2) the 14-day average range and, for layer 4,
+EUR/GBP at 10:00 broker of the last 20 trading days, from Capital.com hourly bars (GBPUSD + EURUSD, once a day); (3) today's Capital.com minute bars (bid + spread) -> gbp_engine.trade();
 (4) docs/journal_gbp.json (every paper trade) and docs/data.json -> markets.GBPUSD (the page)."""
 import os, json, time, requests, numpy as np, pandas as pd
 import feeds as F, gbp_engine as E
@@ -11,14 +12,14 @@ DEADLINE = time.time() + 240          # loop.py resets this every minute; the GB
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 JOUR = os.path.join(HERE, 'docs', 'journal_gbp.json'); PORTAL = os.path.join(HERE, 'docs', 'data.json')
-CFTC = os.path.join(HERE, 'docs', 'cftc_gbp.json')
+CFTC = os.path.join(HERE, 'docs', 'cftc_gbp.json'); CFTC_EUR = os.path.join(HERE, 'docs', 'cftc_eur.json')
 CFTC_URL = 'https://publicreporting.cftc.gov/resource/gpe5-46if.json'
-EPIC = os.environ.get('CAPITAL_EPIC_GBP', 'GBPUSD')
-RULES = 'v1.02'
+EPIC = os.environ.get('CAPITAL_EPIC_GBP', 'GBPUSD'); EPIC_EUR = os.environ.get('CAPITAL_EPIC_EUR', 'EURUSD')
+RULES = 'v1.03'
 PASS = dict(pf=1.10, months=3)
-BACKTEST = dict(direction='—', days='82% of weekdays traded, max 1 a day', perday='0.82', win='9.8% hit target · 51.4% closed in profit', pf='1.12',
-                net='+$8,652.74 at 0.10 lot (net/DD 4.14)',
-                source='MT4 test GBP_CROWD v1.02 (his run 3, 23 Oct, spread 1.8 pips), 2011-01..2026-06-19, 3,320 trades; max DD $2,090.54; worst day -$231.50; all 4 periods positive')
+BACKTEST = dict(direction='—', days='95% of weekdays traded, max 1 a day · profit days 49%', perday='0.95', win='10.1% hit target · 51.6% closed in profit', pf='1.14',
+                net='+$12,108.90 at 0.10 lot (net/DD 5.79)',
+                source='MT4 test GBP_CROWD v1.03 (his run 4, 24 Oct, spread 1.8 pips), 2011-01..2026-06-19, 3,810 trades; max DD $2,090.54; all 4 periods positive')
 
 class FeedError(RuntimeError):
     pass
@@ -35,42 +36,46 @@ def dumpj(o, p, **kw):
 def dubai(t): return F.broker_to_dubai(pd.Timestamp(t)).strftime('%-I:%M %p').lower()
 
 # ---------------- weekly CFTC report ----------------
-def cftc_rows(get=None):
-    """Cached weekly rows; refreshed from the CFTC site at most once an hour. Returns (rows, note)."""
-    c = loadj(CFTC, {}); rows = c.get('rows') or []; note = None
+def cftc_rows(get=None, mcode='096742', path=None, name='CFTC'):
+    """Cached weekly rows; refreshed from the CFTC site at most once an hour. Returns (rows, note). mcode 096742 = British Pound,
+    099741 = Euro FX (layer 5)."""
+    path = path or CFTC
+    c = loadj(path, {}); rows = c.get('rows') or []; note = None
     if time.time() - float(c.get('fetched', 0)) >= 3600 or not rows:
         try:
             if get is not None: new = get()
             else:
-                r = requests.get(CFTC_URL, timeout=20, params={'$where': "cftc_contract_market_code='096742'", '$order': 'report_date_as_yyyy_mm_dd DESC', '$limit': 200,
+                r = requests.get(CFTC_URL, timeout=20, params={'$where': f"cftc_contract_market_code='{mcode}'", '$order': 'report_date_as_yyyy_mm_dd DESC', '$limit': 200,
                                  '$select': 'report_date_as_yyyy_mm_dd,open_interest_all,lev_money_positions_long,lev_money_positions_short,nonrept_positions_long_all,nonrept_positions_short_all'})
                 r.raise_for_status()
                 new = [dict(d=str(x['report_date_as_yyyy_mm_dd'])[:10], oi=float(x['open_interest_all']), lev_l=float(x['lev_money_positions_long']),
                             lev_s=float(x['lev_money_positions_short']), nr_l=float(x['nonrept_positions_long_all']), nr_s=float(x['nonrept_positions_short_all'])) for x in r.json()]
             if len(new) >= 60:
                 rows = sorted({x['d']: x for x in rows + new}.values(), key=lambda x: x['d'])[-260:]
-                dumpj(dict(fetched=time.time(), source=CFTC_URL, rows=rows), CFTC, indent=0)
-            else: note = f'CFTC site returned only {len(new)} weeks - using the saved report'
+                dumpj(dict(fetched=time.time(), source=CFTC_URL, rows=rows), path, indent=0)
+            else: note = f'{name} site returned only {len(new)} weeks - using the saved report'
         except Exception as e:
-            note = f'CFTC site not reachable ({type(e).__name__}) - using the saved report'
-            if rows: dumpj(dict(c, fetched=time.time() - 3000), CFTC, indent=0)      # retry in ~10 min, not every minute
-    if not rows: raise FeedError('no CFTC report saved yet and the CFTC site is not reachable')
+            note = f'{name} site not reachable ({type(e).__name__}) - using the saved report'
+            if rows: dumpj(dict(c, fetched=time.time() - 3000), path, indent=0)      # retry in ~10 min, not every minute
+    if not rows: raise FeedError(f'no {name} report saved yet and the CFTC site is not reachable')
     return rows, note
 
 def weekly(rows):
     W = pd.DataFrame(rows); W.index = pd.to_datetime(W.pop('d')); return E.codes(W[['oi', 'lev_l', 'lev_s', 'nr_l', 'nr_s']].astype(float))
+def weekly_eur(rows):
+    W = pd.DataFrame(rows); W.index = pd.to_datetime(W.pop('d')); return E.eur_codes(W[['oi', 'lev_l', 'lev_s']].astype(float))
 
 # ---------------- prices ----------------
 def to_utc(b): return (pd.Timestamp(b) - pd.Timedelta(hours=7)).tz_localize(F.NY, ambiguous=False, nonexistent='shift_forward').tz_convert('UTC').tz_localize(None)
 
-def prices(feed, res, start_b, end_b, step):
+def prices(feed, res, start_b, end_b, step, epic=None):
     """Capital.com GBP/USD bars between two broker times: index broker time, Bid o/h/l/c + spread (ask close - bid close)."""
     if feed.h is None: feed.login()
     t0, end = to_utc(start_b), to_utc(end_b); out = []
     while t0 < end:
         if time.time() > DEADLINE: raise TimeoutError('GBP time budget used up - next run continues')
         t1 = min(end, t0 + step)
-        r = requests.get(f'{feed.base}/api/v1/prices/{EPIC}', headers=feed.h, timeout=20,
+        r = requests.get(f'{feed.base}/api/v1/prices/{epic or EPIC}', headers=feed.h, timeout=20,
                          params={'resolution': res, 'max': 1000, 'from': t0.strftime('%Y-%m-%dT%H:%M:%S'), 'to': t1.strftime('%Y-%m-%dT%H:%M:%S')})
         if r.status_code == 200:
             for p in r.json().get('prices', []):
@@ -86,11 +91,23 @@ def prices(feed, res, start_b, end_b, step):
 
 def minutes(feed, start_b, end_b): return prices(feed, 'MINUTE', start_b, end_b, pd.Timedelta(minutes=900))
 def daily(feed, day):
-    """weekday high/low per broker day from hourly bars of the last 35 days (before today)."""
-    h = prices(feed, 'HOUR', day - pd.Timedelta(days=35), day, pd.Timedelta(hours=900))
+    """weekday high/low per broker day from hourly bars of the last 45 days (before today), plus g10 = GBP/USD 10:00 broker open
+    (layer 4 needs 20 trading days)."""
+    h = prices(feed, 'HOUR', day - pd.Timedelta(days=45), day, pd.Timedelta(hours=900))
     h = h[h.index < day]
-    if not len(h): return pd.DataFrame(columns=['h', 'l'])
-    return h.groupby(h.index.normalize()).agg(h=('h', 'max'), l=('l', 'min'))
+    if not len(h): return pd.DataFrame(columns=['h', 'l', 'g10'])
+    d = h.groupby(h.index.normalize()).agg(h=('h', 'max'), l=('l', 'min'))
+    g10 = h[(h.index.hour == 10) & (h.index.minute == 0)].o; g10.index = g10.index.normalize()
+    d['g10'] = g10.reindex(d.index); return d
+def eur10(feed, day):
+    """EUR/USD 10:00 broker hourly open per broker day of the last 45 days (before today)."""
+    h = prices(feed, 'HOUR', day - pd.Timedelta(days=45), day, pd.Timedelta(hours=900), epic=EPIC_EUR)
+    h = h[(h.index < day) & (h.index.hour == 10) & (h.index.minute == 0)]
+    s = h.o.copy(); s.index = s.index.normalize(); return s
+def eg_now(dd, e10):
+    """layer 4 side for today from the trading days before today (days that have both 10:00 prices)."""
+    v = (e10.reindex(dd.index) / dd['g10']).dropna() if 'g10' in dd else pd.Series(dtype=float)
+    return E.eg_side(v.values)
 
 def feed_check(b, now):
     """None if today's closed bars look fresh, else the reason (01:00-23:30 broker only)."""
@@ -134,29 +151,39 @@ def jdays(J): return J.get('days', [])[-30:][::-1]
 
 def base_card(A=None, rep=None, code=0):
     rp = '—' if rep is None else pd.Timestamp(rep).strftime('%a %d %b')
-    lay = {0: 'no layer on - no trade this week', 1: 'layer 1 (hedge funds crowded)', 2: 'layer 2 (small traders crowded)', 3: 'layer 3 (small traders jumped in)'}[abs(code)]
-    note = (f"This week: {'BUY' if code > 0 else 'SELL' if code < 0 else 'NO TRADE'} days · {lay} · CFTC report of {rp} · 14-day range "
+    lay = {0: 'no layer on', 1: 'layer 1 (hedge funds crowded)', 2: 'layer 2 (small traders crowded)', 3: 'layer 3 (small traders jumped in)',
+           4: 'layer 4 (pound stretched vs euro)', 5: 'layer 5 (euro hedge funds trend)'}[abs(code)]
+    note = (f"Today: {'BUY' if code > 0 else 'SELL' if code < 0 else 'NO TRADE'} · {lay} · CFTC report of {rp} · 14-day range "
             + ('—' if A is None else f'{A * 1e4:.0f} pips') + ' · stop 1.0 x range, target 1.0 x stop (close the whole trade there), no half-close · '
             'one trade a day at 10:00 broker (11:00 am Dubai in summer, 12:00 pm in winter) · everything closes at 23:45 broker '
             '(12:45 am Dubai in summer, 1:45 am in winter)')
     return dict(code='GBPUSD', name='GBP/USD', symbol='GBPUSD · Capital.com GBP/USD', live=False, paper=True, status='Paper', version=RULES,
                 unit='pips', dp=5, stats=BACKTEST, pass_bar=PASS, day_note=note,
-                what_note='Tracks whether live GBP/USD signals do as well as the v1.02 MT4 test. You place the trade by hand on the demo (the auto-trader leaves GBP/USD alone). Decision after about 3 months.',
+                what_note='Tracks whether live GBP/USD signals do as well as the v1.03 MT4 test. You place the trade by hand on the demo (the auto-trader leaves GBP/USD alone). Decision after about 3 months.',
                 cost_note='Results are pips per trade after the spread (at least 1.5 pips). 0.01 lot = 1,000 units = $0.10 per pip.',
-                net_label='Net pips (v1.02 rules)')
+                net_label='Net pips (v1.03 rules)')
 
-def main(feed=None, get=None, getd=None, cget=None, now=None):
+def main(feed=None, get=None, getd=None, cget=None, now=None, eget=None, cget_eur=None):
     global DEADLINE; DEADLINE = time.time() + 75     # own 75 s time budget per market
     now = now or F.broker_now(); day = now.normalize()
     old = loadj(PORTAL, {}); mk = old.setdefault('markets', {})
     J = loadj(JOUR, dict(start=None, days=[]))
     rows_c, cnote = cftc_rows(cget); C = weekly(rows_c)
-    code, rep = E.code_for(C, day)
+    gcode, rep = E.code_for(C, day)
+    try:
+        rows_e, enote = cftc_rows(cget_eur, '099741', CFTC_EUR, 'CFTC euro'); CE = weekly_eur(rows_e); ecode, erep = E.code_for(CE, day)
+    except Exception as ex:                                               # layer 5 is optional - layers 1-4 still work
+        CE, ecode, erep, enote = None, 0, None, f'euro report unavailable ({type(ex).__name__})'
+    if enote: cnote = (cnote + '; ' if cnote else '') + enote
+    code = gcode
     if now.dayofweek >= 5:
         prev = mk.get('GBPUSD') or {}
         nxt_code, nxt_rep = E.code_for(C, day + pd.Timedelta(days=7 - day.dayofweek))
+        if nxt_code == 0 and CE is not None: nxt_e, _ = E.code_for(CE, day + pd.Timedelta(days=7 - day.dayofweek))
+        else: nxt_e = 0
+        nx = ('BUY' if nxt_code > 0 else 'SELL') + ' days (pound crowd layers)' if nxt_code else ('day by day: layer 4 (EUR/GBP) first, else ' + ('BUY' if nxt_e > 0 else 'SELL' if nxt_e < 0 else 'no') + ' (euro funds)')
         mk['GBPUSD'] = dict({k: v for k, v in prev.items() if k not in ('status', 'note')}, **base_card(None, nxt_rep, nxt_code), state='closed',
-                            message=f"Market closed for the weekend. Next week: {'BUY' if nxt_code > 0 else 'SELL' if nxt_code < 0 else 'no trade'} days (CFTC report of {'—' if nxt_rep is None else pd.Timestamp(nxt_rep).strftime('%d %b')}).",
+                            message=f"Market closed for the weekend. Next week: {nx} (CFTC report of {'—' if nxt_rep is None else pd.Timestamp(nxt_rep).strftime('%d %b')}).",
                             entries=[], journal=summary(J), jdays=jdays(J), feed_error=False, cftc_note=cnote)
         dumpj(old, PORTAL, indent=1); print('GBP: weekend'); return
     get = get or minutes; getd = getd or daily
@@ -166,6 +193,13 @@ def main(feed=None, get=None, getd=None, cget=None, now=None):
     if _DAILY.get('day') != str(day.date()) or len(_DAILY.get('d', [])) < E.RANGE_DAYS:   # daily ranges fetched once a day (hourly bars)
         _DAILY.update(day=str(day.date()), d=getd(feed, day))
     dd = _DAILY['d']; A = E.avg_range(dd, day)
+    eg, egz = 0, np.nan
+    if gcode == 0:                                                        # layer 4 needs EUR/USD 10:00 prices (fetched once a day)
+        if _DAILY.get('eday') != str(day.date()):
+            try: _DAILY.update(eday=str(day.date()), e10=(eget or eur10)(feed, day))
+            except Exception as ex: _DAILY.update(eday=None, e10=None); cnote = (cnote + '; ' if cnote else '') + f'EUR/USD prices unavailable ({type(ex).__name__})'
+        if _DAILY.get('e10') is not None: eg, egz = eg_now(dd, _DAILY['e10'])
+    code = E.decide(gcode, eg, ecode)
     b = get(feed, day, now); b = b[(b.index >= day) & (b.index + pd.Timedelta(minutes=1) <= now)]
     bad = feed_check(b, now)
     if bad: raise FeedError(bad)
@@ -199,7 +233,7 @@ def main(feed=None, get=None, getd=None, cget=None, now=None):
         elif st0 == 'stopped': msg = f"Stop hit at {r0['exit_time']} Dubai: {r0['pips']:+.1f} pips. Done for today."
         elif st0 == 'eod': msg = f"Closed at the day end ({r0['exit_time']} Dubai): {r0['pips']:+.1f} pips."
         else: msg = f"Day ended without a {dubai(t_out)} price - closed at the last price: {r0['pips']:+.1f} pips."
-    elif side is None: state, msg = 'none', 'No GBP/USD trade this week: no positioning layer is at an extreme in the latest CFTC report.'
+    elif side is None: state, msg = 'none', 'No GBP/USD trade today: no layer is on (pound crowds, EUR/GBP stretch and euro funds all neutral).'
     elif now < t_in: state, msg = 'waiting', f"Today is a {side} day ({E.LAYER_NAME[abs(code)].split(' · ')[1]}). The trade opens at {dubai(t_in)} Dubai (10:00 broker)."
     elif not np.isfinite(A): state, msg = 'none', 'No trade: fewer than 14 days of price history for the average range.'
     else: state, msg = 'none', f'No trade today: no price bar between {dubai(t_in)} and {dubai(t_in + pd.Timedelta(minutes=E.ENTRY_LATE))} Dubai.'
@@ -209,7 +243,9 @@ def main(feed=None, get=None, getd=None, cget=None, now=None):
                         feed_error=False, epic=EPIC, close_at=dubai(t_out), open_at=dubai(t_in), signal=side, layer=abs(int(code)), cftc_note=cnote,
                         report=None if rep is None else str(pd.Timestamp(rep).date()), range_pips=None if not np.isfinite(A) else round(A * 1e4, 1),
                         cftc=dict(levp=None if rep is None else round(float(C.loc[rep, 'levp']), 3), nrp=None if rep is None else round(float(C.loc[rep, 'nrp']), 3),
-                                  nrcp=None if rep is None else round(float(C.loc[rep, 'nrcp']), 3)))
+                                  nrcp=None if rep is None else round(float(C.loc[rep, 'nrcp']), 3),
+                                  eur_levp=None if (CE is None or erep is None) else round(float(CE.loc[erep, 'levp']), 3)),
+                        eurgbp_z=None if not np.isfinite(egz) else round(egz, 2))
     dumpj(old, PORTAL, indent=1)
     print(f'GBP paper: {now} broker | bars {len(b)} | code {code} report {None if rep is None else pd.Timestamp(rep).date()} | A {A * 1e4 if np.isfinite(A) else None} pips | trade {None if not t else t["status"]}')
 
