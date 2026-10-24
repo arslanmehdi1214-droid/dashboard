@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Signal Desk</title>
+<title>ITQAB Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#0e1015;--panel:#151820;--raise:#1c2029;--line:#272c37;--ink:#f3f4f7;--mute:#c6ccd6;--dim:#8d95a3;
@@ -114,6 +114,9 @@ svg.eq{display:block;width:100%;height:56px;margin:12px 0}
 .rp-tk{grid-template-columns:90px 50px 1.2fr 1.3fr 100px 110px}.rp-hd{font:500 11px Inter;color:var(--dim)}
 .rp-sz{font:700 11px var(--mono);font-style:normal;color:#fff;border-radius:4px;padding:1px 5px;margin-left:4px}.rp-sz.b{background:#2f8f63}.rp-sz.s{background:#d9534f}
 .rp-ttl{margin:0;font:700 15px Inter;color:var(--ink);width:100%}
+.rp-sel{background:#0b0c0f;border:1px solid var(--line);color:var(--ink);border-radius:9px;padding:7px 10px;font:600 12.5px Inter;cursor:pointer}
+.rp-x{margin-left:auto;background:none;border:1px solid var(--line);color:var(--dim);border-radius:9px;padding:6px 12px;font:600 12px Inter;cursor:pointer}
+.rp-open{display:block;width:100%;margin:10px 0;background:#16181d;border:1px solid var(--line);color:var(--ink);border-radius:12px;padding:12px;font:700 13.5px Inter;cursor:pointer;text-align:center}.rp-open:hover{border-color:var(--gold)}
 .rp-tm{display:none;font:600 10.5px Inter;font-style:normal;margin-left:6px}
 @media(max-width:860px){.rp-tm{display:inline}.rp-grid{grid-template-columns:1fr}.rp-ovg{grid-template-columns:1fr 1fr}.rp-tr{grid-template-columns:72px 44px 1fr auto;font-size:11.5px}.rp-tr>span:nth-child(3),.rp-tr>span:nth-child(5),.rp-tr>span:nth-child(7){display:none}
  .rp-tk{grid-template-columns:72px 44px 1fr auto}.rp-tk>span:nth-child(4),.rp-tk>span:nth-child(5){display:none}.rp-tk>span:nth-child(3){display:block}.rp-tk>span:nth-child(6){display:block}.rp-pills button,.rp-tabs button{padding:5px 8px;font-size:11.5px}}
@@ -251,7 +254,7 @@ td{padding:9px 4px;border-bottom:1px solid var(--line)}td.r{text-align:right}
 }
 </style></head><body data-tab="tr">
 <header><div class="hd">
- <div class="logo"><i></i>SIGNAL&nbsp;<span>DESK</span></div>
+ <div class="logo"><i></i>ITQAB&nbsp;<span>DASHBOARD</span></div>
  <div class="clk"><b class="num" id="clk"></b><small id="cld"></small></div>
  <div class="mtab" id="mtab"></div>
 </div>
@@ -344,7 +347,7 @@ function wins(S,now){const out=[];for(let k=-2;k<=5;k++){const [y,m,d]=ymd(S.tz,
  const o=at(S.tz,y,m-1,d,S.o);if(!out.some(w=>+w.o===+o))out.push({o,c:at(S.tz,y,m-1,d,S.c)})}return out.sort((a,b)=>a.o-b.o)}
 let fired={},sound=false;
 function beep(n){if(!sound)return;try{const a=new (window.AudioContext||window.webkitAudioContext)();for(let i=0;i<n;i++){const o=a.createOscillator(),g=a.createGain();o.frequency.value=880;o.connect(g);g.connect(a.destination);g.gain.setValueAtTime(.18,a.currentTime+i*.35);g.gain.exponentialRampToValueAtTime(.001,a.currentTime+i*.35+.25);o.start(a.currentTime+i*.35);o.stop(a.currentTime+i*.35+.3)}}catch(e){}}
-function notify(t){try{if(sound&&'Notification' in window&&Notification.permission==='granted')new Notification('Signal Desk',{body:t})}catch(e){}}
+function notify(t){try{if(sound&&'Notification' in window&&Notification.permission==='granted')new Notification('ITQAB Dashboard',{body:t})}catch(e){}}
 function alertTick(now){const n=G.find(g=>g.impact==='High'&&g.t>now&&g.t-now<=30*6e4);
  if(!n){nalert.className='alert';return}
  const ms=n.t-now,lvl=ms<=15*6e4?15:30,k=n.date+lvl,open=T.filter(o=>!done(o.e)&&n.mk.includes(o.m.tag)).map(o=>o.m.n);
@@ -559,7 +562,7 @@ const hmk=()=>HMK.find(m=>m.c===SEL);
 const tU=(m,t)=>{const v=m.usd(t);return v==null||isNaN(v)?null:v};
 function dPnl(m,d){const p=d.trades.map(t=>tU(m,t)).filter(v=>v!=null);return p.length?p.reduce((a,v)=>a+v,0):null}
 async function loadHist(){await Promise.all(HMK.map(async m=>{try{HJ[m.c]=await (await fetch(m.file+'?t='+Date.now(),{cache:'no-store'})).json()}catch(e){}}));renderHist()}
-function renderHist(){const m=hmk();if(!m){HC=null;if(SEL==='ALL'){renderAllHist(null);return}histbox.innerHTML='';return}if(!HOLD){renderAllHist(m);return}if(HC!==m.c){HC=m.c;HM=null;HALL=false}const JN=HJ[m.c];
+function renderHist(){const m=hmk();if(!m){HC=null;if(SEL==='ALL'){renderRep(null);return}histbox.innerHTML='';return}if(!HOLD){renderRep(m);return}if(HC!==m.c){HC=m.c;HM=null;HALL=false}const JN=HJ[m.c];
  let h=`<div class="hh"><h3>${m.n} · trade history</h3><div class="tabs2"><button data-h="today" class="${HV==='today'?'on':''}">Trades</button><button data-h="cal" class="${HV==='cal'?'on':''}">P&amp;L calendar</button><button data-h="list" class="${HV==='list'?'on':''}">History</button></div></div>`;
  if(!JN||!JN.days){histbox.innerHTML=h+`<div class="dim">${m.n} history file unreachable, retrying</div>`;bindHist();return}
  const days=JN.days.filter(d=>d.trades&&d.trades.length).slice().reverse();
@@ -588,7 +591,7 @@ function renderHist(){const m=hmk();if(!m){HC=null;if(SEL==='ALL'){renderAllHist
 /* ---- ALL MARKETS REPORTS (25 Oct, his ask: "exactly like Capital.com analytics"): Transactions / Trades / Analytics tabs, period pills
    24H 7D 30D 90D YTD All Custom. Source = every market's desk journal (each trade at 0.01 lot after the spread, same values as each market tab).
    His rule: win = HIT TARGET (own part/target level reached); closed in profit is shown separately. */
-let HOLD=false,HP='30d',HR='transactions',HCF='',HCT='',HTOP='profit',HMS='most',HAM=false;
+let HSHOW=false,HOLD=false,HP='30d',HR='transactions',HCF='',HCT='',HTOP='profit',HMS='most',HAM=false;
 const RHOUR=60;
 function rDT(date,tm){if(!tm)return null;const mm=mins(tm);if(mm==null)return null;const d=new Date(date+'T00:00:00Z');if(mm<RHOUR)d.setUTCDate(d.getUTCDate()+1);d.setUTCMinutes(mm);return d}   /* Dubai wall time as a UTC-coded date */
 function rNow(){const n=new Date(new Date().toLocaleString('en-US',{timeZone:'Asia/Dubai'}));return new Date(Date.UTC(n.getFullYear(),n.getMonth(),n.getDate(),n.getHours(),n.getMinutes()))}
@@ -605,17 +608,21 @@ const rHm=x=>x==null?'—':String(Math.floor(x/60)).padStart(2,'0')+'h '+String(
 const rA=(x,cls)=>`<b class="num ${cls===false?'':x>0?'pos':x<0?'neg':''}">${x>0?'+':x<0?'−':''}AED${f(Math.abs(x),2)}</b>`;
 const rSz=t=>{const w=t.size_x??(typeof t.size==='number'?t.size:szW(t.size));const v=w==null?1:w;return (t.side==='BUY'?'+':'−')+(Math.abs(v-1/3)<1e-6?'⅓':+(+v).toFixed(2))};
 const rWhy=t=>({stopped:'Trade closed: SL',target:'Trade closed: TP',be:'Trade closed: stop at entry',trail:'Trade closed: trail',eod:'Trade closed: day end',close_now:'Trade closed: day end',lock:'Trade closed: day lock',reversed:'Trade closed: reversed'}[t.status]||'Trade closed');
+function renderRep(one){if(HSHOW){renderAllHist(one);return}
+ histbox.innerHTML=`<button class="rp-open" data-ropen>Analytics${one?' · '+one.n:' · all markets'}</button>`;
+ histbox.querySelector('[data-ropen]').onclick=()=>{HSHOW=true;renderHist()}}
 function renderAllHist(one){
  const RT=one?HR:'analytics',[a,b]=rRange(),R=rAll(one).filter(r=>r.cl&&(!a||r.cl>=a)&&(!b||r.cl<=b)).sort((x,y)=>x.cl-y.cl);
  const pills=[['24h','24H'],['7d','7D'],['30d','30D'],['90d','90D'],['ytd','YTD'],['all','All'],['custom','Custom']];
- let h=`<div class="rp-top"><h3 class="rp-ttl">${one?one.n:'All markets'} · ${one?'history':'analytics'}</h3>${one?`<div class="rp-tabs">${[['transactions','Transactions'],['trades','Trades'],['analytics','Analytics']].map(([k,v])=>`<button data-rt="${k}" class="${HR===k?'on':''}">${v}</button>`).join('')}</div>`:''}
-  <div class="rp-pills">${pills.map(([k,v])=>`<button data-rp="${k}" class="${HP===k?'on':''}">${v}</button>`).join('')}</div></div>`;
+ let h=`<div class="rp-top"><h3 class="rp-ttl">${one?one.n:'All markets'} · analytics</h3>${one?`<div class="rp-tabs">${[['transactions','Transactions'],['trades','Trades'],['analytics','Analytics']].map(([k,v])=>`<button data-rt="${k}" class="${HR===k?'on':''}">${v}</button>`).join('')}</div>`:''}
+  <select class="rp-sel" data-rpsel>${pills.map(([k,v])=>`<option value="${k}" ${HP===k?'selected':''}>${v}</option>`).join('')}</select><button class="rp-x" data-rclose>Close</button></div>`;
  if(HP==='custom')h+=`<div class="rp-cust">From <input type="date" id="rpf" value="${HCF}"> to <input type="date" id="rpt" value="${HCT}"> <button data-rapply>Apply</button></div>`;
  if(RT==='analytics')h+=rAnalytics(R,one);else if(RT==='transactions')h+=rTrans(R);else h+=rTrades(R);
  h+=`<div class="hnote">${one?one.n+' only · source: '+one.n+' desk journal (paper trades),':'All desk markets together · source: each market\'s own desk journal (paper trades),'} each trade at 0.01 lot after the spread, in AED. Win rate here = HIT TARGET (the trade reached its own target / part-profit level); closed in profit is shown separately. Times = Dubai.</div>`;
  histbox.innerHTML=h;
  histbox.querySelectorAll('[data-rt]').forEach(x=>x.onclick=()=>{HR=x.dataset.rt;HAM=false;renderHist()});
- histbox.querySelectorAll('[data-rp]').forEach(x=>x.onclick=()=>{HP=x.dataset.rp;HAM=false;renderHist()});
+ histbox.querySelectorAll('[data-rpsel]').forEach(x=>x.onchange=()=>{HP=x.value;HAM=false;renderHist()});
+ histbox.querySelectorAll('[data-rclose]').forEach(x=>x.onclick=()=>{HSHOW=false;renderHist()});
  histbox.querySelectorAll('[data-rapply]').forEach(x=>x.onclick=()=>{HCF=rpf.value;HCT=rpt.value;renderHist()});
  histbox.querySelectorAll('[data-rtop]').forEach(x=>x.onchange=()=>{HTOP=x.value;renderHist()});
  histbox.querySelectorAll('[data-rms]').forEach(x=>x.onchange=()=>{HMS=x.value;renderHist()});
