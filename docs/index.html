@@ -447,6 +447,7 @@ function applySel(){const tag=SEL==='ALL'?null:MK.find(m=>m.c===SEL).tag;
  document.querySelectorAll('[data-c]').forEach(el=>{if(el.closest('#mtab'))return;el.classList.toggle('hide',SEL!=='ALL'&&el.dataset.c!==SEL)});
  document.querySelectorAll('.ev[data-mk]').forEach(el=>el.classList.toggle('hide',!!tag&&!el.dataset.mk.split('|').includes(tag)));
 try{renderHist()}catch(e){}
+ try{renderNews()}catch(e){}
  oth.textContent=`Open trades · ${document.querySelectorAll('.row:not(.hide),.tk:not(.hide),.pt tr[data-c]:not(.hide)').length}`}
 function render(){
  try{actsLive()}catch(e){}
@@ -514,7 +515,7 @@ function classify(text){const U=text.toUpperCase(),out={imp:null,why:'',mk:[],ki
     if(s===0){out.why=`${r[1]} in line with forecast → no surprise`;return out}
     const why=RWHY[rKind(r[1])][s>0?0:1];
     out.why=why;out.mk=Object.entries(REL[r[1]]).map(([mk,v])=>({mk,dir:v.dir*s,hit:v.hit,n:v.n}));return out}}}
- for(const c of CATS){if(new RegExp(c.rx,'i').test(U)){out.kind='cat';out.imp=bang?'High':c.imp;out.why=c.why+' · history: no clear up/down';out.mk=Object.entries(c.mk).map(([mk,v])=>({mk,dir:v.dir,hit:v.hit,n:v.n}));return out}}
+ for(const c of CATS){if(new RegExp(c.rx,'i').test(U)){out.kind='cat';out.imp=bang?'High':c.imp;out.why=c.why+' · history: no clear up/down';out.mk=Object.entries(c.mk).map(([mk,v])=>({mk,dir:v.dir,hit:v.hit,n:v.n}));mkOf(text).forEach(x=>{if(!out.mk.some(y=>y.mk===x))out.mk.push({mk:x,dir:0})});return out}}
  const mk=mkOf(text);if(mk.length||bang){out.imp=bang?'High':'Low';out.mk=mk.map(x=>({mk:x,dir:0}))}
  return out}
 const fold=imp=>`<svg viewBox="0 0 15 12" class="fold ${imp}"><path d="M0 1.5A1.5 1.5 0 0 1 1.5 0H5l1.6 1.8h6.9A1.5 1.5 0 0 1 15 3.3v7.2a1.5 1.5 0 0 1-1.5 1.5h-12A1.5 1.5 0 0 1 0 10.5z"/></svg>`;
@@ -526,16 +527,16 @@ async function loadNews(){const now=new Date();let items=null;
  if(!items){try{const rs=await Promise.all(NF.map(u=>fetch(u,{cache:'no-store'}).then(r=>r.text())));items=[];
   rs.forEach(x=>{const d=new DOMParser().parseFromString(x,'text/xml');d.querySelectorAll('item').forEach(it=>{const t=it.querySelector('title')?.textContent||'',l=it.querySelector('link')?.textContent||'',p=new Date(it.querySelector('pubDate')?.textContent||0);if(t)items.push({id:l||t,t,l,p,src:'MarketWatch'})})});newsSrc='MarketWatch (fallback)'}catch(e){nstat.textContent='· news feed unreachable, retrying';return}}
  items.sort((a,b)=>b.p-a.p);const kept=[];
- for(const n of items){n.c=classify(n.t);const d=kept.find(k=>Math.abs(k.p-n.p)<5*6e4&&sim(k.t,n.t)>=0.6);if(d){if(n.c.imp==='High'&&d.c.imp!=='High')d.c.imp='High';continue}if(n.c.imp==='High'||n.c.imp==='Medium')kept.push(n);if(kept.length>=14)break}   // 22 Oct (his ask): red + orange only, no yellow
+ for(const n of items){n.c=classify(n.t);const d=kept.find(k=>Math.abs(k.p-n.p)<5*6e4&&sim(k.t,n.t)>=0.6);if(d){if(n.c.imp==='High'&&d.c.imp!=='High')d.c.imp='High';continue}if(n.c.imp==='High'||n.c.imp==='Medium')kept.push(n);if(kept.length>=40)break}   // 22 Oct (his ask): red + orange only, no yellow
  const fresh=kept.filter(n=>!firstNews&&!seenNews.has(n.id));
  const red=fresh.find(n=>n.c.imp==='High');if(red){beep(2);notify('NEWS: '+red.t.slice(0,120))}
  kept.forEach(n=>seenNews.add(n.id));firstNews=false;NEWS=kept;renderNews();nstat.textContent='· checked '+t12(now)}
-function renderNews(){const now=new Date();
- news.innerHTML=NEWS.map(n=>{const age=(now-n.p)/6e4,c=n.c,isNew=age<3,txt=n.t.length>150?n.t.slice(0,150)+'…':n.t;
+function renderNews(){const now=new Date(),tg=SEL==='ALL'?null:(MK.find(m=>m.c===SEL)||{}).tag,LN=NEWS.filter(n=>!tg||n.c.mk.some(x=>(NMK[x.mk]||x.mk)===tg)).slice(0,14);
+ news.innerHTML=LN.map(n=>{const age=(now-n.p)/6e4,c=n.c,isNew=age<3,txt=n.t.length>150?n.t.slice(0,150)+'…':n.t;
   const lean=c.mk.filter(x=>x.dir).map(x=>`${x.mk} ${x.dir>0?'up':'down'} (${Math.round(x.hit*100)}% of ${x.n})`).join(' · ');
   return `<div class="nw ${age<15?'fresh':''} ${OPENN.has(n.id)?'open':''}" data-id="${n.id}" data-mk="${c.mk.map(x=>NMK[x.mk]).join('|')}"><div class="nh">${fold(c.imp)}<span class="ag">${age<60?Math.max(0,Math.round(age))+'m ago':t12(n.p)}</span>${isNew?'<i>NEW</i>':''}${txt}</div>
    <div class="nmeta"><span class="nchips">${c.mk.map(chip).join('')}</span>${c.why?`<span class="why">${c.why}</span>`:''}</div>
-   <div class="nd">${n.t}<br>${lean?`<b>History:</b> ${lean}<br>`:'<span class="dim">No reliable up/down lean in history for this type of headline.</span><br>'}<span class="dim">${n.src} · ${t12(n.p)} Dubai</span> · <a href="${n.l}" target="_blank" rel="noopener">Open source ↗</a></div></div>`}).join('')||'<div class="dim">No market-moving headlines right now</div>';
+   <div class="nd">${n.t}<br>${lean?`<b>History:</b> ${lean}<br>`:'<span class="dim">No reliable up/down lean in history for this type of headline.</span><br>'}<span class="dim">${n.src} · ${t12(n.p)} Dubai</span> · <a href="${n.l}" target="_blank" rel="noopener">Open source ↗</a></div></div>`}).join('')||`<div class="dim">No market-moving ${tg?tg+' ':''}headlines right now</div>`;
  news.querySelectorAll('.nw').forEach(el=>el.onclick=e=>{if(e.target.closest('a'))return;const id=el.dataset.id;OPENN.has(id)?OPENN.delete(id):OPENN.add(id);el.classList.toggle('open')});
  src_note.textContent=`News: ${newsSrc} · checked every 10 seconds · ▲▼ only on US data releases (direction held 55-89% of the time on 2020-26, years the rule never saw); red = data release or marked important, orange = Fed / tariffs / war / oil / BoJ topic (yellow headlines are hidden)`}
 loadNews();setInterval(loadNews,10000);
