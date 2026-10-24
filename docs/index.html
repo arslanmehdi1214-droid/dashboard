@@ -93,6 +93,11 @@ svg.eq{display:block;width:100%;height:56px;margin:12px 0}
 .htr{display:grid;grid-template-columns:70px 52px 1fr auto auto;gap:8px;padding:6px 0 6px 12px;font:500 12px Inter;border-top:1px dashed var(--line);align-items:baseline}.htr .d{color:var(--dim);font:500 11.5px var(--mono)}
 .hmore{margin-top:8px;font:600 12px Inter;background:none;border:1px solid var(--line);color:var(--gold);border-radius:8px;padding:5px 10px;cursor:pointer}
 .hnote{font:500 11px Inter;color:var(--dim);margin-top:10px}
+.allsum{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:2px 0 10px}.allsum b{font:700 22px var(--mono)}.allsum span{font:500 12.5px Inter;color:var(--dim)}
+.alltab{width:100%;border-collapse:collapse;font:500 12.5px Inter}.alltab td{padding:6px 6px;border-top:1px solid var(--line);white-space:nowrap}.alltab td:first-child{width:99%}.alltab .num{font-family:var(--mono)}.alltab .ahd td{font:600 10.5px Inter;color:var(--dim);letter-spacing:.4px;text-transform:uppercase;border-top:0}.alltab .r{text-align:right}.alltab .b{font-weight:700}.alltab .tt td{font-weight:700;border-top:1px solid var(--gold)}
+.allh{font:600 11px Inter;color:var(--dim);letter-spacing:.5px;text-transform:uppercase;margin:14px 0 2px}
+.htr.all{grid-template-columns:118px 84px 44px 1fr auto}
+@media(max-width:860px){.htr.all{grid-template-columns:96px 70px 40px 1fr;}.htr.all>b{grid-column:4;text-align:right}.alltab td:nth-child(3){display:none}.alltab{font-size:11px}.alltab td{padding:5px 2px;white-space:normal}.alltab td.num{white-space:nowrap}.allsum b{font-size:18px}}
 @media(max-width:860px){.hday>summary{grid-template-columns:118px 42px 1fr auto}.mnav .dim{flex-basis:100%;margin-left:0!important}.mnav{flex-wrap:wrap}.hday>summary .usd{display:none}.htr{grid-template-columns:60px 46px 1fr auto}.htr .usd{display:none}.cal5 .cd{min-height:50px;padding:5px}.cal5 .cd b{font-size:11px}}
 
 .pbar{padding:0 32px 14px}.acts{background:var(--panel);border:1px solid var(--gold);border-radius:12px;padding:10px 16px}.acts .nx{display:grid;grid-template-columns:auto auto 1fr;gap:12px;align-items:baseline;padding:6px 0;border-top:1px solid var(--line);font:600 14.5px Inter}.acts .nx:first-of-type{border-top:0}.acts .nx .who{font:700 13px Inter;white-space:nowrap}.acts .nx .do{color:var(--ink)}.acts .old{font:500 12px Inter;color:var(--dim);margin-top:6px}
@@ -534,7 +539,7 @@ const hmk=()=>HMK.find(m=>m.c===SEL);
 const tU=(m,t)=>{const v=m.usd(t);return v==null||isNaN(v)?null:v};
 function dPnl(m,d){const p=d.trades.map(t=>tU(m,t)).filter(v=>v!=null);return p.length?p.reduce((a,v)=>a+v,0):null}
 async function loadHist(){await Promise.all(HMK.map(async m=>{try{HJ[m.c]=await (await fetch(m.file+'?t='+Date.now(),{cache:'no-store'})).json()}catch(e){}}));renderHist()}
-function renderHist(){const m=hmk();if(!m){histbox.innerHTML='';HC=null;return}if(HC!==m.c){HC=m.c;HM=null;HALL=false}const JN=HJ[m.c];
+function renderHist(){const m=hmk();if(!m){HC=null;if(SEL==='ALL'){renderAllHist();return}histbox.innerHTML='';return}if(HC!==m.c){HC=m.c;HM=null;HALL=false}const JN=HJ[m.c];
  let h=`<div class="hh"><h3>${m.n} · trade history</h3><div class="tabs2"><button data-h="today" class="${HV==='today'?'on':''}">Trades</button><button data-h="cal" class="${HV==='cal'?'on':''}">P&amp;L calendar</button><button data-h="list" class="${HV==='list'?'on':''}">History</button></div></div>`;
  if(!JN||!JN.days){histbox.innerHTML=h+`<div class="dim">${m.n} history file unreachable, retrying</div>`;bindHist();return}
  const days=JN.days.filter(d=>d.trades&&d.trades.length).slice().reverse();
@@ -560,6 +565,33 @@ function renderHist(){const m=hmk();if(!m){histbox.innerHTML='';HC=null;return}i
  const lot={GOLD:'1 oz',USDJPY:'1,000 units',OIL:'10 bbl for a full-size trade (1/3-size trades count one third)',US100:'0.10 per point (0.37 AED)',US500:'0.10 per point (0.37 AED)',SILVER:'50 oz for a size-1 trade (size-2 trades count double)',GBPUSD:'1,000 units (0.10 $ = 0.37 AED per pip)'}[m.c];
  h+=`<div class="hnote">${m.n} only · source: ${m.n} desk journal (${m.file}), live since ${JN.summary&&JN.summary.since||JN.start}. Each trade at 0.01 lot = ${lot}, after the spread.${m.split?' Days before '+new Date(m.split+'T12:00:00Z').toLocaleDateString('en-GB',{day:'numeric',month:'short',timeZone:'UTC'})+' used the earlier rules (totals kept separate).':''}</div>`;
  histbox.innerHTML=h;bindHist()}
+/* ---- ALL MARKETS history (25 Oct, his ask): every closed trade of every market, + / - totals, and TARGET hit or not.
+   Target = the trade's own part/target level (half_px); "hit" = that level was reached (half ✓). Markets/trades without a target level show "—". */
+let HP='all',HAM=false;
+function renderAllHist(){
+ const TK=bkey(),now=new Date(TK+'T12:00:00Z'),mon=new Date(now);mon.setUTCDate(now.getUTCDate()-((now.getUTCDay()+6)%7));const wk=mon.toISOString().slice(0,10);
+ const inP=d=>HP==='all'||(HP==='today'?d===TK:HP==='week'?d>=wk:d.slice(0,7)===TK.slice(0,7));
+ const rows=[],per=[];
+ HMK.forEach(m=>{const J=HJ[m.c];if(!J||!J.days)return;const st={m,n:0,win:0,tg:0,th:0,tot:0};
+  J.days.filter(d=>d.trades&&d.trades.length&&inP(d.date)).forEach(d=>d.trades.forEach(t=>{const u=tU(m,t);if(u==null||t.status==='open')return;
+   const has=t.half_px!=null,hit=has&&!!t.half;st.n++;if(u>0)st.win++;if(has){st.tg++;if(hit)st.th++}st.tot+=u;
+   rows.push({d:d.date,lab:d.label,t,m,u,has,hit})}));
+  per.push(st)});
+ const T={n:0,win:0,tg:0,th:0,tot:0};per.forEach(p=>{T.n+=p.n;T.win+=p.win;T.tg+=p.tg;T.th+=p.th;T.tot+=p.tot});
+ const pc=(a,b)=>b?Math.round(100*a/b)+'%':'—';
+ const line=(nm,p,cls)=>`<tr class="${cls||''}"><td>${nm}</td><td class="r num">${p.n||'—'}</td><td class="r num">${p.n?p.win+' · '+pc(p.win,p.n):'—'}</td><td class="r num">${p.tg?p.th+'/'+p.tg+' · '+pc(p.th,p.tg):'no target'}</td><td class="r num b ${p.tot>=0?'pos':'neg'}">${p.n?sg(p.tot*AED)+' AED':'—'}</td></tr>`;
+ const lab={today:'Today',week:'This week',month:'This month',all:'All time'};
+ let h=`<div class="hh"><h3>All markets · trade history</h3><div class="tabs2">${Object.entries(lab).map(([k,v])=>`<button data-ap="${k}" class="${HP===k?'on':''}">${v}</button>`).join('')}</div></div>`;
+ h+=`<div class="allsum ${T.tot>=0?'pos':'neg'}"><b>${sg(T.tot*AED)} AED</b><span>${T.n} closed trade${T.n===1?'':'s'} · ${pc(T.win,T.n)} closed in profit · target hit ${T.tg?T.th+' of '+T.tg+' ('+pc(T.th,T.tg)+')':'—'}</span></div>`;
+ h+=`<table class="alltab"><tr class="ahd"><td>Market</td><td class="r">Closed trades</td><td class="r">Closed in profit</td><td class="r">Hit target</td><td class="r">Net</td></tr>${per.filter(p=>p.n||HP==='all').map(p=>line(p.m.n,p)).join('')}${line('Total',T,'tt')}</table>`;
+ rows.sort((a,b)=>a.d<b.d?1:a.d>b.d?-1:(mins(b.t.time)||0)-(mins(a.t.time)||0));
+ const show=HAM?rows:rows.slice(0,25);
+ h+=rows.length?`<div class="allh">Closed trades · newest first</div>`+show.map(r=>`<div class="htr all"><span class="d">${r.lab.replace(/^\w+ /,'')} ${r.t.time}</span><span>${r.m.n}</span><span class="${r.t.side==='BUY'?'pos':'neg'}">${r.t.side}</span><span class="dim">${r.has?(r.hit?'<b class="pos">target ✓</b>':'target ✗'):'no target'} · ${HST[r.t.status]||r.t.status}</span><b class="num ${r.u>=0?'pos':'neg'}">${sg(r.u*AED)} AED</b></div>`).join('')+(rows.length>25?`<button class="hmore" data-amore>${HAM?'Show newest 25':'Show all '+rows.length+' trades'}</button>`:'')
+  :`<div class="dim">No closed trades ${HP==='all'?'yet':lab[HP].toLowerCase()}</div>`;
+ h+=`<div class="hnote">All markets together · each market's own desk journal, each trade at 0.01 lot after the spread (same values as each market's tab). Closed in profit = the trade closed above zero. Target hit = the trade reached its own target / part-profit level (✓); "no target" = that market or trade has no target level (S&P closes at the day end). Open trades are not counted.</div>`;
+ histbox.innerHTML=h;
+ histbox.querySelectorAll('[data-ap]').forEach(b=>b.onclick=()=>{HP=b.dataset.ap;HAM=false;renderHist()});
+ histbox.querySelectorAll('[data-amore]').forEach(b=>b.onclick=()=>{HAM=!HAM;renderHist()})}
 function bindHist(){
  histbox.querySelectorAll('[data-more]').forEach(b=>b.onclick=()=>{HALL=!HALL;renderHist()});
  histbox.querySelectorAll('[data-h]').forEach(b=>b.onclick=()=>{HV=b.dataset.h;renderHist()});
