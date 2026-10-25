@@ -1,5 +1,5 @@
 {
- "updated": "Mon 26 Oct \u00b7 1:17 am",
+ "updated": "Mon 26 Oct \u00b7 1:29 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -335,7 +335,7 @@
    "epic": "SILVER",
    "close_at": "12:00 am",
    "gold_signals_today": 0,
-   "history_note": "minutes from 2026-09-10 (32 days) \u00b7 325 daily bars from 2025-07-23 \u00b7 added SILVER 2026-10-23, GOLD 2026-10-23"
+   "history_note": "minutes from 2026-09-10 (32 days) \u00b7 325 daily bars from 2025-07-23"
   },
   "USDJPY": {
    "code": "USDJPY",
@@ -366,7 +366,7 @@
    "net_label": "Net R / $ at $100 risk (v1.05 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 156.985,
+   "price": 156.984,
    "change_pips": null,
    "atr_pips": 80.4,
    "entries": [],
@@ -1202,7 +1202,7 @@
    ],
    "feed_error": false,
    "live_spread_pips": 9.0,
-   "history_note": "history to 2026-10-25 (300 days) \u00b7 added 2026-10-23"
+   "history_note": "history to 2026-10-25 (300 days)"
   },
   "DE40": {
    "code": "DE40",
@@ -1885,7 +1885,7 @@
    "feed_error": false,
    "epic": "OIL_CRUDE",
    "live_spread": null,
-   "history_note": "history to 2026-10-25 (60 days) \u00b7 added 2026-10-23"
+   "history_note": "history to 2026-10-25 (60 days)"
   },
   "US500": {
    "code": "US500",
@@ -2046,7 +2046,7 @@
    "picks_stale": false,
    "epic": "US500",
    "close_at": "11:30 pm",
-   "history_note": "history to 2026-10-23 (22 days) \u00b7 added 2026-10-23"
+   "history_note": "history to 2026-10-23 (22 days)"
   },
   "US100": {
    "code": "US100",
@@ -2503,7 +2503,7 @@
    "feed_error": false,
    "epic": "US100",
    "close_at": "12:00 am",
-   "history_note": "history to 2026-10-23 (362 days) \u00b7 added 2026-10-23"
+   "history_note": "history to 2026-10-23 (362 days)"
   },
   "GBPUSD": {
    "code": "GBPUSD",
@@ -2537,8 +2537,8 @@
    "regime": 0.364,
    "gap": null,
    "message": "Today is a BUY day (small traders crowded). The trade opens at 11:00 am Dubai (10:00 broker). CALM market: at 10:00 the side can switch if GBP runs away from EUR overnight; stop moves to entry + 5 pips once +0.35 x stop in profit.",
-   "price": 1.33664,
-   "change": 0.00047,
+   "price": 1.33674,
+   "change": 0.00057,
    "entries": [],
    "spark": [
     [
@@ -2564,10 +2564,24 @@
     ],
     [
      "1:15 am",
-     1.33664,
+     1.33677,
      1.3367,
      1.33682,
      1.33586
+    ],
+    [
+     "1:20 am",
+     1.33675,
+     1.33676,
+     1.33688,
+     1.33619
+    ],
+    [
+     "1:25 am",
+     1.33674,
+     1.33676,
+     1.33681,
+     1.33607
     ]
    ],
    "journal": {
