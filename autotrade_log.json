@@ -1384,5 +1384,12 @@
   "market": "GOLD",
   "ok": true,
   "t": "Fri 23 Oct 11:50 PM"
+ },
+ {
+  "action": "error",
+  "detail": "HTTPError: 429 Client Error:  for url: https://demo-api-capital.backend-capital.com/api/v1/session",
+  "market": "ALL",
+  "ok": false,
+  "t": "Mon 26 Oct 2:16 AM"
  }
 ]
