@@ -2,7 +2,7 @@
  "balance": 1140.04,
  "balance_ccy": "AED",
  "day": {
-  "date": "2026-10-24",
+  "date": "2026-10-25",
   "pl": 0.0,
   "start_balance": 1140.04,
   "start_equity": 1140.04,
@@ -12,30 +12,6 @@
  "open_risk_aed": 0,
  "risk_usd": 8.168822328114365,
  "trades": {
-  "GOLD|2026-10-20|1:06 pm|BUY|FILL range fade": {
-   "at": "Tue 20 Oct 3:24 PM",
-   "market": "GOLD",
-   "state": "not entered",
-   "why": "desk trade seen 138 min after entry, status open"
-  },
-  "GOLD|2026-10-20|6:28 pm|BUY|U2 round": {
-   "desk_price": 4151.02,
-   "market": "GOLD",
-   "opened_at": "Tue 20 Oct 6:29 PM",
-   "rest": {
-    "closed_by": "desk: close_now",
-    "id": "00000000-6c1c-627d-0495-7fc60004511e",
-    "level": 4152.13,
-    "open": false,
-    "size": 0.38,
-    "tp": null
-   },
-   "risk_aed": 49.65,
-   "risk_usd": 13.61,
-   "side": "BUY",
-   "state": "closed",
-   "stop": 4115.44
-  },
   "GOLD|2026-10-21|7:31 am|BUY|N15 hsq": {
    "desk_price": 4124.64,
    "market": "GOLD",
@@ -142,53 +118,17 @@
    "state": "not entered",
    "why": "desk trade seen 840 min after entry, status close_now"
   },
-  "OIL|2026-10-20|10:00 am|BUY|Open \u00b1 \u00bd range": {
-   "at": "Tue 20 Oct 3:24 PM",
-   "market": "OIL",
+  "GOLD|2026-10-25|10:00 am|SELL|T15 ttm": {
+   "at": "Sun 25 Oct 4:19 AM",
+   "market": "GOLD",
    "state": "not entered",
-   "why": "desk trade seen 324 min after entry, status be"
+   "why": "desk trade seen 1099 min after entry, status close_now"
   },
-  "OIL|2026-10-20|11:15 am|BUY|Whole dollar": {
-   "at": "Tue 20 Oct 3:24 PM",
-   "market": "OIL",
+  "GOLD|2026-10-25|11:00 am|SELL|N12 squeeze": {
+   "at": "Sun 25 Oct 4:19 AM",
+   "market": "GOLD",
    "state": "not entered",
-   "why": "desk trade seen 249 min after entry, status be"
-  },
-  "OIL|2026-10-20|12:30 pm|BUY|Yesterday's high/low": {
-   "at": "Tue 20 Oct 3:24 PM",
-   "market": "OIL",
-   "state": "not entered",
-   "why": "desk trade seen 174 min after entry, status be"
-  },
-  "OIL|2026-10-20|12:50 pm|BUY|Open \u00b1 0.7 range": {
-   "at": "Tue 20 Oct 3:24 PM",
-   "market": "OIL",
-   "state": "not entered",
-   "why": "desk trade seen 154 min after entry, status be"
-  },
-  "OIL|2026-10-20|1:03 pm|BUY|Last week's high/low": {
-   "at": "Tue 20 Oct 3:24 PM",
-   "market": "OIL",
-   "state": "not entered",
-   "why": "desk trade seen 141 min after entry, status be"
-  },
-  "OIL|2026-10-20|3:36 pm|BUY|Open \u00b1 1 range": {
-   "desk_price": 101.04,
-   "market": "OIL",
-   "opened_at": "Tue 20 Oct 3:37 PM",
-   "rest": {
-    "closed_by": "Capital.com stop/target",
-    "id": "00000000-6c1a-426e-0495-7fc60004511e",
-    "level": 101.035,
-    "open": false,
-    "size": 1.2,
-    "tp": null
-   },
-   "risk_aed": 16.48,
-   "risk_usd": 4.54,
-   "side": "BUY",
-   "state": "closed",
-   "stop": 97.3
+   "why": "desk trade seen 1039 min after entry, status close_now"
   },
   "OIL|2026-10-21|2:14 pm|BUY|Whole dollar": {
    "desk_price": 100.02,
@@ -283,12 +223,6 @@
    "market": "OIL",
    "state": "not entered",
    "why": "real risk 13.51 AED after lot rounding > 1.3x target 10.0 AED"
-  },
-  "US100|2026-10-20|2:48 pm|BUY|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am": {
-   "at": "Tue 20 Oct 3:24 PM",
-   "market": "US100",
-   "state": "not entered",
-   "why": "desk trade seen 36 min after entry, status open"
   },
   "US100|2026-10-21|1:15 pm|SELL|REV H2 round $400 break, close beyond, then retest -> follow, from 1pm": {
    "desk_price": 29600.0,
@@ -409,44 +343,6 @@
    "side": "SELL",
    "state": "closed",
    "stop": 7676.0
-  },
-  "USDJPY|2026-10-20|10:01 am|SELL|EMA10 break": {
-   "at": "Tue 20 Oct 3:24 PM",
-   "market": "USDJPY",
-   "state": "not entered",
-   "why": "desk trade seen 323 min after entry, status be"
-  },
-  "USDJPY|2026-10-20|4:14 pm|SELL|Squeeze 4pm": {
-   "desk_price": 158.083,
-   "market": "USDJPY",
-   "opened_at": "Tue 20 Oct 4:15 PM",
-   "part": {
-    "closed_by": "Capital.com stop/target",
-    "id": "00000000-6c1a-8afd-0495-7fc60004511e",
-    "level": 158.091,
-    "open": false,
-    "size": 4800.0,
-    "tp": 157.972
-   },
-   "rest": {
-    "closed_by": "Capital.com stop/target",
-    "id": "00000000-6c1a-8b10-0495-7fc60004511e",
-    "level": 158.092,
-    "open": false,
-    "size": 4800.0,
-    "tp": null
-   },
-   "risk_aed": 49.51,
-   "risk_usd": 13.61,
-   "side": "SELL",
-   "state": "closed",
-   "stop": 158.083
-  },
-  "USDJPY|2026-10-20|7:00 am|SELL|Heikin-Ashi 7am": {
-   "at": "Tue 20 Oct 3:24 PM",
-   "market": "USDJPY",
-   "state": "not entered",
-   "why": "desk trade seen 504 min after entry, status open"
   },
   "USDJPY|2026-10-21|10:30 am|SELL|EMA10 break": {
    "desk_price": 158.148,

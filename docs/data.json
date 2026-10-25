@@ -9661,27 +9661,27 @@
    "symbol": "US500 \u00b7 Capital.com US 500",
    "live": false,
    "paper": true,
-   "version": "v1.00",
+   "version": "v1.04",
    "unit": "pts",
    "dp": 1,
    "stats": {
     "direction": "\u2014",
-    "days": "43% profit days / 85% traded",
-    "perday": "1.39",
-    "win": "52.5%",
-    "pf": "1.30",
-    "net": "+$16,398 at $100 risk per leg",
-    "source": "MT4 test SP500_DAYTRADE v1.00 (his run 22 Oct, spread 0.8 pt), 2020-01-01..2026-09-30, 2,330 legs; worst day -$310; net/DD 6.23"
+    "days": "44.5% profit days / 87% traded",
+    "perday": "1.37",
+    "win": "53.4%",
+    "pf": "1.32",
+    "net": "+$16,896 at $100 risk per leg",
+    "source": "MT4 test SP500_DAYTRADE v1.04 (his run 24 Oct, spread 0.8 pt), 2020-01-01..2026-09-30, 2,416 trades (2,135 day + 281 night); worst day -$315; net/DD 8.83; max DD $1,914"
    },
    "pass_bar": {
     "green": 40.0,
     "pf": 1.15,
     "months": 3
    },
-   "day_note": "14-day range \u2014 \u00b7 stop 0.75 x range \u00b7 no half-close \u00b7 the day's first signal sets BUY or SELL, later signals the same way add (max 3 trades) \u00b7 signals: Nasdaq desk signals copied in US hours + S&P 9:40 am New York move, yesterday high/low sweep, big move by 10 am New York \u00b7 close 10:30 pm broker = 11:30 pm Dubai (3:30 pm New York; 12:30 am Dubai in winter)",
-   "what_note": "Tracks whether live S&P signals do as well as the v1.00 MT4 test. Decision after about 3 months.",
+   "day_note": "14-day range \u2014 \u00b7 stop 0.75 x range \u00b7 no half-close \u00b7 the day's first signal sets BUY or SELL, later signals the same way add (max 3 trades) \u00b7 v1.04: no 2nd/3rd trade from 11:00 am New York or once the day is up half a stop \u00b7 signals: Nasdaq desk signals copied in US hours + S&P 9:40 am New York move, yesterday high/low sweep, big move by 10 am New York \u00b7 close 3:30 pm New York \u00b7 NIGHT trade on high-fear nights (VIX above VIX3M, or VIX / VVIX in their 1-year top 10%): BUY 6:01 pm New York, stop 2 x range, close 10:00 am New York",
+   "what_note": "Tracks whether live S&P signals do as well as the v1.04 MT4 test. Decision after about 3 months.",
    "cost_note": "Results are index points per trade after 0.8 points of cost (Capital.com spread + slippage).",
-   "net_label": "Net points (v1.00 rules)",
+   "net_label": "Net points (v1.04 rules)",
    "state": "closed",
    "message": "Market closed for the weekend.",
    "price": 7633.2,
@@ -11699,18 +11699,9 @@
     ]
    ],
    "journal": {
-    "since": "22 Oct 2026",
-    "weekdays": 2,
-    "trades": 2,
-    "days": 100.0,
-    "perday": 1.0,
-    "closed": 2,
-    "win": 0.0,
-    "pf": 0.0,
-    "net": -73.9,
-    "rules": "v1.00",
-    "direction": null,
-    "green": 0.0
+    "since": null,
+    "trades": 0,
+    "rules": "v1.04"
    },
    "jdays": [
     {
@@ -14280,28 +14271,28 @@
    "symbol": "GBPUSD \u00b7 Capital.com GBP/USD",
    "live": false,
    "paper": true,
-   "version": "v1.02",
+   "version": "v1.04",
    "unit": "pips",
    "dp": 5,
    "stats": {
     "direction": "\u2014",
-    "days": "82% of weekdays traded, max 1 a day",
-    "perday": "0.82",
-    "win": "9.8% hit target \u00b7 51.4% closed in profit",
-    "pf": "1.12",
-    "net": "+$8,652.74 at 0.10 lot (net/DD 4.14)",
-    "source": "MT4 test GBP_CROWD v1.02 (his run 3, 23 Oct, spread 1.8 pips), 2011-01..2026-06-19, 3,320 trades; max DD $2,090.54; worst day -$231.50; all 4 periods positive"
+    "days": "95% of weekdays traded, max 1 a day \u00b7 profit days 54%",
+    "perday": "0.95",
+    "win": "8.1% hit target \u00b7 57.3% closed in profit",
+    "pf": "1.21",
+    "net": "+$15,966.95 at 0.10 lot (net/DD 9.76)",
+    "source": "MT4 test GBP_CROWD v1.04 (his run 5, 24 Oct, spread 1.8 pips), 2011-01..2026-06-19, 3,810 trades; max DD $1,636.34; losing years 3 (v1.03: 5)"
    },
    "pass_bar": {
     "pf": 1.1,
     "months": 3
    },
-   "day_note": "This week: BUY days \u00b7 layer 2 (small traders crowded) \u00b7 CFTC report of Tue 20 Oct \u00b7 14-day range \u2014 \u00b7 stop 1.0 x range, target 1.0 x stop (close the whole trade there), no half-close \u00b7 one trade a day at 10:00 broker (11:00 am Dubai in summer, 12:00 pm in winter) \u00b7 everything closes at 23:45 broker (12:45 am Dubai in summer, 1:45 am in winter)",
-   "what_note": "Tracks whether live GBP/USD signals do as well as the v1.02 MT4 test. You place the trade by hand on the demo (the auto-trader leaves GBP/USD alone). Decision after about 3 months.",
+   "day_note": "Today: BUY \u00b7 layer 2 (small traders crowded) \u00b7 CFTC report of Tue 20 Oct \u00b7 14-day range \u2014 \u00b7 stop 1.0 x range, target 1.0 x stop (close the whole trade there), no half-close \u00b7 one trade a day at 10:00 broker (11:00 am Dubai in summer, 12:00 pm in winter) \u00b7 everything closes at 23:45 broker (12:45 am Dubai in summer, 1:45 am in winter)",
+   "what_note": "Tracks whether live GBP/USD signals do as well as the v1.04 MT4 test. You place the trade by hand on the demo (the auto-trader leaves GBP/USD alone). Decision after about 3 months.",
    "cost_note": "Results are pips per trade after the spread (at least 1.5 pips). 0.01 lot = 1,000 units = $0.10 per pip.",
-   "net_label": "Net pips (v1.02 rules)",
+   "net_label": "Net pips (v1.04 rules)",
    "state": "closed",
-   "message": "Market closed for the weekend. Next week: BUY days (CFTC report of 20 Oct).",
+   "message": "Market closed for the weekend. Next week: BUY days (pound crowd layers) (CFTC report of 20 Oct).",
    "price": 1.33689,
    "change": -0.00239,
    "entries": [],
@@ -16317,19 +16308,9 @@
     ]
    ],
    "journal": {
-    "since": "23 Oct 2026",
-    "weekdays": 1,
-    "trades": 1,
-    "days": 100.0,
-    "perday": 1.0,
-    "closed": 1,
-    "win": 0.0,
-    "inprofit": 0.0,
-    "pf": 0.0,
-    "net": -20.5,
-    "rules": "v1.02",
-    "direction": null,
-    "green": 0.0
+    "since": null,
+    "trades": 0,
+    "rules": "v1.04"
    },
    "jdays": [
     {
