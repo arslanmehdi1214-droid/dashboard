@@ -12,24 +12,6 @@
  "open_risk_aed": 0,
  "risk_usd": 8.168822328114365,
  "trades": {
-  "GOLD|2026-10-21|7:31 am|BUY|N15 hsq": {
-   "desk_price": 4124.64,
-   "market": "GOLD",
-   "opened_at": "Wed 21 Oct 7:32 AM",
-   "rest": {
-    "closed_by": "desk: close_now",
-    "id": "00000000-6cae-c9ea-0495-7fc60004511e",
-    "level": 4125.26,
-    "open": false,
-    "size": 0.39,
-    "tp": null
-   },
-   "risk_aed": 49.53,
-   "risk_usd": 13.61,
-   "side": "BUY",
-   "state": "closed",
-   "stop": 4090.06
-  },
   "GOLD|2026-10-22|7:15 am|SELL|G2 calm3ys": {
    "desk_price": 4104.73,
    "market": "GOLD",
@@ -130,24 +112,6 @@
    "state": "not entered",
    "why": "desk trade seen 1039 min after entry, status close_now"
   },
-  "OIL|2026-10-21|2:14 pm|BUY|Whole dollar": {
-   "desk_price": 100.02,
-   "market": "OIL",
-   "opened_at": "Wed 21 Oct 2:15 PM",
-   "rest": {
-    "closed_by": "desk: close_now",
-    "id": "00000000-6cd7-3235-0495-7fc60004511e",
-    "level": 100.123,
-    "open": false,
-    "size": 1.1,
-    "tp": null
-   },
-   "risk_aed": 15.92,
-   "risk_usd": 4.54,
-   "side": "BUY",
-   "state": "closed",
-   "stop": 96.08
-  },
   "OIL|2026-10-22|11:44 am|BUY|Open \u00b1 \u00bd range": {
    "desk_price": 99.49,
    "market": "OIL",
@@ -223,32 +187,6 @@
    "market": "OIL",
    "state": "not entered",
    "why": "real risk 13.51 AED after lot rounding > 1.3x target 10.0 AED"
-  },
-  "US100|2026-10-21|1:15 pm|SELL|REV H2 round $400 break, close beyond, then retest -> follow, from 1pm": {
-   "desk_price": 29600.0,
-   "market": "US100",
-   "opened_at": "Wed 21 Oct 1:17 PM",
-   "part": {
-    "closed_by": "Capital.com stop/target",
-    "id": "00000000-6cd6-ce98-0495-7fc60004511e",
-    "level": 29589.9,
-    "open": false,
-    "size": 0.004,
-    "tp": 29531.5
-   },
-   "rest": {
-    "closed_by": "Capital.com stop/target",
-    "id": "00000000-6cd6-cea7-0495-7fc60004511e",
-    "level": 29592.8,
-    "open": false,
-    "size": 0.029,
-    "tp": null
-   },
-   "risk_aed": 16.59,
-   "risk_usd": 4.54,
-   "side": "SELL",
-   "state": "closed",
-   "stop": 29736.5
   },
   "US100|2026-10-22|12:03 pm|SELL|REV J4 day open \u00b11.0ATR first touch from 4am fade": {
    "desk_price": 29280.2,
@@ -343,84 +281,6 @@
    "side": "SELL",
    "state": "closed",
    "stop": 7676.0
-  },
-  "USDJPY|2026-10-21|10:30 am|SELL|EMA10 break": {
-   "desk_price": 158.148,
-   "market": "USDJPY",
-   "opened_at": "Wed 21 Oct 10:31 AM",
-   "part": {
-    "closed_by": "Capital.com stop/target",
-    "id": "00000000-6cb0-1a55-0495-7fc60004511e",
-    "level": 158.148,
-    "open": false,
-    "size": 1700.0,
-    "tp": 158.086
-   },
-   "rest": {
-    "closed_by": "Capital.com stop/target",
-    "id": "00000000-6cb0-1a64-0495-7fc60004511e",
-    "level": 158.148,
-    "open": false,
-    "size": 1700.0,
-    "tp": null
-   },
-   "risk_aed": 49.03,
-   "risk_usd": 13.61,
-   "side": "SELL",
-   "state": "closed",
-   "stop": 158.148
-  },
-  "USDJPY|2026-10-21|3:06 pm|SELL|Hourly squeeze 3pm": {
-   "desk_price": 158.001,
-   "market": "USDJPY",
-   "opened_at": "Wed 21 Oct 3:07 PM",
-   "part": {
-    "closed_by": "Capital.com stop/target",
-    "id": "00000000-6cd7-9b81-0495-7fc60004511e",
-    "level": 158.004,
-    "open": false,
-    "size": 5000.0,
-    "tp": 157.893
-   },
-   "rest": {
-    "closed_by": "desk: be",
-    "id": "00000000-6cd7-9bb4-0495-7fc60004511e",
-    "level": 158.009,
-    "open": false,
-    "size": 5000.0,
-    "tp": null
-   },
-   "risk_aed": 49.97,
-   "risk_usd": 13.61,
-   "side": "SELL",
-   "state": "closed",
-   "stop": 158.001
-  },
-  "USDJPY|2026-10-21|7:00 am|SELL|Heikin-Ashi 7am": {
-   "desk_price": 158.257,
-   "market": "USDJPY",
-   "opened_at": "Wed 21 Oct 7:02 AM",
-   "part": {
-    "closed_by": "Capital.com stop/target",
-    "id": "00000000-6cae-a620-0495-7fc60004511e",
-    "level": 158.25,
-    "open": false,
-    "size": 500.0,
-    "tp": 158.195
-   },
-   "rest": {
-    "closed_by": "desk: eod",
-    "id": "00000000-6cae-a633-0495-7fc60004511e",
-    "level": 158.25,
-    "open": false,
-    "size": 600.0,
-    "tp": null
-   },
-   "risk_aed": 15.85,
-   "risk_usd": 4.54,
-   "side": "SELL",
-   "state": "closed",
-   "stop": 158.257
   },
   "USDJPY|2026-10-22|7:00 am|SELL|Heikin-Ashi 7am": {
    "desk_price": 157.881,
