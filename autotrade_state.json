@@ -1,15 +1,15 @@
 {
- "balance": 1161.9,
+ "balance": 1164.82,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-10-26",
-  "pl": 52.49,
+  "pl": 54.75,
   "start_balance": 1140.04,
   "start_equity": 1140.04,
   "stopped": false
  },
- "open_positions": 3,
- "open_risk_aed": 73.81,
+ "open_positions": 2,
+ "open_risk_aed": 44.0,
  "risk_usd": 8.168822328114365,
  "trades": {
   "GBPUSD|2026-10-26|11:00 am|BUY|Layer 2 \u00b7 small traders crowded": {
@@ -272,9 +272,10 @@
    "market": "US100",
    "opened_at": "Mon 26 Oct 2:19 PM",
    "part": {
+    "closed_by": "Capital.com stop/target",
     "id": "00000000-6e1f-80bc-0495-7fc60004511e",
     "level": 29004.4,
-    "open": true,
+    "open": false,
     "size": 0.009,
     "tp": 29112.4
    },
@@ -291,7 +292,7 @@
    "risk_usd": 8.17,
    "side": "BUY",
    "state": "open",
-   "stop": 28780.6
+   "stop": 29001.8
   },
   "US500|2026-10-22|5:40 pm|BUY|S&P 9:40 am New York opening move": {
    "desk_price": 7698.2,
