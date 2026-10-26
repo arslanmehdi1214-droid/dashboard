@@ -1,5 +1,5 @@
 {
- "updated": "Mon 26 Oct \u00b7 11:28 am",
+ "updated": "Mon 26 Oct \u00b7 11:29 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -20,9 +20,9 @@
    "feed_error": false,
    "state": "buy",
    "message": "BUY day \u2014 up to 2 BUY trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:00 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 4008.02,
+   "price": 4008.87,
    "close_at": "12:00 am",
-   "change": 9.83,
+   "change": 10.68,
    "size": 0.1,
    "datr": 69.47,
    "open_now": 1,
@@ -844,9 +844,9 @@
     ],
     [
      "11:25 am",
-     4008.02,
+     4008.87,
      4007.27,
-     4008.41,
+     4008.9,
      4006.24
     ]
    ],
@@ -1092,8 +1092,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 53.917,
-   "change": -0.166,
+   "price": 53.924,
+   "change": -0.159,
    "entries": [],
    "spark": [
     [
@@ -1889,9 +1889,9 @@
     ],
     [
      "11:25 am",
-     53.917,
+     53.924,
      53.899,
-     53.923,
+     53.93,
      53.882
     ]
    ],
@@ -2818,7 +2818,7 @@
      157.066,
      157.093,
      157.098,
-     157.06
+     157.056
     ]
    ],
    "journal": {
@@ -3720,8 +3720,8 @@
    "net_label": "Net $ per barrel (v1.06)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 100.769,
-   "change": -0.97,
+   "price": 100.789,
+   "change": -0.95,
    "entries": [],
    "spark": [
     [
@@ -4517,9 +4517,9 @@
     ],
     [
      "11:25 am",
-     100.77,
+     100.79,
      100.71,
-     100.78,
+     100.83,
      100.7
     ]
    ],
@@ -5196,8 +5196,8 @@
    "net_label": "Net points (v1.04 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 5:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). No night trade today (not a high-fear night).",
-   "price": 7633.8,
-   "change": -26.2,
+   "price": 7634.2,
+   "change": -25.8,
    "entries": [],
    "spark": [
     [
@@ -5993,10 +5993,10 @@
     ],
     [
      "11:25 am",
-     7633.8,
+     7634.2,
      7638.1,
      7638.3,
-     7633.7
+     7632.2
     ]
    ],
    "journal": {
@@ -6156,8 +6156,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 28948.7,
-   "change": -194.7,
+   "price": 28946.4,
+   "change": -197.0,
    "entries": [],
    "spark": [
     [
@@ -6953,10 +6953,10 @@
     ],
     [
      "11:25 am",
-     28948.7,
+     28946.4,
      28979.1,
      28983.9,
-     28947.7
+     28938.2
     ]
    ],
    "journal": {
@@ -7414,8 +7414,8 @@
    "regime": 0.364,
    "gap": 0.114,
    "message": "PAPER BUY at 1.33730 (11:00 am Dubai). Stop 1.32981, target 1.34479 - close the WHOLE trade at the target; otherwise it closes at 12:45 am Dubai. CALM day: when price reaches 1.33992, move the stop to 1.33780 (entry + 5 pips).",
-   "price": 1.33597,
-   "change": -0.0002,
+   "price": 1.3364,
+   "change": 0.00023,
    "entries": [
     {
      "time": "11:00 am",
@@ -7441,7 +7441,7 @@
      "res": null,
      "res_sized": null,
      "r": null,
-     "live": -14.8,
+     "live": -10.5,
      "spread": 1.5,
      "next": "Hold \u00b7 stop 1.32981 \u00b7 target 1.34479 \u00b7 when price reaches 1.33992, MOVE THE STOP to 1.33780 (entry + 5 pips) \u00b7 no half-close \u00b7 closes at 12:45 am Dubai"
     }
@@ -8324,9 +8324,9 @@
     ],
     [
      "11:25 am",
-     1.33597,
+     1.3364,
      1.33607,
-     1.33622,
+     1.33646,
      1.33587
     ]
    ],
@@ -8376,7 +8376,7 @@
        "res": null,
        "res_sized": null,
        "r": null,
-       "live": -14.8,
+       "live": -10.5,
        "spread": 1.5,
        "next": "Hold \u00b7 stop 1.32981 \u00b7 target 1.34479 \u00b7 when price reaches 1.33992, MOVE THE STOP to 1.33780 (entry + 5 pips) \u00b7 no half-close \u00b7 closes at 12:45 am Dubai"
       }
