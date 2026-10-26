@@ -1,5 +1,5 @@
 {
- "updated": "Mon 26 Oct \u00b7 12:10 pm",
+ "updated": "Mon 26 Oct \u00b7 12:11 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -20,9 +20,9 @@
    "feed_error": false,
    "state": "buy",
    "message": "BUY day \u2014 up to 2 BUY trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:00 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 4014.91,
+   "price": 4013.84,
    "close_at": "12:00 am",
-   "change": 16.72,
+   "change": 15.65,
    "size": 0.1,
    "datr": 69.47,
    "open_now": 1,
@@ -904,6 +904,13 @@
      4013.65,
      4016.55,
      4013.2
+    ],
+    [
+     "12:10 pm",
+     4013.84,
+     4014.81,
+     4014.81,
+     4012.68
     ]
    ],
    "history": [
@@ -1148,8 +1155,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 54.152,
-   "change": 0.069,
+   "price": 54.114,
+   "change": 0.031,
    "entries": [],
    "spark": [
     [
@@ -2005,6 +2012,13 @@
      54.153,
      54.22,
      54.117
+    ],
+    [
+     "12:10 pm",
+     54.114,
+     54.153,
+     54.153,
+     54.099
     ]
    ],
    "journal": {
@@ -2106,8 +2120,8 @@
    "net_label": "Net R / $ at $100 risk (v1.05 sizes)",
    "state": "sell",
    "message": "PAPER SELL day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 7:00 pm Dubai close.",
-   "price": 157.125,
-   "change_pips": 12.6,
+   "price": 157.092,
+   "change_pips": 9.3,
    "atr_pips": 80.4,
    "entries": [
     {
@@ -2135,7 +2149,7 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": -0.6746,
+     "r_now": -0.6199,
      "rwf": 0,
      "spread": 1.0
     }
@@ -2987,6 +3001,13 @@
      157.118,
      157.146,
      157.101
+    ],
+    [
+     "12:10 pm",
+     157.092,
+     157.126,
+     157.126,
+     157.091
     ]
    ],
    "journal": {
@@ -3040,7 +3061,7 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": -0.6746,
+       "r_now": -0.6199,
        "rwf": 0,
        "spread": 1.0
       }
@@ -3849,7 +3870,7 @@
     }
    ],
    "feed_error": false,
-   "live_spread_pips": 1.2,
+   "live_spread_pips": 1.4,
    "history_note": "history to 2026-10-25 (300 days)"
   },
   "DE40": {
@@ -3888,8 +3909,8 @@
    "net_label": "Net $ per barrel (v1.06)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 100.479,
-   "change": -1.26,
+   "price": 100.434,
+   "change": -1.31,
    "entries": [],
    "spark": [
     [
@@ -4745,6 +4766,13 @@
      100.62,
      100.64,
      100.41
+    ],
+    [
+     "12:10 pm",
+     100.43,
+     100.49,
+     100.5,
+     100.42
     ]
    ],
    "journal": {
@@ -5420,8 +5448,8 @@
    "net_label": "Net points (v1.04 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 5:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). No night trade today (not a high-fear night).",
-   "price": 7628.7,
-   "change": -31.3,
+   "price": 7624.0,
+   "change": -36.0,
    "entries": [],
    "spark": [
     [
@@ -6277,6 +6305,13 @@
      7629.7,
      7632.5,
      7627.0
+    ],
+    [
+     "12:10 pm",
+     7624.0,
+     7628.6,
+     7629.0,
+     7624.0
     ]
    ],
    "journal": {
@@ -6436,8 +6471,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 28894.0,
-   "change": -249.4,
+   "price": 28865.5,
+   "change": -277.9,
    "entries": [],
    "spark": [
     [
@@ -7293,6 +7328,13 @@
      28909.2,
      28927.7,
      28887.7
+    ],
+    [
+     "12:10 pm",
+     28865.5,
+     28893.4,
+     28895.1,
+     28865.5
     ]
    ],
    "journal": {
@@ -8720,6 +8762,13 @@
      1.33537,
      1.33611,
      1.33521
+    ],
+    [
+     "12:10 pm",
+     1.33599,
+     1.336,
+     1.336,
+     1.33589
     ]
    ],
    "journal": {
