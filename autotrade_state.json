@@ -1,15 +1,15 @@
 {
- "balance": 1187.17,
+ "balance": 1184.21,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-10-26",
-  "pl": 99.45,
+  "pl": 93.53,
   "start_balance": 1140.04,
   "start_equity": 1140.04,
   "stopped": false
  },
- "open_positions": 3,
- "open_risk_aed": 72.36,
+ "open_positions": 2,
+ "open_risk_aed": 44.0,
  "risk_usd": 8.168822328114365,
  "trades": {
   "GBPUSD|2026-10-26|11:00 am|BUY|Layer 2 \u00b7 small traders crowded": {
@@ -341,16 +341,17 @@
    "part_x": 0.0,
    "px_adj": 0.0,
    "rest": {
+    "closed_by": "desk: eod",
     "id": "00000000-6e73-9a15-0495-7fc60004511e",
     "level": 7653.0,
-    "open": true,
+    "open": false,
     "size": 0.13,
     "tp": null
    },
    "risk_aed": 28.36,
    "risk_usd": 8.17,
    "side": "BUY",
-   "state": "open",
+   "state": "closed",
    "stop": 7600.9
   },
   "USDJPY|2026-10-22|7:00 am|SELL|Heikin-Ashi 7am": {
