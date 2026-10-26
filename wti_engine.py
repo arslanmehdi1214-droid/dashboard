@@ -1,4 +1,5 @@
-"""WTI_DAYTRADE v1.06 rules (= v1.05 + P['expiry_first_only']: on the WTI option-expiry day only the day's FIRST trade; + P['hold_sells']: production rose in the last
+"""WTI_DAYTRADE v1.07 rules (= v1.06 + P['later_buys_off']: a BUY only as the day's FIRST trade, later buy signals skipped; his MT4 run 26 Oct 2026)
+v1.06 rules (= v1.05 + P['expiry_first_only']: on the WTI option-expiry day only the day's FIRST trade; + P['hold_sells']: production rose in the last
 EIA report AND yesterday's close < its 50-day average -> that day's SELLS keep the whole trade: no part-close, no stop to entry; his MT4 run 23 Oct 2026)
 v1.05 rules (= v1.04 + the day's FIRST trade, if a SELL, is FULL size when P['first_sell_full'] is set: last EIA Cushing report = build AND yesterday's close < close 5 trading days earlier; his MT4 run 20 Oct 2026)
 (v1.04 = v1.03 + part-close 25% instead of 50%) as a PAPER engine for the Signal Desk - same logic as the EA / its line-by-line Python port
@@ -121,6 +122,7 @@ def run_day(P, t, O, H, L, C, now=None, spread=None, final=False):
             if off: continue
             if hm[m] >= LAST_ENTRY and not (len(legs) == 0 and hm[m] < LATE_FIRST): continue
             if P.get('expiry_first_only') and len(legs) > 0: continue                 # v1.06: option-expiry day = only the first trade
+            if P.get('later_buys_off') and d > 0 and len(legs) > 0: continue          # v1.07: a buy only as the day's first trade
             if ddir != 0 and d != ddir: continue
             if m == lastm and d == lastd: continue
             sd = (BUY_STOP if d > 0 else SELL_STOP) * A; sp = SPm(m)

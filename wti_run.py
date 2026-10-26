@@ -18,11 +18,16 @@ MIN_SPREAD = 0.02                     # the paper result never uses less than 2 
 PASS = dict(green=60.0, pf=1.10, months=3)
 RULES = 'v1.05'                       # journal days are tagged; the card's record counts only the current rules (set per day in main)
 V106_FROM = pd.Timestamp('2026-10-26') # v1.06 from broker day Mon 26 Oct 2026 (days before keep v1.05 - no mid-day rule change)
-BACKTEST = dict(direction='—', days='65.2% green / 93.7% traded', perday='1.86', win='81.5%', pf='1.38', net='+$46,306 at 0.30 + 0.10 lots (v1.05: +$35,670)',
+V107_FROM = pd.Timestamp('2026-10-27') # v1.07 from broker day Tue 27 Oct 2026 (later buys off; his MT4 run 26 Oct)
+BACKTEST = dict(direction='—', days='69.3% green / 93.7% traded', perday='1.40', win='79.1%', pf='1.44', net='+$48,688 at 0.30 + 0.10 lots (v1.06: +$46,306)',
+                source='MT4 v1.07, his run 26 Oct 2026, 2020-01 to 2026-10-09, 2,480 trades, spread 4 (worst day -$1,724); $34.7/day 2020-22, $21.9/day 2023-26')
+BACKTEST_106 = dict(direction='—', days='65.2% green / 93.7% traded', perday='1.86', win='81.5%', pf='1.38', net='+$46,306 at 0.30 + 0.10 lots (v1.05: +$35,670)',
                 source='MT4 v1.06, his run 23 Oct 2026, 2020-01 to 2026-10-09, 3,297 trades, spread 4 (worst day -$1,724); $33.6/day 2020-22, $20.3/day 2023-26')
 BACKTEST_105 = dict(direction='—', days='65.7% green / 93.9% traded', perday='1.91', win='83.6%', pf='1.33', net='+$37,406 at 0.30 + 0.10 lots (v1.04: +$32,010)',
                 source='MT4 v1.05, his run 20 Oct 2026, 2020-01 to 2026-09, 3,355 trades, spread 4 (worst day -$1,724); $26.7/day 2020-22, $17.0/day 2023-26')
-def rules_for(day): return 'v1.06' if pd.Timestamp(day).normalize() >= V106_FROM else 'v1.05'
+def rules_for(day):
+    d = pd.Timestamp(day).normalize()
+    return 'v1.07' if d >= V107_FROM else 'v1.06' if d >= V106_FROM else 'v1.05'
 
 def loadj(p, d):
     try: return json.load(open(p))
@@ -238,7 +243,7 @@ def row(t, now, day_over):
                 res=res, res_sized=None if res is None else round(res * w, 3), rwf=t['rwf'], spread=round(sp, 3))
 
 def summary(J, day=None):
-    """Paper record of the CURRENT rules only (v1.06 days from 26 Oct 2026; v1.05 20-23 Oct); older days stay in the journal but are not mixed in."""
+    """Paper record of the CURRENT rules only (v1.07 days from 27 Oct 2026; v1.06 26 Oct; v1.05 20-23 Oct); older days stay in the journal but are not mixed in."""
     D3 = [d for d in J.get('days', []) if d.get('rules') == RULES]
     if not D3: return dict(since=None, trades=0, rules=RULES)
     J = dict(start=D3[0]['date'], days=D3)
@@ -258,18 +263,18 @@ def jdays(J): return J.get('days', [])[-30:][::-1]
 def base_card(A=None, day=None):
     v = rules_for(day if day is not None else F.broker_now().normalize())
     note = ('14-day range ' + ('—' if A is None else f'${A:.2f}') + ' · stop: buys 1 range, sells ¾ range · close 25% at +0.05 (buys) / +0.15 (sells) '
-            'x risk, then stop to entry' + (' (sells on supply days: no part-close, hold to stop / day end)' if v == 'v1.06' else '') +
-            ' · day lock +2R/+1R · no new trades after 4:30 pm broker (one late first trade to 7:00 pm)' + (' · option-expiry day: first trade only' if v == 'v1.06' else '') +
+            'x risk, then stop to entry' + (' (sells on supply days: no part-close, hold to stop / day end)' if v in ('v1.06', 'v1.07') else '') +
+            ' · day lock +2R/+1R · no new trades after 4:30 pm broker (one late first trade to 7:00 pm)' + (' · option-expiry day: first trade only' if v in ('v1.06', 'v1.07') else '') + (' · a buy only as the first trade (later buy signals skipped)' if v == 'v1.07' else '') +
             ' · close 8:00 pm broker = 9:00 pm Dubai, 10:00 pm in winter · size: first trade and buys ⅓, later sells full while the day is in profit')
     return dict(code='OIL', name='Oil (WTI)', symbol='WTI · Capital.com US Crude', live=False, paper=True, status='Paper', version=v,
-                unit='usd', dp=2, stats=(BACKTEST if v == 'v1.06' else BACKTEST_105), pass_bar=PASS, day_note=note,
+                unit='usd', dp=2, stats=(BACKTEST if v == 'v1.07' else BACKTEST_106 if v == 'v1.06' else BACKTEST_105), pass_bar=PASS, day_note=note,
                 what_note='This page tracks whether live WTI signals do as well as the backtest. Decision after about 3 months.',
                 cost_note="Results are $ per barrel (sizes: full or ⅓), from the signal price with the backtest's slip, after a fixed 4-cent spread (the MT4 test's spread and Capital.com's usual; fixed so shown levels never change).",
                 net_label=f'Net $ per barrel ({v})')
 
 def main(feed=None, get=None, now=None):
     global DEADLINE, RULES; DEADLINE = time.time() + 75                # 22 Oct: own time budget per market
-    now = now or F.broker_now(); day = now.normalize(); RULES = rules_for(day); v6 = RULES == 'v1.06'
+    now = now or F.broker_now(); day = now.normalize(); RULES = rules_for(day); v6 = RULES in ('v1.06', 'v1.07'); v7 = RULES == 'v1.07'
     H = loadj(HIST, None)
     if H is None: raise RuntimeError('docs/wti_hist.json missing')
     old = loadj(PORTAL, {}); mk = old.setdefault('markets', {})
@@ -298,7 +303,7 @@ def main(feed=None, get=None, now=None):
         except Exception as e: print('v1.06 expiry rule failed', e)
         try: hs, hinfo = hold_sells(H, day)
         except Exception as e: print('v1.06 supply rule failed', e)
-        if P is not None: P['expiry_first_only'] = exp; P['hold_sells'] = hs
+        if P is not None: P['expiry_first_only'] = exp; P['hold_sells'] = hs; P['later_buys_off'] = v7
     hm = W.close_hm(day); eod = day + pd.Timedelta(minutes=hm); day_over = now >= eod
     trades = W.run_day(P, b.index, b.o.values, b.h.values, b.l.values, b.c.values) if (P and len(b)) else []     # 23 Oct: fixed 4-cent spread inside the engine
     rows = [row(t, now, day_over) for t in trades]
@@ -313,7 +318,7 @@ def main(feed=None, get=None, now=None):
     if P is None: state, msg = 'none', 'No trading today (not enough history or the day after a long break - same rule as the EA).'
     elif rows:
         side = rows[0]['side']; state = side.lower()
-        msg = (f"PAPER {side} day — " + ("option-expiry day: no more trades today. " if exp else f"later signals today are {side} only. ") +
+        msg = (f"PAPER {side} day — " + ("option-expiry day: no more trades today. " if exp else "v1.07: no more trades today (a buy only as the day's first trade). " if (v7 and side == 'BUY') else f"later signals today are {side} only. ") +
                ("Supply day: hold the whole sell (no part-close), the stop stays where it is; " if (hs and side == 'SELL') else "Close 25% at the part level, then move the stop to entry; ") +
                f"everything closes at {dubai(eod)} Dubai. No new trades after {dubai(day + pd.Timedelta(minutes=W.LAST_ENTRY))} (one late first trade allowed).")
     elif last_sig: state, msg = 'none', 'No paper trade today.'
@@ -329,7 +334,7 @@ def main(feed=None, get=None, now=None):
                      day_note=base_card(None if P is None else P['A'], day)['day_note'] + ' · v1.05: ' + ('First sell today: FULL size (Cushing stocks rose in the last EIA report and oil is down over 5 days)' if fsf else
                                    'First sell today: 1/3 size (' + ('Cushing data stale - newest EIA report over 8 days old' if finfo.get('cushing_stale') else 'Cushing build' if finfo['cushing_build'] else 'Cushing draw' if finfo['cushing_build'] is False else 'Cushing data missing')
                                    + ', 5-day move ' + ('down' if finfo['down5'] else 'up') + ')') + (f" · EIA week {finfo['cushing_week']}: {finfo['cushing_change']:+,.0f}k bbl" if finfo['cushing_week'] else '')
-                              + ('' if not v6 else ' · v1.06: ' + ('OPTION-EXPIRY DAY: first trade only' if exp else 'not an option-expiry day') + ' · sells today: '
+                              + ('' if not v7 else ' · v1.07: later buys off') + ('' if not v6 else ' · v1.06: ' + ('OPTION-EXPIRY DAY: first trade only' if exp else 'not an option-expiry day') + ' · sells today: '
                                  + ('HOLD whole trade (US production rose in the last EIA report and oil is below its 50-day average)' if hs else
                                     'normal part-close (' + ('production data stale/missing' if hinfo.get('prod_stale') or hinfo.get('prod_up') is None else 'production ' + ('up' if hinfo['prod_up'] else 'down/flat'))
                                     + ', oil ' + ('below' if hinfo['below50'] else 'above') + ' 50-day avg)')
