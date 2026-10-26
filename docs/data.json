@@ -1,5 +1,5 @@
 {
- "updated": "Mon 26 Oct \u00b7 8:40 am",
+ "updated": "Mon 26 Oct \u00b7 8:41 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -20,9 +20,9 @@
    "feed_error": false,
    "state": "buy",
    "message": "BUY day \u2014 up to 2 BUY trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:00 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 4011.95,
+   "price": 4011.28,
    "close_at": "12:00 am",
-   "change": 13.76,
+   "change": 13.09,
    "size": 0.1,
    "datr": 69.47,
    "open_now": 1,
@@ -610,6 +610,13 @@
      4012.3,
      4012.84,
      4011.11
+    ],
+    [
+     "8:40 am",
+     4011.28,
+     4011.96,
+     4012.34,
+     4011.27
     ]
    ],
    "history": [
@@ -854,8 +861,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 54.185,
-   "change": 0.102,
+   "price": 54.149,
+   "change": 0.066,
    "entries": [],
    "spark": [
     [
@@ -1417,6 +1424,13 @@
      54.192,
      54.201,
      54.173
+    ],
+    [
+     "8:40 am",
+     54.149,
+     54.186,
+     54.191,
+     54.149
     ]
    ],
    "journal": {
@@ -1518,8 +1532,8 @@
    "net_label": "Net R / $ at $100 risk (v1.05 sizes)",
    "state": "sell",
    "message": "PAPER SELL day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 7:00 pm Dubai close.",
-   "price": 156.91,
-   "change_pips": -8.9,
+   "price": 156.896,
+   "change_pips": -10.3,
    "atr_pips": 80.4,
    "entries": [
     {
@@ -1547,7 +1561,7 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": -0.3182,
+     "r_now": -0.295,
      "rwf": null,
      "spread": 1.0
     }
@@ -2105,6 +2119,13 @@
      156.92,
      156.943,
      156.905
+    ],
+    [
+     "8:40 am",
+     156.896,
+     156.909,
+     156.909,
+     156.895
     ]
    ],
    "journal": {
@@ -2158,7 +2179,7 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": -0.3182,
+       "r_now": -0.295,
        "rwf": null,
        "spread": 1.0
       }
@@ -3006,8 +3027,8 @@
    "net_label": "Net $ per barrel (v1.06)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 100.309,
-   "change": -1.43,
+   "price": 100.294,
+   "change": -1.45,
    "entries": [],
    "spark": [
     [
@@ -3569,6 +3590,13 @@
      100.3,
      100.33,
      100.28
+    ],
+    [
+     "8:40 am",
+     100.29,
+     100.3,
+     100.32,
+     100.29
     ]
    ],
    "journal": {
@@ -4244,8 +4272,8 @@
    "net_label": "Net points (v1.04 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 5:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). No night trade today (not a high-fear night).",
-   "price": 7638.7,
-   "change": -21.3,
+   "price": 7638.5,
+   "change": -21.5,
    "entries": [],
    "spark": [
     [
@@ -4807,6 +4835,13 @@
      7639.0,
      7639.7,
      7637.7
+    ],
+    [
+     "8:40 am",
+     7638.5,
+     7639.0,
+     7639.0,
+     7638.5
     ]
    ],
    "journal": {
@@ -4966,8 +5001,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 28983.0,
-   "change": -160.4,
+   "price": 28984.2,
+   "change": -159.2,
    "entries": [],
    "spark": [
     [
@@ -5529,6 +5564,13 @@
      28988.9,
      28996.4,
      28978.4
+    ],
+    [
+     "8:40 am",
+     28984.2,
+     28983.5,
+     28987.2,
+     28981.5
     ]
    ],
    "journal": {
@@ -6632,6 +6674,13 @@
      1.3378,
      1.3379,
      1.3379,
+     1.33779
+    ],
+    [
+     "8:40 am",
+     1.3378,
+     1.33779,
+     1.33781,
      1.33779
     ]
    ],
