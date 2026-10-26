@@ -1,5 +1,5 @@
 {
- "updated": "Mon 26 Oct \u00b7 7:06 am",
+ "updated": "Mon 26 Oct \u00b7 7:07 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -20,9 +20,9 @@
    "feed_error": false,
    "state": "buy",
    "message": "BUY day \u2014 up to 2 BUY trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:00 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 4009.08,
+   "price": 4009.22,
    "close_at": "12:00 am",
-   "change": 10.89,
+   "change": 11.03,
    "size": 0.1,
    "datr": 69.47,
    "open_now": 1,
@@ -480,9 +480,9 @@
     ],
     [
      "7:05 am",
-     4009.08,
+     4009.22,
      4008.88,
-     4009.66,
+     4009.69,
      4008.0
     ]
    ],
@@ -728,8 +728,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 54.144,
-   "change": 0.061,
+   "price": 54.163,
+   "change": 0.08,
    "entries": [],
    "spark": [
     [
@@ -1161,9 +1161,9 @@
     ],
     [
      "7:05 am",
-     54.144,
+     54.163,
      54.157,
-     54.191,
+     54.192,
      54.119
     ]
    ],
@@ -1266,8 +1266,8 @@
    "net_label": "Net R / $ at $100 risk (v1.05 sizes)",
    "state": "sell",
    "message": "PAPER SELL day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 7:00 pm Dubai close.",
-   "price": 156.791,
-   "change_pips": -20.8,
+   "price": 156.781,
+   "change_pips": -21.8,
    "atr_pips": 80.4,
    "entries": [
     {
@@ -1295,7 +1295,7 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": -0.121,
+     "r_now": -0.1044,
      "rwf": null,
      "spread": 1.0
     }
@@ -1723,7 +1723,7 @@
     ],
     [
      "7:05 am",
-     156.791,
+     156.781,
      156.743,
      156.798,
      156.743
@@ -1780,7 +1780,7 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": -0.121,
+       "r_now": -0.1044,
        "rwf": null,
        "spread": 1.0
       }
@@ -2628,7 +2628,7 @@
    "net_label": "Net $ per barrel (v1.06)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 100.314,
+   "price": 100.309,
    "change": -1.43,
    "entries": [],
    "spark": [
@@ -3064,7 +3064,7 @@
      100.31,
      100.32,
      100.36,
-     100.31
+     100.26
     ]
    ],
    "journal": {
@@ -3740,8 +3740,8 @@
    "net_label": "Net points (v1.04 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 5:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). No night trade today (not a high-fear night).",
-   "price": 7637.5,
-   "change": -22.5,
+   "price": 7636.0,
+   "change": -24.0,
    "entries": [],
    "spark": [
     [
@@ -4173,7 +4173,7 @@
     ],
     [
      "7:05 am",
-     7637.5,
+     7636.0,
      7635.3,
      7637.7,
      7635.3
@@ -4336,8 +4336,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 28970.5,
-   "change": -172.9,
+   "price": 28961.2,
+   "change": -182.2,
    "entries": [],
    "spark": [
     [
@@ -4769,7 +4769,7 @@
     ],
     [
      "7:05 am",
-     28970.5,
+     28961.2,
      28959.5,
      28974.0,
      28958.7
@@ -5230,8 +5230,8 @@
    "regime": 0.364,
    "gap": null,
    "message": "Today is a BUY day (small traders crowded). The trade opens at 11:00 am Dubai (10:00 broker). CALM market: at 10:00 the side can switch if GBP runs away from EUR overnight; stop moves to entry + 5 pips once +0.35 x stop in profit.",
-   "price": 1.33807,
-   "change": 0.0019,
+   "price": 1.33816,
+   "change": 0.00199,
    "entries": [],
    "spark": [
     [
@@ -5747,7 +5747,7 @@
     ],
     [
      "7:05 am",
-     1.33807,
+     1.33816,
      1.33817,
      1.33818,
      1.33805
