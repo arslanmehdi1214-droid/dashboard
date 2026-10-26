@@ -1,5 +1,5 @@
 {
- "updated": "Tue 27 Oct \u00b7 2:00 am",
+ "updated": "Tue 27 Oct \u00b7 2:11 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -13,14 +13,36 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 8:00 pm Dubai).",
-   "price": null,
+   "price": 4016.55,
    "close_at": "12:00 am",
-   "change": null,
+   "change": -1.44,
    "size": 0.1,
    "datr": 67.43,
    "open_now": 0,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "2:00 am",
+     4015.77,
+     4017.99,
+     4018.46,
+     4015.54
+    ],
+    [
+     "2:05 am",
+     4016.15,
+     4015.89,
+     4016.78,
+     4015.89
+    ],
+    [
+     "2:10 am",
+     4016.55,
+     4016.17,
+     4016.57,
+     4016.04
+    ]
+   ],
    "history": [
     {
      "date": "2026-10-27",
@@ -257,16 +279,38 @@
     "months": 3,
     "band": "3-month net at 0.01 lot (50 oz) inside the backtest 5-95% band: -$87 .. +$227 (median +$8)"
    },
-   "day_note": "14-day range $2.01 \u00b7 ONE trade a day when 2 of 3 agree (gold signal, fast gold catch-up, compression break) \u00b7 stop \u00bd range \u00b7 close half at +1x risk, stop to entry, then trail \u00bd range \u00b7 2x size when gold and silver were loosely linked over 20 days \u00b7 close 11:00 pm broker (Fri 10:50 pm)",
+   "day_note": "14-day range $2.00 \u00b7 ONE trade a day when 2 of 3 agree (gold signal, fast gold catch-up, compression break) \u00b7 stop \u00bd range \u00b7 close half at +1x risk, stop to entry, then trail \u00bd range \u00b7 2x size when gold and silver were loosely linked over 20 days \u00b7 close 11:00 pm broker (Fri 10:50 pm)",
    "what_note": "Forward test of silver v1.8 (honest entries) on live Capital.com prices. Checked after about 3 months against the backtest band.",
    "cost_note": "Results are $ per oz for the whole trade (half banked at +1R included) after Capital.com's spread (at least $0.05); x size (1 or 2); page money at 0.01 lot = 50 oz.",
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
-   "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break). \u00b7 note: no gold minutes yet",
-   "price": null,
-   "change": null,
+   "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
+   "price": 53.918,
+   "change": 0.031,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "2:00 am",
+     53.884,
+     53.887,
+     53.903,
+     53.875
+    ],
+    [
+     "2:05 am",
+     53.898,
+     53.883,
+     53.931,
+     53.883
+    ],
+    [
+     "2:10 am",
+     53.918,
+     53.9,
+     53.92,
+     53.9
+    ]
+   ],
    "journal": {
     "since": "19 Oct 2026",
     "weekdays": 7,
@@ -343,7 +387,7 @@
    "epic": "SILVER",
    "close_at": "12:00 am",
    "gold_signals_today": 0,
-   "history_note": "minutes from 2026-09-10 (33 days) \u00b7 325 daily bars from 2025-07-24"
+   "history_note": "minutes from 2026-09-10 (34 days) \u00b7 326 daily bars from 2025-07-24"
   },
   "USDJPY": {
    "code": "USDJPY",
@@ -374,11 +418,26 @@
    "net_label": "Net R / $ at $100 risk (v1.05 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 157.439,
-   "change_pips": null,
+   "price": 157.541,
+   "change_pips": -0.8,
    "atr_pips": 84.1,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "2:05 am",
+     157.556,
+     157.549,
+     157.558,
+     157.546
+    ],
+    [
+     "2:10 am",
+     157.541,
+     157.555,
+     157.556,
+     157.54
+    ]
+   ],
    "journal": {
     "since": "23 Oct 2026",
     "weekdays": 3,
@@ -1287,10 +1346,32 @@
    "net_label": "Net $ per barrel (v1.07)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": null,
-   "change": null,
+   "price": 100.598,
+   "change": 0.07,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "2:00 am",
+     100.66,
+     100.53,
+     100.74,
+     100.49
+    ],
+    [
+     "2:05 am",
+     100.6,
+     100.69,
+     100.69,
+     100.59
+    ],
+    [
+     "2:10 am",
+     100.6,
+     100.6,
+     100.6,
+     100.6
+    ]
+   ],
    "journal": {
     "since": "27 Oct 2026",
     "weekdays": 1,
@@ -1941,7 +2022,7 @@
    ],
    "feed_error": false,
    "epic": "OIL_CRUDE",
-   "live_spread": null,
+   "live_spread": 0.045,
    "history_note": "history to 2026-10-26 (60 days)"
   },
   "US500": {
@@ -1974,8 +2055,8 @@
    "net_label": "Net points (v1.04 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 5:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). No night trade today (not a high-fear night).",
-   "price": 7676.5,
-   "change": -0.1,
+   "price": 7681.0,
+   "change": 4.4,
    "entries": [],
    "spark": [
     [
@@ -2047,6 +2128,27 @@
      7676.5,
      7676.8,
      7676.3
+    ],
+    [
+     "2:00 am",
+     7679.7,
+     7678.7,
+     7680.5,
+     7678.0
+    ],
+    [
+     "2:05 am",
+     7680.5,
+     7680.0,
+     7680.7,
+     7679.2
+    ],
+    [
+     "2:10 am",
+     7681.0,
+     7680.7,
+     7681.2,
+     7680.5
     ]
    ],
    "journal": {
@@ -2255,8 +2357,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 29305.7,
-   "change": 9.6,
+   "price": 29333.3,
+   "change": 37.2,
    "entries": [],
    "spark": [
     [
@@ -2335,6 +2437,27 @@
      29302.4,
      29309.7,
      29302.4
+    ],
+    [
+     "2:00 am",
+     29327.3,
+     29306.6,
+     29330.8,
+     29305.9
+    ],
+    [
+     "2:05 am",
+     29328.1,
+     29327.4,
+     29332.1,
+     29320.5
+    ],
+    [
+     "2:10 am",
+     29333.3,
+     29328.5,
+     29333.3,
+     29328.1
     ]
    ],
    "journal": {
@@ -2829,8 +2952,8 @@
    "regime": 0.328,
    "gap": null,
    "message": "Today is a BUY day (small traders crowded). The trade opens at 11:00 am Dubai (10:00 broker). CALM market: at 10:00 the side can switch if GBP runs away from EUR overnight; stop moves to entry + 5 pips once +0.35 x stop in profit.",
-   "price": 1.33376,
-   "change": -0.00012,
+   "price": 1.33389,
+   "change": 1e-05,
    "entries": [],
    "spark": [
     [
@@ -2909,6 +3032,27 @@
      1.33395,
      1.33398,
      1.33311
+    ],
+    [
+     "2:00 am",
+     1.33388,
+     1.33378,
+     1.33427,
+     1.33378
+    ],
+    [
+     "2:05 am",
+     1.33388,
+     1.33386,
+     1.33388,
+     1.33386
+    ],
+    [
+     "2:10 am",
+     1.33389,
+     1.33387,
+     1.33389,
+     1.33387
     ]
    ],
    "journal": {
