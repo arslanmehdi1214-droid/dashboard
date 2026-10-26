@@ -1,5 +1,5 @@
 {
- "updated": "Mon 26 Oct \u00b7 11:55 am",
+ "updated": "Mon 26 Oct \u00b7 11:56 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -20,9 +20,9 @@
    "feed_error": false,
    "state": "buy",
    "message": "BUY day \u2014 up to 2 BUY trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:00 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 4008.94,
+   "price": 4009.63,
    "close_at": "12:00 am",
-   "change": 10.75,
+   "change": 11.44,
    "size": 0.1,
    "datr": 69.47,
    "open_now": 1,
@@ -883,6 +883,13 @@
      4009.29,
      4009.94,
      4005.94
+    ],
+    [
+     "11:55 am",
+     4009.63,
+     4008.96,
+     4009.63,
+     4008.37
     ]
    ],
    "history": [
@@ -1127,8 +1134,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 53.991,
-   "change": -0.092,
+   "price": 53.993,
+   "change": -0.09,
    "entries": [],
    "spark": [
     [
@@ -1963,6 +1970,13 @@
      54.038,
      54.047,
      53.943
+    ],
+    [
+     "11:55 am",
+     53.993,
+     53.99,
+     54.0,
+     53.976
     ]
    ],
    "journal": {
@@ -2064,8 +2078,8 @@
    "net_label": "Net R / $ at $100 risk (v1.05 sizes)",
    "state": "sell",
    "message": "PAPER SELL day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 7:00 pm Dubai close.",
-   "price": 157.175,
-   "change_pips": 17.6,
+   "price": 157.166,
+   "change_pips": 16.7,
    "atr_pips": 80.4,
    "entries": [
     {
@@ -2093,7 +2107,7 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": -0.7575,
+     "r_now": -0.7426,
      "rwf": 0,
      "spread": 1.0
     }
@@ -2924,6 +2938,13 @@
      157.188,
      157.196,
      157.154
+    ],
+    [
+     "11:55 am",
+     157.166,
+     157.176,
+     157.182,
+     157.164
     ]
    ],
    "journal": {
@@ -2977,7 +2998,7 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": -0.7575,
+       "r_now": -0.7426,
        "rwf": 0,
        "spread": 1.0
       }
@@ -3825,8 +3846,8 @@
    "net_label": "Net $ per barrel (v1.06)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 100.959,
-   "change": -0.78,
+   "price": 100.929,
+   "change": -0.81,
    "entries": [],
    "spark": [
     [
@@ -4661,6 +4682,13 @@
      100.87,
      100.97,
      100.82
+    ],
+    [
+     "11:55 am",
+     100.93,
+     100.96,
+     101.02,
+     100.93
     ]
    ],
    "journal": {
@@ -5336,8 +5364,8 @@
    "net_label": "Net points (v1.04 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 5:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). No night trade today (not a high-fear night).",
-   "price": 7632.8,
-   "change": -27.2,
+   "price": 7633.3,
+   "change": -26.7,
    "entries": [],
    "spark": [
     [
@@ -6172,6 +6200,13 @@
      7635.6,
      7636.0,
      7630.7
+    ],
+    [
+     "11:55 am",
+     7633.3,
+     7632.7,
+     7633.5,
+     7632.0
     ]
    ],
    "journal": {
@@ -6331,8 +6366,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 28928.5,
-   "change": -214.9,
+   "price": 28929.0,
+   "change": -214.4,
    "entries": [],
    "spark": [
     [
@@ -7167,6 +7202,13 @@
      28943.4,
      28946.9,
      28919.5
+    ],
+    [
+     "11:55 am",
+     28929.0,
+     28928.1,
+     28929.7,
+     28921.0
     ]
    ],
    "journal": {
@@ -8572,6 +8614,13 @@
      1.33558,
      1.33558,
      1.33569,
+     1.33546
+    ],
+    [
+     "11:55 am",
+     1.33558,
+     1.33559,
+     1.33559,
      1.33546
     ]
    ],
