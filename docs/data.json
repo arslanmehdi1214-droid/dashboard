@@ -1,5 +1,5 @@
 {
- "updated": "Mon 26 Oct \u00b7 7:21 am",
+ "updated": "Mon 26 Oct \u00b7 7:22 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -20,9 +20,9 @@
    "feed_error": false,
    "state": "buy",
    "message": "BUY day \u2014 up to 2 BUY trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:00 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 4009.93,
+   "price": 4013.23,
    "close_at": "12:00 am",
-   "change": 11.74,
+   "change": 15.04,
    "size": 0.1,
    "datr": 69.47,
    "open_now": 1,
@@ -501,10 +501,10 @@
     ],
     [
      "7:20 am",
-     4009.93,
+     4013.23,
      4010.61,
-     4011.45,
-     4009.56
+     4013.27,
+     4009.32
     ]
    ],
    "history": [
@@ -749,8 +749,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 54.238,
-   "change": 0.155,
+   "price": 54.308,
+   "change": 0.225,
    "entries": [],
    "spark": [
     [
@@ -1203,10 +1203,10 @@
     ],
     [
      "7:20 am",
-     54.238,
+     54.308,
      54.221,
-     54.259,
-     54.215
+     54.308,
+     54.214
     ]
    ],
    "journal": {
@@ -1308,8 +1308,8 @@
    "net_label": "Net R / $ at $100 risk (v1.05 sizes)",
    "state": "sell",
    "message": "PAPER SELL day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 7:00 pm Dubai close.",
-   "price": 156.711,
-   "change_pips": -28.8,
+   "price": 156.745,
+   "change_pips": -25.4,
    "atr_pips": 80.4,
    "entries": [
     {
@@ -1337,7 +1337,7 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": 0.0116,
+     "r_now": -0.0448,
      "rwf": null,
      "spread": 1.0
     }
@@ -1786,9 +1786,9 @@
     ],
     [
      "7:20 am",
+     156.745,
      156.711,
-     156.711,
-     156.712,
+     156.745,
      156.702
     ]
    ],
@@ -1843,7 +1843,7 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": 0.0116,
+       "r_now": -0.0448,
        "rwf": null,
        "spread": 1.0
       }
@@ -2691,8 +2691,8 @@
    "net_label": "Net $ per barrel (v1.06)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 100.269,
-   "change": -1.47,
+   "price": 100.244,
+   "change": -1.5,
    "entries": [],
    "spark": [
     [
@@ -3145,9 +3145,9 @@
     ],
     [
      "7:20 am",
-     100.27,
+     100.24,
      100.21,
-     100.27,
+     100.29,
      100.2
     ]
    ],
@@ -3824,8 +3824,8 @@
    "net_label": "Net points (v1.04 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 5:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). No night trade today (not a high-fear night).",
-   "price": 7631.0,
-   "change": -29.0,
+   "price": 7632.0,
+   "change": -28.0,
    "entries": [],
    "spark": [
     [
@@ -4278,9 +4278,9 @@
     ],
     [
      "7:20 am",
-     7631.0,
+     7632.0,
      7630.2,
-     7631.6,
+     7632.0,
      7629.7
     ]
    ],
@@ -4441,8 +4441,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 28914.0,
-   "change": -229.4,
+   "price": 28920.2,
+   "change": -223.2,
    "entries": [],
    "spark": [
     [
@@ -4895,9 +4895,9 @@
     ],
     [
      "7:20 am",
-     28914.0,
+     28920.2,
      28907.9,
-     28919.7,
+     28920.5,
      28906.0
     ]
    ],
@@ -5897,7 +5897,7 @@
      1.33837,
      1.33841,
      1.33845,
-     1.33837
+     1.33835
     ]
    ],
    "journal": {
