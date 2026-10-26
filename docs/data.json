@@ -1,5 +1,5 @@
 {
- "updated": "Mon 26 Oct \u00b7 11:19 pm",
+ "updated": "Mon 26 Oct \u00b7 11:20 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -20,9 +20,9 @@
    "feed_error": false,
    "state": "buy",
    "message": "BUY day \u2014 up to 2 BUY trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:00 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 4011.13,
+   "price": 4011.99,
    "close_at": "12:00 am",
-   "change": 12.94,
+   "change": 13.8,
    "size": 0.1,
    "datr": 69.47,
    "open_now": 1,
@@ -1838,9 +1838,9 @@
     ],
     [
      "11:15 pm",
-     4011.13,
+     4011.99,
      4009.67,
-     4011.16,
+     4012.61,
      4009.6
     ]
    ],
@@ -2086,8 +2086,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 53.889,
-   "change": -0.194,
+   "price": 53.904,
+   "change": -0.179,
    "entries": [],
    "spark": [
     [
@@ -3877,9 +3877,9 @@
     ],
     [
      "11:15 pm",
-     53.889,
+     53.904,
      53.826,
-     53.893,
+     53.922,
      53.823
     ]
    ],
@@ -3982,8 +3982,8 @@
    "net_label": "Net R / $ at $100 risk (v1.05 sizes)",
    "state": "sell",
    "message": "PAPER SELL day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 7:00 pm Dubai close.",
-   "price": 157.452,
-   "change_pips": 45.3,
+   "price": 157.451,
+   "change_pips": 45.2,
    "atr_pips": 80.4,
    "entries": [
     {
@@ -5797,10 +5797,10 @@
     ],
     [
      "11:15 pm",
-     157.452,
+     157.451,
      157.455,
      157.471,
-     157.452
+     157.443
     ]
    ],
    "journal": {
@@ -6702,8 +6702,8 @@
    "net_label": "Net $ per barrel (v1.06)",
    "state": "none",
    "message": "No paper trade today.",
-   "price": 101.739,
-   "change": 0.0,
+   "price": 101.724,
+   "change": -0.02,
    "entries": [],
    "spark": [
     [
@@ -8493,7 +8493,7 @@
     ],
     [
      "11:15 pm",
-     101.74,
+     101.72,
      101.66,
      101.74,
      101.62
@@ -9172,8 +9172,8 @@
    "net_label": "Net points (v1.04 rules)",
    "state": "buy",
    "message": "PAPER BUY day: 1 trade today (1 running). Only BUY signals count today (max 3; no 2nd/3rd trade from 11:00 am New York or once the day is up half a stop). Each trade keeps its stop, no half-close; everything closes at 11:30 pm Dubai (3:30 pm New York). No night trade today (not a high-fear night).",
-   "price": 7680.0,
-   "change": 20.0,
+   "price": 7681.0,
+   "change": 21.0,
    "entries": [
     {
      "time": "5:40 pm",
@@ -9197,7 +9197,7 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": 18.9,
+     "live": 19.9,
      "spread": 0.8
     }
    ],
@@ -10989,9 +10989,9 @@
     ],
     [
      "11:15 pm",
-     7680.0,
-     7678.5,
      7681.0,
+     7678.5,
+     7681.7,
      7678.0
     ]
    ],
@@ -11053,7 +11053,7 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": 18.9,
+       "live": 19.9,
        "spread": 0.8
       }
      ],
@@ -11190,8 +11190,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "buy",
    "message": "1 paper trade today (1 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 12:00 am Dubai close. At most 2 trades a day.",
-   "price": 29335.6,
-   "change": 192.2,
+   "price": 29338.0,
+   "change": 194.6,
    "entries": [
     {
      "time": "2:18 pm",
@@ -11216,7 +11216,7 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": 278.0,
+     "live": 279.8,
      "rwf": 1,
      "spread": 1.8,
      "spread_live": 1.8
@@ -13010,7 +13010,7 @@
     ],
     [
      "11:15 pm",
-     29335.6,
+     29338.0,
      29331.1,
      29344.6,
      29328.6
@@ -13061,7 +13061,7 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": 278.0,
+       "live": 279.8,
        "rwf": 1,
        "spread": 1.8,
        "spread_live": 1.8
