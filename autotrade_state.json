@@ -1,9 +1,9 @@
 {
- "balance": 1139.45,
+ "balance": 1140.31,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-10-26",
-  "pl": -1.18,
+  "pl": 0.54,
   "start_balance": 1140.04,
   "start_equity": 1140.04,
   "stopped": false
@@ -12,6 +12,12 @@
  "open_risk_aed": 52.62,
  "risk_usd": 8.168822328114365,
  "trades": {
+  "GBPUSD|2026-10-26|11:00 am|BUY|Layer 2 \u00b7 small traders crowded": {
+   "at": "Mon 26 Oct 11:26 AM",
+   "market": "GBPUSD",
+   "state": "not entered",
+   "why": "desk trade seen 27 min after entry, status open"
+  },
   "GOLD|2026-10-22|7:15 am|SELL|G2 calm3ys": {
    "desk_price": 4104.73,
    "market": "GOLD",
