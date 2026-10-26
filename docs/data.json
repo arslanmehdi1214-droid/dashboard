@@ -1,5 +1,5 @@
 {
- "updated": "Mon 26 Oct \u00b7 8:04 am",
+ "updated": "Mon 26 Oct \u00b7 8:05 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -20,9 +20,9 @@
    "feed_error": false,
    "state": "buy",
    "message": "BUY day \u2014 up to 2 BUY trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:00 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 4009.83,
+   "price": 4009.78,
    "close_at": "12:00 am",
-   "change": 11.64,
+   "change": 11.59,
    "size": 0.1,
    "datr": 69.47,
    "open_now": 1,
@@ -557,9 +557,9 @@
     ],
     [
      "8:00 am",
-     4009.83,
+     4009.78,
      4007.24,
-     4009.97,
+     4010.2,
      4007.02
     ]
    ],
@@ -805,8 +805,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 54.098,
-   "change": 0.015,
+   "price": 54.094,
+   "change": 0.011,
    "entries": [],
    "spark": [
     [
@@ -1315,7 +1315,7 @@
     ],
     [
      "8:00 am",
-     54.098,
+     54.094,
      54.078,
      54.117,
      54.057
@@ -1420,8 +1420,8 @@
    "net_label": "Net R / $ at $100 risk (v1.05 sizes)",
    "state": "sell",
    "message": "PAPER SELL day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 7:00 pm Dubai close.",
-   "price": 156.893,
-   "change_pips": -10.6,
+   "price": 156.873,
+   "change_pips": -12.6,
    "atr_pips": 80.4,
    "entries": [
     {
@@ -1449,7 +1449,7 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": -0.2901,
+     "r_now": -0.2569,
      "rwf": null,
      "spread": 1.0
     }
@@ -1954,7 +1954,7 @@
     ],
     [
      "8:00 am",
-     156.893,
+     156.873,
      156.866,
      156.893,
      156.848
@@ -2011,7 +2011,7 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": -0.2901,
+       "r_now": -0.2569,
        "rwf": null,
        "spread": 1.0
       }
@@ -2859,8 +2859,8 @@
    "net_label": "Net $ per barrel (v1.06)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 100.259,
-   "change": -1.48,
+   "price": 100.229,
+   "change": -1.51,
    "entries": [],
    "spark": [
     [
@@ -3369,7 +3369,7 @@
     ],
     [
      "8:00 am",
-     100.26,
+     100.23,
      100.28,
      100.32,
      100.17
@@ -4048,8 +4048,8 @@
    "net_label": "Net points (v1.04 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 5:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). No night trade today (not a high-fear night).",
-   "price": 7634.2,
-   "change": -25.8,
+   "price": 7635.5,
+   "change": -24.5,
    "entries": [],
    "spark": [
     [
@@ -4558,9 +4558,9 @@
     ],
     [
      "8:00 am",
-     7634.2,
-     7635.0,
      7635.5,
+     7635.0,
+     7636.0,
      7633.0
     ]
    ],
@@ -4721,8 +4721,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 28952.9,
-   "change": -190.5,
+   "price": 28962.7,
+   "change": -180.7,
    "entries": [],
    "spark": [
     [
@@ -5231,9 +5231,9 @@
     ],
     [
      "8:00 am",
-     28952.9,
+     28962.7,
      28955.5,
-     28960.9,
+     28967.9,
      28946.0
     ]
    ],
@@ -5692,8 +5692,8 @@
    "regime": 0.364,
    "gap": null,
    "message": "Today is a BUY day (small traders crowded). The trade opens at 11:00 am Dubai (10:00 broker). CALM market: at 10:00 the side can switch if GBP runs away from EUR overnight; stop moves to entry + 5 pips once +0.35 x stop in profit.",
-   "price": 1.33799,
-   "change": 0.00182,
+   "price": 1.33809,
+   "change": 0.00192,
    "entries": [],
    "spark": [
     [
@@ -6286,9 +6286,9 @@
     ],
     [
      "8:00 am",
-     1.33799,
+     1.33809,
      1.338,
-     1.33807,
+     1.33809,
      1.33796
     ]
    ],
