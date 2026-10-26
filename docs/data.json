@@ -1,5 +1,5 @@
 {
- "updated": "Tue 27 Oct \u00b7 1:35 am",
+ "updated": "Tue 27 Oct \u00b7 1:46 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -374,7 +374,7 @@
    "net_label": "Net R / $ at $100 risk (v1.05 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 157.43,
+   "price": 157.459,
    "change_pips": null,
    "atr_pips": 84.1,
    "entries": [],
@@ -1248,7 +1248,7 @@
     }
    ],
    "feed_error": false,
-   "live_spread_pips": 9.0,
+   "live_spread_pips": 7.0,
    "history_note": "history to 2026-10-26 (300 days)"
   },
   "DE40": {
@@ -1974,8 +1974,8 @@
    "net_label": "Net points (v1.04 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 5:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). No night trade today (not a high-fear night).",
-   "price": 7677.1,
-   "change": 0.5,
+   "price": 7676.7,
+   "change": 0.1,
    "entries": [],
    "spark": [
     [
@@ -2011,6 +2011,20 @@
      7677.1,
      7677.1,
      7677.1,
+     7676.7
+    ],
+    [
+     "1:35 am",
+     7676.5,
+     7677.0,
+     7677.1,
+     7676.5
+    ],
+    [
+     "1:40 am",
+     7676.7,
+     7676.8,
+     7677.0,
      7676.7
     ]
    ],
@@ -2220,8 +2234,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 29297.7,
-   "change": 1.6,
+   "price": 29300.7,
+   "change": 4.6,
    "entries": [],
    "spark": [
     [
@@ -2265,6 +2279,20 @@
      29294.7,
      29303.6,
      29294.7
+    ],
+    [
+     "1:35 am",
+     29300.2,
+     29297.6,
+     29300.2,
+     29297.5
+    ],
+    [
+     "1:40 am",
+     29300.7,
+     29300.3,
+     29303.8,
+     29298.9
     ]
    ],
    "journal": {
@@ -2759,8 +2787,8 @@
    "regime": 0.328,
    "gap": null,
    "message": "Today is a BUY day (small traders crowded). The trade opens at 11:00 am Dubai (10:00 broker). CALM market: at 10:00 the side can switch if GBP runs away from EUR overnight; stop moves to entry + 5 pips once +0.35 x stop in profit.",
-   "price": 1.33396,
-   "change": 8e-05,
+   "price": 1.33399,
+   "change": 0.00011,
    "entries": [],
    "spark": [
     [
@@ -2804,6 +2832,27 @@
      1.33396,
      1.33399,
      1.33395
+    ],
+    [
+     "1:35 am",
+     1.33398,
+     1.33397,
+     1.33401,
+     1.33394
+    ],
+    [
+     "1:40 am",
+     1.334,
+     1.334,
+     1.33407,
+     1.33394
+    ],
+    [
+     "1:45 am",
+     1.33399,
+     1.33408,
+     1.33408,
+     1.33398
     ]
    ],
    "journal": {
