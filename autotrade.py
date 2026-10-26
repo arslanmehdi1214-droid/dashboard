@@ -1,4 +1,4 @@
-"""DEMO AUTO-TRADER (20 Oct 2026; 22 Oct: part = 1.0 -> one position with the take-profit; stop-to-entry uses each position's real fill; US500 added). Copies the Signal Desk's trades onto the Capital.com DEMO account, every minute, inside loop.py.
+"""DEMO AUTO-TRADER (20 Oct 2026; 22 Oct: part = 1.0 -> one position with the take-profit; stop-to-entry uses each position's real fill; US500 added; 26 Oct: GBPUSD added). Copies the Signal Desk's trades onto the Capital.com DEMO account, every minute, inside loop.py.
 
 How it works (one pass per minute, right after the desk engines ran):
   * reads docs/data.json (the desk's own trades for today, all markets)
@@ -45,6 +45,7 @@ MARKETS = {                   # desk code -> Capital.com epic, quote currency
     'US100': dict(epic='US100', quote='USD'),
     'SILVER': dict(epic='SILVER', quote='USD'),
     'US500': dict(epic='US500', quote='USD'),        # 22 Oct: S&P 500 paper (version A, no part close -> one position per leg)
+    'GBPUSD': dict(epic='GBPUSD', quote='USD'),      # 26 Oct (his A): GBP/USD v1.04 - one trade a day, part 1.0 -> one position with the take-profit
 }
 DUBAI = dt.timezone(dt.timedelta(hours=4))
 
@@ -155,7 +156,8 @@ def day_end(code, bnow, winter):
           'OIL': (20, 0),
           'US100': (22, 50) if fri else (23, 0),
           'SILVER': (22, 50) if fri else (23, 0),
-          'US500': (22, 30)}.get(code, (23, 0))
+          'US500': (22, 30),
+          'GBPUSD': (23, 45)}.get(code, (23, 0))                         # 26 Oct: GBP/USD v1.04 closes everything at 23:45 broker
     return bnow.replace(hour=hm[0], minute=hm[1], second=0, microsecond=0)
 GROUPS = ({'GOLD', 'SILVER'}, {'US100', 'US500'})                        # moves together: one risk cap per group
 def group_of(code): return next((g for g in GROUPS if code in g), {code})

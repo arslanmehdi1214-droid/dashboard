@@ -2,7 +2,7 @@
 2011-01..2026-06, net $15,966.95 at 0.10 lot, max DD $1,636.34, net/DD 9.76, PF 1.21, profit days 54.3% of weekdays, losing years 3).
 v1.04 adds the busy/calm regime rules (gbp_engine.mode): regime from docs/gbp_daily.json (daily highs/lows: HistData seed to 30 Sep 2026 +
 Capital.com days on top, kept up to date here) and, on calm days, the 00:00 -> 10:00 GBP vs EUR gap (Capital.com minute opens). One trade a day at most,
-manual (the demo auto-trader does NOT copy GBP/USD - his choice B, 23 Oct). No phone alerts, no real money.
+copied onto the Capital.com DEMO by the auto-trader from 26 Oct (his choice A, 26 Oct; was manual - his choice B, 23 Oct). No phone alerts, no real money.
 Called by run.py every minute. Each run: (1) the weekly CFTC British Pound report (publicreporting.cftc.gov, free, no key) is re-read
 at most once an hour and cached in docs/cftc_gbp.json - the desk keeps working on the cached report if the CFTC site is down;
 (1b) v1.03: the weekly CFTC EURO FX report the same way (docs/cftc_eur.json); (2) the 14-day average range and, for layer 4,
@@ -197,7 +197,7 @@ def base_card(A=None, rep=None, code=0, md=None, pct=None):
             + '(12:45 am Dubai in summer, 1:45 am in winter)')
     return dict(code='GBPUSD', name='GBP/USD', symbol='GBPUSD · Capital.com GBP/USD', live=False, paper=True, status='Paper', version=RULES,
                 unit='pips', dp=5, stats=BACKTEST, pass_bar=PASS, day_note=note,
-                what_note='Tracks whether live GBP/USD signals do as well as the v1.04 MT4 test. You place the trade by hand on the demo (the auto-trader leaves GBP/USD alone). Decision after about 3 months.',
+                what_note='Tracks whether live GBP/USD signals do as well as the v1.04 MT4 test. The auto-trader places each trade on the Capital.com demo (from 27 Oct). Decision after about 3 months.',
                 cost_note='Results are pips per trade after the spread (at least 1.5 pips). 0.01 lot = 1,000 units = $0.10 per pip.',
                 net_label='Net pips (v1.04 rules)')
 
