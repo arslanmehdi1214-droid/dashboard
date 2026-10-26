@@ -570,20 +570,20 @@
      "half": false,
      "half_time": null,
      "size": 0.1,
-     "status": "open",
+     "status": "eod",
      "first": true,
-     "exit": null,
-     "exit_time": null,
-     "pnl": null,
-     "pnl_oz": null,
+     "exit": 4013.03,
+     "exit_time": "12:00 am",
+     "pnl": 19.16,
+     "pnl_oz": 12.77,
      "size_x": 1.5,
      "rwf": null,
-     "next": "Hold to the stop 3965.02 or the day-end close \u00b7 no half-close \u00b7 size x1.5",
+     "next": null,
      "late": false
     }
    ],
    "skipped": 0,
-   "final": false
+   "final": true
   }
  ],
  "summary": {
@@ -593,8 +593,8 @@
   "decided": 16,
   "days": 93.8,
   "perday": 1.69,
-  "avg_pnl": -3.8,
-  "closed": 26,
-  "total_pnl_01": -9.88
+  "avg_pnl": -2.95,
+  "closed": 27,
+  "total_pnl_01": -7.96
  }
 }

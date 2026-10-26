@@ -1,15 +1,15 @@
 {
- "balance": 1186.81,
+ "balance": 1186.25,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-10-26",
-  "pl": 87.23,
+  "pl": 86.08,
   "start_balance": 1140.04,
   "start_equity": 1140.04,
   "stopped": false
  },
- "open_positions": 2,
- "open_risk_aed": 44.0,
+ "open_positions": 0,
+ "open_risk_aed": 0,
  "risk_usd": 8.168822328114365,
  "trades": {
   "GBPUSD|2026-10-26|11:00 am|BUY|Layer 2 \u00b7 small traders crowded": {
@@ -17,42 +17,6 @@
    "market": "GBPUSD",
    "state": "not entered",
    "why": "desk trade seen 27 min after entry, status open"
-  },
-  "GOLD|2026-10-22|7:15 am|SELL|G2 calm3ys": {
-   "desk_price": 4104.73,
-   "market": "GOLD",
-   "opened_at": "Thu 22 Oct 7:16 AM",
-   "rest": {
-    "closed_by": "desk: lock",
-    "id": "00000000-6d19-f1ed-0495-7fc60004511e",
-    "level": 4102.04,
-    "open": false,
-    "size": 0.9,
-    "tp": null
-   },
-   "risk_aed": 112.31,
-   "risk_usd": 30.63,
-   "side": "SELL",
-   "state": "closed",
-   "stop": 4138.71
-  },
-  "GOLD|2026-10-22|7:37 am|SELL|G8 ttmvsc": {
-   "desk_price": 4091.87,
-   "market": "GOLD",
-   "opened_at": "Thu 22 Oct 7:38 AM",
-   "rest": {
-    "closed_by": "desk: lock",
-    "id": "00000000-6d1a-1c32-0495-7fc60004511e",
-    "level": 4092.76,
-    "open": false,
-    "size": 0.9,
-    "tp": null
-   },
-   "risk_aed": 112.31,
-   "risk_usd": 30.63,
-   "side": "SELL",
-   "state": "closed",
-   "stop": 4125.85
   },
   "GOLD|2026-10-23|10:00 am|SELL|T15 ttm": {
    "desk_price": 4020.1,
@@ -125,35 +89,18 @@
    "part_x": 0.0,
    "px_adj": 0.0,
    "rest": {
+    "closed_by": "desk: close_now",
     "id": "00000000-6e1c-f23b-0495-7fc60004511e",
     "level": 4003.47,
-    "open": true,
+    "open": false,
     "size": 0.34,
     "tp": null
    },
    "risk_aed": 44.0,
    "risk_usd": 12.25,
    "side": "BUY",
-   "state": "open",
-   "stop": 3965.02
-  },
-  "OIL|2026-10-22|11:44 am|BUY|Open \u00b1 \u00bd range": {
-   "desk_price": 99.49,
-   "market": "OIL",
-   "opened_at": "Thu 22 Oct 11:45 AM",
-   "rest": {
-    "closed_by": "Capital.com stop/target",
-    "id": "00000000-6d7e-8741-0495-7fc60004511e",
-    "level": 99.463,
-    "open": false,
-    "size": 1.1,
-    "tp": null
-   },
-   "risk_aed": 15.67,
-   "risk_usd": 4.54,
-   "side": "BUY",
    "state": "closed",
-   "stop": 99.54
+   "stop": 3965.02
   },
   "OIL|2026-10-23|4:07 pm|BUY|Whole dollar": {
    "desk_price": 101.02,
@@ -213,32 +160,6 @@
    "state": "not entered",
    "why": "real risk 13.51 AED after lot rounding > 1.3x target 10.0 AED"
   },
-  "US100|2026-10-22|12:03 pm|SELL|REV J4 day open \u00b11.0ATR first touch from 4am fade": {
-   "desk_price": 29280.2,
-   "market": "US100",
-   "opened_at": "Thu 22 Oct 12:05 PM",
-   "part": {
-    "closed_by": "Capital.com stop/target",
-    "id": "00000000-6d7e-afae-0495-7fc60004511e",
-    "level": 29296.8,
-    "open": false,
-    "size": 0.005,
-    "tp": 29214.0
-   },
-   "rest": {
-    "closed_by": "Capital.com stop/target",
-    "id": "00000000-6d7e-afc4-0495-7fc60004511e",
-    "level": 29297.3,
-    "open": false,
-    "size": 0.029,
-    "tp": null
-   },
-   "risk_aed": 16.53,
-   "risk_usd": 4.54,
-   "side": "SELL",
-   "state": "closed",
-   "stop": 29412.6
-  },
   "US100|2026-10-23|6:00 pm|BUY|REV H2 round $200 touch then close back -> reverse, from 4pm": {
    "desk_price": 28966.2,
    "market": "US100",
@@ -282,37 +203,18 @@
    "part_x": 0.25,
    "px_adj": 0.0,
    "rest": {
+    "closed_by": "desk: eod",
     "id": "00000000-6e1f-80cb-0495-7fc60004511e",
     "level": 29004.4,
-    "open": true,
+    "open": false,
     "size": 0.028,
     "tp": null
    },
    "risk_aed": 29.81,
    "risk_usd": 8.17,
    "side": "BUY",
-   "state": "open",
-   "stop": 29161.6
-  },
-  "US500|2026-10-22|5:40 pm|BUY|S&P 9:40 am New York opening move": {
-   "desk_price": 7698.2,
-   "market": "US500",
-   "opened_at": "Thu 22 Oct 5:41 PM",
-   "part_x": 0.0,
-   "px_adj": 0.0,
-   "rest": {
-    "closed_by": "Capital.com stop/target",
-    "id": "00000000-6d81-1bd3-0495-7fc60004511e",
-    "level": 7695.4,
-    "open": false,
-    "size": 0.13,
-    "tp": null
-   },
-   "risk_aed": 28.17,
-   "risk_usd": 8.17,
-   "side": "BUY",
    "state": "closed",
-   "stop": 7639.2
+   "stop": 29161.6
   },
   "US500|2026-10-23|5:40 pm|SELL|S&P 9:40 am New York opening move": {
    "desk_price": 7615.4,
@@ -353,110 +255,6 @@
    "side": "BUY",
    "state": "closed",
    "stop": 7600.9
-  },
-  "USDJPY|2026-10-22|7:00 am|SELL|Heikin-Ashi 7am": {
-   "desk_price": 157.881,
-   "market": "USDJPY",
-   "opened_at": "Thu 22 Oct 7:01 AM",
-   "part": {
-    "closed_by": "Capital.com stop/target",
-    "id": "00000000-6d19-d1f1-0495-7fc60004511e",
-    "level": 157.867,
-    "open": false,
-    "size": 600.0,
-    "tp": 157.822
-   },
-   "rest": {
-    "closed_by": "desk: eod",
-    "id": "00000000-6d19-d200-0495-7fc60004511e",
-    "level": 157.868,
-    "open": false,
-    "size": 600.0,
-    "tp": null
-   },
-   "risk_aed": 16.39,
-   "risk_usd": 4.54,
-   "side": "SELL",
-   "state": "closed",
-   "stop": 157.881
-  },
-  "USDJPY|2026-10-22|7:03 am|SELL|Inside-day break": {
-   "desk_price": 157.834,
-   "market": "USDJPY",
-   "opened_at": "Thu 22 Oct 7:04 AM",
-   "part": {
-    "closed_by": "Capital.com stop/target",
-    "id": "00000000-6d19-d6da-0495-7fc60004511e",
-    "level": 157.805,
-    "open": false,
-    "size": 5200.0,
-    "tp": 157.732
-   },
-   "rest": {
-    "closed_by": "desk: eod",
-    "id": "00000000-6d19-d6ea-0495-7fc60004511e",
-    "level": 157.806,
-    "open": false,
-    "size": 5300.0,
-    "tp": null
-   },
-   "risk_aed": 49.84,
-   "risk_usd": 13.61,
-   "side": "SELL",
-   "state": "closed",
-   "stop": 157.834
-  },
-  "USDJPY|2026-10-22|7:09 am|SELL|Week-so-far break": {
-   "desk_price": 157.696,
-   "market": "USDJPY",
-   "opened_at": "Thu 22 Oct 7:10 AM",
-   "part": {
-    "closed_by": "desk: part close",
-    "id": "00000000-6d19-dee5-0495-7fc60004511e",
-    "level": 157.711,
-    "open": false,
-    "size": 1800.0,
-    "tp": 157.637
-   },
-   "rest": {
-    "closed_by": "Capital.com stop/target",
-    "id": "00000000-6d19-def5-0495-7fc60004511e",
-    "level": 157.711,
-    "open": false,
-    "size": 1800.0,
-    "tp": null
-   },
-   "risk_aed": 49.21,
-   "risk_usd": 13.61,
-   "side": "SELL",
-   "state": "closed",
-   "stop": 157.696
-  },
-  "USDJPY|2026-10-22|9:40 am|SELL|Last-week break": {
-   "desk_price": 157.543,
-   "market": "USDJPY",
-   "opened_at": "Thu 22 Oct 9:41 AM",
-   "part": {
-    "closed_by": "Capital.com stop/target",
-    "id": "00000000-6d1a-d78b-0495-7fc60004511e",
-    "level": 157.554,
-    "open": false,
-    "size": 1800.0,
-    "tp": 157.485
-   },
-   "rest": {
-    "closed_by": "desk: eod",
-    "id": "00000000-6d1a-d7a6-0495-7fc60004511e",
-    "level": 157.553,
-    "open": false,
-    "size": 1800.0,
-    "tp": null
-   },
-   "risk_aed": 49.09,
-   "risk_usd": 13.61,
-   "side": "SELL",
-   "state": "closed",
-   "stop": 157.543
   },
   "USDJPY|2026-10-23|2:33 am|SELL|Week-so-far break": {
    "desk_price": 156.684,
