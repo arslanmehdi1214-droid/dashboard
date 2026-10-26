@@ -8,8 +8,8 @@
   "start_equity": 1140.04,
   "stopped": false
  },
- "open_positions": 0,
- "open_risk_aed": 0,
+ "open_positions": 2,
+ "open_risk_aed": 52.62,
  "risk_usd": 8.168822328114365,
  "trades": {
   "GOLD|2026-10-22|7:15 am|SELL|G2 calm3ys": {
@@ -111,6 +111,25 @@
    "market": "GOLD",
    "state": "not entered",
    "why": "desk trade seen 1039 min after entry, status close_now"
+  },
+  "GOLD|2026-10-26|7:00 am|BUY|N2 near100": {
+   "desk_price": 4000.26,
+   "market": "GOLD",
+   "opened_at": "Mon 26 Oct 7:01 AM",
+   "part_x": 0.0,
+   "px_adj": 0.0,
+   "rest": {
+    "id": "00000000-6e1c-f23b-0495-7fc60004511e",
+    "level": 4003.47,
+    "open": true,
+    "size": 0.34,
+    "tp": null
+   },
+   "risk_aed": 44.0,
+   "risk_usd": 12.25,
+   "side": "BUY",
+   "state": "open",
+   "stop": 3965.02
   },
   "OIL|2026-10-22|11:44 am|BUY|Open \u00b1 \u00bd range": {
    "desk_price": 99.49,
@@ -441,6 +460,25 @@
    "side": "SELL",
    "state": "closed",
    "stop": 157.027
+  },
+  "USDJPY|2026-10-26|7:00 am|SELL|Heikin-Ashi 7am": {
+   "desk_price": 156.728,
+   "market": "USDJPY",
+   "opened_at": "Mon 26 Oct 7:01 AM",
+   "part": {
+    "id": "00000000-6e1c-f24d-0495-7fc60004511e",
+    "level": 156.715,
+    "open": true,
+    "size": 600.0,
+    "tp": 156.697
+   },
+   "part_x": 1.0,
+   "px_adj": 0.0,
+   "risk_aed": 8.62,
+   "risk_usd": 2.72,
+   "side": "SELL",
+   "state": "open",
+   "stop": 157.341
   }
  },
  "untracked_seen": {}
