@@ -1,5 +1,5 @@
 {
- "updated": "Mon 26 Oct \u00b7 10:59 am",
+ "updated": "Mon 26 Oct \u00b7 11:00 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -20,9 +20,9 @@
    "feed_error": false,
    "state": "buy",
    "message": "BUY day \u2014 up to 2 BUY trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:00 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 4007.2,
+   "price": 4006.2,
    "close_at": "12:00 am",
-   "change": 9.01,
+   "change": 8.01,
    "size": 0.1,
    "datr": 69.47,
    "open_now": 1,
@@ -802,7 +802,7 @@
     ],
     [
      "10:55 am",
-     4007.2,
+     4006.2,
      4007.31,
      4008.06,
      4005.79
@@ -1050,8 +1050,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 53.833,
-   "change": -0.25,
+   "price": 53.84,
+   "change": -0.243,
    "entries": [],
    "spark": [
     [
@@ -1805,7 +1805,7 @@
     ],
     [
      "10:55 am",
-     53.833,
+     53.84,
      53.881,
      53.885,
      53.797
@@ -1910,8 +1910,8 @@
    "net_label": "Net R / $ at $100 risk (v1.05 sizes)",
    "state": "sell",
    "message": "PAPER SELL day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 7:00 pm Dubai close.",
-   "price": 156.981,
-   "change_pips": -1.8,
+   "price": 156.995,
+   "change_pips": -0.4,
    "atr_pips": 80.4,
    "entries": [
     {
@@ -1939,7 +1939,7 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": -0.4359,
+     "r_now": -0.4591,
      "rwf": 0,
      "spread": 1.0
     }
@@ -2689,7 +2689,7 @@
     ],
     [
      "10:55 am",
-     156.981,
+     156.995,
      156.949,
      156.997,
      156.949
@@ -2746,7 +2746,7 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": -0.4359,
+       "r_now": -0.4591,
        "rwf": 0,
        "spread": 1.0
       }
@@ -3555,7 +3555,7 @@
     }
    ],
    "feed_error": false,
-   "live_spread_pips": 1.1,
+   "live_spread_pips": 1.2,
    "history_note": "history to 2026-10-25 (300 days)"
   },
   "DE40": {
@@ -3594,8 +3594,8 @@
    "net_label": "Net $ per barrel (v1.06)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 100.494,
-   "change": -1.25,
+   "price": 100.544,
+   "change": -1.2,
    "entries": [],
    "spark": [
     [
@@ -4349,7 +4349,7 @@
     ],
     [
      "10:55 am",
-     100.49,
+     100.54,
      100.63,
      100.7,
      100.48
@@ -5028,8 +5028,8 @@
    "net_label": "Net points (v1.04 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 5:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). No night trade today (not a high-fear night).",
-   "price": 7629.5,
-   "change": -30.5,
+   "price": 7629.7,
+   "change": -30.3,
    "entries": [],
    "spark": [
     [
@@ -5783,9 +5783,9 @@
     ],
     [
      "10:55 am",
-     7629.5,
-     7629.1,
      7629.7,
+     7629.1,
+     7631.2,
      7627.0
     ]
    ],
@@ -5946,8 +5946,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 28918.0,
-   "change": -225.4,
+   "price": 28920.5,
+   "change": -222.9,
    "entries": [],
    "spark": [
     [
@@ -6701,9 +6701,9 @@
     ],
     [
      "10:55 am",
-     28918.0,
+     28920.5,
      28915.2,
-     28920.1,
+     28931.4,
      28903.4
     ]
    ],
@@ -7157,13 +7157,13 @@
    "what_note": "Tracks whether live GBP/USD signals do as well as the v1.04 MT4 test. You place the trade by hand on the demo (the auto-trader leaves GBP/USD alone). Decision after about 3 months.",
    "cost_note": "Results are pips per trade after the spread (at least 1.5 pips). 0.01 lot = 1,000 units = $0.10 per pip.",
    "net_label": "Net pips (v1.04 rules)",
-   "state": "waiting",
+   "state": "none",
    "mode": "calm",
    "regime": 0.364,
    "gap": null,
-   "message": "Today is a BUY day (small traders crowded). The trade opens at 11:00 am Dubai (10:00 broker). CALM market: at 10:00 the side can switch if GBP runs away from EUR overnight; stop moves to entry + 5 pips once +0.35 x stop in profit.",
-   "price": 1.3373,
-   "change": 0.00113,
+   "message": "No trade today: no price bar between 11:00 am and 11:05 am Dubai.",
+   "price": 1.33729,
+   "change": 0.00112,
    "entries": [],
    "spark": [
     [
@@ -8001,7 +8001,7 @@
     ],
     [
      "10:55 am",
-     1.3373,
+     1.33729,
      1.33742,
      1.33742,
      1.33719
