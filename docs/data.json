@@ -1,5 +1,5 @@
 {
- "updated": "Mon 26 Oct \u00b7 9:06 am",
+ "updated": "Mon 26 Oct \u00b7 9:07 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -20,9 +20,9 @@
    "feed_error": false,
    "state": "buy",
    "message": "BUY day \u2014 up to 2 BUY trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:00 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 4017.32,
+   "price": 4017.5,
    "close_at": "12:00 am",
-   "change": 19.13,
+   "change": 19.31,
    "size": 0.1,
    "datr": 69.47,
    "open_now": 1,
@@ -648,7 +648,7 @@
     ],
     [
      "9:05 am",
-     4017.32,
+     4017.5,
      4017.47,
      4017.81,
      4016.66
@@ -1499,7 +1499,7 @@
      "9:05 am",
      54.287,
      54.269,
-     54.29,
+     54.292,
      54.262
     ]
    ],
@@ -1602,8 +1602,8 @@
    "net_label": "Net R / $ at $100 risk (v1.05 sizes)",
    "state": "sell",
    "message": "PAPER SELL day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 7:00 pm Dubai close.",
-   "price": 156.957,
-   "change_pips": -4.2,
+   "price": 156.919,
+   "change_pips": -8.0,
    "atr_pips": 80.4,
    "entries": [
     {
@@ -1631,7 +1631,7 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": -0.3961,
+     "r_now": -0.3332,
      "rwf": null,
      "spread": 1.0
     }
@@ -2227,10 +2227,10 @@
     ],
     [
      "9:05 am",
-     156.957,
+     156.919,
      156.963,
      156.965,
-     156.953
+     156.912
     ]
    ],
    "journal": {
@@ -2284,7 +2284,7 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": -0.3961,
+       "r_now": -0.3332,
        "rwf": null,
        "spread": 1.0
       }
@@ -3132,8 +3132,8 @@
    "net_label": "Net $ per barrel (v1.06)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 100.369,
-   "change": -1.37,
+   "price": 100.314,
+   "change": -1.43,
    "entries": [],
    "spark": [
     [
@@ -3733,10 +3733,10 @@
     ],
     [
      "9:05 am",
-     100.37,
+     100.31,
      100.38,
      100.38,
-     100.35
+     100.31
     ]
    ],
    "journal": {
@@ -4379,7 +4379,7 @@
    ],
    "feed_error": false,
    "epic": "OIL_CRUDE",
-   "live_spread": 0.035,
+   "live_spread": 0.04,
    "history_note": "history to 2026-10-25 (60 days)"
   },
   "US500": {
@@ -4412,8 +4412,8 @@
    "net_label": "Net points (v1.04 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 5:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). No night trade today (not a high-fear night).",
-   "price": 7645.7,
-   "change": -14.3,
+   "price": 7646.0,
+   "change": -14.0,
    "entries": [],
    "spark": [
     [
@@ -5013,7 +5013,7 @@
     ],
     [
      "9:05 am",
-     7645.7,
+     7646.0,
      7646.2,
      7646.2,
      7645.5
@@ -5176,8 +5176,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 29038.6,
-   "change": -104.8,
+   "price": 29036.5,
+   "change": -106.9,
    "entries": [],
    "spark": [
     [
@@ -5777,9 +5777,9 @@
     ],
     [
      "9:05 am",
-     29038.6,
+     29036.5,
      29037.7,
-     29040.7,
+     29042.0,
      29034.5
     ]
    ],
@@ -6238,8 +6238,8 @@
    "regime": 0.364,
    "gap": null,
    "message": "Today is a BUY day (small traders crowded). The trade opens at 11:00 am Dubai (10:00 broker). CALM market: at 10:00 the side can switch if GBP runs away from EUR overnight; stop moves to entry + 5 pips once +0.35 x stop in profit.",
-   "price": 1.33802,
-   "change": 0.00185,
+   "price": 1.33801,
+   "change": 0.00184,
    "entries": [],
    "spark": [
     [
@@ -6923,10 +6923,10 @@
     ],
     [
      "9:05 am",
-     1.33802,
+     1.33801,
      1.33803,
-     1.33803,
-     1.33801
+     1.33805,
+     1.33799
     ]
    ],
    "journal": {
