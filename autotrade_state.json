@@ -1,15 +1,15 @@
 {
- "balance": 1129.06,
+ "balance": 1129.84,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-10-27",
-  "pl": -72.49,
+  "pl": -70.93,
   "start_balance": 1186.07,
   "start_equity": 1186.07,
   "stopped": false
  },
- "open_positions": 2,
- "open_risk_aed": 43.53,
+ "open_positions": 1,
+ "open_risk_aed": 29.57,
  "risk_usd": 8.168822328114365,
  "trades": {
   "GBPUSD|2026-10-26|11:00 am|BUY|Layer 2 \u00b7 small traders crowded": {
@@ -206,16 +206,17 @@
    "part_x": 0.25,
    "px_adj": 0.0,
    "rest": {
+    "closed_by": "desk: close_now",
     "id": "00000000-6e7b-1f2a-0495-7fc60004511e",
     "level": 102.043,
-    "open": true,
+    "open": false,
     "size": 1.0,
     "tp": null
    },
    "risk_aed": 13.96,
    "risk_usd": 2.72,
    "side": "BUY",
-   "state": "open",
+   "state": "closed",
    "stop": 98.15
   },
   "US100|2026-10-23|6:00 pm|BUY|REV H2 round $200 touch then close back -> reverse, from 4pm": {
