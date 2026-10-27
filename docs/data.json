@@ -1,5 +1,5 @@
 {
- "updated": "Tue 27 Oct \u00b7 9:46 am",
+ "updated": "Tue 27 Oct \u00b7 9:47 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -20,9 +20,9 @@
    "feed_error": false,
    "state": "sell",
    "message": "SELL day \u2014 up to 2 SELL trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:00 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 4005.36,
+   "price": 4003.54,
    "close_at": "12:00 am",
-   "change": -12.63,
+   "change": -14.45,
    "size": 0.1,
    "datr": 67.43,
    "open_now": 1,
@@ -704,10 +704,10 @@
     ],
     [
      "9:45 am",
-     4005.36,
+     4003.54,
      4008.41,
      4009.3,
-     4005.36
+     4003.54
     ]
    ],
    "history": [
@@ -952,8 +952,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 53.147,
-   "change": -0.74,
+   "price": 53.099,
+   "change": -0.788,
    "entries": [],
    "spark": [
     [
@@ -1609,10 +1609,10 @@
     ],
     [
      "9:45 am",
-     53.147,
+     53.099,
      53.203,
      53.236,
-     53.133
+     53.088
     ]
    ],
    "journal": {
@@ -3347,8 +3347,8 @@
    "net_label": "Net $ per barrel (v1.07)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 100.188,
-   "change": -0.34,
+   "price": 100.163,
+   "change": -0.37,
    "entries": [],
    "spark": [
     [
@@ -4004,10 +4004,10 @@
     ],
     [
      "9:45 am",
-     100.19,
+     100.16,
      100.19,
      100.21,
-     100.18
+     100.15
     ]
    ],
    "journal": {
@@ -4660,7 +4660,7 @@
    ],
    "feed_error": false,
    "epic": "OIL_CRUDE",
-   "live_spread": 0.04,
+   "live_spread": 0.03,
    "history_note": "history to 2026-10-26 (60 days)"
   },
   "US500": {
@@ -5632,8 +5632,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 29183.4,
-   "change": -112.7,
+   "price": 29186.7,
+   "change": -109.4,
    "entries": [],
    "spark": [
     [
@@ -6366,9 +6366,9 @@
     ],
     [
      "9:45 am",
-     29183.4,
+     29186.7,
      29174.0,
-     29187.8,
+     29188.2,
      29173.4
     ]
    ],
@@ -6864,8 +6864,8 @@
    "regime": 0.328,
    "gap": null,
    "message": "Today is a BUY day (small traders crowded). The trade opens at 11:00 am Dubai (10:00 broker). CALM market: at 10:00 the side can switch if GBP runs away from EUR overnight; stop moves to entry + 5 pips once +0.35 x stop in profit.",
-   "price": 1.33308,
-   "change": -0.0008,
+   "price": 1.33311,
+   "change": -0.00077,
    "entries": [],
    "spark": [
     [
@@ -7598,7 +7598,7 @@
     ],
     [
      "9:45 am",
-     1.33308,
+     1.33311,
      1.33316,
      1.33316,
      1.33307
