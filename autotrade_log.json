@@ -1531,5 +1531,26 @@
   "market": "US100",
   "ok": true,
   "t": "Tue 27 Oct 12:00 AM"
+ },
+ {
+  "action": "OPEN SELL rest",
+  "detail": "GOLD|2026-10-27|7:00 am|SELL|N2 near100 size 0.23 at 4008.72 stop 4043.79 | trade risk 28.9 AED",
+  "market": "GOLD",
+  "ok": true,
+  "t": "Tue 27 Oct 7:01 AM"
+ },
+ {
+  "action": "OPEN BUY part",
+  "detail": "USDJPY|2026-10-27|7:00 am|BUY|Heikin-Ashi 7am size 600.0 at 157.718 stop 157.067 target 157.727 | trade risk 8.82 AED",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Tue 27 Oct 7:01 AM"
+ },
+ {
+  "action": "target moved to fill + desk distance",
+  "detail": "USDJPY|2026-10-27|7:00 am|BUY|Heikin-Ashi 7am 157.727 -> 157.747 ",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Tue 27 Oct 7:01 AM"
  }
 ]
