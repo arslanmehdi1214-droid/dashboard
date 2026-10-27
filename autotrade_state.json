@@ -1,15 +1,15 @@
 {
- "balance": 1187.04,
+ "balance": 1185.66,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-10-27",
-  "pl": 1.94,
+  "pl": -0.82,
   "start_balance": 1186.07,
   "start_equity": 1186.07,
   "stopped": false
  },
- "open_positions": 2,
- "open_risk_aed": 37.72,
+ "open_positions": 1,
+ "open_risk_aed": 28.9,
  "risk_usd": 8.168822328114365,
  "trades": {
   "GBPUSD|2026-10-26|11:00 am|BUY|Layer 2 \u00b7 small traders crowded": {
@@ -356,9 +356,10 @@
    "market": "USDJPY",
    "opened_at": "Tue 27 Oct 7:01 AM",
    "part": {
+    "closed_by": "desk: target",
     "id": "00000000-6e79-9d14-0495-7fc60004511e",
     "level": 157.718,
-    "open": true,
+    "open": false,
     "size": 600.0,
     "tp": 157.747
    },
@@ -367,7 +368,7 @@
    "risk_aed": 8.82,
    "risk_usd": 2.72,
    "side": "BUY",
-   "state": "open",
+   "state": "closed",
    "stop": 157.067
   }
  },
