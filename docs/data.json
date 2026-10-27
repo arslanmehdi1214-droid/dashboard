@@ -1,5 +1,5 @@
 {
- "updated": "Wed 28 Oct \u00b7 12:12 am",
+ "updated": "Wed 28 Oct \u00b7 12:13 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -26,9 +26,9 @@
    "feed_error": false,
    "state": "sell",
    "message": "SELL day \u2014 up to 2 SELL trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:00 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 4060.75,
+   "price": 4061.61,
    "close_at": "12:00 am",
-   "change": 42.76,
+   "change": 43.62,
    "size": 0.1,
    "datr": 67.43,
    "open_now": 0,
@@ -1921,9 +1921,9 @@
     ],
     [
      "12:10 am",
-     4060.75,
+     4061.61,
      4059.42,
-     4060.75,
+     4061.87,
      4058.96
     ]
    ],
@@ -2169,8 +2169,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "none",
    "message": "No paper trade today (no 2-of-3 agreement).",
-   "price": 54.422,
-   "change": 0.535,
+   "price": 54.45,
+   "change": 0.563,
    "entries": [],
    "spark": [
     [
@@ -4037,9 +4037,9 @@
     ],
     [
      "12:10 am",
-     54.422,
+     54.45,
      54.387,
-     54.423,
+     54.453,
      54.368
     ]
    ],
@@ -6044,7 +6044,7 @@
      "12:10 am",
      157.899,
      157.896,
-     157.9,
+     157.908,
      157.894
     ]
    ],
@@ -6986,8 +6986,8 @@
    "net_label": "Net $ per barrel (v1.07)",
    "state": "buy",
    "message": "PAPER BUY day \u2014 v1.07: no more trades today (a buy only as the day's first trade). Close 25% at the part level, then move the stop to entry; everything closes at 9:00 pm Dubai. No new trades after 5:30 pm (one late first trade allowed).",
-   "price": 99.231,
-   "change": -1.3,
+   "price": 99.198,
+   "change": -1.33,
    "entries": [
     {
      "time": "12:27 pm",
@@ -8877,10 +8877,10 @@
     ],
     [
      "12:10 am",
-     99.23,
+     99.2,
      99.25,
      99.29,
-     99.22
+     99.2
     ]
    ],
    "journal": {
@@ -9589,8 +9589,8 @@
    "net_label": "Net points (v1.04 rules)",
    "state": "none",
    "message": "No paper day trade today. No night trade today (not a high-fear night).",
-   "price": 7723.5,
-   "change": 46.9,
+   "price": 7725.0,
+   "change": 48.4,
    "entries": [],
    "spark": [
     [
@@ -11527,9 +11527,9 @@
     ],
     [
      "12:10 am",
-     7723.5,
+     7725.0,
      7724.0,
-     7724.0,
+     7725.0,
      7722.7
     ]
    ],
@@ -11741,8 +11741,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "sell",
    "message": "1 paper trade today (0 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 12:00 am Dubai close. At most 2 trades a day.",
-   "price": 29629.2,
-   "change": 333.1,
+   "price": 29637.1,
+   "change": 341.0,
    "entries": [
     {
      "time": "2:47 pm",
@@ -13715,7 +13715,7 @@
     ],
     [
      "12:10 am",
-     29629.2,
+     29637.1,
      29645.4,
      29645.4,
      29625.2
@@ -14242,8 +14242,8 @@
    "regime": 0.328,
    "gap": 0.007,
    "message": "PAPER BUY at 1.33258 (11:00 am Dubai). Stop 1.32526, target 1.33990 - close the WHOLE trade at the target; otherwise it closes at 12:45 am Dubai. CALM day: when price reaches 1.33514, move the stop to 1.33308 (entry + 5 pips).",
-   "price": 1.33124,
-   "change": -0.00264,
+   "price": 1.33112,
+   "change": -0.00276,
    "entries": [
     {
      "time": "11:00 am",
@@ -14269,7 +14269,7 @@
      "res": null,
      "res_sized": null,
      "r": null,
-     "live": -14.9,
+     "live": -16.1,
      "spread": 1.5,
      "next": "Hold \u00b7 stop 1.32526 \u00b7 target 1.33990 \u00b7 when price reaches 1.33514, MOVE THE STOP to 1.33308 (entry + 5 pips) \u00b7 no half-close \u00b7 closes at 12:45 am Dubai"
     }
@@ -16216,10 +16216,10 @@
     ],
     [
      "12:10 am",
-     1.33124,
+     1.33112,
      1.33132,
      1.33133,
-     1.33124
+     1.33111
     ]
    ],
    "journal": {
@@ -16268,7 +16268,7 @@
        "res": null,
        "res_sized": null,
        "r": null,
-       "live": -14.9,
+       "live": -16.1,
        "spread": 1.5,
        "next": "Hold \u00b7 stop 1.32526 \u00b7 target 1.33990 \u00b7 when price reaches 1.33514, MOVE THE STOP to 1.33308 (entry + 5 pips) \u00b7 no half-close \u00b7 closes at 12:45 am Dubai"
       }
