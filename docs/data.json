@@ -1,5 +1,5 @@
 {
- "updated": "Tue 27 Oct \u00b7 11:38 am",
+ "updated": "Tue 27 Oct \u00b7 11:39 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -20,9 +20,9 @@
    "feed_error": false,
    "state": "sell",
    "message": "SELL day \u2014 up to 2 SELL trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:00 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 4004.51,
+   "price": 4004.24,
    "close_at": "12:00 am",
-   "change": -13.48,
+   "change": -13.75,
    "size": 0.1,
    "datr": 67.43,
    "open_now": 1,
@@ -858,9 +858,9 @@
     ],
     [
      "11:35 am",
-     4004.51,
+     4004.24,
      4004.77,
-     4005.31,
+     4005.34,
      4003.46
     ]
    ],
@@ -1106,8 +1106,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 52.794,
-   "change": -1.093,
+   "price": 52.792,
+   "change": -1.095,
    "entries": [],
    "spark": [
     [
@@ -1917,9 +1917,9 @@
     ],
     [
      "11:35 am",
-     52.794,
+     52.792,
      52.795,
-     52.808,
+     52.818,
      52.762
     ]
    ],
@@ -3809,8 +3809,8 @@
    "net_label": "Net $ per barrel (v1.07)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 101.198,
-   "change": 0.67,
+   "price": 101.278,
+   "change": 0.75,
    "entries": [],
    "spark": [
     [
@@ -4620,7 +4620,7 @@
     ],
     [
      "11:35 am",
-     101.2,
+     101.28,
      101.27,
      101.35,
      101.17
@@ -5276,7 +5276,7 @@
    ],
    "feed_error": false,
    "epic": "OIL_CRUDE",
-   "live_spread": 0.04,
+   "live_spread": 0.035,
    "history_note": "history to 2026-10-26 (60 days)"
   },
   "US500": {
@@ -5309,8 +5309,8 @@
    "net_label": "Net points (v1.04 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 5:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). No night trade today (not a high-fear night).",
-   "price": 7669.0,
-   "change": -7.6,
+   "price": 7668.5,
+   "change": -8.1,
    "entries": [],
    "spark": [
     [
@@ -6190,9 +6190,9 @@
     ],
     [
      "11:35 am",
-     7669.0,
+     7668.5,
      7668.7,
-     7669.5,
+     7669.7,
      7667.7
     ]
    ],
@@ -6402,8 +6402,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 29158.7,
-   "change": -137.4,
+   "price": 29157.3,
+   "change": -138.8,
    "entries": [],
    "spark": [
     [
@@ -7290,9 +7290,9 @@
     ],
     [
      "11:35 am",
-     29158.7,
+     29157.3,
      29151.8,
-     29163.2,
+     29163.9,
      29146.2
     ]
    ],
@@ -7788,8 +7788,8 @@
    "regime": 0.328,
    "gap": 0.007,
    "message": "PAPER BUY at 1.33258 (11:00 am Dubai). Stop 1.32526, target 1.33990 - close the WHOLE trade at the target; otherwise it closes at 12:45 am Dubai. CALM day: when price reaches 1.33514, move the stop to 1.33308 (entry + 5 pips).",
-   "price": 1.33247,
-   "change": -0.00141,
+   "price": 1.33239,
+   "change": -0.00149,
    "entries": [
     {
      "time": "11:00 am",
@@ -7815,7 +7815,7 @@
      "res": null,
      "res_sized": null,
      "r": null,
-     "live": -2.6,
+     "live": -3.4,
      "spread": 1.5,
      "next": "Hold \u00b7 stop 1.32526 \u00b7 target 1.33990 \u00b7 when price reaches 1.33514, MOVE THE STOP to 1.33308 (entry + 5 pips) \u00b7 no half-close \u00b7 closes at 12:45 am Dubai"
     }
@@ -8705,7 +8705,7 @@
     ],
     [
      "11:35 am",
-     1.33247,
+     1.33239,
      1.33229,
      1.33251,
      1.33228
@@ -8757,7 +8757,7 @@
        "res": null,
        "res_sized": null,
        "r": null,
-       "live": -2.6,
+       "live": -3.4,
        "spread": 1.5,
        "next": "Hold \u00b7 stop 1.32526 \u00b7 target 1.33990 \u00b7 when price reaches 1.33514, MOVE THE STOP to 1.33308 (entry + 5 pips) \u00b7 no half-close \u00b7 closes at 12:45 am Dubai"
       }
