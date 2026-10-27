@@ -1,15 +1,15 @@
 {
- "balance": 1145.0,
+ "balance": 1143.71,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-10-27",
-  "pl": -82.25,
+  "pl": -55.17,
   "start_balance": 1186.07,
   "start_equity": 1186.07,
   "stopped": false
  },
- "open_positions": 5,
- "open_risk_aed": 82.43,
+ "open_positions": 4,
+ "open_risk_aed": 53.53,
  "risk_usd": 8.168822328114365,
  "trades": {
   "GBPUSD|2026-10-26|11:00 am|BUY|Layer 2 \u00b7 small traders crowded": {
@@ -128,16 +128,17 @@
    "part_x": 0.0,
    "px_adj": 0.0,
    "rest": {
+    "closed_by": "Capital.com stop/target",
     "id": "00000000-6e79-9d09-0495-7fc60004511e",
     "level": 4008.72,
-    "open": true,
+    "open": false,
     "size": 0.23,
     "tp": null
    },
    "risk_aed": 28.9,
    "risk_usd": 8.17,
    "side": "SELL",
-   "state": "open",
+   "state": "closed",
    "stop": 4043.79
   },
   "OIL|2026-10-23|4:07 pm|BUY|Whole dollar": {
