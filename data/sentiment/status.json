@@ -1,17 +1,5 @@
 {
- "t": "2026-10-28T08:41:00+00:00",
- "ok": true,
- "markets": 6,
- "sample": [
-  [
-   "USDJPY",
-   49.6,
-   50.4
-  ],
-  [
-   "GOLD",
-   77.0,
-   23.0
-  ]
- ]
+ "t": "2026-10-28T08:42:00+00:00",
+ "ok": false,
+ "error": "HTTPError: 429 Client Error:  for url: https://demo-api-capital.backend-capital.com/api/v1/session"
 }
