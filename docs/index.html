@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>ITQAN Dashboard</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23101418'/%3E%3Cpath d='M26 40V56A24 24 0 0 0 74 56V40' fill='none' stroke='%23D6A657' stroke-width='13' stroke-linecap='square'/%3E%3Crect x='30.5' y='12' width='15' height='15' fill='%23D6A657'/%3E%3Crect x='54.5' y='12' width='15' height='15' fill='%23D6A657'/%3E%3C/svg%3E">
+<title>Trading Dashboard</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23101418'/%3E%3Cpath d='M5 55 L30 55 L38 28 L48 80 L58 38 L68 55 L95 55' fill='none' stroke='%23D6A657' stroke-width='12' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@600&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#0e1015;--panel:#151820;--raise:#1c2029;--line:#272c37;--ink:#f3f4f7;--mute:#c6ccd6;--dim:#8d95a3;
@@ -17,7 +17,7 @@ a{color:inherit;text-decoration:none}
 header{position:sticky;top:0;z-index:30;background:rgba(11,13,16,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
 .hd{max-width:1440px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:28px}
 .logo{display:flex;align-items:center;gap:9px;font:800 13px Inter;letter-spacing:2.4px;white-space:nowrap}
-.logo .qaf{width:36px;height:36px;margin:-6px -4px;color:#D6A657;flex:none}
+.logo .mark{width:44px;height:44px;margin:-7px -4px;flex:none}.logo .mark .mtrack{fill:none;stroke:#3a3420;stroke-width:7;stroke-linecap:round;stroke-linejoin:round}.logo .mark .msweep{fill:none;stroke:#D6A657;stroke-width:7;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:34 220;animation:marksweep 2.2s linear infinite}@keyframes marksweep{to{stroke-dashoffset:-254}}
 .logo b{font:600 15px Sora,Inter,sans-serif;letter-spacing:.14em;color:#F3F3F0}
 .logo span{color:#D6A657;font-weight:600;font-size:11.5px;letter-spacing:.18em}
 .anb{margin-left:auto;flex:none;width:44px;height:44px;display:grid;place-items:center;background:none;border:0;border-left:1px solid var(--line);color:#9aa0aa;cursor:pointer;padding:0 0 0 14px;box-sizing:content-box}.anb:hover{color:var(--ink)}.anb.on{color:#D6A657}
@@ -254,10 +254,10 @@ td{padding:9px 4px;border-bottom:1px solid var(--line)}td.r{text-align:right}
  .mtabs button.on{color:var(--bg);background:var(--gold)}
  .mock{padding:0 16px 90px}
 }
-@media(max-width:380px){.logo{font-size:11.5px;letter-spacing:1px;gap:6px}.logo b{font-size:13px;letter-spacing:.1em}.logo span{font-size:10px;letter-spacing:.1em}.logo .qaf{width:30px;height:30px}.clk b{font-size:15px}.hd{column-gap:8px}}
+@media(max-width:380px){.logo{font-size:11.5px;letter-spacing:1px;gap:6px}.logo b{font-size:13px;letter-spacing:.1em}.logo span{font-size:10px;letter-spacing:.1em}.logo .mark{width:36px;height:36px}.clk b{font-size:15px}.hd{column-gap:8px}}
 </style></head><body data-tab="tr">
 <header><div class="hd">
- <div class="logo"><svg class="qaf" viewBox="0 0 100 100" aria-hidden="true"><path d="M28 36V52A22 22 0 0 0 72 52V36" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="square"/><rect x="34.5" y="14" width="11" height="11" fill="currentColor"/><rect x="54.5" y="14" width="11" height="11" fill="currentColor"/></svg><b>ITQAN</b><span>DASHBOARD</span></div>
+ <div class="logo"><svg class="mark" viewBox="0 0 100 100" aria-hidden="true"><path class="mtrack" d="M5 55 L30 55 L38 28 L48 80 L58 38 L68 55 L95 55"/><path class="msweep" d="M5 55 L30 55 L38 28 L48 80 L58 38 L68 55 L95 55"/></svg><b>TRADING</b><span>DASHBOARD</span></div>
  <div class="clk"><b class="num" id="clk"></b><small id="cld"></small></div>
  <div class="mtab" id="mtab"></div>
  <button class="anb" id="anb" title="Analytics" aria-label="Analytics"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M10.5 4.2A8 8 0 1 0 19.8 13.5H10.5z"/><path d="M13.5 2.5v8h8a8 8 0 0 0-8-8z"/></svg></button>
@@ -351,7 +351,7 @@ function wins(S,now){const out=[];for(let k=-2;k<=5;k++){const [y,m,d]=ymd(S.tz,
  const o=at(S.tz,y,m-1,d,S.o);if(!out.some(w=>+w.o===+o))out.push({o,c:at(S.tz,y,m-1,d,S.c)})}return out.sort((a,b)=>a.o-b.o)}
 let fired={},sound=false;
 function beep(n){if(!sound)return;try{const a=new (window.AudioContext||window.webkitAudioContext)();for(let i=0;i<n;i++){const o=a.createOscillator(),g=a.createGain();o.frequency.value=880;o.connect(g);g.connect(a.destination);g.gain.setValueAtTime(.18,a.currentTime+i*.35);g.gain.exponentialRampToValueAtTime(.001,a.currentTime+i*.35+.25);o.start(a.currentTime+i*.35);o.stop(a.currentTime+i*.35+.3)}}catch(e){}}
-function notify(t){try{if(sound&&'Notification' in window&&Notification.permission==='granted')new Notification('ITQAN Dashboard',{body:t})}catch(e){}}
+function notify(t){try{if(sound&&'Notification' in window&&Notification.permission==='granted')new Notification('Trading Dashboard',{body:t})}catch(e){}}
 function alertTick(now){const n=G.find(g=>g.impact==='High'&&g.t>now&&g.t-now<=30*6e4);
  if(!n){nalert.className='alert';return}
  const ms=n.t-now,lvl=ms<=15*6e4?15:30,k=n.date+lvl,open=T.filter(o=>!done(o.e)&&n.mk.includes(o.m.tag)).map(o=>o.m.n);
