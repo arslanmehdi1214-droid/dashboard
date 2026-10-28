@@ -1,5 +1,5 @@
 {
- "updated": "Wed 28 Oct \u00b7 10:12 am",
+ "updated": "Wed 28 Oct \u00b7 10:13 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -13,9 +13,9 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 8:00 pm Dubai).",
-   "price": 4029.25,
+   "price": 4029.36,
    "close_at": "12:00 am",
-   "change": -32.12,
+   "change": -32.01,
    "size": 0.1,
    "datr": 65.5,
    "open_now": 0,
@@ -709,9 +709,9 @@
     ],
     [
      "10:10 am",
-     4029.25,
+     4029.36,
      4029.61,
-     4029.61,
+     4030.57,
      4028.33
     ]
    ],
@@ -957,8 +957,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 53.832,
-   "change": -0.542,
+   "price": 53.847,
+   "change": -0.527,
    "entries": [],
    "spark": [
     [
@@ -1649,9 +1649,9 @@
     ],
     [
      "10:10 am",
-     53.832,
+     53.847,
      53.848,
-     53.853,
+     53.865,
      53.817
     ]
    ],
@@ -1770,8 +1770,8 @@
    "net_label": "Net R / $ at $100 risk (v1.05 sizes)",
    "state": "buy",
    "message": "PAPER BUY day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 7:00 pm Dubai close.",
-   "price": 157.854,
-   "change_pips": -9.6,
+   "price": 157.879,
+   "change_pips": -7.1,
    "atr_pips": 83.3,
    "entries": [
     {
@@ -1799,7 +1799,7 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": -0.2,
+     "r_now": -0.16,
      "rwf": null,
      "spread": 1.0
     },
@@ -2515,9 +2515,9 @@
     ],
     [
      "10:10 am",
+     157.879,
      157.854,
-     157.854,
-     157.863,
+     157.882,
      157.853
     ]
    ],
@@ -2572,7 +2572,7 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": -0.2,
+       "r_now": -0.16,
        "rwf": null,
        "spread": 1.0
       },
@@ -3527,8 +3527,8 @@
    "net_label": "Net $ per barrel (v1.07)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 100.858,
-   "change": 1.38,
+   "price": 100.808,
+   "change": 1.33,
    "entries": [],
    "spark": [
     [
@@ -4219,10 +4219,10 @@
     ],
     [
      "10:10 am",
-     100.86,
+     100.81,
      100.81,
      100.86,
-     100.79
+     100.78
     ]
    ],
    "journal": {
@@ -4941,8 +4941,8 @@
    "net_label": "Net points (v1.04 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 5:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). No night trade today (not a high-fear night).",
-   "price": 7725.5,
-   "change": 5.1,
+   "price": 7725.1,
+   "change": 4.7,
    "entries": [],
    "spark": [
     [
@@ -5710,10 +5710,10 @@
     ],
     [
      "10:10 am",
-     7725.5,
+     7725.1,
      7725.9,
      7726.4,
-     7725.4
+     7725.1
     ]
    ],
    "journal": {
@@ -5935,8 +5935,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 29787.8,
-   "change": 157.1,
+   "price": 29786.5,
+   "change": 155.8,
    "entries": [],
    "spark": [
     [
@@ -6704,10 +6704,10 @@
     ],
     [
      "10:10 am",
-     29787.8,
+     29786.5,
      29788.6,
      29792.6,
-     29785.9
+     29785.3
     ]
    ],
    "journal": {
@@ -7239,8 +7239,8 @@
    "regime": 0.224,
    "gap": null,
    "message": "Today is a BUY day (small traders crowded). The trade opens at 11:00 am Dubai (10:00 broker). CALM market: at 10:00 the side can switch if GBP runs away from EUR overnight; stop moves to entry + 5 pips once +0.35 x stop in profit.",
-   "price": 1.32881,
-   "change": -0.00115,
+   "price": 1.32882,
+   "change": -0.00114,
    "entries": [],
    "spark": [
     [
@@ -8008,7 +8008,7 @@
     ],
     [
      "10:10 am",
-     1.32881,
+     1.32882,
      1.32901,
      1.32901,
      1.32878
