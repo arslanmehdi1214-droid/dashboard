@@ -1,14 +1,14 @@
 {
- "balance": 1178.84,
+ "balance": 1186.16,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-10-28",
-  "pl": 94.53,
+  "pl": 100.96,
   "start_balance": 1126.52,
   "start_equity": 1126.52,
   "stopped": false
  },
- "open_positions": 8,
+ "open_positions": 7,
  "open_risk_aed": 116.36,
  "risk_usd": 8.168822328114365,
  "trades": {
@@ -401,9 +401,10 @@
    "market": "USDJPY",
    "opened_at": "Wed 28 Oct 5:29 PM",
    "part": {
+    "closed_by": "Capital.com stop/target",
     "id": "00000000-6eb7-6966-0495-7fc60004511e",
     "level": 157.985,
-    "open": true,
+    "open": false,
     "size": 3100.0,
     "tp": 158.098
    },
