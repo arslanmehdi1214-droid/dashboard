@@ -1,5 +1,5 @@
 {
- "updated": "Wed 28 Oct \u00b7 4:28 am",
+ "updated": "Wed 28 Oct \u00b7 4:29 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -13,9 +13,9 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 8:00 pm Dubai).",
-   "price": 4061.37,
+   "price": 4060.67,
    "close_at": "12:00 am",
-   "change": 0.0,
+   "change": -0.7,
    "size": 0.1,
    "datr": 65.5,
    "open_now": 0,
@@ -226,10 +226,10 @@
     ],
     [
      "4:25 am",
-     4061.37,
+     4060.67,
      4066.59,
      4066.6,
-     4061.17
+     4060.11
     ]
    ],
    "history": [
@@ -474,8 +474,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 54.368,
-   "change": -0.006,
+   "price": 54.35,
+   "change": -0.024,
    "entries": [],
    "spark": [
     [
@@ -683,10 +683,10 @@
     ],
     [
      "4:25 am",
-     54.368,
+     54.35,
      54.437,
      54.437,
-     54.361
+     54.335
     ]
    ],
    "journal": {
@@ -804,8 +804,8 @@
    "net_label": "Net R / $ at $100 risk (v1.05 sizes)",
    "state": "buy",
    "message": "PAPER BUY day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 7:00 pm Dubai close.",
-   "price": 157.895,
-   "change_pips": -5.5,
+   "price": 157.896,
+   "change_pips": -5.4,
    "atr_pips": 83.3,
    "entries": [
     {
@@ -833,7 +833,7 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": -0.1344,
+     "r_now": -0.1328,
      "rwf": null,
      "spread": 1.0
     }
@@ -1037,7 +1037,7 @@
     ],
     [
      "4:25 am",
-     157.895,
+     157.896,
      157.857,
      157.909,
      157.856
@@ -1094,7 +1094,7 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": -0.1344,
+       "r_now": -0.1328,
        "rwf": null,
        "spread": 1.0
       }
@@ -2020,8 +2020,8 @@
    "net_label": "Net $ per barrel (v1.07)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 100.043,
-   "change": 0.57,
+   "price": 100.053,
+   "change": 0.58,
    "entries": [],
    "spark": [
     [
@@ -2229,9 +2229,9 @@
     ],
     [
      "4:25 am",
-     100.04,
+     100.05,
      99.79,
-     100.04,
+     100.07,
      99.79
     ]
    ],
@@ -2951,8 +2951,8 @@
    "net_label": "Net points (v1.04 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 5:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). No night trade today (not a high-fear night).",
-   "price": 7722.4,
-   "change": 2.0,
+   "price": 7721.4,
+   "change": 1.0,
    "entries": [],
    "spark": [
     [
@@ -3237,10 +3237,10 @@
     ],
     [
      "4:25 am",
-     7722.4,
+     7721.4,
      7724.1,
      7724.4,
-     7722.4
+     7721.1
     ]
    ],
    "journal": {
@@ -3462,8 +3462,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 29663.0,
-   "change": 32.3,
+   "price": 29656.9,
+   "change": 26.2,
    "entries": [],
    "spark": [
     [
@@ -3748,10 +3748,10 @@
     ],
     [
      "4:25 am",
-     29663.0,
+     29656.9,
      29682.4,
      29683.0,
-     29659.8
+     29653.6
     ]
    ],
    "journal": {
@@ -4283,8 +4283,8 @@
    "regime": 0.224,
    "gap": null,
    "message": "Today is a BUY day (small traders crowded). The trade opens at 11:00 am Dubai (10:00 broker). CALM market: at 10:00 the side can switch if GBP runs away from EUR overnight; stop moves to entry + 5 pips once +0.35 x stop in profit.",
-   "price": 1.33073,
-   "change": 0.00077,
+   "price": 1.33077,
+   "change": 0.00081,
    "entries": [],
    "spark": [
     [
@@ -4569,10 +4569,10 @@
     ],
     [
      "4:25 am",
-     1.33073,
+     1.33077,
      1.33099,
      1.331,
-     1.33072
+     1.33071
     ]
    ],
    "journal": {
