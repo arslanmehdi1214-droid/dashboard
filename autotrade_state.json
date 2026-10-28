@@ -1,14 +1,14 @@
 {
- "balance": 1123.97,
+ "balance": 1121.64,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-10-28",
-  "pl": -5.5,
+  "pl": -10.16,
   "start_balance": 1126.52,
   "start_equity": 1126.52,
   "stopped": false
  },
- "open_positions": 4,
+ "open_positions": 3,
  "open_risk_aed": 57.54,
  "risk_usd": 8.168822328114365,
  "trades": {
@@ -148,16 +148,17 @@
    "part_x": 0.25,
    "px_adj": 0.0,
    "rest": {
+    "closed_by": "Capital.com stop/target",
     "id": "00000000-6eb5-016d-0495-7fc60004511e",
     "level": 101.203,
-    "open": true,
+    "open": false,
     "size": 1.0,
     "tp": null
    },
    "risk_aed": 13.99,
    "risk_usd": 2.72,
    "side": "BUY",
-   "state": "open",
+   "state": "closed",
    "stop": 101.21
   },
   "US100|2026-10-26|2:18 pm|BUY|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am": {
