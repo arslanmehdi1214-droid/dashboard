@@ -1,5 +1,5 @@
 {
- "updated": "Wed 28 Oct \u00b7 4:08 am",
+ "updated": "Wed 28 Oct \u00b7 4:09 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -13,9 +13,9 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 8:00 pm Dubai).",
-   "price": 4065.62,
+   "price": 4067.5,
    "close_at": "12:00 am",
-   "change": 4.25,
+   "change": 6.13,
    "size": 0.1,
    "datr": 65.5,
    "open_now": 0,
@@ -198,9 +198,9 @@
     ],
     [
      "4:05 am",
-     4065.62,
+     4067.5,
      4065.11,
-     4065.84,
+     4068.07,
      4064.51
     ]
    ],
@@ -446,8 +446,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 54.435,
-   "change": 0.061,
+   "price": 54.464,
+   "change": 0.09,
    "entries": [],
    "spark": [
     [
@@ -627,9 +627,9 @@
     ],
     [
      "4:05 am",
+     54.464,
      54.435,
-     54.435,
-     54.442,
+     54.467,
      54.416
     ]
    ],
@@ -748,8 +748,8 @@
    "net_label": "Net R / $ at $100 risk (v1.05 sizes)",
    "state": "buy",
    "message": "PAPER BUY day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 7:00 pm Dubai close.",
-   "price": 157.858,
-   "change_pips": -9.2,
+   "price": 157.846,
+   "change_pips": -10.4,
    "atr_pips": 83.3,
    "entries": [
     {
@@ -777,7 +777,7 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": -0.1936,
+     "r_now": -0.2128,
      "rwf": null,
      "spread": 1.0
     }
@@ -953,10 +953,10 @@
     ],
     [
      "4:05 am",
-     157.858,
+     157.846,
      157.885,
      157.914,
-     157.856
+     157.843
     ]
    ],
    "journal": {
@@ -1010,7 +1010,7 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": -0.1936,
+       "r_now": -0.2128,
        "rwf": null,
        "spread": 1.0
       }
@@ -1936,8 +1936,8 @@
    "net_label": "Net $ per barrel (v1.07)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 99.693,
-   "change": 0.22,
+   "price": 99.748,
+   "change": 0.27,
    "entries": [],
    "spark": [
     [
@@ -2117,9 +2117,9 @@
     ],
     [
      "4:05 am",
-     99.69,
+     99.75,
      99.59,
-     99.74,
+     99.79,
      99.58
     ]
    ],
@@ -2839,8 +2839,8 @@
    "net_label": "Net points (v1.04 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 5:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). No night trade today (not a high-fear night).",
-   "price": 7722.6,
-   "change": 2.2,
+   "price": 7722.9,
+   "change": 2.5,
    "entries": [],
    "spark": [
     [
@@ -3097,7 +3097,7 @@
     ],
     [
      "4:05 am",
-     7722.6,
+     7722.9,
      7724.6,
      7724.6,
      7721.1
@@ -3322,8 +3322,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 29656.5,
-   "change": 25.8,
+   "price": 29658.8,
+   "change": 28.1,
    "entries": [],
    "spark": [
     [
@@ -3580,7 +3580,7 @@
     ],
     [
      "4:05 am",
-     29656.5,
+     29658.8,
      29672.3,
      29674.6,
      29645.9
@@ -4115,8 +4115,8 @@
    "regime": 0.224,
    "gap": null,
    "message": "Today is a BUY day (small traders crowded). The trade opens at 11:00 am Dubai (10:00 broker). CALM market: at 10:00 the side can switch if GBP runs away from EUR overnight; stop moves to entry + 5 pips once +0.35 x stop in profit.",
-   "price": 1.33102,
-   "change": 0.00106,
+   "price": 1.33103,
+   "change": 0.00107,
    "entries": [],
    "spark": [
     [
@@ -4373,9 +4373,9 @@
     ],
     [
      "4:05 am",
-     1.33102,
-     1.33087,
      1.33103,
+     1.33087,
+     1.33108,
      1.33084
     ]
    ],
