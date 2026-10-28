@@ -355,8 +355,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 53.847,
-   "change": -0.151,
+   "price": 53.856,
+   "change": -0.142,
    "entries": [],
    "spark": [
     [
@@ -445,7 +445,7 @@
     ],
     [
      "3:00 am",
-     53.847,
+     53.856,
      53.801,
      53.863,
      53.775
@@ -574,8 +574,8 @@
    "net_label": "Net R / $ at $100 risk (v1.05 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 157.745,
-   "change_pips": -12.6,
+   "price": 157.753,
+   "change_pips": -11.8,
    "atr_pips": 82.2,
    "entries": [],
    "spark": [
@@ -658,7 +658,7 @@
     ],
     [
      "3:00 am",
-     157.745,
+     157.753,
      157.793,
      157.793,
      157.737
@@ -2582,8 +2582,8 @@
    "net_label": "Net points (v1.04 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 5:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). No night trade today (not a high-fear night).",
-   "price": 7717.8,
-   "change": -7.4,
+   "price": 7721.3,
+   "change": -3.9,
    "entries": [],
    "spark": [
     [
@@ -2749,9 +2749,9 @@
     ],
     [
      "3:00 am",
-     7717.8,
+     7721.3,
      7717.7,
-     7718.6,
+     7721.4,
      7714.2
     ]
    ],
@@ -2771,7 +2771,9 @@
    },
    "jdays": [
     {
-     "picks_seen": {},
+     "picks_seen": {
+      "2026-10-29 02:04:00|1": "2026-10-29 02:05:09.240917"
+     },
      "legs_frozen": [],
      "stress": false,
      "date": "2026-10-29",
@@ -3017,15 +3019,44 @@
     "pf": 1.1,
     "months": 3
    },
-   "day_note": "14-day range \u2014 \u00b7 stop: buys 0.4 x range, sells \u00bc range \u00b7 sells \u2153 size \u00b7 at +0.5 x risk close 25% (buys) / 15% (sells), stop to entry, then trail the rest 0.45 x range behind its best price \u00b7 no new trades from 10:00 pm broker (Fri 8:00 pm) \u00b7 day lock +3R/+1.5R \u00b7 max 2 trades a day \u00b7 close 11:00 pm broker (Fri 10:50 pm) = 12:00 am Dubai, 1:00 am in winter",
+   "day_note": "14-day range 569 pts \u00b7 stop: buys 0.4 x range, sells \u00bc range \u00b7 sells \u2153 size \u00b7 at +0.5 x risk close 25% (buys) / 15% (sells), stop to entry, then trail the rest 0.45 x range (= 256 pts) behind its best price \u00b7 no new trades from 10:00 pm broker (Fri 8:00 pm) \u00b7 day lock +3R/+1.5R \u00b7 max 2 trades a day \u00b7 close 11:00 pm broker (Fri 10:50 pm) = 12:00 am Dubai, 1:00 am in winter",
    "what_note": "Tracks whether live Nasdaq signals do as well as the v1.02 backtest. Decision after about 3 months.",
    "cost_note": "Results are index points for the whole trade at its v1.02 size (sells \u2153, the 25% / 15% part included), after a fixed 1.8-point spread (as in the MT4 test; entry, stop and part levels use it too). Capital.com's live spread is shown for reference only.",
    "net_label": "Net points (v1.02 rules)",
-   "state": "waiting",
-   "message": "Waiting for the first signal.",
-   "price": 29512.0,
-   "change": -82.0,
-   "entries": [],
+   "state": "buy",
+   "message": "1 paper trade today (1 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 12:00 am Dubai close. At most 2 trades a day.",
+   "price": 29541.0,
+   "change": -53.0,
+   "entries": [
+    {
+     "time": "3:04 am",
+     "side": "BUY",
+     "name": "F2 sweep prev-day hi/lo by 0.1ATR from 1am back inside <30min -> reverse",
+     "role": "filler",
+     "price": 29541.0,
+     "entry": 29542.8,
+     "stop": 29313.4,
+     "stop0": 29313.4,
+     "stop_pts": 227.6,
+     "half_px": 29657.5,
+     "half": false,
+     "half_time": null,
+     "size": "full",
+     "status": "open",
+     "part": 0.25,
+     "trail_pts": 256.0,
+     "exit": null,
+     "exit_time": null,
+     "res": null,
+     "res_sized": null,
+     "r": null,
+     "r_sized": null,
+     "live": -1.8,
+     "rwf": null,
+     "spread": 1.8,
+     "spread_live": 1.8
+    }
+   ],
    "spark": [
     [
      "1:05 am",
@@ -3190,20 +3221,20 @@
     ],
     [
      "3:00 am",
-     29512.0,
+     29541.0,
      29501.0,
-     29517.2,
+     29541.0,
      29484.7
     ]
    ],
    "journal": {
     "since": "19 Oct 2026",
     "weekdays": 9,
-    "trades": 9,
+    "trades": 10,
     "decided": 9,
     "direction": 66.7,
-    "days": 88.9,
-    "perday": 1.0,
+    "days": 100.0,
+    "perday": 1.11,
     "closed": 9,
     "win": 77.8,
     "pf": 5.24,
@@ -3216,8 +3247,37 @@
      "date": "2026-10-29",
      "rules": "v1.02",
      "label": "Thu 29 Oct",
-     "side": null,
-     "trades": [],
+     "side": "BUY",
+     "trades": [
+      {
+       "time": "3:04 am",
+       "side": "BUY",
+       "name": "F2 sweep prev-day hi/lo by 0.1ATR from 1am back inside <30min -> reverse",
+       "role": "filler",
+       "price": 29541.0,
+       "entry": 29542.8,
+       "stop": 29313.4,
+       "stop0": 29313.4,
+       "stop_pts": 227.6,
+       "half_px": 29657.5,
+       "half": false,
+       "half_time": null,
+       "size": "full",
+       "status": "open",
+       "part": 0.25,
+       "trail_pts": 256.0,
+       "exit": null,
+       "exit_time": null,
+       "res": null,
+       "res_sized": null,
+       "r": null,
+       "r_sized": null,
+       "live": -1.8,
+       "rwf": null,
+       "spread": 1.8,
+       "spread_live": 1.8
+      }
+     ],
      "final": false
     },
     {
@@ -3762,8 +3822,8 @@
    "regime": 0.228,
    "gap": null,
    "message": "Today is a BUY day (small traders crowded). The trade opens at 11:00 am Dubai (10:00 broker). CALM market: at 10:00 the side can switch if GBP runs away from EUR overnight; stop moves to entry + 5 pips once +0.35 x stop in profit.",
-   "price": 1.33226,
-   "change": 0.00048,
+   "price": 1.33235,
+   "change": 0.00057,
    "entries": [],
    "spark": [
     [
@@ -3929,9 +3989,9 @@
     ],
     [
      "3:00 am",
-     1.33226,
+     1.33235,
      1.33205,
-     1.33236,
+     1.33237,
      1.33205
     ]
    ],
