@@ -1,5 +1,5 @@
 {
- "updated": "Wed 28 Oct \u00b7 5:17 am",
+ "updated": "Wed 28 Oct \u00b7 5:18 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -13,9 +13,9 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 8:00 pm Dubai).",
-   "price": 4058.3,
+   "price": 4058.52,
    "close_at": "12:00 am",
-   "change": -3.07,
+   "change": -2.85,
    "size": 0.1,
    "datr": 65.5,
    "open_now": 0,
@@ -296,7 +296,7 @@
     ],
     [
      "5:15 am",
-     4058.3,
+     4058.52,
      4058.27,
      4060.14,
      4057.01
@@ -544,8 +544,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 54.246,
-   "change": -0.128,
+   "price": 54.224,
+   "change": -0.15,
    "entries": [],
    "spark": [
     [
@@ -823,7 +823,7 @@
     ],
     [
      "5:15 am",
-     54.246,
+     54.224,
      54.232,
      54.277,
      54.215
@@ -944,8 +944,8 @@
    "net_label": "Net R / $ at $100 risk (v1.05 sizes)",
    "state": "buy",
    "message": "PAPER BUY day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 7:00 pm Dubai close.",
-   "price": 157.914,
-   "change_pips": -3.6,
+   "price": 157.916,
+   "change_pips": -3.4,
    "atr_pips": 83.3,
    "entries": [
     {
@@ -973,7 +973,7 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": -0.104,
+     "r_now": -0.1008,
      "rwf": null,
      "spread": 1.0
     }
@@ -1247,10 +1247,10 @@
     ],
     [
      "5:15 am",
-     157.914,
+     157.916,
      157.91,
      157.927,
-     157.908
+     157.897
     ]
    ],
    "journal": {
@@ -1304,7 +1304,7 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": -0.104,
+       "r_now": -0.1008,
        "rwf": null,
        "spread": 1.0
       }
@@ -2230,8 +2230,8 @@
    "net_label": "Net $ per barrel (v1.07)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 100.338,
-   "change": 0.86,
+   "price": 100.378,
+   "change": 0.9,
    "entries": [],
    "spark": [
     [
@@ -2509,7 +2509,7 @@
     ],
     [
      "5:15 am",
-     100.34,
+     100.38,
      100.34,
      100.39,
      100.27
@@ -3231,8 +3231,8 @@
    "net_label": "Net points (v1.04 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 5:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). No night trade today (not a high-fear night).",
-   "price": 7723.6,
-   "change": 3.2,
+   "price": 7723.4,
+   "change": 3.0,
    "entries": [],
    "spark": [
     [
@@ -3587,9 +3587,9 @@
     ],
     [
      "5:15 am",
-     7723.6,
+     7723.4,
      7721.7,
-     7724.1,
+     7724.4,
      7721.4
     ]
    ],
@@ -3812,8 +3812,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 29685.8,
-   "change": 55.1,
+   "price": 29684.0,
+   "change": 53.3,
    "entries": [],
    "spark": [
     [
@@ -4168,9 +4168,9 @@
     ],
     [
      "5:15 am",
-     29685.8,
+     29684.0,
      29667.3,
-     29688.6,
+     29692.0,
      29667.3
     ]
    ],
@@ -4703,8 +4703,8 @@
    "regime": 0.224,
    "gap": null,
    "message": "Today is a BUY day (small traders crowded). The trade opens at 11:00 am Dubai (10:00 broker). CALM market: at 10:00 the side can switch if GBP runs away from EUR overnight; stop moves to entry + 5 pips once +0.35 x stop in profit.",
-   "price": 1.33007,
-   "change": 0.00011,
+   "price": 1.33011,
+   "change": 0.00015,
    "entries": [],
    "spark": [
     [
@@ -5059,9 +5059,9 @@
     ],
     [
      "5:15 am",
-     1.33007,
+     1.33011,
      1.32998,
-     1.33009,
+     1.33012,
      1.32983
     ]
    ],
