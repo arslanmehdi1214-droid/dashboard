@@ -1,14 +1,14 @@
 {
- "balance": 1205.73,
+ "balance": 1212.83,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-10-28",
-  "pl": 140.1,
+  "pl": 154.3,
   "start_balance": 1126.52,
   "start_equity": 1126.52,
   "stopped": false
  },
- "open_positions": 7,
+ "open_positions": 4,
  "open_risk_aed": 86.38,
  "risk_usd": 8.168822328114365,
  "trades": {
@@ -357,16 +357,17 @@
    "part_x": 0.5,
    "px_adj": 0.0,
    "rest": {
+    "closed_by": "desk: close_now",
     "id": "00000000-6eb2-fcdc-0495-7fc60004511e",
     "level": 157.983,
-    "open": true,
+    "open": false,
     "size": 1000.0,
     "tp": null
    },
    "risk_aed": 29.06,
    "risk_usd": 8.17,
    "side": "BUY",
-   "state": "open",
+   "state": "closed",
    "stop": 157.979
   },
   "USDJPY|2026-10-28|4:50 pm|BUY|Squeeze 4pm": {
@@ -384,16 +385,17 @@
    "part_x": 0.5,
    "px_adj": 0.0,
    "rest": {
+    "closed_by": "desk: close_now",
     "id": "00000000-6eb7-2a22-0495-7fc60004511e",
     "level": 157.952,
-    "open": true,
+    "open": false,
     "size": 3100.0,
     "tp": null
    },
    "risk_aed": 29.99,
    "risk_usd": 8.17,
    "side": "BUY",
-   "state": "open",
+   "state": "closed",
    "stop": 157.951
   },
   "USDJPY|2026-10-28|5:28 pm|BUY|Hourly squeeze 3pm": {
@@ -411,16 +413,17 @@
    "part_x": 0.5,
    "px_adj": 0.0,
    "rest": {
+    "closed_by": "desk: close_now",
     "id": "00000000-6eb7-6975-0495-7fc60004511e",
     "level": 157.985,
-    "open": true,
+    "open": false,
     "size": 3100.0,
     "tp": null
    },
    "risk_aed": 29.98,
    "risk_usd": 8.17,
    "side": "BUY",
-   "state": "open",
+   "state": "closed",
    "stop": 157.989
   },
   "USDJPY|2026-10-28|7:00 am|BUY|Heikin-Ashi 7am": {
