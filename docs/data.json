@@ -1,5 +1,5 @@
 {
- "updated": "Wed 28 Oct \u00b7 6:02 am",
+ "updated": "Wed 28 Oct \u00b7 6:03 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -13,9 +13,9 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 8:00 pm Dubai).",
-   "price": 4047.82,
+   "price": 4047.55,
    "close_at": "12:00 am",
-   "change": -13.55,
+   "change": -13.82,
    "size": 0.1,
    "datr": 65.5,
    "open_now": 0,
@@ -359,10 +359,10 @@
     ],
     [
      "6:00 am",
-     4047.82,
+     4047.55,
      4048.67,
      4049.19,
-     4047.78
+     4046.76
     ]
    ],
    "history": [
@@ -607,8 +607,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 54.104,
-   "change": -0.27,
+   "price": 54.059,
+   "change": -0.315,
    "entries": [],
    "spark": [
     [
@@ -949,10 +949,10 @@
     ],
     [
      "6:00 am",
-     54.104,
+     54.059,
      54.115,
      54.127,
-     54.091
+     54.032
     ]
    ],
    "journal": {
@@ -1070,8 +1070,8 @@
    "net_label": "Net R / $ at $100 risk (v1.05 sizes)",
    "state": "buy",
    "message": "PAPER BUY day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 7:00 pm Dubai close.",
-   "price": 157.94,
-   "change_pips": -1.0,
+   "price": 157.928,
+   "change_pips": -2.2,
    "atr_pips": 83.3,
    "entries": [
     {
@@ -1099,7 +1099,7 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": -0.0624,
+     "r_now": -0.0816,
      "rwf": null,
      "spread": 1.0
     }
@@ -1436,10 +1436,10 @@
     ],
     [
      "6:00 am",
-     157.94,
+     157.928,
      157.95,
      157.956,
-     157.936
+     157.917
     ]
    ],
    "journal": {
@@ -1493,7 +1493,7 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": -0.0624,
+       "r_now": -0.0816,
        "rwf": null,
        "spread": 1.0
       }
@@ -2419,8 +2419,8 @@
    "net_label": "Net $ per barrel (v1.07)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 100.593,
-   "change": 1.12,
+   "price": 100.623,
+   "change": 1.15,
    "entries": [],
    "spark": [
     [
@@ -2761,9 +2761,9 @@
     ],
     [
      "6:00 am",
-     100.59,
+     100.62,
      100.6,
-     100.64,
+     100.65,
      100.53
     ]
    ],
@@ -3483,8 +3483,8 @@
    "net_label": "Net points (v1.04 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 5:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). No night trade today (not a high-fear night).",
-   "price": 7719.9,
-   "change": -0.5,
+   "price": 7719.6,
+   "change": -0.8,
    "entries": [],
    "spark": [
     [
@@ -3902,7 +3902,7 @@
     ],
     [
      "6:00 am",
-     7719.9,
+     7719.6,
      7719.9,
      7720.9,
      7719.1
@@ -4127,8 +4127,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 29713.5,
-   "change": 82.8,
+   "price": 29714.9,
+   "change": 84.2,
    "entries": [],
    "spark": [
     [
@@ -4546,7 +4546,7 @@
     ],
     [
      "6:00 am",
-     29713.5,
+     29714.9,
      29711.1,
      29720.6,
      29705.8
@@ -5081,8 +5081,8 @@
    "regime": 0.224,
    "gap": null,
    "message": "Today is a BUY day (small traders crowded). The trade opens at 11:00 am Dubai (10:00 broker). CALM market: at 10:00 the side can switch if GBP runs away from EUR overnight; stop moves to entry + 5 pips once +0.35 x stop in profit.",
-   "price": 1.33007,
-   "change": 0.00011,
+   "price": 1.33014,
+   "change": 0.00018,
    "entries": [],
    "spark": [
     [
@@ -5500,9 +5500,9 @@
     ],
     [
      "6:00 am",
-     1.33007,
+     1.33014,
      1.33008,
-     1.33013,
+     1.33016,
      1.33003
     ]
    ],
