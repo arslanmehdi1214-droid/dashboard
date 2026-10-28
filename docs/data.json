@@ -1,5 +1,5 @@
 {
- "updated": "Thu 29 Oct \u00b7 3:38 am",
+ "updated": "Thu 29 Oct \u00b7 3:39 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -13,9 +13,9 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 8:00 pm Dubai).",
-   "price": 4053.57,
+   "price": 4053.12,
    "close_at": "12:00 am",
-   "change": -14.76,
+   "change": -15.21,
    "size": 0.1,
    "datr": 66.6,
    "open_now": 0,
@@ -156,7 +156,7 @@
     ],
     [
      "3:35 am",
-     4053.57,
+     4053.12,
      4051.91,
      4055.25,
      4051.91
@@ -404,8 +404,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 53.806,
-   "change": -0.192,
+   "price": 53.794,
+   "change": -0.204,
    "entries": [],
    "spark": [
     [
@@ -543,10 +543,10 @@
     ],
     [
      "3:35 am",
-     53.806,
+     53.794,
      53.826,
      53.844,
-     53.793
+     53.788
     ]
    ],
    "journal": {
@@ -672,8 +672,8 @@
    "net_label": "Net R / $ at $100 risk (v1.05 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 157.699,
-   "change_pips": -17.2,
+   "price": 157.705,
+   "change_pips": -16.6,
    "atr_pips": 82.2,
    "entries": [],
    "spark": [
@@ -805,7 +805,7 @@
     ],
     [
      "3:35 am",
-     157.699,
+     157.705,
      157.717,
      157.718,
      157.695
@@ -1884,8 +1884,8 @@
    "net_label": "Net $ per barrel (v1.07)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 101.168,
-   "change": -0.09,
+   "price": 101.148,
+   "change": -0.11,
    "entries": [],
    "spark": [
     [
@@ -2023,7 +2023,7 @@
     ],
     [
      "3:35 am",
-     101.17,
+     101.15,
      101.15,
      101.17,
      101.12
@@ -2778,8 +2778,8 @@
    "net_label": "Net points (v1.04 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 5:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). No night trade today (not a high-fear night).",
-   "price": 7712.4,
-   "change": -12.8,
+   "price": 7709.4,
+   "change": -15.8,
    "entries": [],
    "spark": [
     [
@@ -2994,10 +2994,10 @@
     ],
     [
      "3:35 am",
-     7712.4,
+     7709.4,
      7715.4,
      7715.4,
-     7711.9
+     7708.9
     ]
    ],
    "journal": {
@@ -3270,8 +3270,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "buy",
    "message": "1 paper trade today (1 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 12:00 am Dubai close. At most 2 trades a day.",
-   "price": 29475.1,
-   "change": -118.9,
+   "price": 29467.7,
+   "change": -126.3,
    "entries": [
     {
      "time": "3:04 am",
@@ -3296,7 +3296,7 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": -67.7,
+     "live": -75.1,
      "rwf": null,
      "spread": 1.8,
      "spread_live": 1.8
@@ -3515,10 +3515,10 @@
     ],
     [
      "3:35 am",
-     29475.1,
+     29467.7,
      29500.2,
      29501.8,
-     29473.1
+     29459.8
     ]
    ],
    "journal": {
@@ -3566,7 +3566,7 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": -67.7,
+       "live": -75.1,
        "rwf": null,
        "spread": 1.8,
        "spread_live": 1.8
@@ -4116,8 +4116,8 @@
    "regime": 0.228,
    "gap": null,
    "message": "Today is a BUY day (small traders crowded). The trade opens at 11:00 am Dubai (10:00 broker). CALM market: at 10:00 the side can switch if GBP runs away from EUR overnight; stop moves to entry + 5 pips once +0.35 x stop in profit.",
-   "price": 1.33294,
-   "change": 0.00116,
+   "price": 1.33287,
+   "change": 0.00109,
    "entries": [],
    "spark": [
     [
@@ -4332,7 +4332,7 @@
     ],
     [
      "3:35 am",
-     1.33294,
+     1.33287,
      1.33285,
      1.33297,
      1.33284
