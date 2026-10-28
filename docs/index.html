@@ -596,14 +596,21 @@ function renderHist(){const m=hmk();if(!m){HC=null;if(SEL==='ALL'){renderRep(nul
  histbox.innerHTML=h;bindHist()}
 /* ---- ALL MARKETS REPORTS (25 Oct, his ask: "exactly like Capital.com analytics"): Transactions / Trades / Analytics tabs, period pills
    24H 7D 30D 90D YTD All Custom. Source = every market's desk journal (each trade at 0.01 lot after the spread, same values as each market tab).
-   His rule: win = HIT TARGET (own part/target level reached); closed in profit is shown separately. */
+   His rule: win = HIT TARGET (FULL target only, part>=100%, status 'target'); a part-profit level reached is tracked
+   separately (phas/phit) and never counted as a target hit (fixed 28 Oct - oil's 25%-then-entry exits no longer show as target hits);
+   closed in profit is shown separately. */
 let HSHOW=false,HOLD=false,HP='30d',HR='transactions',HCF='',HCT='',HTOP='profit',HMS='most',HAM=false;
 const RHOUR=60;
 function rDT(date,tm){if(!tm)return null;const mm=mins(tm);if(mm==null)return null;const d=new Date(date+'T00:00:00Z');if(mm<RHOUR)d.setUTCDate(d.getUTCDate()+1);d.setUTCMinutes(mm);return d}   /* Dubai wall time as a UTC-coded date */
 function rNow(){const n=new Date(new Date().toLocaleString('en-US',{timeZone:'Asia/Dubai'}));return new Date(Date.UTC(n.getFullYear(),n.getMonth(),n.getDate(),n.getHours(),n.getMinutes()))}
 function rAll(only){const out=[];HMK.filter(m=>!only||m.c===only.c).forEach(m=>{const J=HJ[m.c];if(!J||!J.days)return;J.days.forEach(d=>(d.trades||[]).forEach(t=>{const u=tU(m,t);if(u==null||t.status==='open'||t.status==='late')return;
-  const op=rDT(d.date,t.time),cl=rDT(d.date,t.exit_time)||op;const has=t.half_px!=null;
-  out.push({m,t,d:d.date,op,cl,aed:u*AED,has,hit:has&&!!t.half,hold:op&&cl?Math.max(0,(cl-op)/6e4):null})}))});return out}
+  const op=rDT(d.date,t.time),cl=rDT(d.date,t.exit_time)||op;
+  /* 28 Oct fix: a FULL target (whole trade closes at one level, part>=100%) is the only thing counted as "target hit" -
+     it is hit only when the trade's own status is literally 'target'. A PART-profit level (part<100%, e.g. oil's 25% bank
+     then stop-to-entry) is tracked separately as phas/phit and never counted toward the target win rate. */
+  const effp=t.part??0.5,full=t.half_px!=null&&effp>=0.999,partSch=t.half_px!=null&&effp<0.999;
+  const has=full,hit=full&&t.status==='target',phas=partSch,phit=partSch&&!!t.half;
+  out.push({m,t,d:d.date,op,cl,aed:u*AED,has,hit,phas,phit,hold:op&&cl?Math.max(0,(cl-op)/6e4):null})}))});return out}
 function rRange(){const n=rNow(),day=864e5;let a=null,b=null;
  if(HP==='24h')a=new Date(n-day);else if(HP==='7d')a=new Date(n-7*day);else if(HP==='30d')a=new Date(n-30*day);else if(HP==='90d')a=new Date(n-90*day);
  else if(HP==='ytd')a=new Date(Date.UTC(n.getUTCFullYear(),0,1));else if(HP==='custom'){if(HCF)a=new Date(HCF+'T00:00:00Z');if(HCT)b=new Date(HCT+'T23:59:59Z')}
@@ -624,7 +631,7 @@ function renderAllHist(one){
   <select class="rp-sel" data-rpsel>${pills.map(([k,v])=>`<option value="${k}" ${HP===k?'selected':''}>${v}</option>`).join('')}</select><button class="rp-x" data-rclose>Close</button></div>`;
  if(HP==='custom')h+=`<div class="rp-cust">From <input type="date" id="rpf" value="${HCF}"> to <input type="date" id="rpt" value="${HCT}"> <button data-rapply>Apply</button></div>`;
  if(RT==='analytics')h+=rAnalytics(R,one);else if(RT==='transactions')h+=rTrans(R);else h+=rTrades(R);
- h+=`<div class="hnote">${one?one.n+' only · source: '+one.n+' desk journal (paper trades),':'All desk markets together · source: each market\'s own desk journal (paper trades),'} each trade at 0.01 lot after the spread, in AED. Win rate here = HIT TARGET (the trade reached its own target / part-profit level); closed in profit is shown separately. Times = Dubai.</div>`;
+ h+=`<div class="hnote">${one?one.n+' only · source: '+one.n+' desk journal (paper trades),':'All desk markets together · source: each market\'s own desk journal (paper trades),'} each trade at 0.01 lot after the spread, in AED. Win rate here = FULL TARGET reached (whole trade closes at one level); a part-profit level (part banked, rest to entry/day-end) is tracked separately, never counted as a target; closed in profit is shown separately. Times = Dubai.</div>`;
  histbox.innerHTML=h;
  histbox.querySelectorAll('[data-rt]').forEach(x=>x.onclick=()=>{HR=x.dataset.rt;HAM=false;renderHist()});
  histbox.querySelectorAll('[data-rpsel]').forEach(x=>x.onchange=()=>{HP=x.value;HAM=false;renderHist()});
@@ -637,6 +644,7 @@ function rAnalytics(R,one){
  if(!R.length)return '<div class="dim" style="padding:14px 0">No closed trades in this period</div>';
  const n=R.length,pl=R.reduce((s,r)=>s+r.aed,0),win=R.filter(r=>r.aed>0),los=R.filter(r=>r.aed<0),gw=win.reduce((s,r)=>s+r.aed,0),gl=-los.reduce((s,r)=>s+r.aed,0);
  const tg=R.filter(r=>r.has),th=tg.filter(r=>r.hit),hr=tg.length?th.length/tg.length:null,cp=win.length/n,pf=gl>0?gw/gl:null;
+ const pg=R.filter(r=>r.phas),ph=pg.filter(r=>r.phit);
  const sh=R.filter(r=>r.t.side==='SELL').length,lg=n-sh,C=2*Math.PI*52,arc=hr==null?0:hr*C;
  const av=a=>{const v=a.map(r=>r.hold).filter(x=>x!=null);return v.length?v.reduce((s,x)=>s+x,0)/v.length:null};
  const top=R.slice().sort((x,y)=>HTOP==='loss'?x.aed-y.aed:y.aed-x.aed).slice(0,10);
@@ -645,7 +653,7 @@ function rAnalytics(R,one){
  return `<div class="rp-grid">
  <div class="rp-card rp-ov"><h4>Overview</h4><div class="rp-ovg">
   <div><div class="rp-lab">Win rate · hit target</div><svg viewBox="0 0 120 120" class="rp-donut"><circle cx="60" cy="60" r="52" class="bg"/><circle cx="60" cy="60" r="52" class="fg" stroke-dasharray="${arc} ${C}" transform="rotate(-90 60 60)"/><text x="60" y="66">${hr==null?'—':(hr*100).toFixed(1)+'%'}</text></svg>
-   <div class="rp-sm">${th.length} of ${tg.length} trades with a target</div></div>
+   <div class="rp-sm">${th.length} of ${tg.length} trades with a target</div>${pg.length?`<div class="rp-sm dim">part-profit only (not a target): ${ph.length} of ${pg.length}</div>`:''}</div>
   <div><div class="rp-lab">Profit and loss</div><div class="rp-big ${pl>=0?'pos':'neg'}">${pl>=0?'+':'−'}AED${f(Math.abs(pl),2)}</div>
    <div class="rp-lab" style="margin-top:14px">Total trades</div><div class="rp-big">${n}</div>
    <div class="rp-lab" style="margin-top:14px">Closed in profit</div><div class="rp-mid">${(cp*100).toFixed(1)}% <span class="dim">(${win.length} of ${n})</span></div></div>
@@ -662,7 +670,7 @@ function rTrans(R){
  if(!R.length)return '<div class="dim" style="padding:14px 0">No closed trades in this period</div>';
  let bal=0;const rows=R.map(r=>{bal+=r.aed;return {...r,bal}}).reverse(),show=HAM?rows:rows.slice(0,40);let last='';
  return `<div class="rp-tab"><div class="rp-tr rp-hd"><span>Date</span><span>Time</span><span>Type</span><span>Market</span><span>Target</span><span class="r">Result</span><span class="r">Running total</span></div>`+
-  show.map(r=>{const dl=rD(r.cl),dd=dl===last?'':dl;last=dl;return `<div class="rp-tr"><span>${dd}</span><span class="num dim">${rT(r.cl)}</span><span>Trade closed</span><span>${r.m.n}${r.has?`<em class="rp-tm ${r.hit?'pos':'dim'}">${r.hit?'target ✓':'target ✗'}</em>`:''}</span><span class="dim">${r.has?(r.hit?'<b class="pos">hit ✓</b>':'not hit'):'—'}</span><span class="r">${rA(r.aed)}</span><span class="r num">${r.bal<0?'−':''}AED${f(Math.abs(r.bal),2)}</span></div>`}).join('')+
+  show.map(r=>{const dl=rD(r.cl),dd=dl===last?'':dl;last=dl;return `<div class="rp-tr"><span>${dd}</span><span class="num dim">${rT(r.cl)}</span><span>Trade closed</span><span>${r.m.n}${r.has?`<em class="rp-tm ${r.hit?'pos':'dim'}">${r.hit?'target ✓':'target ✗'}</em>`:r.phas?`<em class="rp-tm dim">${r.phit?'part ✓':'part ✗'}</em>`:''}</span><span class="dim">${r.has?(r.hit?'<b class="pos">hit ✓</b>':'not hit'):r.phas?'part only':'—'}</span><span class="r">${rA(r.aed)}</span><span class="r num">${r.bal<0?'−':''}AED${f(Math.abs(r.bal),2)}</span></div>`}).join('')+
   `</div>`+(rows.length>40?`<button class="hmore" data-amore>${HAM?'Show newest 40':'Show all '+rows.length}</button>`:'')}
 function rTrades(R){
  const E=[];R.forEach(r=>{if(r.op)E.push({at:r.op,r,ty:'Trade opened',px:r.t.price,res:null,sz:rSz(r.t)});E.push({at:r.cl,r,ty:rWhy(r.t),px:r.t.exit,res:r.aed,sz:rSz({...r.t,side:r.t.side==='BUY'?'SELL':'BUY'})})});
