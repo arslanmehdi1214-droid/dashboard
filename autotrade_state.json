@@ -1,14 +1,14 @@
 {
- "balance": 1191.23,
+ "balance": 1185.43,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-10-28",
-  "pl": 76.6,
+  "pl": 65.03,
   "start_balance": 1126.52,
   "start_equity": 1126.52,
   "stopped": false
  },
- "open_positions": 4,
+ "open_positions": 3,
  "open_risk_aed": 57.9,
  "risk_usd": 8.168822328114365,
  "trades": {
@@ -251,16 +251,17 @@
    "part_x": 0.15,
    "px_adj": 0.0,
    "rest": {
+    "closed_by": "Capital.com stop/target",
     "id": "00000000-6eb6-6c13-0495-7fc60004511e",
     "level": 29794.9,
-    "open": true,
+    "open": false,
     "size": 0.016,
     "tp": null
    },
    "risk_aed": 9.72,
    "risk_usd": 2.72,
    "side": "SELL",
-   "state": "open",
+   "state": "closed",
    "stop": 29800.0
   },
   "US500|2026-10-26|5:40 pm|BUY|S&P 9:40 am New York opening move": {
