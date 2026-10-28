@@ -1,5 +1,5 @@
 {
- "updated": "Thu 29 Oct \u00b7 3:12 am",
+ "updated": "Thu 29 Oct \u00b7 3:13 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -13,9 +13,9 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 8:00 pm Dubai).",
-   "price": 4055.98,
+   "price": 4054.83,
    "close_at": "12:00 am",
-   "change": -12.35,
+   "change": -13.5,
    "size": 0.1,
    "datr": 66.6,
    "open_now": 0,
@@ -121,7 +121,7 @@
     ],
     [
      "3:10 am",
-     4055.98,
+     4054.83,
      4053.88,
      4056.83,
      4053.82
@@ -369,8 +369,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 53.969,
-   "change": -0.029,
+   "price": 53.94,
+   "change": -0.058,
    "entries": [],
    "spark": [
     [
@@ -473,7 +473,7 @@
     ],
     [
      "3:10 am",
-     53.969,
+     53.94,
      53.931,
      53.985,
      53.929
@@ -602,8 +602,8 @@
    "net_label": "Net R / $ at $100 risk (v1.05 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 157.786,
-   "change_pips": -8.5,
+   "price": 157.788,
+   "change_pips": -8.3,
    "atr_pips": 82.2,
    "entries": [],
    "spark": [
@@ -700,9 +700,9 @@
     ],
     [
      "3:10 am",
-     157.786,
+     157.788,
      157.774,
-     157.787,
+     157.789,
      157.774
     ]
    ],
@@ -2638,8 +2638,8 @@
    "net_label": "Net points (v1.04 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 5:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). No night trade today (not a high-fear night).",
-   "price": 7723.6,
-   "change": -1.6,
+   "price": 7723.3,
+   "change": -1.9,
    "entries": [],
    "spark": [
     [
@@ -2819,10 +2819,10 @@
     ],
     [
      "3:10 am",
-     7723.6,
+     7723.3,
      7724.6,
      7725.1,
-     7723.3
+     7723.1
     ]
    ],
    "journal": {
@@ -3095,8 +3095,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "buy",
    "message": "1 paper trade today (1 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 12:00 am Dubai close. At most 2 trades a day.",
-   "price": 29563.5,
-   "change": -30.5,
+   "price": 29563.8,
+   "change": -30.2,
    "entries": [
     {
      "time": "3:04 am",
@@ -3121,7 +3121,7 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": 20.7,
+     "live": 21.0,
      "rwf": null,
      "spread": 1.8,
      "spread_live": 1.8
@@ -3305,10 +3305,10 @@
     ],
     [
      "3:10 am",
-     29563.5,
+     29563.8,
      29570.2,
      29573.9,
-     29562.5
+     29560.3
     ]
    ],
    "journal": {
@@ -3356,7 +3356,7 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": 20.7,
+       "live": 21.0,
        "rwf": null,
        "spread": 1.8,
        "spread_live": 1.8
@@ -4090,7 +4090,7 @@
      1.33235,
      1.33235,
      1.33241,
-     1.33234
+     1.3323
     ]
    ],
    "journal": {
