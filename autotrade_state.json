@@ -1,15 +1,15 @@
 {
- "balance": 1173.59,
+ "balance": 1172.23,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-10-29",
-  "pl": -11.45,
+  "pl": -14.17,
   "start_balance": 1179.18,
   "start_equity": 1179.18,
   "stopped": false
  },
- "open_positions": 2,
- "open_risk_aed": 29.26,
+ "open_positions": 3,
+ "open_risk_aed": 57.82,
  "risk_usd": 8.168822328114365,
  "trades": {
   "GBPUSD|2026-10-26|11:00 am|BUY|Layer 2 \u00b7 small traders crowded": {
@@ -57,6 +57,25 @@
    "side": "BUY",
    "state": "closed",
    "stop": 1.3284
+  },
+  "GBPUSD|2026-10-29|11:00 am|BUY|Layer 2 \u00b7 small traders crowded": {
+   "desk_price": 1.33095,
+   "market": "GBPUSD",
+   "opened_at": "Thu 29 Oct 11:01 AM",
+   "part": {
+    "id": "00000000-6f6b-fa72-0495-7fc60004511e",
+    "level": 1.33108,
+    "open": true,
+    "size": 1100.0,
+    "tp": 1.33815
+   },
+   "part_x": 1.0,
+   "px_adj": 0.0,
+   "risk_aed": 28.56,
+   "risk_usd": 8.17,
+   "side": "BUY",
+   "state": "open",
+   "stop": 1.32388
   },
   "GOLD|2026-10-25|10:00 am|SELL|T15 ttm": {
    "at": "Sun 25 Oct 4:19 AM",
