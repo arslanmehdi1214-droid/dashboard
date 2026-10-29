@@ -1,5 +1,5 @@
 {
- "updated": "Thu 29 Oct \u00b7 4:25 am",
+ "updated": "Thu 29 Oct \u00b7 4:26 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -13,9 +13,9 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 8:00 pm Dubai).",
-   "price": 4044.19,
+   "price": 4045.71,
    "close_at": "12:00 am",
-   "change": -24.14,
+   "change": -22.62,
    "size": 0.1,
    "datr": 66.6,
    "open_now": 0,
@@ -223,6 +223,13 @@
      4040.89,
      4044.32,
      4040.76
+    ],
+    [
+     "4:25 am",
+     4045.71,
+     4044.21,
+     4046.43,
+     4043.74
     ]
    ],
    "history": [
@@ -467,8 +474,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 53.672,
-   "change": -0.326,
+   "price": 53.717,
+   "change": -0.281,
    "entries": [],
    "spark": [
     [
@@ -673,6 +680,13 @@
      53.598,
      53.683,
      53.586
+    ],
+    [
+     "4:25 am",
+     53.717,
+     53.669,
+     53.734,
+     53.663
     ]
    ],
    "journal": {
@@ -798,8 +812,8 @@
    "net_label": "Net R / $ at $100 risk (v1.05 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 158.045,
-   "change_pips": 17.4,
+   "price": 158.052,
+   "change_pips": 18.1,
    "atr_pips": 82.2,
    "entries": [],
    "spark": [
@@ -998,6 +1012,13 @@
      158.037,
      158.056,
      158.014
+    ],
+    [
+     "4:25 am",
+     158.052,
+     158.044,
+     158.057,
+     158.024
     ]
    ],
    "journal": {
@@ -2073,8 +2094,8 @@
    "net_label": "Net $ per barrel (v1.07)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 101.408,
-   "change": 0.15,
+   "price": 101.433,
+   "change": 0.18,
    "entries": [],
    "spark": [
     [
@@ -2279,6 +2300,13 @@
      101.45,
      101.6,
      101.39
+    ],
+    [
+     "4:25 am",
+     101.43,
+     101.42,
+     101.45,
+     101.4
     ]
    ],
    "journal": {
@@ -3030,8 +3058,8 @@
    "net_label": "Net points (v1.04 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 5:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). No night trade today (not a high-fear night).",
-   "price": 7724.7,
-   "change": -0.5,
+   "price": 7724.3,
+   "change": -0.9,
    "entries": [],
    "spark": [
     [
@@ -3313,6 +3341,13 @@
      7719.6,
      7725.2,
      7718.7
+    ],
+    [
+     "4:25 am",
+     7724.3,
+     7724.4,
+     7726.4,
+     7723.9
     ]
    ],
    "journal": {
@@ -3585,8 +3620,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "buy",
    "message": "1 paper trade today (1 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 12:00 am Dubai close. At most 2 trades a day.",
-   "price": 29565.7,
-   "change": -28.3,
+   "price": 29558.7,
+   "change": -35.3,
    "entries": [
     {
      "time": "3:04 am",
@@ -3611,10 +3646,10 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": 22.9,
+     "live": 15.9,
      "rwf": null,
      "spread": 1.8,
-     "spread_live": 1.8
+     "spread_live": 2.4
     }
    ],
    "spark": [
@@ -3897,6 +3932,13 @@
      29527.7,
      29567.9,
      29519.6
+    ],
+    [
+     "4:25 am",
+     29558.7,
+     29565.6,
+     29575.2,
+     29557.4
     ]
    ],
    "journal": {
@@ -3944,10 +3986,10 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": 22.9,
+       "live": 15.9,
        "rwf": null,
        "spread": 1.8,
-       "spread_live": 1.8
+       "spread_live": 2.4
       }
      ],
      "final": false
@@ -4494,8 +4536,8 @@
    "regime": 0.228,
    "gap": null,
    "message": "Today is a BUY day (small traders crowded). The trade opens at 11:00 am Dubai (10:00 broker). CALM market: at 10:00 the side can switch if GBP runs away from EUR overnight; stop moves to entry + 5 pips once +0.35 x stop in profit.",
-   "price": 1.33064,
-   "change": -0.00114,
+   "price": 1.33063,
+   "change": -0.00115,
    "entries": [],
    "spark": [
     [
@@ -4777,6 +4819,13 @@
      1.33075,
      1.33083,
      1.33055
+    ],
+    [
+     "4:25 am",
+     1.33063,
+     1.33067,
+     1.33082,
+     1.33058
     ]
    ],
    "journal": {
