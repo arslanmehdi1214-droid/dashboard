@@ -311,7 +311,7 @@ const OILW=/crude|oil|opec|eia|petroleum|natural gas/i;
 function hits(e){const m=new Set(),c=e.country,t=e.title||'';if(/natural gas/i.test(t))return [];if(/crude|oil|opec|petroleum/i.test(t))return ['Oil'];
  if(c==='USD'){['Gold','Silver','USD/JPY','Nasdaq','S&P','GBP/USD'].forEach(x=>m.add(x));if(OILW.test(t)||/CPI|Non-Farm|FOMC|Federal Funds|Fed Chair|PPI|Retail Sales|GDP/i.test(t))m.add('Oil')}
  if(c==='JPY')m.add('USD/JPY');if(c==='GBP')m.add('GBP/USD');if(c==='CNY'){m.add('Gold');m.add('Silver');m.add('Oil')}if(OILW.test(t))m.add('Oil');return [...m]}
-const G=[],T=[],OPENEV=new Set();
+const G=[],T=[],OPENEV=new Set();let CALDAY=null;
 function buildG(){G.length=0;CAL.filter(e=>e.impact==='High'||e.impact==='Medium'||(e.impact==='Low'&&OILW.test(e.title||''))||(e.country==='USD'&&OILW.test(e.title||''))).forEach(e=>{const mk=hits(e);if(!mk.length)return;
  const g=G.find(g=>g.date===e.date&&g.country===e.country);
  if(g){g.items.push(e);mk.forEach(x=>g.mk.includes(x)||g.mk.push(x));if(e.impact==='High')g.impact='High'}
@@ -349,18 +349,19 @@ function at(tz,y,m,d,h){const g=Date.UTC(y,m,d,h);const t=g-offs(tz,new Date(g))
 const ymd=(tz,d)=>new Intl.DateTimeFormat('en-CA',{timeZone:tz,year:'numeric',month:'2-digit',day:'2-digit'}).format(d).split('-').map(Number);
 function wins(S,now){const out=[];for(let k=-2;k<=5;k++){const [y,m,d]=ymd(S.tz,new Date(+now+k*864e5));const wd=new Date(Date.UTC(y,m-1,d)).getUTCDay();if(wd===0||wd===6)continue;
  const o=at(S.tz,y,m-1,d,S.o);if(!out.some(w=>+w.o===+o))out.push({o,c:at(S.tz,y,m-1,d,S.c)})}return out.sort((a,b)=>a.o-b.o)}
-let fired={},sound=false;
+let fired={},sound=false,dismissedAlert=null;
 function beep(n){if(!sound)return;try{const a=new (window.AudioContext||window.webkitAudioContext)();for(let i=0;i<n;i++){const o=a.createOscillator(),g=a.createGain();o.frequency.value=880;o.connect(g);g.connect(a.destination);g.gain.setValueAtTime(.18,a.currentTime+i*.35);g.gain.exponentialRampToValueAtTime(.001,a.currentTime+i*.35+.25);o.start(a.currentTime+i*.35);o.stop(a.currentTime+i*.35+.3)}}catch(e){}}
 function notify(t){try{if(sound&&'Notification' in window&&Notification.permission==='granted')new Notification('Trading Dashboard',{body:t})}catch(e){}}
 function alertTick(now){const n=G.find(g=>g.impact==='High'&&g.t>now&&g.t-now<=30*6e4);
- if(!n){nalert.className='alert';return}
+ if(!n||n.date+n.country===dismissedAlert){nalert.className='alert';return}
  const ms=n.t-now,lvl=ms<=15*6e4?15:30,k=n.date+lvl,open=T.filter(o=>!done(o.e)&&n.mk.includes(o.m.tag)).map(o=>o.m.n);
  const txt=`${n.country} ${n.items[0].title}${n.items.length>1?' +'+(n.items.length-1):''}`;
  const gk=n.country==='USD'&&T.some(o=>!done(o.e)&&o.m.c==='GOLD'),keep=gk?'Gold: KEEP your trade — 2008-26 history: closing before USD news cut green days':'';
  if(!fired[k]){fired[k]=1;beep(lvl===15?3:1);notify(`${txt} in ${lvl} min${open.length?' · open: '+open.join(', '):''}${keep?' · '+keep:''}`)}
  nalert.className='alert on';
- nalert.innerHTML=`<div class="w${lvl}"><span>⚠ HIGH IMPACT</span><b>${txt}</b><span>at ${t12(n.t)}</span><span class="cdn">${hms(ms)}</span><span>${n.mk.join(' · ')}${open.length?' · <b>your open: '+open.join(', ')+'</b>':''} · no new trades 2 min either side</span>${keep?`<span class="keep">✓ ${keep}</span>`:''}${sound?'':'<button id="snd">Turn on sound</button>'}</div>`;
- const b=document.getElementById('snd');if(b)b.onclick=()=>{sound=true;beep(1);try{Notification.requestPermission&&Notification.requestPermission()}catch(e){}}}
+ nalert.innerHTML=`<div class="w${lvl}"><span>⚠ HIGH IMPACT</span><b>${txt}</b><span>at ${t12(n.t)}</span><span class="cdn">${hms(ms)}</span><span>${n.mk.join(' · ')}${open.length?' · <b>your open: '+open.join(', ')+'</b>':''} · no new trades 2 min either side</span>${keep?`<span class="keep">✓ ${keep}</span>`:''}${sound?'':'<button id="snd">Turn on sound</button>'}<button id="almin" title="Dismiss">✕</button></div>`;
+ const b=document.getElementById('snd');if(b)b.onclick=()=>{sound=true;beep(1);try{Notification.requestPermission&&Notification.requestPermission()}catch(e){}};
+ const mb=document.getElementById('almin');if(mb)mb.onclick=()=>{dismissedAlert=n.date+n.country;nalert.className='alert'}}
 function tick(){const now=new Date();
  clk.textContent=now.toLocaleTimeString('en-US',{...TZ,hour:'numeric',minute:'2-digit',second:'2-digit'}).toLowerCase();cld.textContent='Dubai · '+dday(now);
  const L=SES.map(S=>{const W=wins(S,now),cur=W.find(w=>w.o<=now&&now<w.c),nx=W.find(w=>w.o>now);return {S,cur,w:cur||nx,next:cur?cur.c:nx.o}})
@@ -420,7 +421,7 @@ function ticket(c){const {o,px}=c,{m,x,e,i}=o,dp=demoOf(m,e),ep=dp?dp.level:e.pr
  const lo=Math.min(st0,tgt),hi=Math.max(st0,tgt),P=v=>Math.max(0,Math.min(100,(v-lo)/(hi-lo)*100)),pp=v=>e.side==='SELL'?100-P(v):P(v),lv=liveOf(m);
  return `<div class="tk ${e.side}" data-c="${m.c}">
   <span class="side">${e.side==='BUY'?'▲':'▼'} ${e.side}</span>
-  <div class="who"><a target="_blank" rel="noopener" href="https://www.tradingview.com/chart/?symbol=${m.tv}"><b>${m.n}</b></a> <span class="tag ${x.live?'live':''}">${x.live?'LIVE':'PAPER'}</span><small>${e.time} · risk AED ${f(dp&&dp.risk!=null?dp.risk:c.risk*AED,0)} · ${dp?'size '+f(dp.size,Number.isInteger(dp.size)?0:2):'not on the demo account'}</small></div>
+  <div class="who"><a target="_blank" rel="noopener" href="https://www.tradingview.com/chart/?symbol=${m.tv}"><b>${m.n}</b></a><small>${e.time} · risk AED ${f(dp&&dp.risk!=null?dp.risk:c.risk*AED,0)} · ${dp?'size '+f(dp.size,Number.isInteger(dp.size)?0:2):'not on the demo account'}</small></div>
   <div class="lad"><div class="ln2"></div><div class="zl" style="left:${Math.min(pp(st0),pp(ep))}%;width:${Math.abs(pp(ep)-pp(st0))}%"></div><div class="zw" style="left:${Math.min(pp(ep),pp(tgt))}%;width:${Math.abs(pp(tgt)-pp(ep))}%"></div>
    <span class="lb l">${f(st0,m.dp)}</span>${e.half_px!=null?`<span class="lb h" style="left:${pp(e.half_px)}%;transform:translateX(${pp(e.half_px)>80?-100:pp(e.half_px)<20?0:-50}%)">${e.part>=0.999?(e.half?'target hit':'target'):e.part!=null?(e.half?Math.round(e.part*100)+'% banked':'close '+Math.round(e.part*100)+'% at'):(e.half?'½ banked':'½ at')} ${f(e.half_px,m.dp)}</span>`:''}<span class="lb c" style="left:${pp(ep)}%">${f(ep,m.dp)}</span><span class="lb r">${f(tgt,m.dp)}</span>
    <div class="nowm" style="left:${pp(px)}%"><span>${f(px,m.dp)}<i class="dot ${lv?'on':''}"></i></span><i></i></div></div>
@@ -452,7 +453,7 @@ try{renderHist()}catch(e){}
 function render(){
  try{actsLive()}catch(e){}
  try{actsRender()}catch(e){}
- const C=T.map(o=>({o,...calc(o)})),tot=C.reduce((a,c)=>a+c.pl,0),op=C.filter(c=>!done(c.o.e)),cl=C.filter(c=>done(c.o.e));
+ const C=T.map(o=>({o,...calc(o)})),tot=C.reduce((a,c)=>a+c.pl,0),op=C.filter(c=>!done(c.o.e)&&c.R>-1),cl=C.filter(c=>done(c.o.e));
  const tabs=[{c:'ALL',n:'All markets'}].concat(MK);
  mtab.innerHTML=tabs.map(m=>{if(m.c==='ALL')return `<button data-c="ALL" class="${SEL==='ALL'?'on':''}">All<small>${op.length} open</small></button>`;
   const x=M[m.c]||{},d=dirOf(x);return `<button data-c="${m.c}" class="${SEL===m.c?'on':''}">${m.n} <em class="${d==='BUY'?'pos':d==='SELL'?'neg':'dim'}">${d==='NONE'?'WAIT':(d==='BUY'?'▲ ':'▼ ')+d}</em><small>${f(nowPx(m,x),m.dp)} <i class="dot ${liveOf(m)?'on':''}"></i></small></button>`}).join('');
@@ -466,14 +467,21 @@ function render(){
  const idle=MK.filter(m=>!T.some(o=>o.m===m&&!done(o.e)));
  idle.innerHTML=idle.length?idle.map(m=>`<span data-c="${m.c}"><b>${m.n}</b> ${dirOf(M[m.c])==='NONE'?'waiting for first signal':'no open trade'}</span>`).join(' &nbsp; '):'';
  closedbox.innerHTML=cl.length?`<h3>Closed today · ${cl.length}</h3><table>${cl.map(c=>`<tr data-c="${c.o.m.c}"><td>${c.o.m.n}</td><td class="${c.o.e.side==='BUY'?'pos':'neg'}">${c.o.e.side}</td><td class="num dim">${c.o.e.time}</td><td class="r num ${c.mv>=0?'pos':'neg'}">${sg(c.R)}R</td><td class="r num ${c.pl>=0?'pos':'neg'}">${sg(c.pl*AED)} AED</td></tr>`).join('')}</table>`:'';
- const now=new Date();let ld='';
- cal.innerHTML=G.filter(g=>g.t>now).slice(0,7).map(g=>{const dk=dkey(g.t),hd=dk!==ld?`<div class="day">${dk===dkey(now)?'Today':dday(g.t)}</div>`:'';ld=dk;
+ const now=new Date();
+ const DKeys=[...new Set(G.map(g=>dkey(g.t)))].sort();
+ if(!DKeys.length)DKeys.push(dkey(now));
+ if(CALDAY===null)CALDAY=DKeys.includes(dkey(now))?dkey(now):DKeys[0];
+ if(!DKeys.includes(CALDAY))CALDAY=DKeys[DKeys.length-1];
+ const di=DKeys.indexOf(CALDAY),dayG=G.filter(g=>dkey(g.t)===CALDAY),dt0=new Date(CALDAY+'T12:00:00Z'),dLbl=CALDAY===dkey(now)?'Today':dday(dt0);
+ const cnav=`<div class="mnav"><button data-cnav="-1" ${di<=0?'disabled':''}>‹ Prev day</button><span>${dLbl} · ${dt0.toLocaleDateString('en-GB',{day:'numeric',month:'short',timeZone:'UTC'})}</span><button data-cnav="today">Today</button><button data-cnav="1" ${di>=DKeys.length-1?'disabled':''}>Next day ›</button></div>`;
+ cal.innerHTML=cnav+(dayG.length?dayG.map(g=>{
   const m=g.t-now,l=g.items[0],fc=l.forecast?` · forecast ${l.forecast}, previous ${l.previous||'—'}`:'';
   const ffd=g.t.toLocaleDateString('en-US',{timeZone:'America/New_York',month:'short',day:'numeric',year:'numeric'}).replace(',','').split(' '),ffu=`https://www.forexfactory.com/calendar?day=${ffd[0].toLowerCase()}${ffd[1]}.${ffd[2]}`;
   const det=`<div class="evd">${g.items.map(i=>`<div><svg viewBox="0 0 15 12" class="fold ${i.impact}"><path d="M0 1.5A1.5 1.5 0 0 1 1.5 0H5l1.6 1.8h6.9A1.5 1.5 0 0 1 15 3.3v7.2a1.5 1.5 0 0 1-1.5 1.5h-12A1.5 1.5 0 0 1 0 10.5z"/></svg><b>${i.title}</b> <span class="dim">${i.impact} impact · forecast ${i.forecast||'—'} · previous ${i.previous||'—'}</span></div>`).join('')}<div class="dim">${t12(g.t)} Dubai · ${dday(g.t)} · moves: ${g.mk.join(', ')}</div><a href="${ffu}" target="_blank" rel="noopener">Open on Forex Factory ↗</a></div>`;
-  return hd+`<div class="ev ${OPENEV.has(g.date+g.country)?'open':''}" data-mk="${g.mk.join('|')}" data-k="${g.date+g.country}" onclick="if(!event.target.closest('a')){this.classList.toggle('open');OPENEV[this.classList.contains('open')?'add':'delete'](this.dataset.k)}"><div class="t">${t12(g.t)}${m<864e5?`<span class="cd" data-cd="${+g.t}">in ${hms(m)}</span>`:''}</div>
+  return `<div class="ev ${OPENEV.has(g.date+g.country)?'open':''}" data-mk="${g.mk.join('|')}" data-k="${g.date+g.country}" onclick="if(!event.target.closest('a')){this.classList.toggle('open');OPENEV[this.classList.contains('open')?'add':'delete'](this.dataset.k)}"><div class="t">${t12(g.t)}${m>0&&m<864e5?`<span class="cd" data-cd="${+g.t}">in ${hms(m)}</span>`:''}</div>
    <div><div class="h"><svg viewBox="0 0 15 12" class="fold ${g.impact}"><path d="M0 1.5A1.5 1.5 0 0 1 1.5 0H5l1.6 1.8h6.9A1.5 1.5 0 0 1 15 3.3v7.2a1.5 1.5 0 0 1-1.5 1.5h-12A1.5 1.5 0 0 1 0 10.5z"/></svg>${g.country} ${l.title}${g.items.length>1?` <span class="dim">+${g.items.length-1}</span>`:''}</div>
-   <div class="x"><span class="nchips" style="margin-left:0">${g.mk.map(x=>`<em class="nc ${x.replace(/[^A-Za-z]/g,'')}">${x}</em>`).join('')}</span>${fc}</div>${evOut(g)}${det}</div></div>`}).join('')||'<div class="dim">No more big events this week</div>';
+   <div class="x"><span class="nchips" style="margin-left:0">${g.mk.map(x=>`<em class="nc ${x.replace(/[^A-Za-z]/g,'')}">${x}</em>`).join('')}</span>${fc}</div>${evOut(g)}${det}</div></div>`}).join(''):'<div class="dim">No events this day</div>');
+ cal.querySelectorAll('[data-cnav]').forEach(b=>b.onclick=()=>{const v=b.dataset.cnav;CALDAY=v==='today'?(DKeys.includes(dkey(new Date()))?dkey(new Date()):CALDAY):DKeys[Math.max(0,Math.min(DKeys.length-1,di+(+v)))];render();applySel()});
 }
 function tvw(el,kind,cfg){const w=document.createElement('div');w.className='tradingview-widget-container';
  const i=document.createElement('div');i.className='tradingview-widget-container__widget';w.appendChild(i);
@@ -520,7 +528,7 @@ function classify(text){const U=text.toUpperCase(),out={imp:null,why:'',mk:[],ki
  return out}
 const fold=imp=>`<svg viewBox="0 0 15 12" class="fold ${imp}"><path d="M0 1.5A1.5 1.5 0 0 1 1.5 0H5l1.6 1.8h6.9A1.5 1.5 0 0 1 15 3.3v7.2a1.5 1.5 0 0 1-1.5 1.5h-12A1.5 1.5 0 0 1 0 10.5z"/></svg>`;
 const chip=x=>`<em class="nc ${x.mk.replace(/[^A-Za-z]/g,'')}">${x.mk}${x.dir>0?' ▲':x.dir<0?' ▼':''}</em>`;
-const OPENN=new Set();let NEWS=[],seenNews=new Set(),firstNews=true,newsSrc='';
+const OPENN=new Set();let NEWS=[],seenNews=new Set(),firstNews=true,newsSrc='',NALL=false;
 const sim=(a,b)=>{const A=new Set(a.toLowerCase().match(/[a-z]{4,}/g)||[]),B=new Set(b.toLowerCase().match(/[a-z]{4,}/g)||[]);let i=0;A.forEach(w=>{if(B.has(w))i++});return i/Math.max(1,Math.min(A.size,B.size))};
 async function loadNews(){const now=new Date();let items=null;
  try{const j=await (await fetch(WORKER_URL+'news',{cache:'no-store'})).json();if(j.items&&j.items.length){items=j.items.map(i=>({id:i.id,t:i.text,l:i.url,p:new Date(i.t),src:i.ch==='WalterBloomberg'?'Walter Bloomberg':'FinancialJuice'}));newsSrc='Walter Bloomberg + FinancialJuice (Telegram, live)'}}catch(e){}
@@ -531,13 +539,15 @@ async function loadNews(){const now=new Date();let items=null;
  const fresh=kept.filter(n=>!firstNews&&!seenNews.has(n.id));
  const red=fresh.find(n=>n.c.imp==='High');if(red){beep(2);notify('NEWS: '+red.t.slice(0,120))}
  kept.forEach(n=>seenNews.add(n.id));firstNews=false;NEWS=kept;renderNews();nstat.textContent='· checked '+t12(now)}
-function renderNews(){const now=new Date(),tg=SEL==='ALL'?null:(MK.find(m=>m.c===SEL)||{}).tag,LN=NEWS.filter(n=>!tg||n.c.mk.some(x=>(NMK[x.mk]||x.mk)===tg)).slice(0,14);
+function renderNews(){const now=new Date(),tg=SEL==='ALL'?null:(MK.find(m=>m.c===SEL)||{}).tag,FN=NEWS.filter(n=>!tg||n.c.mk.some(x=>(NMK[x.mk]||x.mk)===tg)),LN=FN.slice(0,NALL?FN.length:14);
  news.innerHTML=LN.map(n=>{const age=(now-n.p)/6e4,c=n.c,isNew=age<3,txt=n.t.length>150?n.t.slice(0,150)+'…':n.t;
   const lean=c.mk.filter(x=>x.dir).map(x=>`${x.mk} ${x.dir>0?'up':'down'} (${Math.round(x.hit*100)}% of ${x.n})`).join(' · ');
   return `<div class="nw ${age<15?'fresh':''} ${OPENN.has(n.id)?'open':''}" data-id="${n.id}" data-mk="${c.mk.map(x=>NMK[x.mk]).join('|')}"><div class="nh">${fold(c.imp)}<span class="ag">${age<60?Math.max(0,Math.round(age))+'m ago':t12(n.p)}</span>${isNew?'<i>NEW</i>':''}${txt}</div>
    <div class="nmeta"><span class="nchips">${c.mk.map(chip).join('')}</span>${c.why?`<span class="why">${c.why}</span>`:''}</div>
    <div class="nd">${n.t}<br>${lean?`<b>History:</b> ${lean}<br>`:'<span class="dim">No reliable up/down lean in history for this type of headline.</span><br>'}<span class="dim">${n.src} · ${t12(n.p)} Dubai</span> · <a href="${n.l}" target="_blank" rel="noopener">Open source ↗</a></div></div>`}).join('')||`<div class="dim">No market-moving ${tg?tg+' ':''}headlines right now</div>`;
+ if(FN.length>14)news.innerHTML+=`<button class="hmore" data-nmore>${NALL?'Show fewer':'Show '+(FN.length-14)+' older headlines'}</button>`;
  news.querySelectorAll('.nw').forEach(el=>el.onclick=e=>{if(e.target.closest('a'))return;const id=el.dataset.id;OPENN.has(id)?OPENN.delete(id):OPENN.add(id);el.classList.toggle('open')});
+ news.querySelectorAll('[data-nmore]').forEach(x=>x.onclick=()=>{NALL=!NALL;renderNews()});
  src_note.textContent=`News: ${newsSrc} · checked every 10 seconds · ▲▼ only on US data releases (direction held 55-89% of the time on 2020-26, years the rule never saw); red = data release or marked important, orange = Fed / tariffs / war / oil / BoJ topic (yellow headlines are hidden)`}
 loadNews();setInterval(loadNews,10000);
 function setT(){mtabs.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.t===document.body.dataset.tab))}
@@ -625,16 +635,17 @@ function renderRep(one){anbSet();if(HSHOW){renderAllHist(one);return}
  histbox.innerHTML=''}
 function anbSet(){try{anb.classList.toggle('on',HSHOW)}catch(e){}}
 function renderAllHist(one){
+ if(document.activeElement&&(document.activeElement.id==='rpf'||document.activeElement.id==='rpt'))return;
  const RT=one?HR:'analytics',[a,b]=rRange(),R=rAll(one).filter(r=>r.cl&&(!a||r.cl>=a)&&(!b||r.cl<=b)).sort((x,y)=>x.cl-y.cl);
  const pills=[['24h','24H'],['7d','7D'],['30d','30D'],['90d','90D'],['ytd','YTD'],['all','All'],['custom','Custom']];
  let h=`<div class="rp-top"><h3 class="rp-ttl">${one?one.n:'All markets'} · analytics</h3>${one?`<div class="rp-tabs">${[['transactions','Transactions'],['trades','Trades'],['analytics','Analytics']].map(([k,v])=>`<button data-rt="${k}" class="${HR===k?'on':''}">${v}</button>`).join('')}</div>`:''}
-  <select class="rp-sel" data-rpsel>${pills.map(([k,v])=>`<option value="${k}" ${HP===k?'selected':''}>${v}</option>`).join('')}</select><button class="rp-x" data-rclose>Close</button></div>`;
+  <div class="rp-pills">${pills.map(([k,v])=>`<button data-rp="${k}" class="${HP===k?'on':''}">${v}</button>`).join('')}</div><button class="rp-x" data-rclose>Close</button></div>`;
  if(HP==='custom')h+=`<div class="rp-cust">From <input type="date" id="rpf" value="${HCF}"> to <input type="date" id="rpt" value="${HCT}"> <button data-rapply>Apply</button></div>`;
  if(RT==='analytics')h+=rAnalytics(R,one);else if(RT==='transactions')h+=rTrans(R);else h+=rTrades(R);
  h+=`<div class="hnote">${one?one.n+' only · source: '+one.n+' desk journal (paper trades),':'All desk markets together · source: each market\'s own desk journal (paper trades),'} each trade at 0.01 lot after the spread, in AED. Win rate here = FULL TARGET reached (whole trade closes at one level); a part-profit level (part banked, rest to entry/day-end) is tracked separately, never counted as a target; closed in profit is shown separately. Times = Dubai.</div>`;
  histbox.innerHTML=h;
  histbox.querySelectorAll('[data-rt]').forEach(x=>x.onclick=()=>{HR=x.dataset.rt;HAM=false;renderHist()});
- histbox.querySelectorAll('[data-rpsel]').forEach(x=>x.onchange=()=>{HP=x.value;HAM=false;renderHist()});
+ histbox.querySelectorAll('[data-rp]').forEach(x=>x.onclick=()=>{HP=x.dataset.rp;HAM=false;renderHist()});
  histbox.querySelectorAll('[data-rclose]').forEach(x=>x.onclick=()=>{anb.classList.remove('on');HSHOW=false;renderHist()});
  histbox.querySelectorAll('[data-rapply]').forEach(x=>x.onclick=()=>{HCF=rpf.value;HCT=rpt.value;renderHist()});
  histbox.querySelectorAll('[data-rtop]').forEach(x=>x.onchange=()=>{HTOP=x.value;renderHist()});
