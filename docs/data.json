@@ -10,9 +10,9 @@
    "version": "v2.15",
    "actions": [],
    "actions_day": "2026-10-29",
-   "feed_error": false,
+   "feed_error": true,
    "state": "waiting",
-   "message": "Waiting for the first signal (signals can come until 8:00 pm Dubai).",
+   "message": "Price feed problem at 4:01 am Dubai (ReadTimeout) - the page shows the last good update; it retries every minute.",
    "price": 4054.18,
    "close_at": "12:00 am",
    "change": -14.15,
@@ -426,12 +426,12 @@
     "months": 3,
     "band": "3-month net at 0.01 lot (50 oz) inside the backtest 5-95% band: -$87 .. +$227 (median +$8)"
    },
-   "day_note": "14-day range $1.90 \u00b7 ONE trade a day when 2 of 3 agree (gold signal, fast gold catch-up, compression break) \u00b7 stop \u00bd range \u00b7 close half at +1x risk, stop to entry, then trail \u00bd range \u00b7 2x size when gold and silver were loosely linked over 20 days \u00b7 close 11:00 pm broker (Fri 10:50 pm)",
+   "day_note": "14-day range \u2014 \u00b7 ONE trade a day when 2 of 3 agree (gold signal, fast gold catch-up, compression break) \u00b7 stop \u00bd range \u00b7 close half at +1x risk, stop to entry, then trail \u00bd range \u00b7 2x size when gold and silver were loosely linked over 20 days \u00b7 close 11:00 pm broker (Fri 10:50 pm)",
    "what_note": "Forward test of silver v1.8 (honest entries) on live Capital.com prices. Checked after about 3 months against the backtest band.",
    "cost_note": "Results are $ per oz for the whole trade (half banked at +1R included) after Capital.com's spread (at least $0.05); x size (1 or 2); page money at 0.01 lot = 50 oz.",
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
-   "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
+   "message": "Silver paper update failed at 4:02 am Dubai (ReadTimeout: HTTPSConnectionPool(host='demo-api-capital.backend-capital.com', port=443): Read timed out. (read timeout=20)) \u2014 shows the last good update; retries every minute.",
    "price": 53.89,
    "change": -0.108,
    "entries": [],
@@ -693,7 +693,7 @@
      "final": true
     }
    ],
-   "feed_error": false,
+   "feed_error": true,
    "epic": "SILVER",
    "close_at": "12:00 am",
    "gold_signals_today": 0,
@@ -728,8 +728,8 @@
    "net_label": "Net R / $ at $100 risk (v1.05 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 157.828,
-   "change_pips": -4.3,
+   "price": 157.87,
+   "change_pips": -0.1,
    "atr_pips": 82.2,
    "entries": [],
    "spark": [
@@ -893,6 +893,13 @@
      157.786,
      157.842,
      157.786
+    ],
+    [
+     "4:00 am",
+     157.87,
+     157.829,
+     157.871,
+     157.828
     ]
    ],
    "journal": {
@@ -1968,8 +1975,8 @@
    "net_label": "Net $ per barrel (v1.07)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 101.14,
-   "change": -0.12,
+   "price": 101.178,
+   "change": -0.08,
    "entries": [],
    "spark": [
     [
@@ -2139,6 +2146,13 @@
      101.15,
      101.17,
      101.12
+    ],
+    [
+     "4:00 am",
+     101.18,
+     101.15,
+     101.18,
+     101.13
     ]
    ],
    "journal": {
@@ -2857,7 +2871,7 @@
    ],
    "feed_error": false,
    "epic": "OIL_CRUDE",
-   "live_spread": 0.045,
+   "live_spread": 0.04,
    "history_note": "history to 2026-10-28 (60 days)"
   },
   "US500": {
@@ -2890,8 +2904,8 @@
    "net_label": "Net points (v1.04 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 5:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). No night trade today (not a high-fear night).",
-   "price": 7719.4,
-   "change": -5.8,
+   "price": 7720.2,
+   "change": -5.0,
    "entries": [],
    "spark": [
     [
@@ -3138,6 +3152,13 @@
      7717.4,
      7722.8,
      7717.4
+    ],
+    [
+     "4:00 am",
+     7720.2,
+     7720.1,
+     7720.4,
+     7718.8
     ]
    ],
    "journal": {
@@ -3410,8 +3431,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "buy",
    "message": "1 paper trade today (1 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 12:00 am Dubai close. At most 2 trades a day.",
-   "price": 29515.2,
-   "change": -78.8,
+   "price": 29521.3,
+   "change": -72.7,
    "entries": [
     {
      "time": "3:04 am",
@@ -3436,7 +3457,7 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": -27.6,
+     "live": -21.5,
      "rwf": null,
      "spread": 1.8,
      "spread_live": 1.8
@@ -3687,6 +3708,13 @@
      29503.2,
      29535.3,
      29500.9
+    ],
+    [
+     "4:00 am",
+     29521.3,
+     29518.1,
+     29522.6,
+     29510.6
     ]
    ],
    "journal": {
@@ -3734,7 +3762,7 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": -27.6,
+       "live": -21.5,
        "rwf": null,
        "spread": 1.8,
        "spread_live": 1.8
@@ -4284,8 +4312,8 @@
    "regime": 0.228,
    "gap": null,
    "message": "Today is a BUY day (small traders crowded). The trade opens at 11:00 am Dubai (10:00 broker). CALM market: at 10:00 the side can switch if GBP runs away from EUR overnight; stop moves to entry + 5 pips once +0.35 x stop in profit.",
-   "price": 1.33265,
-   "change": 0.00087,
+   "price": 1.33223,
+   "change": 0.00045,
    "entries": [],
    "spark": [
     [
@@ -4532,6 +4560,13 @@
      1.33282,
      1.33284,
      1.33258
+    ],
+    [
+     "4:00 am",
+     1.33223,
+     1.33266,
+     1.33268,
+     1.33222
     ]
    ],
    "journal": {
