@@ -1,5 +1,5 @@
 {
- "updated": "Thu 29 Oct \u00b7 6:44 am",
+ "updated": "Thu 29 Oct \u00b7 6:45 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -13,9 +13,9 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 8:00 pm Dubai).",
-   "price": 4044.21,
+   "price": 4043.07,
    "close_at": "12:00 am",
-   "change": -24.12,
+   "change": -25.26,
    "size": 0.1,
    "datr": 66.6,
    "open_now": 0,
@@ -415,9 +415,9 @@
     ],
     [
      "6:40 am",
-     4044.21,
+     4043.07,
      4042.86,
-     4044.49,
+     4045.68,
      4042.1
     ]
    ],
@@ -663,8 +663,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 53.463,
-   "change": -0.535,
+   "price": 53.465,
+   "change": -0.533,
    "entries": [],
    "spark": [
     [
@@ -1061,9 +1061,9 @@
     ],
     [
      "6:40 am",
-     53.463,
+     53.465,
      53.399,
-     53.475,
+     53.506,
      53.371
     ]
    ],
@@ -1190,8 +1190,8 @@
    "net_label": "Net R / $ at $100 risk (v1.05 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 157.704,
-   "change_pips": -16.7,
+   "price": 157.724,
+   "change_pips": -14.7,
    "atr_pips": 82.2,
    "entries": [],
    "spark": [
@@ -1582,9 +1582,9 @@
     ],
     [
      "6:40 am",
-     157.704,
+     157.724,
      157.677,
-     157.704,
+     157.726,
      157.675
     ]
    ],
@@ -2661,8 +2661,8 @@
    "net_label": "Net $ per barrel (v1.07)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 100.968,
-   "change": -0.29,
+   "price": 100.938,
+   "change": -0.32,
    "entries": [],
    "spark": [
     [
@@ -3059,10 +3059,10 @@
     ],
     [
      "6:40 am",
-     100.97,
+     100.94,
      101.09,
      101.09,
-     100.96
+     100.92
     ]
    ],
    "journal": {
@@ -3814,8 +3814,8 @@
    "net_label": "Net points (v1.04 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 5:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). No night trade today (not a high-fear night).",
-   "price": 7710.9,
-   "change": -14.3,
+   "price": 7711.9,
+   "change": -13.3,
    "entries": [],
    "spark": [
     [
@@ -4289,9 +4289,9 @@
     ],
     [
      "6:40 am",
-     7710.9,
-     7710.3,
      7711.9,
+     7710.3,
+     7712.4,
      7709.9
     ]
    ],
@@ -4565,8 +4565,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "buy",
    "message": "1 paper trade today (1 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 12:00 am Dubai close. At most 2 trades a day.",
-   "price": 29356.8,
-   "change": -237.2,
+   "price": 29363.7,
+   "change": -230.3,
    "entries": [
     {
      "time": "3:04 am",
@@ -4591,7 +4591,7 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": -186.0,
+     "live": -179.1,
      "rwf": 0,
      "spread": 1.8,
      "spread_live": 1.8
@@ -5069,9 +5069,9 @@
     ],
     [
      "6:40 am",
-     29356.8,
+     29363.7,
      29343.2,
-     29362.2,
+     29368.1,
      29339.4
     ]
    ],
@@ -5120,7 +5120,7 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": -186.0,
+       "live": -179.1,
        "rwf": 0,
        "spread": 1.8,
        "spread_live": 1.8
@@ -5670,8 +5670,8 @@
    "regime": 0.228,
    "gap": null,
    "message": "Today is a BUY day (small traders crowded). The trade opens at 11:00 am Dubai (10:00 broker). CALM market: at 10:00 the side can switch if GBP runs away from EUR overnight; stop moves to entry + 5 pips once +0.35 x stop in profit.",
-   "price": 1.33257,
-   "change": 0.00079,
+   "price": 1.33255,
+   "change": 0.00077,
    "entries": [],
    "spark": [
     [
@@ -6145,7 +6145,7 @@
     ],
     [
      "6:40 am",
-     1.33257,
+     1.33255,
      1.3327,
      1.33274,
      1.33254
