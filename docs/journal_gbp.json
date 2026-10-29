@@ -217,19 +217,19 @@
      "half": false,
      "part": 1.0,
      "size": "full",
-     "status": "open",
-     "exit": null,
-     "exit_time": null,
-     "pips": null,
-     "res": null,
-     "res_sized": null,
-     "r": null,
-     "live": 5.6,
+     "status": "stopped",
+     "exit": 1.33145,
+     "exit_time": "5:02 pm",
+     "pips": 3.5,
+     "res": 3.5,
+     "res_sized": 3.5,
+     "r": 0.05,
+     "live": null,
      "spread": 1.5,
-     "next": "Hold \u00b7 stop MOVED to 1.33145 (entry + 5 pips, locked) \u00b7 target 1.33802 (close the WHOLE trade there) \u00b7 closes at 12:45 am Dubai"
+     "next": null
     }
    ],
-   "final": false,
+   "final": true,
    "code": 2,
    "report": "2026-10-20",
    "mode": "calm",
@@ -252,13 +252,13 @@
   "trades": 4,
   "days": 100.0,
   "perday": 1.0,
-  "closed": 3,
+  "closed": 4,
   "win": 0.0,
-  "inprofit": 33.3,
-  "pf": 0.98,
-  "net": -0.9,
+  "inprofit": 50.0,
+  "pf": 1.05,
+  "net": 2.6,
   "rules": "v1.04",
   "direction": null,
-  "green": 25.0
+  "green": 50.0
  }
 }
