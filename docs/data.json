@@ -1,5 +1,5 @@
 {
- "updated": "Thu 29 Oct \u00b7 8:22 am",
+ "updated": "Thu 29 Oct \u00b7 8:23 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -13,9 +13,9 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 8:00 pm Dubai).",
-   "price": 4038.05,
+   "price": 4037.67,
    "close_at": "12:00 am",
-   "change": -30.28,
+   "change": -30.66,
    "size": 0.1,
    "datr": 66.6,
    "open_now": 0,
@@ -555,10 +555,10 @@
     ],
     [
      "8:20 am",
-     4038.05,
+     4037.67,
      4038.29,
-     4038.3,
-     4037.4
+     4038.8,
+     4037.38
     ]
    ],
    "history": [
@@ -803,8 +803,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 53.201,
-   "change": -0.797,
+   "price": 53.191,
+   "change": -0.807,
    "entries": [],
    "spark": [
     [
@@ -1341,9 +1341,9 @@
     ],
     [
      "8:20 am",
-     53.201,
+     53.191,
      53.189,
-     53.202,
+     53.217,
      53.164
     ]
    ],
@@ -1470,8 +1470,8 @@
    "net_label": "Net R / $ at $100 risk (v1.05 sizes)",
    "state": "sell",
    "message": "PAPER SELL day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 7:00 pm Dubai close.",
-   "price": 157.743,
-   "change_pips": -12.8,
+   "price": 157.739,
+   "change_pips": -13.2,
    "atr_pips": 82.2,
    "entries": [
     {
@@ -2032,9 +2032,9 @@
     ],
     [
      "8:20 am",
-     157.743,
+     157.739,
      157.707,
-     157.743,
+     157.749,
      157.703
     ]
    ],
@@ -3141,8 +3141,8 @@
    "net_label": "Net $ per barrel (v1.07)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 100.753,
-   "change": -0.5,
+   "price": 100.703,
+   "change": -0.55,
    "entries": [],
    "spark": [
     [
@@ -3679,10 +3679,10 @@
     ],
     [
      "8:20 am",
-     100.75,
+     100.7,
      100.75,
      100.8,
-     100.74
+     100.7
     ]
    ],
    "journal": {
@@ -5051,7 +5051,7 @@
      "8:20 am",
      7717.7,
      7717.2,
-     7717.9,
+     7718.7,
      7715.9
     ]
    ],
@@ -5325,8 +5325,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "buy",
    "message": "1 paper trade today (1 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 12:00 am Dubai close. At most 2 trades a day.",
-   "price": 29446.9,
-   "change": -147.1,
+   "price": 29447.1,
+   "change": -146.9,
    "entries": [
     {
      "time": "3:04 am",
@@ -5351,10 +5351,10 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": -95.9,
+     "live": -95.7,
      "rwf": 0,
      "spread": 1.8,
-     "spread_live": 2.8
+     "spread_live": 1.8
     }
    ],
    "spark": [
@@ -5969,9 +5969,9 @@
     ],
     [
      "8:20 am",
-     29446.9,
+     29447.1,
      29442.8,
-     29448.9,
+     29453.4,
      29431.6
     ]
    ],
@@ -6020,10 +6020,10 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": -95.9,
+       "live": -95.7,
        "rwf": 0,
        "spread": 1.8,
-       "spread_live": 2.8
+       "spread_live": 1.8
       }
      ],
      "final": false
@@ -6570,8 +6570,8 @@
    "regime": 0.228,
    "gap": null,
    "message": "Today is a BUY day (small traders crowded). The trade opens at 11:00 am Dubai (10:00 broker). CALM market: at 10:00 the side can switch if GBP runs away from EUR overnight; stop moves to entry + 5 pips once +0.35 x stop in profit.",
-   "price": 1.33223,
-   "change": 0.00045,
+   "price": 1.33218,
+   "change": 0.0004,
    "entries": [],
    "spark": [
     [
@@ -7185,10 +7185,10 @@
     ],
     [
      "8:20 am",
-     1.33223,
+     1.33218,
      1.33233,
      1.33238,
-     1.33223
+     1.33214
     ]
    ],
    "journal": {
