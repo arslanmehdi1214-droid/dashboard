@@ -1,5 +1,5 @@
 {
- "updated": "Thu 29 Oct \u00b7 11:28 pm",
+ "updated": "Thu 29 Oct \u00b7 11:29 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -20,9 +20,9 @@
    "feed_error": false,
    "state": "sell",
    "message": "SELL day \u2014 up to 2 SELL trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:00 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 4016.52,
+   "price": 4016.96,
    "close_at": "12:00 am",
-   "change": -51.81,
+   "change": -51.37,
    "size": 0.1,
    "datr": 66.6,
    "open_now": 1,
@@ -1845,9 +1845,9 @@
     ],
     [
      "11:25 pm",
-     4016.52,
+     4016.96,
      4013.1,
-     4016.63,
+     4017.38,
      4013.05
     ]
    ],
@@ -2093,8 +2093,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 52.15,
-   "change": -1.848,
+   "price": 52.154,
+   "change": -1.844,
    "entries": [],
    "spark": [
     [
@@ -3898,9 +3898,9 @@
     ],
     [
      "11:25 pm",
-     52.15,
+     52.154,
      52.095,
-     52.159,
+     52.173,
      52.095
     ]
    ],
@@ -5888,7 +5888,7 @@
      157.901,
      157.917,
      157.918,
-     157.901
+     157.894
     ]
    ],
    "journal": {
@@ -6984,7 +6984,7 @@
     }
    ],
    "feed_error": false,
-   "live_spread_pips": 1.1,
+   "live_spread_pips": 1.2,
    "history_note": "history to 2026-10-28 (300 days)"
   },
   "DE40": {
@@ -7023,8 +7023,8 @@
    "net_label": "Net $ per barrel (v1.07)",
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Close 25% at the part level, then move the stop to entry; everything closes at 9:00 pm Dubai. No new trades after 5:30 pm (one late first trade allowed).",
-   "price": 101.633,
-   "change": 0.38,
+   "price": 101.593,
+   "change": 0.34,
    "entries": [
     {
      "time": "1:06 pm",
@@ -8851,7 +8851,7 @@
     ],
     [
      "11:25 pm",
-     101.63,
+     101.59,
      101.6,
      101.66,
      101.58
@@ -9629,8 +9629,8 @@
    "net_label": "Net points (v1.04 rules)",
    "state": "sell",
    "message": "PAPER SELL day: 1 trade today (1 running). Only SELL signals count today (max 3; no 2nd/3rd trade from 11:00 am New York or once the day is up half a stop). Each trade keeps its stop, no half-close; everything closes at 11:30 pm Dubai (3:30 pm New York). No night trade today (not a high-fear night).",
-   "price": 7705.8,
-   "change": -19.4,
+   "price": 7705.6,
+   "change": -19.6,
    "entries": [
     {
      "time": "5:40 pm",
@@ -9654,7 +9654,7 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": -3.4,
+     "live": -3.2,
      "spread": 0.8
     }
    ],
@@ -11537,9 +11537,9 @@
     ],
     [
      "11:25 pm",
-     7705.8,
+     7705.6,
      7703.8,
-     7706.6,
+     7707.1,
      7703.8
     ]
    ],
@@ -11601,7 +11601,7 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": -3.4,
+       "live": -3.2,
        "spread": 0.8
       }
      ],
@@ -11849,8 +11849,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "buy",
    "message": "1 paper trade today (0 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 12:00 am Dubai close. At most 2 trades a day.",
-   "price": 29329.9,
-   "change": -264.1,
+   "price": 29333.4,
+   "change": -260.6,
    "entries": [
     {
      "time": "3:04 am",
@@ -13760,7 +13760,7 @@
     ],
     [
      "11:25 pm",
-     29329.9,
+     29333.4,
      29325.2,
      29341.3,
      29325.2
@@ -14361,8 +14361,8 @@
    "regime": 0.228,
    "gap": 0.068,
    "message": "Locked stop hit at 5:02 pm Dubai: +3.5 pips. Done for today.",
-   "price": 1.33678,
-   "change": 0.005,
+   "price": 1.33683,
+   "change": 0.00505,
    "entries": [
     {
      "time": "11:00 am",
@@ -16272,9 +16272,9 @@
     ],
     [
      "11:25 pm",
-     1.33678,
+     1.33683,
      1.33658,
-     1.33682,
+     1.33686,
      1.33657
     ]
    ],
