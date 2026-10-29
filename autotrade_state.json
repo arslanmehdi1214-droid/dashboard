@@ -1,15 +1,15 @@
 {
- "balance": 1129.5,
+ "balance": 1129.01,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-10-29",
-  "pl": -34.04,
+  "pl": -35.02,
   "start_balance": 1179.18,
   "start_equity": 1179.18,
   "stopped": false
  },
- "open_positions": 1,
- "open_risk_aed": 44.03,
+ "open_positions": 0,
+ "open_risk_aed": 0,
  "risk_usd": 8.168822328114365,
  "trades": {
   "GBPUSD|2026-10-26|11:00 am|BUY|Layer 2 \u00b7 small traders crowded": {
@@ -78,18 +78,6 @@
    "state": "closed",
    "stop": 1.33145
   },
-  "GOLD|2026-10-25|10:00 am|SELL|T15 ttm": {
-   "at": "Sun 25 Oct 4:19 AM",
-   "market": "GOLD",
-   "state": "not entered",
-   "why": "desk trade seen 1099 min after entry, status close_now"
-  },
-  "GOLD|2026-10-25|11:00 am|SELL|N12 squeeze": {
-   "at": "Sun 25 Oct 4:19 AM",
-   "market": "GOLD",
-   "state": "not entered",
-   "why": "desk trade seen 1039 min after entry, status close_now"
-  },
   "GOLD|2026-10-26|7:00 am|BUY|N2 near100": {
    "desk_price": 4000.26,
    "market": "GOLD",
@@ -157,16 +145,17 @@
    "part_x": 0.0,
    "px_adj": 0.0,
    "rest": {
+    "closed_by": "desk: close_now",
     "id": "00000000-6f6c-cd79-0495-7fc60004511e",
     "level": 4034.29,
-    "open": true,
+    "open": false,
     "size": 0.36,
     "tp": null
    },
    "risk_aed": 44.03,
    "risk_usd": 12.25,
    "side": "SELL",
-   "state": "open",
+   "state": "closed",
    "stop": 4067.89
   },
   "OIL|2026-10-27|12:27 pm|BUY|Open \u00b1 \u00bd range": {
