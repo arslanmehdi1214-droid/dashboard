@@ -1,5 +1,5 @@
 {
- "updated": "Thu 29 Oct \u00b7 12:17 pm",
+ "updated": "Thu 29 Oct \u00b7 12:18 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -13,9 +13,9 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 8:00 pm Dubai).",
-   "price": 4028.93,
+   "price": 4029.85,
    "close_at": "12:00 am",
-   "change": -39.4,
+   "change": -38.48,
    "size": 0.1,
    "datr": 66.6,
    "open_now": 0,
@@ -884,9 +884,9 @@
     ],
     [
      "12:15 pm",
-     4028.93,
+     4029.85,
      4029.01,
-     4029.32,
+     4030.09,
      4028.36
     ]
    ],
@@ -1132,8 +1132,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 52.859,
-   "change": -1.139,
+   "price": 52.875,
+   "change": -1.123,
    "entries": [],
    "spark": [
     [
@@ -1999,9 +1999,9 @@
     ],
     [
      "12:15 pm",
-     52.859,
+     52.875,
      52.843,
-     52.87,
+     52.884,
      52.819
     ]
    ],
@@ -2128,8 +2128,8 @@
    "net_label": "Net R / $ at $100 risk (v1.05 sizes)",
    "state": "sell",
    "message": "PAPER SELL day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 7:00 pm Dubai close.",
-   "price": 157.854,
-   "change_pips": -1.7,
+   "price": 157.855,
+   "change_pips": -1.6,
    "atr_pips": 82.2,
    "entries": [
     {
@@ -3019,10 +3019,10 @@
     ],
     [
      "12:15 pm",
-     157.854,
+     157.855,
      157.86,
      157.867,
-     157.847
+     157.844
     ]
    ],
    "journal": {
@@ -4128,8 +4128,8 @@
    "net_label": "Net $ per barrel (v1.07)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 100.723,
-   "change": -0.53,
+   "price": 100.693,
+   "change": -0.56,
    "entries": [],
    "spark": [
     [
@@ -4995,7 +4995,7 @@
     ],
     [
      "12:15 pm",
-     100.72,
+     100.69,
      100.67,
      100.75,
      100.6
@@ -5717,7 +5717,7 @@
    ],
    "feed_error": false,
    "epic": "OIL_CRUDE",
-   "live_spread": 0.04,
+   "live_spread": 0.038,
    "history_note": "history to 2026-10-28 (60 days)"
   },
   "US500": {
@@ -5750,8 +5750,8 @@
    "net_label": "Net points (v1.04 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 5:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). No night trade today (not a high-fear night).",
-   "price": 7718.9,
-   "change": -6.3,
+   "price": 7721.2,
+   "change": -4.0,
    "entries": [],
    "spark": [
     [
@@ -6694,9 +6694,9 @@
     ],
     [
      "12:15 pm",
-     7718.9,
+     7721.2,
      7719.9,
-     7720.2,
+     7721.4,
      7717.4
     ]
    ],
@@ -6970,8 +6970,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "buy",
    "message": "1 paper trade today (1 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 12:00 am Dubai close. At most 2 trades a day.",
-   "price": 29446.6,
-   "change": -147.4,
+   "price": 29460.6,
+   "change": -133.4,
    "entries": [
     {
      "time": "3:04 am",
@@ -6996,7 +6996,7 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": -96.2,
+     "live": -82.2,
      "rwf": 0,
      "spread": 1.8,
      "spread_live": 1.8
@@ -7943,9 +7943,9 @@
     ],
     [
      "12:15 pm",
-     29446.6,
+     29460.6,
      29454.1,
-     29457.9,
+     29462.4,
      29435.7
     ]
    ],
@@ -7994,7 +7994,7 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": -96.2,
+       "live": -82.2,
        "rwf": 0,
        "spread": 1.8,
        "spread_live": 1.8
@@ -9519,7 +9519,7 @@
      "12:15 pm",
      1.33164,
      1.33156,
-     1.33168,
+     1.33178,
      1.33151
     ]
    ],
