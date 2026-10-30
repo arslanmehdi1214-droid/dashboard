@@ -2,10 +2,10 @@
  "balance": 1149.69,
  "balance_ccy": "AED",
  "day": {
-  "date": "2026-10-30",
-  "pl": 20.54,
-  "start_balance": 1129.15,
-  "start_equity": 1129.15,
+  "date": "2026-10-31",
+  "pl": 0.0,
+  "start_balance": 1149.69,
+  "start_equity": 1149.69,
   "stopped": false
  },
  "open_positions": 0,
@@ -171,6 +171,12 @@
    "side": "BUY",
    "state": "closed",
    "stop": 3964.58
+  },
+  "GOLD|2026-10-31|7:00 am|BUY|N2 near100": {
+   "at": "Sat 31 Oct 1:00 AM",
+   "market": "GOLD",
+   "state": "not entered",
+   "why": "desk trade seen 1080 min after entry, status stopped"
   },
   "OIL|2026-10-27|12:27 pm|BUY|Open \u00b1 \u00bd range": {
    "desk_price": 101.95,
