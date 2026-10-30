@@ -8,8 +8,8 @@
   "start_equity": 1129.15,
   "stopped": false
  },
- "open_positions": 0,
- "open_risk_aed": 0,
+ "open_positions": 3,
+ "open_risk_aed": 54.07,
  "risk_usd": 8.168822328114365,
  "trades": {
   "GBPUSD|2026-10-26|11:00 am|BUY|Layer 2 \u00b7 small traders crowded": {
@@ -157,6 +157,25 @@
    "side": "SELL",
    "state": "closed",
    "stop": 4067.89
+  },
+  "GOLD|2026-10-30|7:00 am|BUY|N2 near100": {
+   "desk_price": 3997.93,
+   "market": "GOLD",
+   "opened_at": "Fri 30 Oct 7:01 AM",
+   "part_x": 0.0,
+   "px_adj": 0.0,
+   "rest": {
+    "id": "00000000-6f75-52a9-0495-7fc60004511e",
+    "level": 3998.25,
+    "open": true,
+    "size": 0.36,
+    "tp": null
+   },
+   "risk_aed": 44.09,
+   "risk_usd": 12.25,
+   "side": "BUY",
+   "state": "open",
+   "stop": 3964.58
   },
   "OIL|2026-10-27|12:27 pm|BUY|Open \u00b1 \u00bd range": {
    "desk_price": 101.95,
@@ -335,6 +354,32 @@
    "side": "BUY",
    "state": "closed",
    "stop": 29313.4
+  },
+  "US100|2026-10-30|7:00 am|SELL|H1 U5 only when 5d trend against": {
+   "desk_price": 28764.1,
+   "market": "US100",
+   "opened_at": "Fri 30 Oct 7:01 AM",
+   "part": {
+    "id": "00000000-6f75-52b4-0495-7fc60004511e",
+    "level": 28752.3,
+    "open": true,
+    "size": 0.002,
+    "tp": 28688.6
+   },
+   "part_x": 0.15,
+   "px_adj": 0.0,
+   "rest": {
+    "id": "00000000-6f75-52c3-0495-7fc60004511e",
+    "level": 28752.8,
+    "open": true,
+    "size": 0.016,
+    "tp": null
+   },
+   "risk_aed": 9.98,
+   "risk_usd": 2.72,
+   "side": "SELL",
+   "state": "open",
+   "stop": 28915.1
   },
   "US500|2026-10-26|5:40 pm|BUY|S&P 9:40 am New York opening move": {
    "desk_price": 7660.3,
@@ -587,6 +632,19 @@
    "side": "SELL",
    "state": "closed",
    "stop": 158.401
+  },
+  "USDJPY|2026-10-30|7:00 am|SELL|Heikin-Ashi 7am": {
+   "desk_price": 157.577,
+   "market": "USDJPY",
+   "opened_at": "Fri 30 Oct 7:01 AM",
+   "part_x": 1.0,
+   "px_adj": 0.0,
+   "risk_aed": 8.66,
+   "risk_usd": 2.72,
+   "side": "SELL",
+   "state": "not entered",
+   "stop": 158.196,
+   "why": "rejected by Capital.com"
   }
  },
  "untracked_seen": {}
