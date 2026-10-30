@@ -258,12 +258,12 @@
      "layer": 2,
      "price": 1.33938,
      "entry": 1.33938,
-     "stop": 1.33199,
+     "stop": 1.33988,
      "stop0": 1.33199,
      "stop_pips": 73.9,
      "mode": "calm",
      "lock_px": 1.34197,
-     "locked": false,
+     "locked": true,
      "half_px": 1.34677,
      "half": false,
      "part": 1.0,
@@ -275,9 +275,9 @@
      "res": null,
      "res_sized": null,
      "r": null,
-     "live": 23.8,
+     "live": 26.3,
      "spread": 1.5,
-     "next": "Hold \u00b7 stop 1.33199 \u00b7 target 1.34677 \u00b7 when price reaches 1.34197, MOVE THE STOP to 1.33988 (entry + 5 pips) \u00b7 no half-close \u00b7 closes at 12:45 am Dubai"
+     "next": "Hold \u00b7 stop MOVED to 1.33988 (entry + 5 pips, locked) \u00b7 target 1.34677 (close the WHOLE trade there) \u00b7 closes at 12:45 am Dubai"
     }
    ],
    "final": false,
