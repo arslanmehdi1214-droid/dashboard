@@ -1,5 +1,5 @@
 {
- "updated": "Fri 30 Oct \u00b7 11:00 am",
+ "updated": "Fri 30 Oct \u00b7 11:01 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -20,9 +20,9 @@
    "feed_error": false,
    "state": "buy",
    "message": "BUY day \u2014 up to 2 BUY trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 11:50 pm Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 3982.67,
+   "price": 3983.35,
    "close_at": "11:50 pm",
-   "change": -39.94,
+   "change": -39.26,
    "size": 0.1,
    "datr": 65.7,
    "open_now": 1,
@@ -806,6 +806,13 @@
      3982.46,
      3984.98,
      3981.41
+    ],
+    [
+     "11:00 am",
+     3983.35,
+     3982.64,
+     3983.35,
+     3981.78
     ]
    ],
    "history": [
@@ -1050,8 +1057,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 50.783,
-   "change": -1.363,
+   "price": 50.758,
+   "change": -1.388,
    "entries": [],
    "spark": [
     [
@@ -1809,6 +1816,13 @@
      50.82,
      50.857,
      50.729
+    ],
+    [
+     "11:00 am",
+     50.758,
+     50.785,
+     50.812,
+     50.756
     ]
    ],
    "journal": {
@@ -1942,8 +1956,8 @@
    "net_label": "Net R / $ at $100 risk (v1.05 sizes)",
    "state": "sell",
    "message": "PAPER SELL day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 3:00 pm Dubai close.",
-   "price": 157.665,
-   "change_pips": 5.7,
+   "price": 157.667,
+   "change_pips": 5.9,
    "atr_pips": 81.2,
    "entries": [
     {
@@ -2725,6 +2739,13 @@
      157.596,
      157.704,
      157.589
+    ],
+    [
+     "11:00 am",
+     157.667,
+     157.664,
+     157.695,
+     157.645
     ]
    ],
    "journal": {
@@ -3859,7 +3880,7 @@
     }
    ],
    "feed_error": false,
-   "live_spread_pips": 1.0,
+   "live_spread_pips": 1.2,
    "history_note": "history to 2026-10-29 (300 days)"
   },
   "DE40": {
@@ -3898,8 +3919,8 @@
    "net_label": "Net $ per barrel (v1.07)",
    "state": "buy",
    "message": "PAPER BUY day \u2014 v1.07: no more trades today (a buy only as the day's first trade). Close 25% at the part level, then move the stop to entry; everything closes at 9:00 pm Dubai. No new trades after 5:30 pm (one late first trade allowed).",
-   "price": 102.02,
-   "change": 0.03,
+   "price": 102.135,
+   "change": 0.15,
    "entries": [
     {
      "time": "5:43 am",
@@ -4680,6 +4701,13 @@
      102.08,
      102.09,
      101.93
+    ],
+    [
+     "11:00 am",
+     102.14,
+     102.03,
+     102.19,
+     102.03
     ]
    ],
    "journal": {
@@ -5454,7 +5482,7 @@
    ],
    "feed_error": false,
    "epic": "OIL_CRUDE",
-   "live_spread": 0.032,
+   "live_spread": 0.047,
    "history_note": "history to 2026-10-29 (60 days)"
   },
   "US500": {
@@ -6323,6 +6351,13 @@
      7655.5,
      7656.6,
      7654.4
+    ],
+    [
+     "11:00 am",
+     7656.4,
+     7656.5,
+     7656.6,
+     7655.1
     ]
    ],
    "journal": {
@@ -6644,8 +6679,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "sell",
    "message": "1 paper trade today (1 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 11:50 pm Dubai close. At most 2 trades a day.",
-   "price": 28848.7,
-   "change": -184.9,
+   "price": 28836.1,
+   "change": -197.5,
    "entries": [
     {
      "time": "7:00 am",
@@ -6670,10 +6705,10 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": -28.8,
+     "live": -24.6,
      "rwf": null,
      "spread": 1.8,
-     "spread_live": 1.8
+     "spread_live": 2.4
     }
    ],
    "spark": [
@@ -7509,6 +7544,13 @@
      28851.5,
      28855.8,
      28831.3
+    ],
+    [
+     "11:00 am",
+     28836.1,
+     28849.2,
+     28849.5,
+     28830.5
     ]
    ],
    "journal": {
@@ -7556,10 +7598,10 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": -28.8,
+       "live": -24.6,
        "rwf": null,
        "spread": 1.8,
-       "spread_live": 1.8
+       "spread_live": 2.4
       }
      ],
      "final": false
@@ -8138,14 +8180,43 @@
    "what_note": "Tracks whether live GBP/USD signals do as well as the v1.04 MT4 test. The auto-trader places each trade on the Capital.com demo (from 27 Oct). Decision after about 3 months.",
    "cost_note": "Results are pips per trade after the spread (at least 1.5 pips). 0.01 lot = 1,000 units = $0.10 per pip.",
    "net_label": "Net pips (v1.04 rules)",
-   "state": "none",
+   "state": "buy",
    "mode": "calm",
    "regime": 0.356,
    "gap": null,
-   "message": "No trade today: no price bar between 11:00 am and 11:05 am Dubai.",
-   "price": 1.33936,
-   "change": 0.00188,
-   "entries": [],
+   "message": "PAPER BUY at 1.33938 (11:00 am Dubai). Stop 1.33199, target 1.34677 - close the WHOLE trade at the target; otherwise it closes at 12:45 am Dubai. CALM day: when price reaches 1.34197, move the stop to 1.33988 (entry + 5 pips).",
+   "price": 1.33945,
+   "change": 0.00197,
+   "entries": [
+    {
+     "time": "11:00 am",
+     "side": "BUY",
+     "name": "Layer 2 \u00b7 small traders crowded",
+     "layer": 2,
+     "price": 1.33938,
+     "entry": 1.33938,
+     "stop": 1.33199,
+     "stop0": 1.33199,
+     "stop_pips": 73.9,
+     "mode": "calm",
+     "lock_px": 1.34197,
+     "locked": false,
+     "half_px": 1.34677,
+     "half": false,
+     "part": 1.0,
+     "size": "full",
+     "status": "open",
+     "exit": null,
+     "exit_time": null,
+     "pips": null,
+     "res": null,
+     "res_sized": null,
+     "r": null,
+     "live": -0.8,
+     "spread": 1.5,
+     "next": "Hold \u00b7 stop 1.33199 \u00b7 target 1.34677 \u00b7 when price reaches 1.34197, MOVE THE STOP to 1.33988 (entry + 5 pips) \u00b7 no half-close \u00b7 closes at 12:45 am Dubai"
+    }
+   ],
    "spark": [
     [
      "1:05 am",
@@ -8979,14 +9050,21 @@
      1.33912,
      1.33948,
      1.33906
+    ],
+    [
+     "11:00 am",
+     1.33945,
+     1.33938,
+     1.33947,
+     1.33926
     ]
    ],
    "journal": {
     "since": "26 Oct 2026",
     "weekdays": 5,
-    "trades": 4,
-    "days": 80.0,
-    "perday": 0.8,
+    "trades": 5,
+    "days": 100.0,
+    "perday": 1.0,
     "closed": 4,
     "win": 0.0,
     "inprofit": 50.0,
@@ -9001,15 +9079,52 @@
      "date": "2026-10-30",
      "rules": "v1.04",
      "label": "Fri 30 Oct",
-     "side": null,
-     "trades": [],
+     "side": "BUY",
+     "trades": [
+      {
+       "time": "11:00 am",
+       "side": "BUY",
+       "name": "Layer 2 \u00b7 small traders crowded",
+       "layer": 2,
+       "price": 1.33938,
+       "entry": 1.33938,
+       "stop": 1.33199,
+       "stop0": 1.33199,
+       "stop_pips": 73.9,
+       "mode": "calm",
+       "lock_px": 1.34197,
+       "locked": false,
+       "half_px": 1.34677,
+       "half": false,
+       "part": 1.0,
+       "size": "full",
+       "status": "open",
+       "exit": null,
+       "exit_time": null,
+       "pips": null,
+       "res": null,
+       "res_sized": null,
+       "r": null,
+       "live": -0.8,
+       "spread": 1.5,
+       "next": "Hold \u00b7 stop 1.33199 \u00b7 target 1.34677 \u00b7 when price reaches 1.34197, MOVE THE STOP to 1.33988 (entry + 5 pips) \u00b7 no half-close \u00b7 closes at 12:45 am Dubai"
+      }
+     ],
      "final": false,
      "code": 2,
      "report": "2026-10-20",
      "mode": "calm",
      "regime": 0.356,
      "gap": null,
-     "code_before_gap": 2
+     "code_before_gap": 2,
+     "frozen": {
+      "code": 2,
+      "A": 0.007385714285714297,
+      "k": 1.0,
+      "t": 1.0,
+      "lock": true,
+      "mode": "calm"
+     }
     },
     {
      "date": "2026-10-29",
