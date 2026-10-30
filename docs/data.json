@@ -1,5 +1,5 @@
 {
- "updated": "Fri 30 Oct \u00b7 8:52 am",
+ "updated": "Fri 30 Oct \u00b7 8:53 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -20,9 +20,9 @@
    "feed_error": false,
    "state": "buy",
    "message": "BUY day \u2014 up to 2 BUY trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 11:50 pm Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 3994.52,
+   "price": 3994.41,
    "close_at": "11:50 pm",
-   "change": -28.09,
+   "change": -28.2,
    "size": 0.1,
    "datr": 65.7,
    "open_now": 1,
@@ -627,7 +627,7 @@
     ],
     [
      "8:50 am",
-     3994.52,
+     3994.41,
      3993.5,
      3994.94,
      3993.11
@@ -875,8 +875,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 51.304,
-   "change": -0.842,
+   "price": 51.311,
+   "change": -0.835,
    "entries": [],
    "spark": [
     [
@@ -1455,9 +1455,9 @@
     ],
     [
      "8:50 am",
-     51.304,
+     51.311,
      51.287,
-     51.33,
+     51.333,
      51.266
     ]
    ],
@@ -1592,8 +1592,8 @@
    "net_label": "Net R / $ at $100 risk (v1.05 sizes)",
    "state": "sell",
    "message": "PAPER SELL day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 3:00 pm Dubai close.",
-   "price": 157.421,
-   "change_pips": -18.7,
+   "price": 157.425,
+   "change_pips": -18.3,
    "atr_pips": 81.2,
    "entries": [
     {
@@ -2196,7 +2196,7 @@
     ],
     [
      "8:50 am",
-     157.421,
+     157.425,
      157.41,
      157.427,
      157.398
@@ -3373,8 +3373,8 @@
    "net_label": "Net $ per barrel (v1.07)",
    "state": "buy",
    "message": "PAPER BUY day \u2014 v1.07: no more trades today (a buy only as the day's first trade). Close 25% at the part level, then move the stop to entry; everything closes at 9:00 pm Dubai. No new trades after 5:30 pm (one late first trade allowed).",
-   "price": 102.33,
-   "change": 0.34,
+   "price": 102.305,
+   "change": 0.32,
    "entries": [
     {
      "time": "5:43 am",
@@ -3976,10 +3976,10 @@
     ],
     [
      "8:50 am",
-     102.33,
+     102.31,
      102.47,
      102.5,
-     102.3
+     102.28
     ]
    ],
    "journal": {
@@ -4787,8 +4787,8 @@
    "net_label": "Net points (v1.04 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 5:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). No night trade today (not a high-fear night).",
-   "price": 7656.4,
-   "change": -17.4,
+   "price": 7655.6,
+   "change": -18.2,
    "entries": [],
    "spark": [
     [
@@ -5444,7 +5444,7 @@
     ],
     [
      "8:50 am",
-     7656.4,
+     7655.6,
      7654.6,
      7656.9,
      7653.9
@@ -5769,8 +5769,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "sell",
    "message": "1 paper trade today (1 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 11:50 pm Dubai close. At most 2 trades a day.",
-   "price": 28879.1,
-   "change": -154.5,
+   "price": 28875.5,
+   "change": -158.1,
    "entries": [
     {
      "time": "7:00 am",
@@ -5795,7 +5795,7 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": -38.9,
+     "live": -37.7,
      "rwf": null,
      "spread": 1.8,
      "spread_live": 1.8
@@ -6455,7 +6455,7 @@
     ],
     [
      "8:50 am",
-     28879.1,
+     28875.5,
      28871.1,
      28884.5,
      28863.8
@@ -6506,7 +6506,7 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": -38.9,
+       "live": -37.7,
        "rwf": null,
        "spread": 1.8,
        "spread_live": 1.8
