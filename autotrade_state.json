@@ -12,12 +12,6 @@
  "open_risk_aed": 0,
  "risk_usd": 8.168822328114365,
  "trades": {
-  "GBPUSD|2026-10-26|11:00 am|BUY|Layer 2 \u00b7 small traders crowded": {
-   "at": "Mon 26 Oct 11:26 AM",
-   "market": "GBPUSD",
-   "state": "not entered",
-   "why": "desk trade seen 27 min after entry, status open"
-  },
   "GBPUSD|2026-10-27|11:00 am|BUY|Layer 2 \u00b7 small traders crowded": {
    "desk_price": 1.33258,
    "market": "GBPUSD",
@@ -97,26 +91,6 @@
    "side": "BUY",
    "state": "closed",
    "stop": 1.33988
-  },
-  "GOLD|2026-10-26|7:00 am|BUY|N2 near100": {
-   "desk_price": 4000.26,
-   "market": "GOLD",
-   "opened_at": "Mon 26 Oct 7:01 AM",
-   "part_x": 0.0,
-   "px_adj": 0.0,
-   "rest": {
-    "closed_by": "desk: close_now",
-    "id": "00000000-6e1c-f23b-0495-7fc60004511e",
-    "level": 4003.47,
-    "open": false,
-    "size": 0.34,
-    "tp": null
-   },
-   "risk_aed": 44.0,
-   "risk_usd": 12.25,
-   "side": "BUY",
-   "state": "closed",
-   "stop": 3965.02
   },
   "GOLD|2026-10-27|7:00 am|SELL|N2 near100": {
    "desk_price": 4009.58,
@@ -264,34 +238,6 @@
    "state": "not entered",
    "why": "real risk 14.14 AED after lot rounding > 1.4x target 10.0 AED"
   },
-  "US100|2026-10-26|2:18 pm|BUY|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am": {
-   "desk_price": 29000.0,
-   "market": "US100",
-   "opened_at": "Mon 26 Oct 2:19 PM",
-   "part": {
-    "closed_by": "Capital.com stop/target",
-    "id": "00000000-6e1f-80bc-0495-7fc60004511e",
-    "level": 29004.4,
-    "open": false,
-    "size": 0.009,
-    "tp": 29112.4
-   },
-   "part_x": 0.25,
-   "px_adj": 0.0,
-   "rest": {
-    "closed_by": "desk: eod",
-    "id": "00000000-6e1f-80cb-0495-7fc60004511e",
-    "level": 29004.4,
-    "open": false,
-    "size": 0.028,
-    "tp": null
-   },
-   "risk_aed": 29.81,
-   "risk_usd": 8.17,
-   "side": "BUY",
-   "state": "closed",
-   "stop": 29161.6
-  },
   "US100|2026-10-27|2:47 pm|SELL|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am": {
    "desk_price": 29400.0,
    "market": "US100",
@@ -404,26 +350,6 @@
    "state": "closed",
    "stop": 28361.5
   },
-  "US500|2026-10-26|5:40 pm|BUY|S&P 9:40 am New York opening move": {
-   "desk_price": 7660.3,
-   "market": "US500",
-   "opened_at": "Mon 26 Oct 5:41 PM",
-   "part_x": 0.0,
-   "px_adj": 0.0,
-   "rest": {
-    "closed_by": "desk: eod",
-    "id": "00000000-6e73-9a15-0495-7fc60004511e",
-    "level": 7653.0,
-    "open": false,
-    "size": 0.13,
-    "tp": null
-   },
-   "risk_aed": 28.36,
-   "risk_usd": 8.17,
-   "side": "BUY",
-   "state": "closed",
-   "stop": 7600.9
-  },
   "US500|2026-10-28|5:40 pm|SELL|S&P 9:40 am New York opening move": {
    "desk_price": 7731.7,
    "market": "US500",
@@ -483,26 +409,6 @@
    "side": "SELL",
    "state": "closed",
    "stop": 7693.0
-  },
-  "USDJPY|2026-10-26|7:00 am|SELL|Heikin-Ashi 7am": {
-   "desk_price": 156.728,
-   "market": "USDJPY",
-   "opened_at": "Mon 26 Oct 7:01 AM",
-   "part": {
-    "closed_by": "Capital.com stop/target",
-    "id": "00000000-6e1c-f24d-0495-7fc60004511e",
-    "level": 156.715,
-    "open": false,
-    "size": 600.0,
-    "tp": 156.697
-   },
-   "part_x": 1.0,
-   "px_adj": 0.0,
-   "risk_aed": 8.62,
-   "risk_usd": 2.72,
-   "side": "SELL",
-   "state": "closed",
-   "stop": 157.341
   },
   "USDJPY|2026-10-27|7:00 am|BUY|Heikin-Ashi 7am": {
    "desk_price": 157.698,
