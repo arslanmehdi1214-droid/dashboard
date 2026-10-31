@@ -113,7 +113,7 @@ svg.eq{display:block;width:100%;height:56px;margin:12px 0}
 .rp-n{font:700 11px var(--mono);font-style:normal;background:#b98a63;color:#fff;border-radius:9px;padding:1px 7px}
 .rp-kv{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line);font:500 13px Inter;color:var(--dim)}.rp-kv b{color:var(--ink);font:600 13px var(--mono)}
 .rp-tab{font:500 12.5px Inter}.rp-tr{display:grid;grid-template-columns:90px 50px 100px 1fr 80px 110px 120px;gap:8px;padding:9px 4px;border-bottom:1px solid var(--line);align-items:center}.rp-tr .r{text-align:right}
-.rp-tk{grid-template-columns:90px 50px 1.2fr 1.3fr 100px 110px}.rp-hd{font:500 11px Inter;color:var(--dim)}
+.rp-tk{grid-template-columns:90px 50px 1.2fr 1.3fr 100px 110px}.rp-hd{font:500 11px Inter;color:var(--dim)}.rp-total{display:flex;justify-content:flex-end;align-items:center;gap:8px;padding:10px 4px 2px;border-top:1px solid var(--line);font:600 13px Inter}.rp-total span{color:var(--dim);font-weight:500}
 .rp-sz{font:700 11px var(--mono);font-style:normal;color:#fff;border-radius:4px;padding:1px 5px;margin-left:4px}.rp-sz.b{background:#2f8f63}.rp-sz.s{background:#d9534f}
 .rp-ttl{margin:0;font:700 15px Inter;color:var(--ink);width:100%}
 .rp-sel{background:#0b0c0f;border:1px solid var(--line);color:var(--ink);border-radius:9px;padding:7px 10px;font:600 12.5px Inter;cursor:pointer}
@@ -684,9 +684,10 @@ ${one?'':`<div class="rp-card"><div class="rp-h"><h4>Your markets</h4><select da
 function rTrans(R){
  if(!R.length)return '<div class="dim" style="padding:14px 0">No closed trades in this period</div>';
  let bal=0;const rows=R.map(r=>{bal+=r.aed;return {...r,bal}}).reverse(),show=HAM?rows:rows.slice(0,40);let last='';
+ const total=R.reduce((s,r)=>s+r.aed,0);
  return `<div class="rp-tab"><div class="rp-tr rp-hd"><span>Date</span><span>Time</span><span>Type</span><span>Market</span><span>Target</span><span class="r">Result</span><span class="r">Running total</span></div>`+
   show.map(r=>{const dl=rD(r.cl),dd=dl===last?'':dl;last=dl;return `<div class="rp-tr"><span>${dd}</span><span class="num dim">${rT(r.cl)}</span><span>Trade closed</span><span>${r.m.n}${r.has?`<em class="rp-tm ${r.hit?'pos':'dim'}">${r.hit?'target ✓':'target ✗'}</em>`:r.phas?`<em class="rp-tm dim">${r.phit?'part ✓':'part ✗'}</em>`:''}</span><span class="dim">${r.has?(r.hit?'<b class="pos">hit ✓</b>':'not hit'):r.phas?'part only':'—'}</span><span class="r">${rA(r.aed)}</span><span class="r num">${r.bal<0?'−':''}AED${f(Math.abs(r.bal),2)}</span></div>`}).join('')+
-  `</div>`+(rows.length>40?`<button class="hmore" data-amore>${HAM?'Show newest 40':'Show all '+rows.length}</button>`:'')}
+  `</div><div class="rp-total"><span>Total</span>${rA(total)}</div>`+(rows.length>40?`<button class="hmore" data-amore>${HAM?'Show newest 40':'Show all '+rows.length}</button>`:'')}
 function rTrades(R){
  const E=[];R.forEach(r=>{if(r.op)E.push({at:r.op,r,ty:'Trade opened',px:r.t.price,res:null,sz:rSz(r.t)});E.push({at:r.cl,r,ty:rWhy(r.t),px:r.t.exit,res:r.aed,sz:rSz({...r.t,side:r.t.side==='BUY'?'SELL':'BUY'})})});
  if(!E.length)return '<div class="dim" style="padding:14px 0">No trades in this period</div>';
