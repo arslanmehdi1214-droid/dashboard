@@ -2,7 +2,7 @@
  "balance": 1149.69,
  "balance_ccy": "AED",
  "day": {
-  "date": "2026-10-31",
+  "date": "2026-11-01",
   "pl": 0.0,
   "start_balance": 1149.69,
   "start_equity": 1149.69,
@@ -12,26 +12,6 @@
  "open_risk_aed": 0,
  "risk_usd": 8.168822328114365,
  "trades": {
-  "GBPUSD|2026-10-27|11:00 am|BUY|Layer 2 \u00b7 small traders crowded": {
-   "desk_price": 1.33258,
-   "market": "GBPUSD",
-   "opened_at": "Tue 27 Oct 11:01 AM",
-   "part": {
-    "closed_by": "desk: eod",
-    "id": "00000000-6e7a-89d4-0495-7fc60004511e",
-    "level": 1.33252,
-    "open": false,
-    "size": 1100.0,
-    "tp": 1.33984
-   },
-   "part_x": 1.0,
-   "px_adj": 0.0,
-   "risk_aed": 29.57,
-   "risk_usd": 8.17,
-   "side": "BUY",
-   "state": "closed",
-   "stop": 1.32526
-  },
   "GBPUSD|2026-10-28|11:00 am|BUY|Layer 2 \u00b7 small traders crowded": {
    "desk_price": 1.3279,
    "market": "GBPUSD",
@@ -91,26 +71,6 @@
    "side": "BUY",
    "state": "closed",
    "stop": 1.33988
-  },
-  "GOLD|2026-10-27|7:00 am|SELL|N2 near100": {
-   "desk_price": 4009.58,
-   "market": "GOLD",
-   "opened_at": "Tue 27 Oct 7:01 AM",
-   "part_x": 0.0,
-   "px_adj": 0.0,
-   "rest": {
-    "closed_by": "Capital.com stop/target",
-    "id": "00000000-6e79-9d09-0495-7fc60004511e",
-    "level": 4008.72,
-    "open": false,
-    "size": 0.23,
-    "tp": null
-   },
-   "risk_aed": 28.9,
-   "risk_usd": 8.17,
-   "side": "SELL",
-   "state": "closed",
-   "stop": 4043.79
   },
   "GOLD|2026-10-28|4:21 pm|SELL|FILL range fade": {
    "desk_price": 4056.35,
@@ -178,25 +138,11 @@
    "state": "not entered",
    "why": "desk trade seen 1080 min after entry, status stopped"
   },
-  "OIL|2026-10-27|12:27 pm|BUY|Open \u00b1 \u00bd range": {
-   "desk_price": 101.95,
-   "market": "OIL",
-   "opened_at": "Tue 27 Oct 12:28 PM",
-   "part_x": 0.25,
-   "px_adj": 0.0,
-   "rest": {
-    "closed_by": "desk: close_now",
-    "id": "00000000-6e7b-1f2a-0495-7fc60004511e",
-    "level": 102.043,
-    "open": false,
-    "size": 1.0,
-    "tp": null
-   },
-   "risk_aed": 13.96,
-   "risk_usd": 2.72,
-   "side": "BUY",
-   "state": "closed",
-   "stop": 98.15
+  "GOLD|2026-11-01|7:00 am|BUY|N2 near100": {
+   "at": "Sun 1 Nov 8:26 AM",
+   "market": "GOLD",
+   "state": "not entered",
+   "why": "desk trade seen 86 min after entry, status stopped"
   },
   "OIL|2026-10-28|11:01 am|BUY|Open \u00b1 \u00bd range": {
    "desk_price": 101.17,
@@ -243,34 +189,6 @@
    "market": "OIL",
    "state": "not entered",
    "why": "real risk 14.14 AED after lot rounding > 1.4x target 10.0 AED"
-  },
-  "US100|2026-10-27|2:47 pm|SELL|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am": {
-   "desk_price": 29400.0,
-   "market": "US100",
-   "opened_at": "Tue 27 Oct 2:48 PM",
-   "part": {
-    "closed_by": "Capital.com stop/target",
-    "id": "00000000-6e7c-222f-0495-7fc60004511e",
-    "level": 29371.9,
-    "open": false,
-    "size": 0.002,
-    "tp": 29328.4
-   },
-   "part_x": 0.15,
-   "px_adj": 0.0,
-   "rest": {
-    "closed_by": "Capital.com stop/target",
-    "id": "00000000-6e7c-2245-0495-7fc60004511e",
-    "level": 29372.4,
-    "open": false,
-    "size": 0.017,
-    "tp": null
-   },
-   "risk_aed": 10.0,
-   "risk_usd": 2.72,
-   "side": "SELL",
-   "state": "closed",
-   "stop": 29543.3
   },
   "US100|2026-10-28|2:48 pm|SELL|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am": {
    "desk_price": 29800.0,
@@ -415,26 +333,6 @@
    "side": "SELL",
    "state": "closed",
    "stop": 7693.0
-  },
-  "USDJPY|2026-10-27|7:00 am|BUY|Heikin-Ashi 7am": {
-   "desk_price": 157.698,
-   "market": "USDJPY",
-   "opened_at": "Tue 27 Oct 7:01 AM",
-   "part": {
-    "closed_by": "desk: target",
-    "id": "00000000-6e79-9d14-0495-7fc60004511e",
-    "level": 157.718,
-    "open": false,
-    "size": 600.0,
-    "tp": 157.747
-   },
-   "part_x": 1.0,
-   "px_adj": 0.0,
-   "risk_aed": 8.82,
-   "risk_usd": 2.72,
-   "side": "BUY",
-   "state": "closed",
-   "stop": 157.067
   },
   "USDJPY|2026-10-28|2:24 am|BUY|Week-so-far break": {
    "desk_price": 157.969,
