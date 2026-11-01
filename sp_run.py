@@ -15,10 +15,13 @@ PICK_LATE = pd.Timedelta(minutes=3)   # 22 Oct fix: a Nasdaq pick first seen mor
 EPIC = os.environ.get('CAPITAL_EPIC_SP', 'US500')
 MIN_SPREAD = S.COST                   # the paper result never uses less than 0.8 index points per leg (as in the MT4 test)
 PASS = dict(green=40.0, pf=1.15, months=3)
-RULES = 'v1.04'
-BACKTEST = dict(direction='—', days='44.5% profit days / 87% traded', perday='1.37', win='53.4%', pf='1.32', net='+$16,896 at $100 risk per leg',
+RULES = 'v1.07'
+BACKTEST_104 = dict(direction='—', days='44.5% profit days / 87% traded', perday='1.37', win='53.4%', pf='1.32', net='+$16,896 at $100 risk per leg',
                 source='MT4 test SP500_DAYTRADE v1.04 (his run 24 Oct, spread 0.8 pt), 2020-01-01..2026-09-30, 2,416 trades (2,135 day + 281 night); '
                        'worst day -$315; net/DD 8.83; max DD $1,914')
+BACKTEST = dict(direction='—', days='49.87% profit days (n=1,554 days)', perday='—', win='—', pf='—', net='+$13,939.21 at $100 risk per leg',
+                source='MT4 test SP500_DAYTRADE v1.07 (his run 1 Nov, Magic 500109, spread 18, Every tick), 2019.10.12-2026.10.10, 2,362 trades; '
+                       'max DD $2,377.37 (0.24%); net/DD 5.86; row18=1 (night leg Mon/Tue/Wed only), row19=1.0 (night stop mult, was 2.0), row20=true (Turn-of-Month day leg)')
 CBOE = os.path.join(HERE, 'docs', 'cboe_sp.json')          # v1.04: the day's high-fear flag (decided once per broker day)
 CBOE_URL = 'https://cdn.cboe.com/api/global/us_indices/daily_prices/{}_History.csv'
 CBOE_Q = 'https://cdn.cboe.com/api/global/delayed_quotes/quotes/_{}.json'
@@ -196,7 +199,7 @@ def row(t, b, now, sp):
     live = None
     if st == 'open' and len(b):
         pxn = float(b.c.values[-1]); live = round(t['dir'] * (pxn - t['entry']) - sp, 1)
-    return dict(time=dubai(t['t']), side='BUY' if t['dir'] == 1 else 'SELL', name=t['name'], src='Night' if nite else ('Nasdaq' if t['src'] == 0 else 'S&P'), leg=t['leg'], night=nite,
+    return dict(time=dubai(t['t']), side='BUY' if t['dir'] == 1 else 'SELL', name=t['name'], src='Night' if nite else ('TOM' if t['src'] == 2 else ('Nasdaq' if t['src'] == 0 else 'S&P')), leg=t['leg'], night=nite,
                 price=round(t['entry'], 1), entry=round(t['entry'], 1), stop=round(t['stop'], 1), stop0=round(t['stop0'], 1), stop_pts=round(t['sd'], 1),
                 half_px=None, half=False, size='full', status=st,
                 exit=None if t['exit'] is None else round(t['exit'], 1), exit_time=None if t['exit_t'] is None else dubai(t['exit_t']),
@@ -222,12 +225,14 @@ def base_card(A=None):
             ' · no half-close · the day\'s first signal sets BUY or SELL, later signals the same way add (max 3 trades) · v1.04: no 2nd/3rd trade from '
             '11:00 am New York or once the day is up half a stop · signals: Nasdaq desk signals copied in US hours + S&P 9:40 am New York move, yesterday '
             'high/low sweep, big move by 10 am New York · close 3:30 pm New York · NIGHT trade on high-fear nights (VIX above VIX3M, or VIX / VVIX in '
-            'their 1-year top 10%): BUY 6:01 pm New York, stop 2 x range, close 10:00 am New York')
+            'their 1-year top 10%): BUY 6:01 pm New York (v1.07: Mon/Tue/Wed broker-days only), stop 1 x range (v1.07, was 2x), close 10:00 am New York · '
+            'v1.07 TURN-OF-MONTH: on the last broker weekday of the month and the first 3 of the next, BUY 9:30 am New York, stop 0.75 x range, close 3:30 pm '
+            'New York - only on a day with no other S&P trade')
     return dict(code='US500', name='S&P 500', symbol='US500 · Capital.com US 500', live=False, paper=True, status='Paper', version=RULES,
                 unit='pts', dp=1, stats=BACKTEST, pass_bar=PASS, day_note=note,
-                what_note='Tracks whether live S&P signals do as well as the v1.04 MT4 test. Decision after about 3 months.',
+                what_note='Tracks whether live S&P signals do as well as the v1.07 MT4 test. Decision after about 3 months.',
                 cost_note='Results are index points per trade after 0.8 points of cost (Capital.com spread + slippage).',
-                net_label='Net points (v1.04 rules)')
+                net_label='Net points (v1.07 rules)')
 
 def picks_for(day, now, jd, record=True):
     """Today's Nasdaq desk picks [(nasdaq minute, side)] (22 Oct fix). Each pick's FIRST-SEEN time is kept in the journal day (picks_seen);
@@ -282,7 +287,9 @@ def compute(hist, b, day, now, picks, sp, jd):
     A, pH, pL = S.day_ctx(hist[hist.index < day].iloc[-40 * 1500:], day)
     legs = legs_now(b[['o', 'h', 'l', 'c']], A, pH, pL, picks, day, bool(now >= eod), jd)
     trades = S.manage(b[['o', 'h', 'l', 'c']], legs, A, day, sp, now_done=bool(now >= eod))
-    if jd.get('stress'): trades = S.night_leg(b[['o', 'h', 'l', 'c']], A, day, sp, now_done=bool(now >= eod)) + trades     # v1.04 night leg
+    if jd.get('stress'): trades = S.night_leg(b[['o', 'h', 'l', 'c']], A, day, sp, now_done=bool(now >= eod)) + trades     # v1.04 night leg (v1.07: Mon/Tue/Wed only, stop 1.0x range - gated above)
+    if not trades and S.tom_window(day) and np.isfinite(A) and now.hour * 60 + now.minute >= S.TOM_DECIDE:
+        trades = S.tom_leg(b[['o', 'h', 'l', 'c']], A, day, sp, now_done=bool(now >= eod)) + trades                        # v1.07 row20: only once no other S&P leg has fired by 17:00 broker
     for t in trades:                                     # past the close time but no bar there yet: close at the last price
         xt_ = day + pd.Timedelta(minutes=S.NIGHT_OUT) if t.get('night') else xt
         if t['status'] == 'open' and now >= xt_ + pd.Timedelta(minutes=1) and len(b):
@@ -340,8 +347,12 @@ def main(feed=None, get=None, now=None):
     picks, pnote, pstale = picks_for(day, now, jd)
     stress, cinfo = stress_today(day, now)               # v1.04: decided once per day; only a decision made by 01:06 broker can open the night leg
     if 'stress' not in jd and stress is not None:
-        jd['stress'] = bool(stress) and (now.hour * 60 + now.minute <= S.NIGHT_IN + 5)
-        if stress and not jd['stress']: jd['stress_note'] = 'high-fear night, but the check ran after 6:06 pm New York - no night trade'
+        ok_time = now.hour * 60 + now.minute <= S.NIGHT_IN + 5
+        ok_day = day.dayofweek <= S.NIGHT_DOW_MAX                      # v1.07 row18: night leg only Mon/Tue/Wed
+        jd['stress'] = bool(stress) and ok_time and ok_day
+        if stress and not jd['stress']:
+            jd['stress_note'] = ('high-fear night, but the check ran after 6:06 pm New York - no night trade' if not ok_time
+                                 else 'high-fear night, but v1.07 only trades the night leg Mon/Tue/Wed - no night trade')
     trades = compute(hist, b, day, now, picks, sp, jd)
     freeze_legs(jd, trades)
     rows = [row(t, b, now, sp) for t in trades]; drows = [r for r in rows if not r.get('night')]; nrow = [r for r in rows if r.get('night')]

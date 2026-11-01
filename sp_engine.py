@@ -24,7 +24,10 @@ SM = 0.75; LEGS = 3; MOM_K = 0.05; SWEEP_X = 0.1; SWEEP_W = 30; K4_X = 0.8
 X_MIN = 22 * 60 + 30; LAST_MIN = X_MIN - 5; US_LO = 16 * 60 + 30; US_HI = 22 * 60; END_H = 19
 COST = 0.8
 LATE_MIN = 18 * 60; GREEN_R = 0.5                                     # v1.04 day rules (rows 17 / 16 of the EA)
-NIGHT_IN = 61; NIGHT_OUT = 17 * 60; NIGHT_SM = 2.0                    # v1.04 night leg
+NIGHT_IN = 61; NIGHT_OUT = 17 * 60; NIGHT_SM = 1.0                    # v1.04 night leg entry/exit; stop mult 1.0x range from v1.07 row19 (was 2.0x)
+NIGHT_DOW_MAX = 2                                                     # v1.07 row18: night leg only broker-day Mon(0)/Tue(1)/Wed(2)
+TOM_IN = 16 * 60 + 30; TOM_DECIDE = 17 * 60; TOM_SM = 0.75            # v1.07 row20: Turn-of-Month day leg (entry price marker 16:30;
+                                                                       # opened only once no other S&P leg has fired by 17:00 broker, so it never stacks with an early day/night leg)
 
 def eod_minutes(day): return 22 * 60 + 50 if pd.Timestamp(day).dayofweek == 4 else 23 * 60
 
@@ -143,6 +146,34 @@ def night_leg(b, A, day, sp=COST, entry_min=NIGHT_IN, exit_min=NIGHT_OUT, now_do
     return [dict(j=j, dir=1, src=1, name='Night long (high-fear night: VIX / VVIX)', leg=0, night=True, t=b.index[j], entry=float(en), stop=float(stp),
                  stop0=float(stp), sd=float(sd), A=float(A), status=st, exit=None if ex is None else float(ex), exit_t=None if ext is None else b.index[ext],
                  pts=pts, r=None if pts is None else pts / sd, r_now=((C[n - 1] - en) - sp) / sd if n else None)]
+
+def tom_window(day):
+    """v1.07 row20: True if `day` (a weekday) is the last broker weekday of its month, or one of the first 3 broker weekdays of its month -
+    the classic turn-of-month window (Ariel 1987 / Lakonishok-Smidt 1988), applied per calendar month."""
+    d = pd.Timestamp(day).normalize()
+    if d.dayofweek >= 5: return False
+    month_start = d.replace(day=1); next_month_start = month_start + pd.offsets.MonthBegin(1)
+    if d == pd.bdate_range(end=next_month_start - pd.Timedelta(days=1), periods=1)[0]: return True
+    return d in pd.bdate_range(start=month_start, periods=3)
+
+def tom_leg(b, A, day, sp=COST, entry_min=TOM_IN, exit_min=X_MIN, now_done=False):
+    """v1.07 row20 Turn-of-Month day leg (call only in tom_window(day), and only once no other S&P leg has fired today by TOM_DECIDE -
+    see compute() in sp_run.py): BUY at the first bar at/after 16:30 broker, stop 0.75 x 14-day range, exit at the open of the first bar
+    at/after 22:30 broker (or day end). One leg per day, no half-close - same shape as night_leg()."""
+    if not len(b) or not np.isfinite(A): return []
+    O, H, L, C = (b[c].values.astype(float) for c in 'ohlc'); hm = (b.index.hour * 60 + b.index.minute).values; n = len(O)
+    j = _first_bar(hm, entry_min)
+    if j < 0: return []
+    en = O[j]; sd = TOM_SM * A; stp = en - sd; st = 'open'; ex = None; ext = None
+    for m in range(j, n):
+        if m > j and hm[m] >= exit_min: st, ex, ext = 'eod', O[m], m; break
+        if L[m] <= stp: st, ex, ext = 'stopped', stp, m; break
+    if st == 'open' and now_done: st, ex, ext = 'eod', C[n - 1], n - 1
+    pts = None if ex is None else (ex - en) - sp
+    return [dict(j=j, dir=1, src=2, name='Turn-of-month long (last/first broker days of the month)', leg=0, night=False, tom=True, t=b.index[j],
+                 entry=float(en), stop=float(stp), stop0=float(stp), sd=float(sd), A=float(A), status=st, exit=None if ex is None else float(ex),
+                 exit_t=None if ext is None else b.index[ext], pts=pts, r=None if pts is None else pts / sd,
+                 r_now=((C[n - 1] - en) - sp) / sd if n else None)]
 
 def manage(b, legs, A, day, sp=COST, now_done=True):
     """Walk each leg through today's closed bars. status: open / stopped / eod. r = result in units of the stop after the cost."""
