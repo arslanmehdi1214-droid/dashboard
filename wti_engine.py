@@ -59,8 +59,43 @@ def prep(hist, day):
     if (day - pd_).days > 3: return None
     rng = [r[2] - r[3] for r in H[-14:]]; A = float(np.mean(rng))
     wk = day.to_period('W'); lw = [r for r in H if pd.Timestamp(r[0]).to_period('W') == wk - 1]
-    return dict(A=A, yhi=prev[2], ylo=prev[3], yrange=prev[2] - prev[3], settle=prev[5],
+    return dict(wf=weak_dayfeat(H), A=A, yhi=prev[2], ylo=prev[3], yrange=prev[2] - prev[3], settle=prev[5],
                 lwh=(max(r[2] for r in lw) if lw else np.nan), lwl=(min(r[3] for r in lw) if lw else np.nan))
+
+
+# ---- v1.08 (1 Nov 2026): weak-entry downsize. A fixed logistic score (28 numbers, trained on 2011-2019 only; same numbers as the EA WTI_DAYTRADE v1.08 wCoef/wBias)
+# is computed for every entry from the daily bars known before the entry; entries at or below the cut (bottom third) trade at WEAK_SIZE x their normal size.
+WEAK_SIZE = 0.5
+WEAK_FEATS = ["dir", "A", "first", "late", "min", "dow", "k", "f_lastweek", "f_open+-0.5", "f_open+-0.7", "f_open+-1.0", "f_round1", "f_settle", "f_yday", "mo3", "mo5", "mo8", "mo13", "ret1", "ret2", "pos20", "pos60", "clpos", "rng", "rng_z", "rv5", "rv20", "gap"]
+WEAK_COEF = [-0.5352394806450879, -0.02830949921719838, 0.005116710210724173, 0.0, 0.0005147930923764709, -0.0012416927151276463, 0.08453939361160567, -0.22943521702675845, 0.18493028315074325, -0.002804805016805929, 0.05083154959690975, -0.03976765427206761, -0.15652653320503077, 0.0043576513682883665, 0.0038262385505347892, -0.019763965909276662, 0.017818503255894545, -0.012670375713047766, 0.06691811936848882, 0.01918147038914972, -0.34272854653997986, -0.4223363180261314, -0.4918263562071827, -0.05836813577194137, -0.11891213291886576, -0.031067116439657542, -0.032135105767732375, 0.190623657629336]
+WEAK_B = -0.928435081404478
+WEAK_THR = -1.7276181366535104
+WEAK_FAMS = ['lastweek', 'open+-0.5', 'open+-0.7', 'open+-1.0', 'round1', 'settle', 'yday']
+
+def weak_dayfeat(H):
+    """Daily features for the day AFTER the finished rows H ([date, o, h, l, c, settle], oldest first); None if fewer than 63 rows."""
+    i = len(H)
+    if i < 63: return None
+    c = np.array([r[4] for r in H], float); h = np.array([r[2] for r in H], float); l = np.array([r[3] for r in H], float)
+    f = {}
+    for k in (3, 5, 8, 13): f[f'mo{k}'] = (c[i - 1] / c[i - 1 - k] - 1) * 100
+    f['ret1'] = (c[i - 1] / c[i - 2] - 1) * 100; f['ret2'] = (c[i - 2] / c[i - 3] - 1) * 100
+    for n in (20, 60):
+        w = c[i - n:i]; f[f'pos{n}'] = (c[i - 1] - w.min()) / (w.max() - w.min())
+    f['clpos'] = (c[i - 1] - l[i - 1]) / (h[i - 1] - l[i - 1]); f['rng'] = (h[i - 1] - l[i - 1]) / c[i - 1] * 100
+    rr = (h[i - 60:i] - l[i - 60:i]) / c[i - 60:i]; f['rng_z'] = rr[-1] / rr.mean()
+    for n in (5, 20):
+        r = c[i - n:i] / c[i - n - 1:i - 1] - 1; f[f'rv{n}'] = r.std(ddof=1) * 100
+    f['pc'] = float(c[i - 1])
+    return f
+
+def weak_score(wf, day_open, d, nm, A, k, mn, dow):
+    """Score of one entry (higher = better); None if it cannot be computed (then the entry keeps its normal size)."""
+    if wf is None or nm not in WEAK_FAMS: return None
+    r = dict(wf); r['gap'] = (day_open / wf['pc'] - 1) * 100
+    r.update({'dir': d, 'A': A, 'first': int(k == 0), 'late': int(mn >= 1630), 'min': mn, 'dow': dow, 'k': k})
+    for x in WEAK_FAMS: r['f_' + x] = 1.0 if x == nm else 0.0
+    return float(sum(c_ * r[n_] for c_, n_ in zip(WEAK_COEF, WEAK_FEATS)) + WEAK_B)
 
 def run_day(P, t, O, H, L, C, now=None, spread=None, final=False):
     """P = prep(...); t/O/H/L/C = today's minute bars so far (broker times, closed bars only). Returns the day's ladder trades with their
@@ -129,6 +164,10 @@ def run_day(P, t, O, H, L, C, now=None, spread=None, final=False):
             st = banked + sum(mark(g, px) for g in legs if g['on'])
             w = ((1.0 if (d < 0 and P.get('first_sell_full')) else 1 / 3) if len(legs) == 0 else ((1.0 if st > 0 else 1 / 3) if d < 0 else 1.0))   # v1.05 first sell
             if d > 0: w = min(w, 1 / 3)
+            weak = False
+            if P.get('weak_down'):                                                     # v1.08: bottom-third entries trade at half their size
+                z_ = weak_score(P.get('wf'), O[0], d, nm, A, len(legs), int(hm[m]), day.dayofweek)
+                if z_ is not None and z_ <= WEAK_THR: w = w * WEAK_SIZE; weak = True
             e = px + sp if d > 0 else px                                   # buy fills at the ask, sell at the bid
             stop_b = px - sd if d > 0 else px + sd                          # stop in BID terms (sell stop = ask + sd)
             rk = sd + sp; k = BUY_HALF if d > 0 else SELL_HALF
@@ -136,7 +175,7 @@ def run_day(P, t, O, H, L, C, now=None, spread=None, final=False):
             nohalf = bool(d < 0 and P.get('hold_sells'))                    # v1.06: supply day -> sells keep the whole trade (no part, no stop move)
             legs.append(dict(i=m, t=t[m], dir=d, px=float(px), level=float(lv), fam=nm, name=FAM_NAME[nm], sd=sd, sp=sp, e=e, w=w,
                              stop0=float(stop_b), stop=float(stop_b), half_px=(None if nohalf else float(hp if d > 0 else hp - sp)), half=False, bank=0.0, q=1.0,
-                             on=True, exit=None, exit_i=None, why=None, late=bool(hm[m] >= LAST_ENTRY), first=(len(legs) == 0)))
+                             on=True, exit=None, exit_i=None, why=None, late=bool(hm[m] >= LAST_ENTRY), first=(len(legs) == 0), weak=weak))
             if ddir == 0: ddir = d
             lastm, lastd = m, d
         for g in legs:                                                  # bar m: stop first (gap-aware), then the half-close
@@ -167,7 +206,7 @@ def run_day(P, t, O, H, L, C, now=None, spread=None, final=False):
             if dn >= tg: rwf = 0; decided = True; break
         res = None if g['on'] else round(g['bank'] * g['sd'], 4)          # $ per barrel for a FULL-size trade, spread included
         out.append(dict(i=m, t=t[m], dir=d, px=px, level=g['level'], fam=g['fam'], name=g['name'], stop=g['stop'], stop0=g['stop0'],
-                        half_px=g['half_px'], half=g['half'], part=(None if g['half_px'] is None else PART), first=g['first'], late=g['late'], size='full' if g['w'] == 1.0 else '1/3',
+                        half_px=g['half_px'], half=g['half'], part=(None if g['half_px'] is None else PART), first=g['first'], late=g['late'], size=('full' if g['w'] == 1.0 else '1/3' if abs(g['w'] - 1 / 3) < 1e-9 else round(g['w'], 6)), weak=bool(g.get('weak')),
                         status=('open' if g['on'] else g['why']), exit=g['exit'], exit_t=(None if g['exit_i'] is None else t[g['exit_i']]),
                         res=res, R=(None if g['on'] else round(g['bank'], 4)), rwf=rwf, rwf_final=decided or has_close or final, A=A, spread=g['sp']))
     return out

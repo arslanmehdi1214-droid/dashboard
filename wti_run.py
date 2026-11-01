@@ -19,6 +19,9 @@ PASS = dict(green=60.0, pf=1.10, months=3)
 RULES = 'v1.05'                       # journal days are tagged; the card's record counts only the current rules (set per day in main)
 V106_FROM = pd.Timestamp('2026-10-26') # v1.06 from broker day Mon 26 Oct 2026 (days before keep v1.05 - no mid-day rule change)
 V107_FROM = pd.Timestamp('2026-10-27') # v1.07 from broker day Tue 27 Oct 2026 (later buys off; his MT4 run 26 Oct)
+V108_FROM = pd.Timestamp('2026-11-02') # v1.08 from broker day Mon 2 Nov 2026 (v1.07 + the weakest third of entries at half size; his MT4 run 1 Nov: profit +0.5%, drawdown -9.4%, same trades)
+BACKTEST_108 = dict(direction='—', days='same days as v1.07', perday='1.40', win='—', pf='1.51', net='+$49,559 (v1.07 same run: +$49,300), max drawdown 7.27% (v1.07: 8.01%)',
+                source='MT4 v1.08, his run 1 Nov 2026, 2019-10-12 to 2026-10-10, 4,239 trades (same as v1.07), spread 4, Half_Close_Part 0.2; weakest third of entries at half size')
 BACKTEST = dict(direction='—', days='69.3% green / 93.7% traded', perday='1.40', win='79.1%', pf='1.44', net='+$48,688 at 0.30 + 0.10 lots (v1.06: +$46,306)',
                 source='MT4 v1.07, his run 26 Oct 2026, 2020-01 to 2026-10-09, 2,480 trades, spread 4 (worst day -$1,724); $34.7/day 2020-22, $21.9/day 2023-26')
 BACKTEST_106 = dict(direction='—', days='65.2% green / 93.7% traded', perday='1.86', win='81.5%', pf='1.38', net='+$46,306 at 0.30 + 0.10 lots (v1.05: +$35,670)',
@@ -27,7 +30,7 @@ BACKTEST_105 = dict(direction='—', days='65.7% green / 93.9% traded', perday='
                 source='MT4 v1.05, his run 20 Oct 2026, 2020-01 to 2026-09, 3,355 trades, spread 4 (worst day -$1,724); $26.7/day 2020-22, $17.0/day 2023-26')
 def rules_for(day):
     d = pd.Timestamp(day).normalize()
-    return 'v1.07' if d >= V107_FROM else 'v1.06' if d >= V106_FROM else 'v1.05'
+    return 'v1.08' if d >= V108_FROM else 'v1.07' if d >= V107_FROM else 'v1.06' if d >= V106_FROM else 'v1.05'
 
 def loadj(p, d):
     try: return json.load(open(p))
@@ -235,7 +238,7 @@ def row(t, now, day_over):
     if st == 'open' and day_over: st = 'close_now'
     sp = max(MIN_SPREAD, t['spread'] or 0.0)
     res = None if t['exit'] is None else round(t['res'], 3) if t.get('res') is not None else round((t['exit'] - t['px']) * t['dir'] - sp, 3)
-    w = 1.0 if t['size'] == 'full' else 1 / 3
+    w = float(t['size']) if isinstance(t['size'], (int, float)) else (1.0 if t['size'] == 'full' else 1 / 3)
     return dict(time=dubai(t['t']), side='BUY' if t['dir'] == 1 else 'SELL', name=t['name'], price=round(t['px'], 2), stop=round(t['stop'], 2), stop0=round(t.get('stop0', t['stop']), 2),
                 half_px=(None if t.get('half_px') is None else round(t['half_px'], 2)), half=bool(t.get('half')), part=t.get('part', 0.5), late=bool(t.get('late')),
                 stop_usd=round(abs(t['px'] - t.get('stop0', t['stop'])), 2), size=t['size'], first=t['first'], status=st,
@@ -263,18 +266,18 @@ def jdays(J): return J.get('days', [])[-30:][::-1]
 def base_card(A=None, day=None):
     v = rules_for(day if day is not None else F.broker_now().normalize())
     note = ('14-day range ' + ('—' if A is None else f'${A:.2f}') + ' · stop: buys 1 range, sells ¾ range · close 25% at +0.05 (buys) / +0.15 (sells) '
-            'x risk, then stop to entry' + (' (sells on supply days: no part-close, hold to stop / day end)' if v in ('v1.06', 'v1.07') else '') +
-            ' · day lock +2R/+1R · no new trades after 4:30 pm broker (one late first trade to 7:00 pm)' + (' · option-expiry day: first trade only' if v in ('v1.06', 'v1.07') else '') + (' · a buy only as the first trade (later buy signals skipped)' if v == 'v1.07' else '') +
-            ' · close 8:00 pm broker = 9:00 pm Dubai, 10:00 pm in winter · size: first trade and buys ⅓, later sells full while the day is in profit')
+            'x risk, then stop to entry' + (' (sells on supply days: no part-close, hold to stop / day end)' if v in ('v1.06', 'v1.07', 'v1.08') else '') +
+            ' · day lock +2R/+1R · no new trades after 4:30 pm broker (one late first trade to 7:00 pm)' + (' · option-expiry day: first trade only' if v in ('v1.06', 'v1.07', 'v1.08') else '') + (' · a buy only as the first trade (later buy signals skipped)' if v in ('v1.07', 'v1.08') else '') + (' · v1.08: the weakest third of entries (by a fixed score) trade at half size' if v == 'v1.08' else '') +
+            ' · close 8:00 pm broker = 9:00 pm Dubai, 10:00 pm in winter · size: first trade and buys ⅓, later sells full while the day is in profit' + (' · v1.08: weakest-third entries at half of that' if v == 'v1.08' else ''))
     return dict(code='OIL', name='Oil (WTI)', symbol='WTI · Capital.com US Crude', live=False, paper=True, status='Paper', version=v,
-                unit='usd', dp=2, stats=(BACKTEST if v == 'v1.07' else BACKTEST_106 if v == 'v1.06' else BACKTEST_105), pass_bar=PASS, day_note=note,
+                unit='usd', dp=2, stats=(BACKTEST_108 if v == 'v1.08' else BACKTEST if v == 'v1.07' else BACKTEST_106 if v == 'v1.06' else BACKTEST_105), pass_bar=PASS, day_note=note,
                 what_note='This page tracks whether live WTI signals do as well as the backtest. Decision after about 3 months.',
                 cost_note="Results are $ per barrel (sizes: full or ⅓), from the signal price with the backtest's slip, after a fixed 4-cent spread (the MT4 test's spread and Capital.com's usual; fixed so shown levels never change).",
                 net_label=f'Net $ per barrel ({v})')
 
 def main(feed=None, get=None, now=None):
     global DEADLINE, RULES; DEADLINE = time.time() + 75                # 22 Oct: own time budget per market
-    now = now or F.broker_now(); day = now.normalize(); RULES = rules_for(day); v6 = RULES in ('v1.06', 'v1.07'); v7 = RULES == 'v1.07'
+    now = now or F.broker_now(); day = now.normalize(); RULES = rules_for(day); v6 = RULES in ('v1.06', 'v1.07', 'v1.08'); v7 = RULES in ('v1.07', 'v1.08'); v8 = RULES == 'v1.08'
     H = loadj(HIST, None)
     if H is None: raise RuntimeError('docs/wti_hist.json missing')
     old = loadj(PORTAL, {}); mk = old.setdefault('markets', {})
@@ -303,7 +306,7 @@ def main(feed=None, get=None, now=None):
         except Exception as e: print('v1.06 expiry rule failed', e)
         try: hs, hinfo = hold_sells(H, day)
         except Exception as e: print('v1.06 supply rule failed', e)
-        if P is not None: P['expiry_first_only'] = exp; P['hold_sells'] = hs; P['later_buys_off'] = v7
+        if P is not None: P['expiry_first_only'] = exp; P['hold_sells'] = hs; P['later_buys_off'] = v7; P['weak_down'] = v8
     hm = W.close_hm(day); eod = day + pd.Timedelta(minutes=hm); day_over = now >= eod
     trades = W.run_day(P, b.index, b.o.values, b.h.values, b.l.values, b.c.values) if (P and len(b)) else []     # 23 Oct: fixed 4-cent spread inside the engine
     rows = [row(t, now, day_over) for t in trades]
