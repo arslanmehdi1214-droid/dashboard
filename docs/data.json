@@ -10120,27 +10120,27 @@
    "symbol": "US500 \u00b7 Capital.com US 500",
    "live": false,
    "paper": true,
-   "version": "v1.04",
+   "version": "v1.07",
    "unit": "pts",
    "dp": 1,
    "stats": {
     "direction": "\u2014",
-    "days": "44.5% profit days / 87% traded",
-    "perday": "1.37",
-    "win": "53.4%",
-    "pf": "1.32",
-    "net": "+$16,896 at $100 risk per leg",
-    "source": "MT4 test SP500_DAYTRADE v1.04 (his run 24 Oct, spread 0.8 pt), 2020-01-01..2026-09-30, 2,416 trades (2,135 day + 281 night); worst day -$315; net/DD 8.83; max DD $1,914"
+    "days": "49.87% profit days (n=1,554 days)",
+    "perday": "\u2014",
+    "win": "\u2014",
+    "pf": "\u2014",
+    "net": "+$13,939.21 at $100 risk per leg",
+    "source": "MT4 test SP500_DAYTRADE v1.07 (his run 1 Nov, Magic 500109, spread 18, Every tick), 2019.10.12-2026.10.10, 2,362 trades; max DD $2,377.37 (0.24%); net/DD 5.86; row18=1 (night leg Mon/Tue/Wed only), row19=1.0 (night stop mult, was 2.0), row20=true (Turn-of-Month day leg)"
    },
    "pass_bar": {
     "green": 40.0,
     "pf": 1.15,
     "months": 3
    },
-   "day_note": "14-day range \u2014 \u00b7 stop 0.75 x range \u00b7 no half-close \u00b7 the day's first signal sets BUY or SELL, later signals the same way add (max 3 trades) \u00b7 v1.04: no 2nd/3rd trade from 11:00 am New York or once the day is up half a stop \u00b7 signals: Nasdaq desk signals copied in US hours + S&P 9:40 am New York move, yesterday high/low sweep, big move by 10 am New York \u00b7 close 3:30 pm New York \u00b7 NIGHT trade on high-fear nights (VIX above VIX3M, or VIX / VVIX in their 1-year top 10%): BUY 6:01 pm New York, stop 2 x range, close 10:00 am New York",
-   "what_note": "Tracks whether live S&P signals do as well as the v1.04 MT4 test. Decision after about 3 months.",
+   "day_note": "14-day range \u2014 \u00b7 stop 0.75 x range \u00b7 no half-close \u00b7 the day's first signal sets BUY or SELL, later signals the same way add (max 3 trades) \u00b7 v1.04: no 2nd/3rd trade from 11:00 am New York or once the day is up half a stop \u00b7 signals: Nasdaq desk signals copied in US hours + S&P 9:40 am New York move, yesterday high/low sweep, big move by 10 am New York \u00b7 close 3:30 pm New York \u00b7 NIGHT trade on high-fear nights (VIX above VIX3M, or VIX / VVIX in their 1-year top 10%): BUY 6:01 pm New York (v1.07: Mon/Tue/Wed broker-days only), stop 1 x range (v1.07, was 2x), close 10:00 am New York \u00b7 v1.07 TURN-OF-MONTH: on the last broker weekday of the month and the first 3 of the next, BUY 9:30 am New York, stop 0.75 x range, close 3:30 pm New York - only on a day with no other S&P trade",
+   "what_note": "Tracks whether live S&P signals do as well as the v1.07 MT4 test. Decision after about 3 months.",
    "cost_note": "Results are index points per trade after 0.8 points of cost (Capital.com spread + slippage).",
-   "net_label": "Net points (v1.04 rules)",
+   "net_label": "Net points (v1.07 rules)",
    "state": "closed",
    "message": "Market closed for the weekend.",
    "price": 7581.5,
@@ -12158,18 +12158,9 @@
     ]
    ],
    "journal": {
-    "since": "26 Oct 2026",
-    "weekdays": 5,
-    "trades": 4,
-    "days": 80.0,
-    "perday": 0.8,
-    "closed": 4,
-    "win": 50.0,
-    "pf": 14.28,
-    "net": 90.3,
-    "rules": "v1.04",
-    "direction": null,
-    "green": 40.0
+    "since": null,
+    "trades": 0,
+    "rules": "v1.07"
    },
    "jdays": [
     {

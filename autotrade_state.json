@@ -12,26 +12,6 @@
  "open_risk_aed": 0,
  "risk_usd": 8.168822328114365,
  "trades": {
-  "GBPUSD|2026-10-28|11:00 am|BUY|Layer 2 \u00b7 small traders crowded": {
-   "desk_price": 1.3279,
-   "market": "GBPUSD",
-   "opened_at": "Wed 28 Oct 11:01 AM",
-   "part": {
-    "closed_by": "desk: eod",
-    "id": "00000000-6eb4-fe86-0495-7fc60004511e",
-    "level": 1.32779,
-    "open": false,
-    "size": 1100.0,
-    "tp": 1.33484
-   },
-   "part_x": 1.0,
-   "px_adj": 0.0,
-   "risk_aed": 28.48,
-   "risk_usd": 8.17,
-   "side": "BUY",
-   "state": "closed",
-   "stop": 1.3284
-  },
   "GBPUSD|2026-10-29|11:00 am|BUY|Layer 2 \u00b7 small traders crowded": {
    "desk_price": 1.33095,
    "market": "GBPUSD",
@@ -71,26 +51,6 @@
    "side": "BUY",
    "state": "closed",
    "stop": 1.33988
-  },
-  "GOLD|2026-10-28|4:21 pm|SELL|FILL range fade": {
-   "desk_price": 4056.35,
-   "market": "GOLD",
-   "opened_at": "Wed 28 Oct 4:22 PM",
-   "part_x": 0.0,
-   "px_adj": 0.0,
-   "rest": {
-    "closed_by": "desk: close_now",
-    "id": "00000000-6eb7-01ff-0495-7fc60004511e",
-    "level": 4057.69,
-    "open": false,
-    "size": 0.24,
-    "tp": null
-   },
-   "risk_aed": 28.87,
-   "risk_usd": 8.17,
-   "side": "SELL",
-   "state": "closed",
-   "stop": 4089.1
   },
   "GOLD|2026-10-29|1:10 pm|SELL|FILL range fade": {
    "desk_price": 4034.59,
@@ -144,26 +104,6 @@
    "state": "not entered",
    "why": "desk trade seen 86 min after entry, status stopped"
   },
-  "OIL|2026-10-28|11:01 am|BUY|Open \u00b1 \u00bd range": {
-   "desk_price": 101.17,
-   "market": "OIL",
-   "opened_at": "Wed 28 Oct 11:02 AM",
-   "part_x": 0.25,
-   "px_adj": 0.0,
-   "rest": {
-    "closed_by": "Capital.com stop/target",
-    "id": "00000000-6eb5-016d-0495-7fc60004511e",
-    "level": 101.203,
-    "open": false,
-    "size": 1.0,
-    "tp": null
-   },
-   "risk_aed": 13.99,
-   "risk_usd": 2.72,
-   "side": "BUY",
-   "state": "closed",
-   "stop": 101.21
-  },
   "OIL|2026-10-29|1:06 pm|SELL|Whole dollar": {
    "desk_price": 99.97,
    "market": "OIL",
@@ -189,34 +129,6 @@
    "market": "OIL",
    "state": "not entered",
    "why": "real risk 14.14 AED after lot rounding > 1.4x target 10.0 AED"
-  },
-  "US100|2026-10-28|2:48 pm|SELL|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am": {
-   "desk_price": 29800.0,
-   "market": "US100",
-   "opened_at": "Wed 28 Oct 2:49 PM",
-   "part": {
-    "closed_by": "Capital.com stop/target",
-    "id": "00000000-6eb6-6c00-0495-7fc60004511e",
-    "level": 29795.3,
-    "open": false,
-    "size": 0.002,
-    "tp": 29726.5
-   },
-   "part_x": 0.15,
-   "px_adj": 0.0,
-   "rest": {
-    "closed_by": "Capital.com stop/target",
-    "id": "00000000-6eb6-6c13-0495-7fc60004511e",
-    "level": 29794.9,
-    "open": false,
-    "size": 0.016,
-    "tp": null
-   },
-   "risk_aed": 9.72,
-   "risk_usd": 2.72,
-   "side": "SELL",
-   "state": "closed",
-   "stop": 29800.0
   },
   "US100|2026-10-29|3:04 am|BUY|F2 sweep prev-day hi/lo by 0.1ATR from 1am back inside <30min -> reverse": {
    "desk_price": 29541.0,
@@ -274,26 +186,6 @@
    "state": "closed",
    "stop": 28361.5
   },
-  "US500|2026-10-28|5:40 pm|SELL|S&P 9:40 am New York opening move": {
-   "desk_price": 7731.7,
-   "market": "US500",
-   "opened_at": "Wed 28 Oct 5:41 PM",
-   "part_x": 0.0,
-   "px_adj": 0.0,
-   "rest": {
-    "closed_by": "desk: eod",
-    "id": "00000000-6eb7-94fa-0495-7fc60004511e",
-    "level": 7730.5,
-    "open": false,
-    "size": 0.13,
-    "tp": null
-   },
-   "risk_aed": 29.03,
-   "risk_usd": 8.17,
-   "side": "SELL",
-   "state": "closed",
-   "stop": 7792.5
-  },
   "US500|2026-10-29|5:40 pm|SELL|S&P 9:40 am New York opening move": {
    "desk_price": 7703.2,
    "market": "US500",
@@ -333,110 +225,6 @@
    "side": "SELL",
    "state": "closed",
    "stop": 7693.0
-  },
-  "USDJPY|2026-10-28|2:24 am|BUY|Week-so-far break": {
-   "desk_price": 157.969,
-   "market": "USDJPY",
-   "opened_at": "Wed 28 Oct 2:26 AM",
-   "part": {
-    "closed_by": "Capital.com stop/target",
-    "id": "00000000-6eb2-fccd-0495-7fc60004511e",
-    "level": 157.982,
-    "open": false,
-    "size": 1000.0,
-    "tp": 158.043
-   },
-   "part_x": 0.5,
-   "px_adj": 0.0,
-   "rest": {
-    "closed_by": "desk: close_now",
-    "id": "00000000-6eb2-fcdc-0495-7fc60004511e",
-    "level": 157.983,
-    "open": false,
-    "size": 1000.0,
-    "tp": null
-   },
-   "risk_aed": 29.06,
-   "risk_usd": 8.17,
-   "side": "BUY",
-   "state": "closed",
-   "stop": 157.979
-  },
-  "USDJPY|2026-10-28|4:50 pm|BUY|Squeeze 4pm": {
-   "desk_price": 157.941,
-   "market": "USDJPY",
-   "opened_at": "Wed 28 Oct 4:51 PM",
-   "part": {
-    "closed_by": "Capital.com stop/target",
-    "id": "00000000-6eb7-2a08-0495-7fc60004511e",
-    "level": 157.952,
-    "open": false,
-    "size": 3100.0,
-    "tp": 158.06
-   },
-   "part_x": 0.5,
-   "px_adj": 0.0,
-   "rest": {
-    "closed_by": "desk: close_now",
-    "id": "00000000-6eb7-2a22-0495-7fc60004511e",
-    "level": 157.952,
-    "open": false,
-    "size": 3100.0,
-    "tp": null
-   },
-   "risk_aed": 29.99,
-   "risk_usd": 8.17,
-   "side": "BUY",
-   "state": "closed",
-   "stop": 157.951
-  },
-  "USDJPY|2026-10-28|5:28 pm|BUY|Hourly squeeze 3pm": {
-   "desk_price": 157.979,
-   "market": "USDJPY",
-   "opened_at": "Wed 28 Oct 5:29 PM",
-   "part": {
-    "closed_by": "Capital.com stop/target",
-    "id": "00000000-6eb7-6966-0495-7fc60004511e",
-    "level": 157.985,
-    "open": false,
-    "size": 3100.0,
-    "tp": 158.098
-   },
-   "part_x": 0.5,
-   "px_adj": 0.0,
-   "rest": {
-    "closed_by": "desk: close_now",
-    "id": "00000000-6eb7-6975-0495-7fc60004511e",
-    "level": 157.985,
-    "open": false,
-    "size": 3100.0,
-    "tp": null
-   },
-   "risk_aed": 29.98,
-   "risk_usd": 8.17,
-   "side": "BUY",
-   "state": "closed",
-   "stop": 157.989
-  },
-  "USDJPY|2026-10-28|7:00 am|BUY|Heikin-Ashi 7am": {
-   "desk_price": 157.903,
-   "market": "USDJPY",
-   "opened_at": "Wed 28 Oct 7:01 AM",
-   "part": {
-    "closed_by": "Capital.com stop/target",
-    "id": "00000000-6eb4-16dd-0495-7fc60004511e",
-    "level": 157.888,
-    "open": false,
-    "size": 600.0,
-    "tp": 157.917
-   },
-   "part_x": 1.0,
-   "px_adj": 0.0,
-   "risk_aed": 8.72,
-   "risk_usd": 2.72,
-   "side": "BUY",
-   "state": "closed",
-   "stop": 157.278
   },
   "USDJPY|2026-10-29|4:04 pm|BUY|Squeeze 4pm": {
    "desk_price": 158.045,
